@@ -24,7 +24,8 @@ vm.hostname as vm_hostname,
 vm.id as vm_id,
 vm.ipaddress as cred_ip,
 emp.id as emp_id,
-emp.fantasia as emp_fantasia
+emp.fantasia as emp_fantasia,
+p.nome as nomeCriador
 FROM
 credenciais_vms as credvm
 LEFT JOIN
@@ -35,6 +36,14 @@ LEFT JOIN
 empresas as emp
 ON
 emp.id = credvm.empresa_id
+LEFT JOIN
+usuarios as u
+ON
+u.id = credvm.usuario_id
+LEFT JOIN
+pessoas as p
+ON
+u.pessoa_id = p.id
 WHERE
 credvm.id = '$id'
 ";
@@ -51,13 +60,22 @@ credemail.emailsenha as cred_senha,
 credemail.webmail as cred_webmail,
 credemail.anotacao as anotacaoEmail,
 emp.id as emp_id,
-emp.fantasia as emp_fantasia
+emp.fantasia as emp_fantasia,
+p.nome as nomeCriador
 FROM
 credenciais_email as credemail
 LEFT JOIN
 empresas as emp
 ON
 emp.id = credemail.empresa_id
+LEFT JOIN
+usuarios as u
+ON
+u.id = credemail.usuario_id
+LEFT JOIN
+pessoas as p
+ON
+u.pessoa_id = p.id
 WHERE
 credemail.id = '$id'
 ";
@@ -75,7 +93,8 @@ credequip.equipamentosenha as cred_senha,
 credequip.equipamento_id as eqp_id,
 eqp.hostname as cred_hostname,
 eqp.ipaddress as cred_ip,
-emp.fantasia as emp_fantasia
+emp.fantasia as emp_fantasia,
+p.nome as nomeCriador
 FROM
 credenciais_equipamento as credequip
 LEFT JOIN
@@ -86,6 +105,14 @@ LEFT JOIN
 empresas as emp
 ON
 emp.id = credequip.empresa_id
+LEFT JOIN
+usuarios as u
+ON
+u.id = credequip.usuario_id
+LEFT JOIN
+pessoas as p
+ON
+u.pessoa_id = p.id
 WHERE
 credequip.id = '$id'
 ";
@@ -100,13 +127,22 @@ portal.portalusuario as cred_usuario,
 portal.portalsenha as cred_senha,
 portal.tipo as cred_tipo,
 portal.anotacao as anotacaoEmail,
-emp.fantasia as emp_fantasia
+emp.fantasia as emp_fantasia,
+p.nome as nomeCriador
 FROM
 credenciais_portal as portal
 LEFT JOIN
 empresas as emp
 ON
 emp.id = portal.empresa_id
+LEFT JOIN
+usuarios as u
+ON
+u.id = portal.usuario_id
+LEFT JOIN
+pessoas as p
+ON
+u.pessoa_id = p.id
 WHERE
 portal.id = '$id'
 ";

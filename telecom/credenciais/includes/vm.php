@@ -27,7 +27,7 @@
                                 <label for="editTipo" class="form-label">Tipo</label>
                                 <input disabled name="editTipo" type="text" class="form-control" id="editTipo" value="<?= $row['cred_tipo'];  ?>">
                             </div>
-
+ 
                             <div class="col-2"></div>
 
                             <div class="col-3">
@@ -44,8 +44,10 @@
 
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="editPrivacidade" id="editPrivacidade" value="3" <?= $checkSomEu ?>>
-                                    <label class="form-check-label" for="editPrivacidade" value="3">Somente eu</label>
+                                    <label class="form-check-label" for="editPrivacidade" value="3">Somente criador</label>
                                 </div>
+
+                                <?= $aplicaButton ?>
                             </div>
 
                             <div class="col-4">
@@ -58,6 +60,13 @@
                                 <input disabled type="text" class="form-control" value="<?= $row['cred_ip']; ?>">
                             </div>
 
+                            <div class="col-2"> </div>
+
+                            <div class="col-3"> 
+                                <label for="nomeUsuarioCriador" class="form-label">Usuário Criador</label>
+                                <input name="nomeUsuarioCriador" type="text" class="form-control" id="nomeUsuarioCriador" value="<?= $row['nomeCriador']; ?>" disabled>
+                            </div>
+ 
                             <hr class="sidebar-divider">
 
                             <div class="col-6" style="display: inline-block;">
@@ -97,3 +106,8 @@
     </section>
 
 </main><!-- End #main -->
+
+<?php
+require "modal.php";
+require "scripts_permissoes.php";
+?>

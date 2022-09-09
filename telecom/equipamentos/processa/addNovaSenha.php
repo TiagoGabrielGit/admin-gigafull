@@ -40,7 +40,7 @@ $credenciais_equipamento = "INSERT INTO credenciais_equipamento (empresa_id, tip
 $stmt1 = $pdo->prepare($credenciais_equipamento);
 $stmt1->bindParam(':empresa_id', $id_empresa);
 $stmt1->bindParam(':tipo', $tipo);
-$stmt1->bindParam(':usuario_id', $pessoa_id);
+$stmt1->bindParam(':usuario_id', $usuario_id);
 $stmt1->bindParam(':privacidade', $privacidade);
 $stmt1->bindParam(':id_Equipamento', $id_Equipamento);
 $stmt1->bindParam(':equipamento_desc', $equipamento_desc);

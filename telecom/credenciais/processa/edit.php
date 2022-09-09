@@ -4,7 +4,6 @@ include_once '../../../conexoes/conexao_pdo.php';
 
 //Variaveis 
 $idCadastro = $_POST['id'];
-$usuarioCriador = $_POST['usuarioCriador'];
 $IDTipo = $_POST['IDTipo'];
 $privacidade = $_POST['editPrivacidade'];
 $descricao = $_POST['editDescricao'];
@@ -20,10 +19,9 @@ if ($IDTipo == "email") {
     $webmail = $_POST['editWebmail'];
     $anotacaoEmail = $_POST['anotacaoEmail'];
 
-    $sql = "UPDATE credenciais_email SET usuario_id = :usuario, privacidade = :priv, webmail = :webmail, emaildescricao = :descr, emailusuario = :user, emailsenha = :senha, anotacao = :anotacao WHERE id = :id";
+    $sql = "UPDATE credenciais_email SET privacidade = :priv, webmail = :webmail, emaildescricao = :descr, emailusuario = :user, emailsenha = :senha, anotacao = :anotacao WHERE id = :id";
 
     $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':usuario', $usuarioCriador);
     $stmt->bindParam(':priv', $privacidade);
     $stmt->bindParam(':webmail', $webmail);
     $stmt->bindParam(':descr', $descricao);
@@ -51,10 +49,9 @@ if ($IDTipo == "email") {
 //tipo = vm
 if ($IDTipo == "vm") {
 
-    $sql = "UPDATE credenciais_vms SET usuario_id = :usuario, privacidade = :priv, vmdescricao = :descr, vmusuario = :user, vmsenha = :senha WHERE id = :id";
+    $sql = "UPDATE credenciais_vms SET privacidade = :priv, vmdescricao = :descr, vmusuario = :user, vmsenha = :senha WHERE id = :id";
 
     $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':usuario', $usuarioCriador);
     $stmt->bindParam(':priv', $privacidade);
     $stmt->bindParam(':descr', $descricao);
     $stmt->bindParam(':user', $usuario);
@@ -79,10 +76,9 @@ if ($IDTipo == "vm") {
 //tipo = equipamento
 if ($IDTipo == "equipamento") {
 
-    $sql = "UPDATE credenciais_equipamento SET usuario_id = :usuario, privacidade = :priv, equipamentodescricao = :descr, equipamentousuario = :user, equipamentosenha = :senha WHERE id = :id";
+    $sql = "UPDATE credenciais_equipamento SET privacidade = :priv, equipamentodescricao = :descr, equipamentousuario = :user, equipamentosenha = :senha WHERE id = :id";
 
     $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':usuario', $usuarioCriador);
     $stmt->bindParam(':priv', $privacidade);
     $stmt->bindParam(':descr', $descricao);
     $stmt->bindParam(':user', $usuario);
@@ -108,12 +104,11 @@ if ($IDTipo == "portal") {
 
 
 
-    $sql = "UPDATE credenciais_portal SET usuario_id = :usuario, privacidade = :priv, paginaacesso = :pagina, portaldescricao = :descr, portalusuario = :user, portalsenha = :senha, anotacao = :anotacao WHERE id = :id";
+    $sql = "UPDATE credenciais_portal SET privacidade = :priv, paginaacesso = :pagina, portaldescricao = :descr, portalusuario = :user, portalsenha = :senha, anotacao = :anotacao WHERE id = :id";
     $pagina = $_POST['editPagina'];
     $anotacaoPortal = $_POST['anotacaoPortal'];
 
     $stmt = $pdo->prepare($sql);
-    $stmt->bindParam(':usuario', $usuarioCriador);
     $stmt->bindParam(':priv', $privacidade);
     $stmt->bindParam(':pagina', $pagina);
     $stmt->bindParam(':descr', $descricao);

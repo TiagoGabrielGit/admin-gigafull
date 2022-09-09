@@ -452,7 +452,7 @@ LIMIT $limiteBusca
                                 while ($campos = $resultado->fetch_array()) {
                                     $id = $campos['id_equipop']; ?>
 
-                                    <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $campos['id_equipop']; ?>'">
+                                    <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $campos['id_equipop'];?>'">
                                         </td>
                                         <td style="text-align: center;"><?php echo $campos['hostname']; ?></td>
                                         <td style="text-align: center;"><?php echo $campos['empresa']; ?> / <?php echo $campos['pop']; ?></td>

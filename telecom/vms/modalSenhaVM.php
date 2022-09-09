@@ -47,7 +47,7 @@
 
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="cadastroPrivacidade" id="cadastroPrivacidade" value="2">
-                                            <label class="form-check-label" for="cadastroPrivacidade" value="2">Equipe</label>
+                                            <label class="form-check-label" for="cadastroPrivacidade" value="2">Privado</label>
                                         </div>
 
                                         <div class="form-check">
@@ -77,7 +77,7 @@
                                     <hr class="sidebar-divider">
 
                                     <div class="text-center">
-                                        <input id="btnSalvar" name="btnSalvar" type="button" value="Salvar" class="btn btn-primary"></input>
+                                        <input id="btnSalvar" name="btnSalvar" type="button" value="Salvar" class="btn btn-danger"></input>
                                         <a href="/telecom/vms/index.php"> <input type="button" value="Voltar" class="btn btn-secondary"></input></a>
                                     </div>
                                 </form>

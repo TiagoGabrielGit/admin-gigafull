@@ -1,12 +1,13 @@
 <script>
-    function addPermissaoEquipe(idEquipe, idCredencial) {
+    function addPermissaoEquipe(idEquipe, idCredencial, tipoCredencial) {
         $.ajax({
             url: "/api/insert_permissao_credencial_equipe.php",
             method: "GET",
             dataType: "HTML",
             data: {
                 idEquipe: idEquipe,
-                idCredencial: idCredencial
+                idCredencial: idCredencial,
+                tipoCredencial: tipoCredencial
             }
         })
     }
@@ -22,14 +23,15 @@
         })
     }
 
-    function addPermissaoUsuario(idUsuario, idCredencial) {
+    function addPermissaoUsuario(idUsuario, idCredencial, tipoCredencial) {
         $.ajax({
             url: "/api/insert_permissao_credencial_usuario.php",
             method: "GET",
             dataType: "HTML",
             data: {
                 idUsuario: idUsuario,
-                idCredencial: idCredencial
+                idCredencial: idCredencial,
+                tipoCredencial: tipoCredencial
             }
         })
     }

@@ -43,10 +43,20 @@
 
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="editPrivacidade" id="editPrivacidade" value="3" <?= $checkSomEu ?>>
-                                    <label class="form-check-label" for="editPrivacidade" value="3">Somente eu</label>
+                                    <label class="form-check-label" for="editPrivacidade" value="3">Somente criador</label>
                                 </div>
+                                
+                                <?= $aplicaButton ?>
+
                             </div>
 
+                            <div class="col-9"> </div>
+                            
+                            <div class="col-3"> 
+                                <label for="nomeUsuarioCriador" class="form-label">Usuário Criador</label>
+                                <input name="nomeUsuarioCriador" type="text" class="form-control" id="nomeUsuarioCriador" value="<?= $row['nomeCriador']; ?>" disabled>
+                            </div>
+ 
                             <hr class="sidebar-divider">
 
                             <div class="col-4" style="display: inline-block;">
@@ -102,3 +112,8 @@
     </section>
 
 </main><!-- End #main -->
+
+<?php
+require "modal.php";
+require "scripts_permissoes.php";
+?>

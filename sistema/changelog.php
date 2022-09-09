@@ -18,6 +18,40 @@ require "../includes/menu.php";
             <!-- Default Accordion -->
             <div class="accordion" id="accordionExample">
 
+
+              <!-- Versão 2.5 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading2-5">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2-5" aria-expanded="false" aria-controls="collapse2-5">
+                    Versão 2.5 - 09/09/2022
+                  </button>
+                </h2>
+                <div id="collapse2-5" class="accordion-collapse collapse" aria-labelledby="heading2-5" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <strong>Novas funcionalidades</strong><br>
+                    1. Criado as politicas de restrições para ver credenciais;<br>
+
+                    <br><strong>Melhorias</strong><br>
+
+                    <br><strong>Correções de BUG</strong><br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    1. Renomeado tabela credenciais_privacidade_equipe;<br>
+                    2. Adicionado coluna tipo na tabela credenciais_privacidade_equipe;<br>
+                    3. Renomeado tabela credenciais_privacidade_usuario;<br>
+                    4. Adicionado coluna tipo na tabela credenciais_privacidade_usuario;<br>
+
+                    <br><strong>Previsto para próximas atualizações</strong><br>
+                    1. Iniciar página de relatórios;<br>
+                    2. Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    3. Correções nos formatos de data e hora;<br>
+                    4. Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    5. Analisar espaçamento que esta ficando após a senha;<br>
+                  </div>
+                </div>
+              </div>
+
+
               <!-- Versão 2.4 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading2-4">
