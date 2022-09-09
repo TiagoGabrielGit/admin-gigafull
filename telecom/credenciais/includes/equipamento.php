@@ -49,7 +49,7 @@
                                     <label class="form-check-label" for="editPrivacidade" value="3">Somente criador</label>
                                 </div>
 
-                                <?= $aplicaButton ?>
+                                <?= $aplicaButton?>
 
                             </div>
 
