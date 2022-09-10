@@ -138,7 +138,7 @@ $row = mysqli_fetch_assoc($resultado);
                             </div>
 
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Salvar</button>
+                                <button type="submit" class="btn btn-danger">Salvar</button>
                                 <a href="/cadastros/produtos/produtos/index.php"><input type="button" value="Voltar" class="btn btn-secondary"></a>
                             </div>
                         </form><!-- End Multi Columns Form -->

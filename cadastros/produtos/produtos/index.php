@@ -6,7 +6,7 @@ require "sql.php";
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Equipamentos</h1>
+        <h1>Produtos</h1>
     </div><!-- End Page Title -->
 
     <section class="section">
@@ -20,14 +20,14 @@ require "sql.php";
                         <div class="container">
                             <div class="row">
                                 <div class="col-8">
-                                    <h5 class="card-title">Cadastro de Equipamentos</h5>
+                                    <h5 class="card-title">Cadastro de Produtos</h5>
                                 </div>
                                 <div class="col-2"></div>
                                 <div class="col-2">
                                     <div class="card">
                                         <!-- Basic Modal -->
                                         <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
-                                            Novo Equipamento
+                                            Novo Produto
                                         </button>
                                     </div>
                                 </div>
@@ -35,7 +35,7 @@ require "sql.php";
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">Novo Equipamento</h5>
+                                                <h5 class="modal-title">Novo Produto</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
@@ -44,7 +44,7 @@ require "sql.php";
                                                     <form method="POST" action="processa/add.php" class="row g-3">
                                                         <div class="col-12">
                                                             <label for="inputEquipamento" class="form-label">Equipamento</label>
-                                                            <input name="equipamento" type="text" class="form-control" id="inputEquipamento" require>
+                                                            <input name="equipamento" type="text" class="form-control" id="inputEquipamento" required>
                                                         </div>
 
                                                         <div class="col-6">
@@ -86,7 +86,7 @@ require "sql.php";
                                                         </div>
 
                                                         <div class="text-center">
-                                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                                            <button type="submit" class="btn btn-danger">Salvar</button>
                                                             <button type="reset" class="btn btn-secondary">Limpar</button>
                                                         </div>
                                                     </form>

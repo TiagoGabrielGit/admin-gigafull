@@ -68,7 +68,7 @@
 
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#Produtos-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-layout-text-window-reverse"></i><span>Produtos</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-layout-text-window-reverse"></i><span>Produtos e Serviços</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="Produtos-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
@@ -80,7 +80,13 @@
 
                 <li>
                     <a href="/cadastros/produtos/produtos/index.php">
-                        <i class="bi bi-circle"></i><span>Produtos e Serviços</span>
+                        <i class="bi bi-circle"></i><span>Produtos</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/cadastros/produtos/servicos/index.php">
+                        <i class="bi bi-circle"></i><span>Serviços</span>
                     </a>
                 </li>
 
