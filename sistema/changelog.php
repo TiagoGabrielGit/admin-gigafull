@@ -28,14 +28,16 @@ require "../includes/menu.php";
                 <div id="collapse2-6" class="accordion-collapse collapse" aria-labelledby="heading2-6" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
                     <strong>Novas funcionalidades</strong><br>
-                    1. ;<br>
-
+                    1. Cadastro de Serviços;<br>
+                    
                     <br><strong>Melhorias</strong><br>
+                    1. Melhorias em layout de tabelas;<br>
+                    2. Padronização de diretórios;<br>
 
                     <br><strong>Correções de BUG</strong><br>
 
                     <br><strong>Alterações banco de dados</strong><br>
-                    1. ;<br>
+                    1. Criado tabela servico;<br>
 
                     <br><strong>Previsto para próximas atualizações</strong><br>
                     1. Iniciar página de relatórios;<br>
@@ -43,6 +45,7 @@ require "../includes/menu.php";
                     3. Correções nos formatos de data e hora;<br>
                     4. Possibilidade de cadastrar uma VM a uma hospedagem; <br>
                     5. Analisar espaçamento que esta ficando após a senha;<br>
+                    6. Criação de contratos;<br>
                   </div>
                 </div>
               </div>

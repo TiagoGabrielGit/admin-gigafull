@@ -3,6 +3,14 @@ require "../../../includes/menu.php";
 require "../../../conexoes/conexao.php";
 require "sql.php";
 ?>
+
+<style>
+    #tabelaLista:hover {
+        cursor: pointer;
+        background-color: #E0FFFF;
+    }
+</style>
+
 <main id="main" class="main">
 
     <div class="pagetitle">
@@ -103,13 +111,12 @@ require "sql.php";
                         <p>Listagem de equipamentos</p>
 
                         <!-- Table with stripped rows -->
-                        <table class="table datatable">
+                        <table class="table table-striped"> 
                             <thead>
                                 <tr>
                                     <th scope="col">Equipamento</th>
                                     <th scope="col">Tamanho (U)</th>
                                     <th scope="col">Fabricante</th>
-                                    <th scope="col">Opções</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -120,19 +127,13 @@ require "sql.php";
 
                                 // Obtendo os dados por meio de um loop while
                                 while ($campos = $resultado->fetch_array()) {
-                                    $id = $campos['id'];
-                                    echo "<tr>";
-                                ?>
-                                    </td>
-                                    <td><?php echo $campos['equipamento']; ?></td>
-                                    <td><?php echo $campos['tamanho']; ?></td>
-                                    <td><?php echo $campos['fabricante']; ?></td>
-                                    <td>
-                                        <?php echo "<a href='view.php?id=" . $campos['id'] . "'" . "class='bi bi-eye-fill'</a>"; ?>
-                                        <?php echo "<a href='processa/delete.php?id=" . $campos['id'] . "' data-confirm='Tem certeza que deseja excluir permanentemente esse registro?'" . " class='bi bi-trash-fill' </a>"; ?>
-                                    </td>
+                                    $id = $campos['id']; ?>
+                                    <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $campos['id'] ?>'">
+                                        <td><?= $campos['equipamento']; ?></td>
+                                        <td><?= $campos['tamanho']; ?></td>
+                                        <td><?= $campos['fabricante']; ?></td>
                                     </tr>
-                                <?php } ?>
+                                <?php } ?> 
                             </tbody>
                         </table>
                         <!-- End Table with stripped rows -->

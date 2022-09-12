@@ -26,7 +26,7 @@ require "sql.php"
                                 <div class="col-4">
                                     <div class="card">
                                         <!-- Basic Modal -->
-                                        <button style="margin-top: 15px" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal">
+                                        <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
                                             Novo usuário
                                         </button>
                                     </div>
@@ -86,7 +86,7 @@ require "sql.php"
                                                         <hr class="sidebar-divider">
 
                                                         <div class="text-center">
-                                                            <input id="btnSalvar" name="btnSalvar" type="button" value="Salvar" class="btn btn-primary"></input>
+                                                            <input id="btnSalvar" name="btnSalvar" type="button" value="Salvar" class="btn btn-danger"></input>
                                                             <a href="/portal/usuarios/index.php"> <input type="button" value="Voltar" class="btn btn-secondary"></input></a>
                                                         </div>
 
@@ -104,7 +104,7 @@ require "sql.php"
                         <p>Listagem usuários</p>
 
                         <!-- Table with stripped rows -->
-                        <table class="table datatable">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th style="text-align: center;" scope="col">Nome</th>

@@ -100,7 +100,7 @@ require "sql.php";
                         <p>Listagem usuários</p>
 
                         <!-- Table with stripped rows -->
-                        <table class="table datatable">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">Nome</th>

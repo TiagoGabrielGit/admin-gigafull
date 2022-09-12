@@ -1,17 +1,24 @@
 <?php
-require "../../includes/menu.php";
-require "../../conexoes/conexao.php";
+require "../../../includes/menu.php";
+require "../../../conexoes/conexao.php";
 ?>
+
+<style>
+    #tabelaLista:hover {
+        cursor: pointer;
+        background-color: #E0FFFF;
+    }
+</style>
 
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Tipos de Equipamentos</h1>
+        <h1>Fabricantes</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="index.php">Inicio</a></li>
                 <li class="breadcrumb-item">Cadastros</li>
-                <li class="breadcrumb-item active">Tipos de Equipamentos</li>
+                <li class="breadcrumb-item active">Fabricantes</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
@@ -28,14 +35,14 @@ require "../../conexoes/conexao.php";
                         <div class="container">
                             <div class="row">
                                 <div class="col-8">
-                                    <h5 class="card-title">Cadastro de tipos de equipamentos</h5>
+                                    <h5 class="card-title">Cadastro fabricantes</h5>
                                 </div>
                                 <div class="col-2"></div>
                                 <div class="col-2">
                                     <div class="card">
                                         <!-- Basic Modal -->
                                         <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
-                                            Novo tipo
+                                            Novo fabricante
                                         </button>
                                     </div>
                                 </div>
@@ -43,21 +50,21 @@ require "../../conexoes/conexao.php";
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">Novo tipo de equipamento</h5>
+                                                <h5 class="modal-title">Novo fabricante</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="card-body">
                                                     <!-- Vertical Form -->
-                                                    <form method="POST" action="/processa_add/tipoEquipamento.php" class="row g-3">
+                                                    <form method="POST" action="processa/add.php" class="row g-3">
                                                         <div class="col-12">
-                                                            <label for="inputTipo" class="form-label">Tipo</label>
-                                                            <input name="tipo" type="text" class="form-control" id="inputTipo">
+                                                            <label for="inputFabricante" class="form-label">Fabricante</label>
+                                                            <input name="fabricante" type="text" class="form-control" id="inputFabricante">
                                                         </div>
 
 
                                                         <div class="text-center">
-                                                            <button type="submit" class="btn btn-primary">Salvar</button>
+                                                            <button type="submit" class="btn btn-danger">Salvar</button>
                                                             <button type="reset" class="btn btn-secondary">Limpar</button>
                                                         </div>
                                                     </form><!-- Vertical Form -->
@@ -71,42 +78,26 @@ require "../../conexoes/conexao.php";
 
                         </div>
 
-                        <p>Listagem tipo de equipamentos</p>
+                        <p>Listagem fabricantes</p>
 
                         <!-- Table with stripped rows -->
-                        <table class="table datatable">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th scope="col">Tipo</th>
-                                    <th style="text-align: center;" scope="col">Visualizar</th>
-                                    <th style="text-align: center;" scope="col">Excluir</th>
+                                    <th scope="col">Fabricante</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <!-- Preenchendo a tabela com os dados do banco: -->
                                 <?php
-                                $sql = "SELECT * FROM tipoequipamento WHERE deleted = 1 ORDER BY tipo ASC";
+                                $sql = "SELECT * FROM fabricante WHERE deleted = 1 ORDER BY fabricante ASC";
                                 $resultado = mysqli_query($mysqli, $sql) or die("Erro ao retornar dados");
 
                                 // Obtendo os dados por meio de um loop while
                                 while ($campos = $resultado->fetch_array()) {
-                                    $id = $campos['id'];
-                                    echo "<tr>";
-                                ?>
-                                    </td>
-                                    <td><?php echo $campos['tipo']; ?></td>
-                                    <td style="text-align: center;">
-                                        <?php echo "<a href='/view/tipoEquipamento.php?id=" . $campos['id'] . "'" . "class='bi bi-eye-fill'</a>"; ?>
-                                    </td>
-                                    <td style="text-align: center;">
-                                        <?php
-                                        if ($campos['cadastroDefault'] == 1) {
-                                            echo "<a href='#' title='Não é possivel excluir um cadastro default' class='bi bi-file-excel-fill' ></a>";
-                                        } else {
-                                            echo "<a href='/processa_delete/tipoEquipamento.php?id=" . $campos['id'] . "' " . " class='bi bi-trash-fill' </a>"; 
-                                        }
-                                        ?>
-                                    </td>
+                                    $id = $campos['id']; ?>
+                                    <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $campos['id'] ?>'">
+                                        <td><?php echo $campos['fabricante']; ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
@@ -121,7 +112,6 @@ require "../../conexoes/conexao.php";
     </section>
 
 </main><!-- End #main -->
-
 <?php
-require "../../includes/footer.php";
+require "../../../includes/footer.php";
 ?>

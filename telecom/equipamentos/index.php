@@ -433,7 +433,7 @@ LIMIT $limiteBusca
                             }
                         </style>
 
-                        <table class="table datatable">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th style="text-align: center;" scope="col">Hostname</th>
@@ -452,7 +452,7 @@ LIMIT $limiteBusca
                                 while ($campos = $resultado->fetch_array()) {
                                     $id = $campos['id_equipop']; ?>
 
-                                    <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $campos['id_equipop'];?>'">
+                                    <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $campos['id_equipop']; ?>'">
                                         </td>
                                         <td style="text-align: center;"><?php echo $campos['hostname']; ?></td>
                                         <td style="text-align: center;"><?php echo $campos['empresa']; ?> / <?php echo $campos['pop']; ?></td>
@@ -475,8 +475,7 @@ LIMIT $limiteBusca
 <script>
     let inputIP = document.querySelector("#ipaddress");
     inputIP.addEventListener("keydown", (e) => {
-        if (e.key >= "0" && e.key <= "9" || e.key == "." || e.key == "Backspace" || e.key == "CTRL" || e.key == "v" || e.key == "Delete"|| e.key == "V" || e.key == "A"|| e.key == "a"|| e.key == "C"|| e.key == "c") {
-        } else {
+        if (e.key >= "0" && e.key <= "9" || e.key == "." || e.key == "Backspace" || e.key == "CTRL" || e.key == "v" || e.key == "Delete" || e.key == "V" || e.key == "A" || e.key == "a" || e.key == "C" || e.key == "c") {} else {
             e.preventDefault();
         }
     });
@@ -485,13 +484,13 @@ LIMIT $limiteBusca
 <script>
     let inputIPPesquisa = document.querySelector("#ipaddressPesquisa");
     inputIPPesquisa.addEventListener("keydown", function(e) {
-        if (e.key >= "0" && e.key <= "9" || e.key == "." || e.key == "Backspace" || e.key == "CTRL" || e.key == "v" || e.key == "Delete"|| e.key == "V" || e.key == "A"|| e.key == "a"|| e.key == "C"|| e.key == "c") {
+        if (e.key >= "0" && e.key <= "9" || e.key == "." || e.key == "Backspace" || e.key == "CTRL" || e.key == "v" || e.key == "Delete" || e.key == "V" || e.key == "A" || e.key == "a" || e.key == "C" || e.key == "c") {
 
         } else {
             e.preventDefault();
         }
     });
-</script> 
+</script>
 
 <?php
 require "../../scripts/equipamentosPop.php";

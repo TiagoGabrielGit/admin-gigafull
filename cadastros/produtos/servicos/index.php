@@ -2,6 +2,12 @@
 require "../../../includes/menu.php";
 ?>
 
+<style>
+    #tabelaLista:hover {
+        cursor: pointer;
+        background-color: #E0FFFF;
+    }
+</style>
 
 <main id="main" class="main">
 
@@ -31,28 +37,41 @@ require "../../../includes/menu.php";
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Position</th>
-                                            <th scope="col">Age</th>
-                                            <th scope="col">Start Date</th>
+                                            <th scope="col">Código Serviço</th>
+                                            <th scope="col">Descrição</th>
+                                            <th scope="col">Serviço</th>
+                                            <th scope="col">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Brandon Jacob</td>
-                                            <td>Designer</td>
-                                            <td>28</td>
-                                            <td>2016-05-25</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>Bridie Kessler</td>
-                                            <td>Developer</td>
-                                            <td>35</td>
-                                            <td>2014-12-05</td>
-                                        </tr>
+
+                                        <?php
+                                        $sql_view_servicos =
+                                            "SELECT
+                                                s.id as idServico,
+                                                s.descricao as descricao,
+                                                CASE
+                                                    WHEN s.servico = '1' THEN 'Prestação de Serviço'
+                                                END as servico,
+                                                CASE
+                                                    WHEN s.active = '1' THEN 'Ativo'
+                                                    WHEN s.active = '0' THEN 'Inativo'
+                                                END as statusServico
+                                            FROM
+                                                servicos as s";
+
+                                        $resultado_sql_servicos = mysqli_query($mysqli, $sql_view_servicos);
+                                        while ($campos_servico = $resultado_sql_servicos->fetch_array()) {
+                                            $idServico = $campos_servico['idServico']; ?>
+
+                                            <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $idServico ?>'">
+                                                <th scope="row"><?= $idServico ?></th>
+                                                <td><?= $campos_servico['descricao']; ?></td>
+                                                <td><?= $campos_servico['servico']; ?></td>
+                                                <td><?= $campos_servico['statusServico']; ?></td>
+                                            </tr>
+                                        <?php } ?>
+
                                     </tbody>
                                 </table>
                                 <!-- End Table with stripped rows -->
@@ -69,7 +88,7 @@ require "../../../includes/menu.php";
 
 
 <?php
-require "script.php";
 require "modalNovoServico.php";
+require "script.php";
 require "../../../includes/footer.php";
 ?>

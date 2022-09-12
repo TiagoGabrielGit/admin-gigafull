@@ -5,7 +5,12 @@ require '../conexoes/sql.php';
 require '../includes/remove_setas_number.php';
 ?>
 
-
+<style>
+    #tabelaLista:hover {
+        cursor: pointer;
+        background-color: #E0FFFF;
+    }
+</style>
 
 <main id="main" class="main">
 
@@ -22,8 +27,8 @@ require '../includes/remove_setas_number.php';
                                 <div class="col-8">
                                     <h5 class="card-title">Cadastro de pessoas</h5>
                                 </div>
-                                <div  class="col-2"></div>
-                                <div  class="col-2">
+                                <div class="col-2"></div>
+                                <div class="col-2">
                                     <div class="card">
                                         <!-- Basic Modal -->
                                         <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
@@ -162,15 +167,14 @@ require '../includes/remove_setas_number.php';
 
                         <p>Listagem de pessoas</p>
 
-                        <!-- Table with stripped rows -->
-                        <table class="table datatable">
+
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">Código</th>
                                     <th scope="col">Nome</th>
                                     <th scope="col">E-mail</th>
                                     <th scope="col">CPF</th>
-                                    <th scope="col">Opções</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -179,18 +183,12 @@ require '../includes/remove_setas_number.php';
                                 $resultado = mysqli_query($mysqli, $sql_pessoas) or die("Erro ao retornar dados");
                                 // Obtendo os dados por meio de um loop while
                                 while ($campos = $resultado->fetch_array()) {
-                                    $id = $campos['id'];
-                                    echo "<tr>";
-                                ?>
-                                    </td>
-                                    <td><?php echo $campos['id']; ?></td>
-                                    <td><?php echo $campos['nome']; ?></td>
-                                    <td><?php echo $campos['email']; ?></td>
-                                    <td><?php echo $campos['cpf']; ?></td>
-                                    <td>
-                                    <?php echo "<a href='/pessoas/view.php?id=" . $campos['id'] . "'" . "class='bi bi-eye-fill'</a>"; ?>
-                                           <?php echo "<a href='/pessoas/processa/delete.php?id=" . $campos['id'] . "' data-confirm='Tem certeza que deseja excluir permanentemente esse registro?'" . " class='bi bi-trash-fill' </a>"; ?>
-                                    </td>
+                                    $id = $campos['id']; ?>
+                                    <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $campos['id'] ?>'">
+                                        <td><?= $campos['id']; ?></td>
+                                        <td><?= $campos['nome']; ?></td>
+                                        <td><?= $campos['email']; ?></td>
+                                        <td><?= $campos['cpf']; ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>

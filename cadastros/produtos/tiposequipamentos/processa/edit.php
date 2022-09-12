@@ -1,6 +1,5 @@
 <?php
-require "../protect.php";
-require "../conexoes/conexao.php";
+require "../../../../conexoes/conexao.php";
 ?>
 
 
@@ -11,20 +10,20 @@ require "../conexoes/conexao.php";
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Fabricantes - Network Admin</title>
-    <link href="../alerts/css/bootstrap.min.css" rel="stylesheet">
+    <title>Tipo Equipamentos - Network Admin</title>
+    <link href="../../../../alerts/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="../alerts/js/bootstrap.min.js"></script>
+    <script src="../../../../alerts/js/bootstrap.min.js"></script>
 </head>
 
 <body>
     <div class="container theme-showcase" role="main">
         <?php
         $id = $_POST['id'];
-        $fabricante = $_POST['fabricante'];
+        $tipo = $_POST['tipo'];
 
-        $SQL = "UPDATE fabricante SET fabricante='$fabricante', modificado=NOW() WHERE id='$id'";
-        $resultado = mysqli_query($mysqli, $SQL);
+        $result_tipos = "UPDATE tipoequipamento SET tipo='$tipo', modificado=NOW() WHERE id='$id'";
+        $resultado_tipos = mysqli_query($mysqli, $result_tipos);
 
         if (mysqli_affected_rows($mysqli) > 0) { ?>
             <!-- Modal -->
@@ -35,10 +34,10 @@ require "../conexoes/conexao.php";
                             <h4 class="modal-title" id="myModalLabel">Editado com Sucesso!</h4>
                         </div>
                         <div class="modal-body">
-                            <?php echo $fabricante; ?>
+                            <?php echo $tipo; ?>
                         </div>
                         <div class="modal-footer">
-                            <a href="../fabricantes.php"><button type="button" class="btn btn-success">Ok</button></a>
+                            <a href="/cadastros/produtos/tiposequipamentos/index.php"><button type="button" class="btn btn-success">Ok</button></a>
                         </div>
                     </div>
                 </div>
@@ -58,10 +57,10 @@ require "../conexoes/conexao.php";
                             <h4 class="modal-title" id="myModalLabel">Erro ao editar!</h4>
                         </div>
                         <div class="modal-body">
-                            <?php echo $fabricante; ?>
+                            <?php echo $tipo; ?>
                         </div>
                         <div class="modal-footer">
-                            <a href="../fabricantes.php'"><button type="button" class="btn btn-danger">Ok</button></a>
+                            <a href="/cadastros/produtos/tiposequipamentos/index.php"><button type="button" class="btn btn-danger">Ok</button></a>
                         </div>
                     </div>
                 </div>

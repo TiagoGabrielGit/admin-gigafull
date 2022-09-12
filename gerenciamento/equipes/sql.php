@@ -10,6 +10,8 @@ CASE
 END active
 FROM
 equipe as e
+ORDER BY
+e.equipe ASC
 ";
 
 ?>

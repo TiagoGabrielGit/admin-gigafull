@@ -217,7 +217,7 @@ $row_endereco_atual = mysqli_fetch_array($resultado_endereco);
                             <hr class="sidebar-divider">
 
                             <div class="text-center">
-                                <button name="salvar" type="submit" class="btn btn-primary">Salvar</button>
+                                <button name="salvar" type="submit" class="btn btn-danger">Salvar</button>
                                 <input type="button" value="Voltar" onClick="history.go(-1)" class="btn btn-secondary">
                             </div>
                         </form><!-- Vertical Form -->

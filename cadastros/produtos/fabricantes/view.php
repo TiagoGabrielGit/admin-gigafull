@@ -1,18 +1,19 @@
 <?php
-require "../includes/menu.php";
-require "../conexoes/conexao.php";
+require "../../../includes/menu.php";
+require "../../../conexoes/conexao.php";
 
 $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
-$result_tipo =
+$SQL =
     "SELECT * 
-FROM tipoequipamento
- WHERE id = '$id'
- ";
+FROM fabricante 
+WHERE id = '$id'
+";
 
-$resultado_tipo = mysqli_query($mysqli, $result_tipo);
-$row_tipo = mysqli_fetch_assoc($resultado_tipo);
+$resultado = mysqli_query($mysqli, $SQL);
+$row = mysqli_fetch_assoc($resultado);
 ?>
+
 
 <main id="main" class="main">
 
@@ -21,42 +22,42 @@ $row_tipo = mysqli_fetch_assoc($resultado_tipo);
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title"><?php echo $row_tipo['tipo']; ?> </h5>
+                        <h5 class="card-title"><?php echo $row['fabricante']; ?> </h5>
 
                         <!-- Multi Columns Form -->
-                        <form method="POST" action="/processa_edit/tipoEquipamento.php" class="row g-3">
-                            <input type="hidden" name="id" value="<?php echo $row_tipo['id']; ?>">
+                        <form method="POST" action="processa/edit.php" class="row g-3">
+                            <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
 
                             <div class="row mb-3">
                                 <label for="codigo" class="col-sm-12 col-form-label">Código</label>
                                 <div class="col-sm-2">
-                                    <input name="codigo" type="text" class="form-control" id="codigo" value="<?php echo $row_tipo['id']; ?>" disabled>
+                                    <input name="codigo" type="text" class="form-control" id="codigo" value="<?php echo $row['id']; ?>" disabled>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
-                                <label for="inputTipo" class="col-sm-12 col-form-label">Tipo</label>
+                                <label for="inputFabricante" class="col-sm-12 col-form-label">Fabricante</label>
                                 <div class="col-sm-4">
-                                    <input name="tipo" type="text" class="form-control" id="inputTipo" value="<?php echo $row_tipo['tipo']; ?>">
+                                    <input name="fabricante" type="text" class="form-control" id="inputFabricante" value="<?php echo $row['fabricante']; ?>">
                                 </div>
                             </div>
 
                             <div class="col-md-4">
                                 <label for="dateCreated" class="form-label">Data criação</label>
                                 <div class="col-sm-6">
-                                    <input name="dateCreated" type="text" class="form-control" id="dateCreated" value="<?php echo $row_tipo['criado']; ?>" disabled>
+                                    <input name="dateCreated" type="text" class="form-control" id="dateCreated" value="<?php echo $row['criado']; ?>" disabled>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <label for="dateModified" class="form-label">última modificação</label>
                                 <div class="col-sm-6">
-                                    <input name="dateModified" type="text" class="form-control" id="dateModified" value="<?php echo $row_tipo['modificado']; ?>" disabled>
+                                    <input name="dateModified" type="text" class="form-control" id="dateModified" value="<?php echo $row['modificado']; ?>" disabled>
                                 </div>
                             </div>
 
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Salvar</button>
+                                <button type="submit" class="btn btn-danger">Salvar</button>
                                 <input type="button" value="Voltar" onClick="history.go(-1)" class="btn btn-secondary">
                             </div>
                         </form><!-- End Multi Columns Form -->
@@ -71,5 +72,5 @@ $row_tipo = mysqli_fetch_assoc($resultado_tipo);
 </main><!-- End #main -->
 
 <?php
-require "../includes/footer.php";
+require "../../../includes/footer.php";
 ?>

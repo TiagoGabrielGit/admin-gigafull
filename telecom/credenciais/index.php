@@ -24,7 +24,7 @@ require "sql.php";
 
 ?>
 
-<main id="main" class="main"> 
+<main id="main" class="main">
 
     <div class="pagetitle">
         <h1>Credenciais</h1>
@@ -279,7 +279,7 @@ require "sql.php";
                             }
                         </style>
 
-                        <table class="table datatable">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th style="text-align: center;" scope="col">Empresa</th>

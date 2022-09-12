@@ -65,7 +65,7 @@ require "sql.php";
 
                         <hr class="sidebar-divider">
 
-                        <table class="table datatable">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th style="text-align: center;" scope="col">Tipo de chamado</th>

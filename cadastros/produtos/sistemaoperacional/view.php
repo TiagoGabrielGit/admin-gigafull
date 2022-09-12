@@ -57,8 +57,8 @@ $row = mysqli_fetch_assoc($resultado);
                             </div>
 
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Salvar</button>
-                                <button type="reset" class="btn btn-secondary">Limpar</button>
+                                <button type="submit" class="btn btn-danger">Salvar</button>
+                                <a href="/cadastros/produtos/sistemaoperacional/index.php"><input type="button" value="Voltar" class="btn btn-secondary"></a>
                             </div>
                         </form><!-- End Multi Columns Form -->
 

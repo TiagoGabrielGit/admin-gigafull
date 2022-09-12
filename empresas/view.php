@@ -117,7 +117,7 @@ $row_endereco_atual = mysqli_fetch_assoc($resultado_endereco_atual);
                         <h5 class="card-title"><?php echo $row['razaoSocial']; ?> <br> <?php echo $row['fantasia']; ?></h5>
 
                         <!-- Multi Columns Form -->
-                        <form method="POST" action="/processa_edit/empresas.php" class="row g-3">
+                        <form method="POST" action="processa/edit.php" class="row g-3">
                             <input type="hidden" name="id" value="<?php echo $row['id_empresa']; ?>">
 
                             <hr class="sidebar-divider">
@@ -264,8 +264,8 @@ $row_endereco_atual = mysqli_fetch_assoc($resultado_endereco_atual);
                             </div>
 
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary">Salvar</button>
-                                <button type="reset" class="btn btn-secondary">Limpar</button>
+                                <button type="submit" class="btn btn-danger">Salvar</button>
+                                <input type="button" value="Voltar" onClick="history.go(-1)" class="btn btn-secondary">
                             </div>
                         </form><!-- End Multi Columns Form -->
 

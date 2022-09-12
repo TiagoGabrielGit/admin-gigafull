@@ -1,6 +1,5 @@
 <?php
-require "../protect.php";
-require "../conexoes/conexao.php";
+require "../../../../conexoes/conexao.php";
 ?>
 
 
@@ -12,9 +11,9 @@ require "../conexoes/conexao.php";
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Fabricantes - Network Admin</title>
-    <link href="../alerts/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../../alerts/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="../alerts/js/bootstrap.min.js"></script>
+    <script src="../../../../alerts/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -36,7 +35,7 @@ require "../conexoes/conexao.php";
                             <?php echo $fabricante; ?>
                         </div>
                         <div class="modal-footer">
-                            <a href="/cadastros/produtos/fabricantes.php"><button type="button" class="btn btn-success">Ok</button></a>
+                            <a href="/cadastros/produtos/fabricantes/fabricantes.php"><button type="button" class="btn btn-success">Ok</button></a>
                         </div>
                     </div>
                 </div>

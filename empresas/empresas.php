@@ -5,6 +5,12 @@ require '../conexoes/sql.php';
 require '../includes/remove_setas_number.php';
 ?>
 
+<style>
+    #tabelaLista:hover {
+        cursor: pointer;
+        background-color: #E0FFFF;
+    }
+</style>
 
 
 <main id="main" class="main">
@@ -22,7 +28,7 @@ require '../includes/remove_setas_number.php';
                                 <div class="col-8">
                                     <h5 class="card-title">Cadastro de empresas</h5>
                                 </div>
-                                <div  class="col-2"></div>
+                                <div class="col-2"></div>
                                 <div class="col-2">
                                     <div class="card">
                                         <!-- Basic Modal -->
@@ -175,13 +181,12 @@ require '../includes/remove_setas_number.php';
                         <p>Listagem de empresas</p>
 
                         <!-- Table with stripped rows -->
-                        <table class="table datatable">
+                        <table class="table table-striped"> 
                             <thead>
                                 <tr>
                                     <th scope="col">Razão Social</th>
                                     <th scope="col">Fantasia</th>
                                     <th scope="col">CNPJ</th>
-                                    <th scope="col">Opções</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -190,17 +195,11 @@ require '../includes/remove_setas_number.php';
                                 $resultado = mysqli_query($mysqli, $sql_empresas) or die("Erro ao retornar dados");
                                 // Obtendo os dados por meio de um loop while
                                 while ($campos = $resultado->fetch_array()) {
-                                    $id = $campos['id'];
-                                    echo "<tr>";
-                                ?>
-                                    </td>
-                                    <td><?php echo $campos['razaoSocial']; ?></td>
-                                    <td><?php echo $campos['fantasia']; ?></td>
-                                    <td><?php echo $campos['cnpj']; ?></td>
-                                    <td>
-                                        <?php echo "<a href='view.php?id=" . $campos['id'] . "'" . "class='bi bi-eye-fill'</a>"; ?>
-                                        <?php echo "<a href='/processa/delete.php?id=" . $campos['id'] . "' data-confirm='Tem certeza que deseja excluir permanentemente esse registro?'" . " class='bi bi-trash-fill' </a>"; ?>
-                                    </td>
+                                    $id = $campos['id']; ?>
+                                    <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $campos['id'] ?>'">
+                                        <td><?= $campos['razaoSocial']; ?></td>
+                                        <td><?= $campos['fantasia']; ?></td>
+                                        <td><?= $campos['cnpj']; ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>

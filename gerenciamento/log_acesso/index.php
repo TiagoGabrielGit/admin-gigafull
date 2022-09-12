@@ -26,7 +26,7 @@ require "sql.php";
                             </div>
                         </div>
 
-                        <table class="table datatable">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">Usuário</th>

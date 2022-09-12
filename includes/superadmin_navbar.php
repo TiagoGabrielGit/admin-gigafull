@@ -73,7 +73,7 @@
             <ul id="Produtos-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
                 <li>
-                    <a href="/cadastros/produtos/fabricantes.php">
+                    <a href="/cadastros/produtos/fabricantes/fabricantes.php">
                         <i class="bi bi-circle"></i><span>Fabricantes</span>
                     </a>
                 </li>
@@ -98,7 +98,7 @@
                 </li>
 
                 <li>
-                    <a href="/cadastros/produtos/tiposEquipamentos.php">
+                    <a href="/cadastros/produtos/tiposequipamentos/index.php">
                         <i class="bi bi-circle"></i><span>Tipos de Equipamentos</span>
                     </a>
                 </li>

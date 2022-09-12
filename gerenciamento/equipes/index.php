@@ -16,8 +16,8 @@ require "sql.php";
                     <div class="card-body">
                         <div class="container">
                             <div class="row">
-                            <div class="col-8">
-                                    <h5  class="card-title">Cadastro de Equipes</h5>
+                                <div class="col-8">
+                                    <h5 class="card-title">Cadastro de Equipes</h5>
                                 </div>
                                 <div class="col-2"></div>
                                 <div class="col-2">
@@ -73,7 +73,7 @@ require "sql.php";
                             }
                         </style>
 
-                        <table class="table datatable">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th style="text-align: left;" scope="col">Equipe</th>

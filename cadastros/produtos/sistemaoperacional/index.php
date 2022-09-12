@@ -3,6 +3,14 @@ require "../../../includes/menu.php";
 require "../../../conexoes/conexao.php";
 require "sql.php"
 ?>
+
+<style>
+    #tabelaLista:hover {
+        cursor: pointer;
+        background-color: #E0FFFF;
+    }
+</style>
+
 <main id="main" class="main">
 
     <div class="pagetitle">
@@ -67,12 +75,10 @@ require "sql.php"
                         <p>Listagem SO</p>
 
                         <!-- Table with stripped rows -->
-                        <table class="table datatable">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">Sistema Operacional</th>
-                                    <th style="text-align: center;" scope="col">Visualizar</th>
-                                    <th style="text-align: center;" scope="col">Excluir</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -82,25 +88,9 @@ require "sql.php"
 
                                 // Obtendo os dados por meio de um loop while
                                 while ($campos = $resultado->fetch_array()) {
-                                    $id = $campos['id'];
-                                    echo "<tr>";
-                                ?>
-                                    </td>
-                                    <td><?php echo $campos['so']; ?></td>
-                                    <td style="text-align: center;">
-                                        <?php echo "<a href='view.php?id=" . $campos['id'] . "'" . "class='bi bi-eye-fill'</a>"; ?>
-
-                                    </td>
-
-                                    <td style="text-align: center;">
-                                        <?php
-                                        if ($campos['cadastroDefault'] == 1) {
-                                            echo "<a href='#' title='Não é possivel excluir um cadastro default' class='bi bi-file-excel-fill' ></a>";
-                                        } else {
-                                            echo "<a href=processa/delete.php?id=" . $campos['id'] . "' title='Excluir cadastro'" . " class='bi bi-trash-fill' </a>";
-                                        }
-                                        ?>
-                                    </td>
+                                    $id = $campos['id']; ?>
+                                    <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $campos['id'] ?>'">
+                                        <td><?= $campos['so']; ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>

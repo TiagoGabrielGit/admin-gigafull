@@ -204,5 +204,6 @@ FROM
     pessoas as pessoa
 WHERE
 pessoa.deleted = 1
-
+ORDER BY
+pessoa.nome ASC
 ";

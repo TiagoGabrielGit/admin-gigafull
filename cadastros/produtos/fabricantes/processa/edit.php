@@ -1,6 +1,5 @@
 <?php
-require "../protect.php";
-require "../conexoes/conexao.php";
+require "../../../../conexoes/conexao.php";
 ?>
 
 
@@ -11,18 +10,20 @@ require "../conexoes/conexao.php";
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tipos de Equipamentos - Network Admin</title>
-    <link href="../alerts/css/bootstrap.min.css" rel="stylesheet">
+    <title>Fabricantes - Network Admin</title>
+    <link href="../../../../alerts/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="../alerts/js/bootstrap.min.js"></script>
+    <script src="../../../../alerts/js/bootstrap.min.js"></script>
 </head>
 
 <body>
     <div class="container theme-showcase" role="main">
         <?php
-        $tipo = $_POST['tipo'];
-        $result_tipos = "INSERT INTO tipoequipamento (tipo, deleted, cadastroDefault, criado) VALUES ('$tipo', '1', '2', NOW())";
-        $resultado_tipos = mysqli_query($mysqli, $result_tipos);
+        $id = $_POST['id'];
+        $fabricante = $_POST['fabricante'];
+
+        $SQL = "UPDATE fabricante SET fabricante='$fabricante', modificado=NOW() WHERE id='$id'";
+        $resultado = mysqli_query($mysqli, $SQL);
 
         if (mysqli_affected_rows($mysqli) > 0) { ?>
             <!-- Modal -->
@@ -30,13 +31,13 @@ require "../conexoes/conexao.php";
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Novo tipo cadastrado com Sucesso!</h4>
+                            <h4 class="modal-title" id="myModalLabel">Editado com Sucesso!</h4>
                         </div>
                         <div class="modal-body">
-                            <?php echo $tipo; ?>
+                            <?php echo $fabricante; ?>
                         </div>
                         <div class="modal-footer">
-                            <a href="/cadastros/produtos/tiposEquipamentos.php"><button type="button" class="btn btn-success">Ok</button></a>
+                            <a href="/cadastros/produtos/fabricantes/fabricantes.php"><button type="button" class="btn btn-success">Ok</button></a>
                         </div>
                     </div>
                 </div>
@@ -53,13 +54,13 @@ require "../conexoes/conexao.php";
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Erro ao cadastrar novo tipo!</h4>
+                            <h4 class="modal-title" id="myModalLabel">Erro ao editar!</h4>
                         </div>
                         <div class="modal-body">
-                            <?php echo $tipo; ?>
+                            <?php echo $fabricante; ?>
                         </div>
                         <div class="modal-footer">
-                            <a href="/cadastros/produtos/tiposEquipamentos.php"><button type="button" class="btn btn-danger">Ok</button></a>
+                            <a href="/cadastros/produtos/fabricantes/fabricantes.php"><button type="button" class="btn btn-danger">Ok</button></a>
                         </div>
                     </div>
                 </div>

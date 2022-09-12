@@ -131,7 +131,7 @@ require "sql.php";
                         <p>Listagem de pop</p>
 
                         <!-- Table with stripped rows -->
-                        <table class="table datatable">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th scope="col">Empresa</th>
