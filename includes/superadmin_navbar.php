@@ -13,9 +13,9 @@
         <li class="nav-heading">CRM</li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/pessoas/pessoas.php">
-                <i class="bi bi-person"></i>
-                <span>Pessoas</span>
+            <a class="nav-link collapsed" href="/contrato/index.php">
+                <i class="bi bi-chevron-contract"></i>
+                <span>Contratos</span>
             </a>
         </li>
 
@@ -23,6 +23,13 @@
             <a class="nav-link collapsed" href="/empresas/empresas.php">
                 <i class="bi bi-person-fill"></i>
                 <span>Empresas</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/pessoas/pessoas.php">
+                <i class="bi bi-person"></i>
+                <span>Pessoas</span>
             </a>
         </li>
 

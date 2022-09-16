@@ -426,14 +426,7 @@ LIMIT $limiteBusca
 
                         <hr class="sidebar-divider">
 
-                        <style>
-                            #tabelaLista:hover {
-                                cursor: pointer;
-                                background-color: #E0FFFF;
-                            }
-                        </style>
-
-                        <table class="table table-striped">
+                        <table class="table table-striped" id="styleTable">
                             <thead>
                                 <tr>
                                     <th style="text-align: center;" scope="col">Hostname</th>
@@ -452,13 +445,12 @@ LIMIT $limiteBusca
                                 while ($campos = $resultado->fetch_array()) {
                                     $id = $campos['id_equipop']; ?>
 
-                                    <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $campos['id_equipop']; ?>'">
-                                        </td>
-                                        <td style="text-align: center;"><?php echo $campos['hostname']; ?></td>
-                                        <td style="text-align: center;"><?php echo $campos['empresa']; ?> / <?php echo $campos['pop']; ?></td>
-                                        <td style="text-align: center;"><?php echo $campos['ipaddress']; ?></td>
-                                        <td style="text-align: center;"><?php echo $campos['equipamento']; ?></td>
-                                        <td style="text-align: center;" style="text-align: center;"><?php echo $campos['statuseqp']; ?></td>
+                                    <tr onclick="location.href='view.php?id=<?= $campos['id_equipop']; ?>'">
+                                        <td><?php echo $campos['hostname']; ?></td>
+                                        <td><?php echo $campos['empresa']; ?> / <?php echo $campos['pop']; ?></td>
+                                        <td><?php echo $campos['ipaddress']; ?></td>
+                                        <td><?php echo $campos['equipamento']; ?></td>
+                                        <td><?php echo $campos['statuseqp']; ?></td>
                                     <?php } ?>
                             </tbody>
                         </table>

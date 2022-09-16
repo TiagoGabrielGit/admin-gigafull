@@ -18,18 +18,49 @@ require "../includes/menu.php";
             <!-- Default Accordion -->
             <div class="accordion" id="accordionExample">
 
+              <!-- Versão 2.7 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading2-7">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2-7" aria-expanded="false" aria-controls="collapse2-7">
+                    Versão 2.7 - 16/09/2022
+                  </button>
+                </h2>
+                <div id="collapse2-7" class="accordion-collapse collapse" aria-labelledby="heading2-7" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <strong>Novas funcionalidades</strong><br>
+
+                    <br><strong>Melhorias</strong><br>
+                    1. Personalização dashboard inicial;<br>
+
+                    <br><strong>Correções de BUG</strong><br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+
+                    <br><strong>Previsto para próximas atualizações</strong><br>
+                    1. Iniciar página de relatórios;<br>
+                    2. Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    3. Correções nos formatos de data e hora;<br>
+                    4. Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    5. Criação de contratos;<br>
+                    6. Chamados agendados; <br>
+                    7. Componentes de equipamentos;<br>
+                    8. Criar perfil personalizado para Consultores;<br>
+                  </div>
+                </div>
+              </div>
+
               <!-- Versão 2.6 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading2-6">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2-6" aria-expanded="false" aria-controls="collapse2-6">
-                    Versão 2.6 - XX/09/2022
+                    Versão 2.6 - 11/09/2022
                   </button>
                 </h2>
                 <div id="collapse2-6" class="accordion-collapse collapse" aria-labelledby="heading2-6" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
                     <strong>Novas funcionalidades</strong><br>
                     1. Cadastro de Serviços;<br>
-                    
+
                     <br><strong>Melhorias</strong><br>
                     1. Melhorias em layout de tabelas;<br>
                     2. Padronização de diretórios;<br>

@@ -168,9 +168,9 @@ require '../includes/remove_setas_number.php';
                         <p>Listagem de pessoas</p>
 
 
-                        <table class="table table-striped">
+                        <table class="table table-striped" id="styleTable">
                             <thead>
-                                <tr>
+                                <tr id="styleth">
                                     <th scope="col">Código</th>
                                     <th scope="col">Nome</th>
                                     <th scope="col">E-mail</th>
@@ -184,7 +184,7 @@ require '../includes/remove_setas_number.php';
                                 // Obtendo os dados por meio de um loop while
                                 while ($campos = $resultado->fetch_array()) {
                                     $id = $campos['id']; ?>
-                                    <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $campos['id'] ?>'">
+                                    <tr onclick="location.href='view.php?id=<?= $campos['id'] ?>'">
                                         <td><?= $campos['id']; ?></td>
                                         <td><?= $campos['nome']; ?></td>
                                         <td><?= $campos['email']; ?></td>

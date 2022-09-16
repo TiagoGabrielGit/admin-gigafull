@@ -5,14 +5,6 @@ require '../conexoes/sql.php';
 require '../includes/remove_setas_number.php';
 ?>
 
-<style>
-    #tabelaLista:hover {
-        cursor: pointer;
-        background-color: #E0FFFF;
-    }
-</style>
-
-
 <main id="main" class="main">
 
     <div class="pagetitle">
@@ -181,7 +173,7 @@ require '../includes/remove_setas_number.php';
                         <p>Listagem de empresas</p>
 
                         <!-- Table with stripped rows -->
-                        <table class="table table-striped"> 
+                        <table class="table table-striped" id="styleTable"> 
                             <thead>
                                 <tr>
                                     <th scope="col">Razão Social</th>
@@ -196,7 +188,7 @@ require '../includes/remove_setas_number.php';
                                 // Obtendo os dados por meio de um loop while
                                 while ($campos = $resultado->fetch_array()) {
                                     $id = $campos['id']; ?>
-                                    <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $campos['id'] ?>'">
+                                    <tr onclick="location.href='view.php?id=<?= $campos['id'] ?>'">
                                         <td><?= $campos['razaoSocial']; ?></td>
                                         <td><?= $campos['fantasia']; ?></td>
                                         <td><?= $campos['cnpj']; ?></td>
@@ -204,7 +196,7 @@ require '../includes/remove_setas_number.php';
                                 <?php } ?>
                             </tbody>
                         </table>
-                        <!-- End Table with stripped rows -->
+                        <!-- End Table with stripped rows --> 
                     </div>
                 </div>
 

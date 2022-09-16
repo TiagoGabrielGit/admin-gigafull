@@ -40,7 +40,7 @@ while ($campos_portal = $resultado_portal->fetch_array()) {
 
     if ($campos_portal['idPrivacidade'] == '1') { ?>
         <!--Apresenta se a privacidade for publico-->
-        <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $id ?>&tipo=Portal'">
+        <tr onclick="location.href='view.php?id=<?= $id ?>&tipo=Portal'">
             </td>
             <td style="text-align: center;"><?= $campos_portal['emp_fant'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_tipo'] ?></td>
@@ -50,7 +50,7 @@ while ($campos_portal = $resultado_portal->fetch_array()) {
         </tr>
     <?php } else if ($campos_portal['usuarioCriador'] == $idSessao) { ?>
         <!--Apresenta se o for do usuario criador-->
-        <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $id ?>&tipo=Portal'">
+        <tr onclick="location.href='view.php?id=<?= $id ?>&tipo=Portal'">
             </td>
             <td style="text-align: center;"><?= $campos_portal['emp_fant'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_tipo'] ?></td>
@@ -60,7 +60,7 @@ while ($campos_portal = $resultado_portal->fetch_array()) {
         </tr>
     <?php } else if ($campos_portal['idPrivacidade'] == '3' && $campos_portal['usuarioCriador'] == $idSessao) {  ?>
         <!--Apresenta se a privacidade for somente eu e o usuario criador é o usuario logado-->
-        <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $id ?>&tipo=Portal'">
+        <tr onclick="location.href='view.php?id=<?= $id ?>&tipo=Portal'">
             </td>
             <td style="text-align: center;"><?= $campos_portal['emp_fant'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_tipo'] ?></td>
@@ -102,7 +102,7 @@ while ($campos_portal = $resultado_portal->fetch_array()) {
 
         if (empty($checkPermiUsuario) && empty($checkPermiEquipe)) {//Apresenta se a privacidade for privada e der match em alguma equipe do usuario
         } else { ?>
-            <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $id ?>&tipo=Portal'">
+            <tr onclick="location.href='view.php?id=<?= $id ?>&tipo=Portal'">
                 </td>
                 <td style="text-align: center;"><?= $campos_portal['emp_fant'] ?></td>
                 <td style="text-align: center;"><?= $campos_portal['cred_tipo'] ?></td>

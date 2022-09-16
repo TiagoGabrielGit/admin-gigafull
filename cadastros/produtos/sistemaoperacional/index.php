@@ -4,13 +4,6 @@ require "../../../conexoes/conexao.php";
 require "sql.php"
 ?>
 
-<style>
-    #tabelaLista:hover {
-        cursor: pointer;
-        background-color: #E0FFFF;
-    }
-</style>
-
 <main id="main" class="main">
 
     <div class="pagetitle">
@@ -20,12 +13,8 @@ require "sql.php"
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
-
                 <div class="card">
-
                     <div class="card-body">
-
-
                         <div class="container">
                             <div class="row">
                                 <div class="col-8">
@@ -75,7 +64,7 @@ require "sql.php"
                         <p>Listagem SO</p>
 
                         <!-- Table with stripped rows -->
-                        <table class="table table-striped">
+                        <table class="table table-striped" id="styleTable">
                             <thead>
                                 <tr>
                                     <th scope="col">Sistema Operacional</th>
@@ -89,7 +78,7 @@ require "sql.php"
                                 // Obtendo os dados por meio de um loop while
                                 while ($campos = $resultado->fetch_array()) {
                                     $id = $campos['id']; ?>
-                                    <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $campos['id'] ?>'">
+                                    <tr onclick="location.href='view.php?id=<?= $campos['id'] ?>'">
                                         <td><?= $campos['so']; ?></td>
                                     </tr>
                                 <?php } ?>

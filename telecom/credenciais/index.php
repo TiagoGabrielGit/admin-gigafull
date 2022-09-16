@@ -272,14 +272,7 @@ require "sql.php";
 
                         <hr class="sidebar-divider">
 
-                        <style>
-                            #tabelaLista:hover {
-                                cursor: pointer;
-                                background-color: #E0FFFF;
-                            }
-                        </style>
-
-                        <table class="table table-striped">
+                        <table class="table table-striped" id="styleTable">
                             <thead>
                                 <tr>
                                     <th style="text-align: center;" scope="col">Empresa</th>

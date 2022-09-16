@@ -2,13 +2,6 @@
 require "../../../includes/menu.php";
 ?>
 
-<style>
-    #tabelaLista:hover {
-        cursor: pointer;
-        background-color: #E0FFFF;
-    }
-</style>
-
 <main id="main" class="main">
 
     <div class="pagetitle">
@@ -29,12 +22,14 @@ require "../../../includes/menu.php";
                                 <div class="col-2"></div>
 
                                 <div class="col-2">
-                                    <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalNovoServico">
-                                        Novo Serviço
-                                    </button>
+                                    <div class="card">
+                                        <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalNovoServico">
+                                            Novo Serviço
+                                        </button>
+                                    </div>
                                 </div>
                                 <!-- Table with stripped rows -->
-                                <table class="table table-striped">
+                                <table class="table table-striped" id="styleTable">
                                     <thead>
                                         <tr>
                                             <th scope="col">Código Serviço</th>
@@ -64,8 +59,8 @@ require "../../../includes/menu.php";
                                         while ($campos_servico = $resultado_sql_servicos->fetch_array()) {
                                             $idServico = $campos_servico['idServico']; ?>
 
-                                            <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $idServico ?>'">
-                                                <th scope="row"><?= $idServico ?></th>
+                                            <tr onclick="location.href='view.php?id=<?= $idServico ?>'">
+                                                <td><?= $idServico ?></th>
                                                 <td><?= $campos_servico['descricao']; ?></td>
                                                 <td><?= $campos_servico['servico']; ?></td>
                                                 <td><?= $campos_servico['statusServico']; ?></td>

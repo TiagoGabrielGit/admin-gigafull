@@ -131,7 +131,7 @@ require "sql.php";
                         <p>Listagem de pop</p>
 
                         <!-- Table with stripped rows -->
-                        <table class="table table-striped">
+                        <table class="table table-striped" id="styleTable">
                             <thead>
                                 <tr>
                                     <th scope="col">Empresa</th>
@@ -148,14 +148,12 @@ require "sql.php";
 
                                 // Obtendo os dados por meio de um loop while
                                 while ($campos = $resultado->fetch_array()) {
-                                    $id = $campos['id'];
-                                    echo "<tr>";
-                                ?>
-                                    </td>
-                                    <td><?php echo $campos['empresa']; ?></td>
-                                    <td><?php echo $campos['pop']; ?></td>
-                                    <td><?php echo $campos['apelidoPop']; ?></td>
-                                    <td><?php echo $campos['cidade']; ?></td>
+                                    $id = $campos['id'];?>
+                                <tr>
+                                    <td><?= $campos['empresa']; ?></td>
+                                    <td><?= $campos['pop']; ?></td>
+                                    <td><?= $campos['apelidoPop']; ?></td>
+                                    <td><?= $campos['cidade']; ?></td>
                                     <td style="text-align: center;">
                                         <a href="view.php?id=<?= $campos['id']; ?>" type="button" title="Ver mais" class="bi bi-eye-fill"></a>
                                         <a href="rack.php?id=<?= $campos['id']; ?>&pop=<?=$campos['pop']?>" type="button" title="Racks" class="bi bi-menu-button-wide"></a>
