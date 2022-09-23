@@ -60,46 +60,58 @@ if ($chamado['in_execution'] == 1) {
                 <div class="card">
                     <div class="card-body">
                         <div class="container">
-                            <div class="row justify-content-between <?= $classeColor ?>">
-                                <div class="col-5">
+                            <div class="justify-content-between <?= $classeColor ?>">
 
-                                    <?php
-                                    $calc_tempo_total =
-                                        "SELECT SUM(seconds_worked) as secondsTotal
+                                <div class="row">
+                                    <div class="col-10">
+                                        <h5 class="card-title">
+                                            Chamado <?= $id_chamado ?> - <?= $chamado['tipo']; ?> - <?= $chamado['assunto']; ?>
+                                        </h5>
+                                    </div>
+
+                                    <div class="col-2">
+                                        <?php
+                                        if ($pessoaID['pessoaID'] != $chamado['id_atendente'] && $chamado['status'] != "Fechado") { ?>
+                                            <a href="processa/apropriar.php?id=<?= $id_chamado  ?>&pessoa=<?= $pessoaID['pessoaID'] ?> "><button style="margin-top: 15px" class="btn btn-danger">Apropriar</button></a>
+                                        <?php } else if ($pessoaID['pessoaID'] == $chamado['id_atendente'] && $chamado['in_execution'] == '1' && $chamado['in_execution_atd_id'] == $pessoaID['pessoaID']) { ?>
+                                            <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
+                                                Inserir um relato
+                                            </button>
+                                        <?php } else if ($pessoaID['pessoaID'] == $chamado['id_atendente'] && $chamado['in_execution'] == '0' && $chamado['status'] != "Fechado") { ?>
+                                            <a href="processa/executar.php?id=<?= $id_chamado ?>&pessoa=<?= $pessoaID['pessoaID'] ?> "><button style="margin-top: 15px" class="btn btn-success">Executar</button></a>
+                                        <?php } ?>
+                                    </div>
+
+                                </div>
+                                <div class="row g-2">
+                                    <div class="col">
+                                        <?php
+                                        $calc_tempo_total =
+                                            "SELECT SUM(seconds_worked) as secondsTotal
                                         from chamado_relato
                                         where chamado_id = $id_chamado";
 
-                                    $seconds_total = mysqli_query($mysqli, $calc_tempo_total);
-                                    $res_second = $seconds_total->fetch_array();
-                                    ?>
+                                        $seconds_total = mysqli_query($mysqli, $calc_tempo_total);
+                                        $res_second = $seconds_total->fetch_array();
+                                        ?>
 
-                                    <h5 class="card-title">Tipo de atendimento: <?= $chamado['tipo']; ?> </h5>
-                                    <b>Empresa:</b> <?= $chamado['empresa']; ?> <br>
-                                    <b>Solicitante:</b> <?= $solicitante['solicitante']; ?><br>
-                                    <b>Atendente:</b> <?= $atendente ?><br><br>
-                                    <b>Tempo total de atendimento:</b> <?= gmdate("H:i:s", $res_second['secondsTotal']); ?> <br>
+                                        <b>Empresa:</b> <?= $chamado['empresa']; ?> <br>
+                                        <b>Solicitante:</b> <?= $solicitante['solicitante']; ?><br>
+                                        <b>Atendente:</b> <?= $atendente ?><br>
+                                        <b>Tempo total de atendimento:</b> <?= gmdate("H:i:s", $res_second['secondsTotal']); ?> <br>
+                                    </div>
+
+                                    <div class="col">
+                                        <b>Data abertura: </b><?= $chamado['abertura']; ?> <br>
+                                        <b>Data fechamento: </b><?= $chamado['fechado']; ?> <br>
+                                        <b>Status: </b><?= $chamado['status']; ?> <br><br>
+                                    </div>
                                 </div>
 
-                                <div class="col-5">
-                                    <h5 class="card-title"></h5><br>
-                                    <b>Data abertura: </b><?= $chamado['abertura']; ?> <br>
-                                    <b>Data fechamento: </b><?= $chamado['fechado']; ?> <br>
-                                    <b>Status: </b><?= $chamado['status']; ?> <br><br>
 
-                                </div>
-
-                                <div class="col-2">
-                                    <?php
-                                    if ($pessoaID['pessoaID'] != $chamado['id_atendente'] && $chamado['status'] != "Fechado") { ?>
-                                        <a href="processa/apropriar.php?id=<?= $id_chamado  ?>&pessoa=<?= $pessoaID['pessoaID'] ?> "><button style="margin-top: 15px" class="btn btn-danger">Apropriar</button></a>
-                                    <?php } else if ($pessoaID['pessoaID'] == $chamado['id_atendente'] && $chamado['in_execution'] == '1' && $chamado['in_execution_atd_id'] == $pessoaID['pessoaID']) { ?>
-                                        <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
-                                            Inserir um relato
-                                        </button>
-                                    <?php } else if ($pessoaID['pessoaID'] == $chamado['id_atendente'] && $chamado['in_execution'] == '0' && $chamado['status'] != "Fechado") { ?>
-                                        <a href="processa/executar.php?id=<?= $id_chamado ?>&pessoa=<?= $pessoaID['pessoaID'] ?> "><button style="margin-top: 15px" class="btn btn-success">Executar</button></a>
-                                    <?php } ?>
-
+                                <div class="col-8">
+                                    <br><b>Descrição:</b>
+                                    <?= $chamado['relato_inicial']; ?>
                                 </div>
 
                                 <div class="modal fade" id="basicModal" tabindex="-1">
@@ -159,12 +171,9 @@ if ($chamado['in_execution'] == 1) {
                         <hr class="sidebar-divider">
 
                         <div class="accordion" id="accordionFlushExample">
-
                             <?php
                             $resultado_relatos = mysqli_query($mysqli, $sql_relatos)  or die("Erro ao retornar dados");
-
                             $cont = 1;
-
                             while ($campos = $resultado_relatos->fetch_array()) {
                                 $id_relato = $campos['id_relato'];
                                 $tempoAtendimento = gmdate("H:i:s", $campos['seconds_worked']);

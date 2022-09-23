@@ -16,6 +16,7 @@ $lista_chamados =
     "SELECT
 ch.id as id_chamado,
 ch.assuntoChamado as assunto,
+ch.relato_inicial as relato_inicial,
 ch.atendente_id as id_atendente,
 ch.data_abertura as dataAbertura,
 ch.in_execution as inExecution,
@@ -66,6 +67,11 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
 ?>
 
 <style>
+    .accordion-button:not(.collapsed) {
+        color: #012970;
+        background-color: #e6e6e6;
+    }
+
     #closed:hover {
         cursor: pointer;
         background-color: #a9a9a9;
@@ -92,6 +98,11 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
 
     .inExecution {
         background-color: #a5fba5;
+        border-color: black;
+    }
+
+    .colorAccordion {
+        background-color: #ffffff;
         border-color: black;
     }
 </style>
@@ -277,6 +288,7 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                     $Color = "open";
                                 }
 
+
                                 $calc_tempo_total =
                                     "SELECT SUM(seconds_worked) as secondsTotal
                                 from chamado_relato
@@ -294,20 +306,18 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                         </button>
                                     </h2>
                                     <div id="flush-collapse<?= $cont ?>" class="accordion-collapse collapse" aria-labelledby="flush-heading<?= $cont ?>" data-bs-parent="#accordionFlushExample">
-                                        <div class="accordion-body <?= $Color ?> ">
+                                        <div class="accordion-body colorAccordion">
                                             <div class="row justify-content-between">
                                                 <div class="col-5">
                                                     <b>Chamado: </b><?= $id_chamado ?><br>
                                                     <b>Tipo de chamado: </b><?= $campos['tipoChamado']; ?><br>
                                                     <b>Cliente: </b><?= $campos['fantasia']; ?><br>
-                                                    <b>Atendente: </b><?= $atendente ?><br>
-
-
+                                                    <b>Atendente: </b><?= $atendente ?><br><br>
+                                                    <b>Descrição: </b><br><?= nl2br($campos['relato_inicial']); ?>
                                                 </div>
                                                 <div class="col-5">
                                                     <b>Data abertura: </b><?= $campos['dataAbertura']; ?><br>
                                                     <b>Status: </b><?= $campos['statusChamado']; ?><br><br>
-
                                                     <b>Tempo total atendimento: </b> <?= gmdate("H:i:s", $res_second['secondsTotal']); ?>
                                                 </div>
                                                 <div class="col-2">

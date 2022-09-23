@@ -113,6 +113,8 @@ ON
 p.id = cr.relator_id
 WHERE
 c.status_id = 3
+and
+cr.seconds_worked > 0
 GROUP BY
 YEAR(c.data_fechamento), MONTH(c.data_fechamento), cr.relator_id
 ORDER BY

@@ -269,7 +269,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 .accordion-button:not(.collapsed) {
   color: #012970;
-  background-color: #f6f9ff;
+  /*background-color: #f6f9ff;*/
 }
 
 .accordion-flush .accordion-button {

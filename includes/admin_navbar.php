@@ -120,6 +120,13 @@
         </li>
 
         <li class="nav-item">
+            <a class="nav-link collapsed" href="/servicedesk/chamados_programados/index.php">
+                <i class="bi bi-file-text"></i>
+                <span>Chamados Programados</span>
+            </a>
+        </li>
+        
+        <li class="nav-item">
             <a class="nav-link collapsed" href="/portal/tipos_chamados/index.php">
                 <i class="bi bi-clipboard-plus"></i>
                 <span>Tipos de Chamados</span>

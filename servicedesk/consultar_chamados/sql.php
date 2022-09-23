@@ -3,6 +3,8 @@
 $sql_chamado1 =
 "SELECT
 c.id as id_chamado,
+c.assuntoChamado as assunto,
+c.relato_inicial as relato_inicial,
 c.data_abertura as abertura,
 c.data_fechamento as fechado,
 c.atendente_id as id_atendente,
