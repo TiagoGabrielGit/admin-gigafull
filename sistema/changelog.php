@@ -18,6 +18,41 @@ require "../includes/menu.php";
             <!-- Default Accordion -->
             <div class="accordion" id="accordionExample">
 
+              <!-- Versão 2.9 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading2-9">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2-9" aria-expanded="false" aria-controls="collapse2-9">
+                    Versão 2.9 - XX/09/2022
+                  </button>
+                </h2>
+                <div id="collapse2-9" class="accordion-collapse collapse" aria-labelledby="heading2-9" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <strong>Novas funcionalidades</strong><br>
+                    1.  <br>
+
+                    <br><strong>Melhorias</strong><br>
+
+                    <br><strong>Correções de BUG</strong><br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    1. Criado tabela redeNeutra_OLTs<br>
+                    2. Criado tabela redeneutra_parceiro<br>
+                    3. Criado tabela redeneutra_scripts<br>
+
+                    <br><strong>Previsto para próximas atualizações</strong><br>
+                    1. Iniciar página de relatórios;<br>
+                    2. Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    3. Correções nos formatos de data e hora;<br>
+                    4. Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    5. Criação de contratos;<br>
+                    6. Componentes de equipamentos;<br>
+                    7. Criar perfil personalizado para Consultores;<br>
+                    8. Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                  </div>
+                </div>
+              </div>
+
+
               <!-- Versão 2.8 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading2-8">
@@ -31,12 +66,12 @@ require "../includes/menu.php";
                     1. Chamados agendados; <br>
 
                     <br><strong>Melhorias</strong><br>
-                    
+
                     <br><strong>Correções de BUG</strong><br>
 
                     <br><strong>Alterações banco de dados</strong><br>
                     1. Criado tabela event_scheduler;<br>
-                    2. Criado coluna relato_inicial na 
+                    2. Criado coluna relato_inicial na tabela chamados;<br>
 
                     <br><strong>Previsto para próximas atualizações</strong><br>
                     1. Iniciar página de relatórios;<br>
@@ -46,6 +81,7 @@ require "../includes/menu.php";
                     5. Criação de contratos;<br>
                     6. Componentes de equipamentos;<br>
                     7. Criar perfil personalizado para Consultores;<br>
+                    8. Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
                   </div>
                 </div>
               </div>

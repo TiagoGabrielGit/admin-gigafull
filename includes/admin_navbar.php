@@ -109,6 +109,7 @@
                     </a>
                 </li>
             </ul>
+        </li>
 
         <li class="nav-heading">Service Desk</li>
 
@@ -125,7 +126,7 @@
                 <span>Chamados Programados</span>
             </a>
         </li>
-        
+
         <li class="nav-item">
             <a class="nav-link collapsed" href="/portal/tipos_chamados/index.php">
                 <i class="bi bi-clipboard-plus"></i>
@@ -161,6 +162,40 @@
                 <i class="bi bi-pc-display-horizontal"></i>
                 <span>Máquina Virtual - VM</span>
             </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#redeNeutra-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-layout-text-window-reverse"></i><span>Rede Neutra (Implementação)</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="redeNeutra-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/redeNeutra/ativacao/index.php">
+                        <i class="bi bi-circle"></i><span>Ativação</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="bi bi-circle"></i><span>Diagnóstico</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/redeNeutra/olts/index.php">
+                        <i class="bi bi-circle"></i><span>OLTs</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="bi bi-circle"></i><span>ONUs Homologadas</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <i class="bi bi-circle"></i><span>Parceiros</span>
+                    </a>
+                </li>
+            </ul>
         </li>
 
         <li class="nav-heading">Administração</li>
