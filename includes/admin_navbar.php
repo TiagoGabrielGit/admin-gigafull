@@ -174,9 +174,10 @@
                         <i class="bi bi-circle"></i><span>Ativação</span>
                     </a>
                 </li>
+
                 <li>
-                    <a href="#">
-                        <i class="bi bi-circle"></i><span>Diagnóstico</span>
+                    <a href="/redeNeutra/incidentes/index.php">
+                        <i class="bi bi-circle"></i><span>Incidentes</span>
                     </a>
                 </li>
 
@@ -185,13 +186,15 @@
                         <i class="bi bi-circle"></i><span>OLTs</span>
                     </a>
                 </li>
+
                 <li>
-                    <a href="#">
-                        <i class="bi bi-circle"></i><span>ONUs Homologadas</span>
+                    <a href="/redeNeutra/onus_Provisionadas/index.php">
+                        <i class="bi bi-circle"></i><span>ONUs Provisionadas</span>
                     </a>
                 </li>
+
                 <li>
-                    <a href="#">
+                    <a href="/redeNeutra/parceiros/index.php">
                         <i class="bi bi-circle"></i><span>Parceiros</span>
                     </a>
                 </li>
