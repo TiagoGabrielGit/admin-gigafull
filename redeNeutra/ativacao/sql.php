@@ -1,18 +1,4 @@
 <?php
-$redeNeutra_OLTs = 
-"SELECT
-    rno.id as idOLT,
-    rno.olt_name as nameOLT,
-    rno.olt_ipAddress as ipOLT,
-    rno.olt_username as userOLT,
-    rno.olt_password as passOLT
-FROM
-    redeneutra_olts as rno
-WHERE
-    rno.active = 1
-ORDER BY
-    rno.olt_name ASC
-";
 
 $redeneutra_parceiro =
 "SELECT

@@ -1,6 +1,7 @@
 <?php
 require "../../includes/menu.php";
 require "../../conexoes/conexao.php";
+require "../../includes/remove_setas_number.php";
 require "sql.php";
 ?>
 
@@ -38,58 +39,59 @@ require "sql.php";
                                         <div class="row">
                                             <div class="col-6">
                                                 <label for="olt" class="form-label">OLT</label>
-                                                <select class="form-select" id="olt" name="olt" required>
-                                                    <option disabled selected value="">Selecione a OLT</option>
-                                                    <?php
-                                                    $resultado = mysqli_query($mysqli, $redeNeutra_OLTs);
-                                                    while ($olts = mysqli_fetch_object($resultado)) :
-                                                        echo "<option value='$olts->idOLT'> $olts->nameOLT</option>";
-                                                    endwhile;
-                                                    ?>
+                                                <select id="olt" name="olt" class="form-select" aria-label="Default select example">
+                                                    <option selected disabled>Selecione a OLT</option>
                                                 </select>
                                             </div>
                                         </div>
 
-
                                         <div class="row">
-                                            <div class="col-2">
+                                            <div class="col-3">
                                                 <label for="slotOLT" class="form-label">SLOT</label>
-                                                <input name="slotOLT" type="text" class="form-control" id="slotOLT" required>
+                                                <input name="slotOLT" type="number" class="form-control" id="slotOLT" required>
                                             </div>
-                                            <div class="col-2">
+                                            <div class="col-3">
                                                 <label for="ponOLT" class="form-label">PON</label>
-                                                <input name="ponOLT" type="text" class="form-control" id="ponOLT" required>
+                                                <input name="ponOLT" type="number" class="form-control" id="ponOLT" required>
                                             </div>
-                                            <div class="col-8">
+                                            <div class="col-6">
                                                 <label for="serialONU" class="form-label">Serial ONU</label>
                                                 <input name="serialONU" type="text" class="form-control" id="serialONU" required>
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-12">
-                                                <label for="script" class="form-label">Script de ativação</label>
-                                                <select class="form-select" id="script" name="script" required>
-                                                    <option disabled selected value="">Selecione um script</option>
-                                                    <?php
-                                                    $resultado = mysqli_query($mysqli, $redeneutra_scripts);
-                                                    while ($scripts = mysqli_fetch_object($resultado)) :
-                                                        echo "<option value='$scripts->scriptName'> $scripts->descricao</option>";
-                                                    endwhile;
-                                                    ?>
-                                                </select>
+                                            <div class="col-4">
+                                                <label for="codigoParceiro" class="form-label">Código Parceiro</label>
+                                                <input name="codigoParceiro" type="text" class="form-control" id="codigoParceiro" disabled>
+                                            </div>
+
+                                            <div class="col-6">
+                                                <label for="codigoReserva" class="form-label">Código Reserva</label>
+                                                <input name="codigoReserva" type="text" class="form-control" id="codigoReserva" required>
                                             </div>
                                         </div>
 
                                         <hr class="sidebar-divider">
 
-                                        <input name="ipOLT" type="text" class="form-control" id="ipOLT" placeholder="IP">
-                                        <input name="userOLT" type="text" class="form-control" id="userOLT" placeholder="Usuario">
-                                        <input name="passOLT" type="text" class="form-control" id="passOLT" placeholder="Senha">
+                                        <input name="ipOLT" type="text" class="form-control" id="ipOLT" placeholder="IP OLT" hidden>
+                                        <input name="userOLT" type="text" class="form-control" id="userOLT" placeholder="USUARIO OLT" hidden>
+                                        <input name="passOLT" type="password" class="form-control" id="passOLT" placeholder="SENHA OLT" hidden>
+                                        <input name="CVLAN" type="text" class="form-control" id="CVLAN" placeholder="CVLAN" hidden>
+                                        <input name="SVLAN" type="text" class="form-control" id="SVLAN" placeholder="SVLAN" hidden>
+                                        <input name="GEMPORT" type="text" class="form-control" id="GEMPORT" placeholder="GEMPORT" hidden>
+                                        <input name="line_profile_id" type="text" class="form-control" id="line_profile_id" placeholder="LINE PROFILE ID" hidden>
+                                        <input name="srv_profile_id" type="text" class="form-control" id="srv_profile_id" placeholder="SRV PROFILE ID" hidden>
 
-                                        <div class="col-12" style="text-align: center;">
-                                            <button id="buttonExecutaScript" class="btn btn-danger" type="button">Executar</button>
+                                        <div class="row">
+                                            <div class="col-4">
+                                            </div>
+                                            <div class="col-4">
+                                                <button data-bs-toggle="modal" data-bs-target="#modalProvisionando" id="buttonExecutaScript" class="btn btn-danger" type="button">Executar</button>
+                                                <button id="buttonExecutandoScript" class="btn btn-danger" type="button" disabled="" hidden><span class="spinner-border spinner-border-sm" role="status" aria-hidden="false"></span> Executando</button>
+                                            </div>
                                         </div>
+
                                     </form>
 
                                 </div>
@@ -99,12 +101,19 @@ require "sql.php";
                         <div class="col-lg-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Resultado</h5>
-
-                                    <div class="col-12">
-                                        <textarea style="resize: none" rows="15" type="text" class="form-control" disabled></textarea>
-                                    </div>
-
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-8">
+                                                <h5 class="card-title">Resultado</h5>
+                                            </div>
+                                            <div class="col-3" style="text-align: right;">
+                                                <input class="btn btn-secondary" style="margin-top: 10px" type="reset" value="Limpar">
+                                            </div>
+                                        </div>
+                                        <div id="resultScript" class="col-12">
+                                            <textarea style="resize: none" rows="17" type="text" class="form-control" disabled></textarea>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -114,6 +123,34 @@ require "sql.php";
         </div>
     </section>
 </main>
+
+<div class="modal fade" id="modalProvisionando" tabindex="-1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Provisionando</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <div id="loadingProvisionamento" class="spinner-border" style="width: 50px; height: 50px;" role="status">
+                </div><br>
+                <span id="spanMensagem"></span>
+                <div style="font-size: 20px;" id="timer"></div>
+            </div>
+            <div class="modal-footer">
+
+                <a href="/redeNeutra/onus_Provisionadas/index.php">
+                    <input hidden id="irParaONU" type="button" value="Ir para ONUs Provisionadas" class="btn btn-danger"></input>
+                </a>
+
+                <a href="/redeNeutra/ativacao/index.php">
+                    <input hidden id="okProvisionamento" type="button" value="Ok" class="btn btn-danger"></input>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <?php
 require "js_script.php";

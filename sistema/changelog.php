@@ -22,22 +22,20 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading2-9">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2-9" aria-expanded="false" aria-controls="collapse2-9">
-                    Versão 2.9 - XX/09/2022
+                    Versão 2.9 - 14/10/2022
                   </button>
                 </h2>
                 <div id="collapse2-9" class="accordion-collapse collapse" aria-labelledby="heading2-9" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
                     <strong>Novas funcionalidades</strong><br>
-                    1.  <br>
+                    1. Módulo Rede Neutra<br>
 
                     <br><strong>Melhorias</strong><br>
 
                     <br><strong>Correções de BUG</strong><br>
 
                     <br><strong>Alterações banco de dados</strong><br>
-                    1. Criado tabela redeNeutra_OLTs<br>
-                    2. Criado tabela redeneutra_parceiro<br>
-                    3. Criado tabela redeneutra_scripts<br>
+                    1. Criado tabelas de Rede Neutra<br>
 
                     <br><strong>Previsto para próximas atualizações</strong><br>
                     1. Iniciar página de relatórios;<br>

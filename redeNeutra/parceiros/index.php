@@ -1,12 +1,13 @@
 <?php
 require "../../includes/menu.php";
 require "../../conexoes/conexao.php";
+require "../../includes/remove_setas_number.php";
 require "sql.php";
 ?>
 
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>OLTs</h1>
+        <h1>Parceiros</h1>
     </div>
     <section class="section">
         <div class="row">
@@ -17,35 +18,35 @@ require "sql.php";
                         <div class="col-lg-4">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Cadastrar OLT</h5>
+                                    <h5 class="card-title">Cadastrar parceiro</h5>
 
-                                    <form id="formCadastraOLT" method="POST">
+                                    <form id="formCadastraParceiro" method="POST">
                                         <div class="row">
-                                            <div class="col-5">
-                                                <label for="nomeOLT" class="form-label">OLT</label>
-                                                <input name="nomeOLT" type="text" class="form-control" id="nomeOLT" required>
-                                            </div>
-                                            <div class="col-7">
-                                                <label for="ipOLT" class="form-label">IP</label>
-                                                <input name="ipOLT" type="text" class="form-control" id="ipOLT" required>
+                                            <div class="col-4">
+                                                <label for="codigoParceiro" class="form-label">Código</label>
+                                                <input name="codigoParceiro" type="number" class="form-control" id="codigoParceiro" required>
                                             </div>
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-6">
-                                                <label for="usuarioOLT" class="form-label">Usuário</label>
-                                                <input name="usuarioOLT" type="text" class="form-control" id="usuarioOLT" required>
-                                            </div>
-                                            <div class="col-6">
-                                                <label for="senhaOLT" class="form-label">Senha</label>
-                                                <input name="senhaOLT" type="text" class="form-control" id="senhaOLT" required>
+                                            <div class="col-12">
+                                                <label for="parceiro" class="form-label select-label">Parceiro</label>
+                                                <select id="parceiro" name="parceiro" class="form-select" required>
+                                                    <option disabled selected value="">Selecione uma empresa</option>
+                                                    <?php
+                                                    $resultado = mysqli_query($mysqli, $lista_empresas);
+                                                    while ($empresa = mysqli_fetch_object($resultado)) :
+                                                        echo "<option value='$empresa->idEmpresa'> $empresa->fantasia</option>";
+                                                    endwhile;
+                                                    ?>
+                                                </select>
                                             </div>
                                         </div>
 
                                         <hr class="sidebar-divider">
 
                                         <div class="col-12" style="text-align: center;">
-                                            <button id="buttonCadastraOLT" class="btn btn-danger" type="button">Cadastrar</button>
+                                            <button id="buttonCadastraParceiro" class="btn btn-danger" type="button">Cadastrar</button>
                                         </div>
                                     </form>
                                 </div>
@@ -64,26 +65,26 @@ require "sql.php";
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Lista de OLTs</h5>
+                                    <h5 class="card-title">Lista de parceiros</h5>
 
                                     <table class="table table-striped" id="styleTable">
                                         <thead>
                                             <tr>
-                                                <th scope="col">OLT</th>
-                                                <th scope="col">IP</th>
+                                                <th scope="col">Código</th>
+                                                <th scope="col">Parceiro</th>
                                                 <th scope="col">Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $r_lista_OLTs = mysqli_query($mysqli, $lista_OLTs);
+                                            $r_lista = mysqli_query($mysqli, $lista_parceiros);
 
-                                            while ($campos_olts = $r_lista_OLTs->fetch_array()) {
+                                            while ($campos = $r_lista->fetch_array()) {
                                             ?>
-                                                <tr onclick="location.href='view.php?idOLT=<?= $campos_olts['idOLT']; ?>'">
-                                                    <td><?= $campos_olts['olt_name']; ?></td>
-                                                    <td><?= $campos_olts['olt_ipAddress']; ?></td>
-                                                    <td><?= $campos_olts['olt_status']; ?></td>
+                                                <tr onclick="location.href='view.php?idParceiro=<?= $campos['idParceiro']; ?>'">
+                                                    <td><?= $campos['codigoParceiro']; ?></td>
+                                                    <td><?= $campos['parceiroFantasia']; ?></td>
+                                                    <td><?= $campos['parceiro_status']; ?></td>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>

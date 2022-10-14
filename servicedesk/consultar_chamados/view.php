@@ -88,8 +88,8 @@ if ($chamado['in_execution'] == 1) {
                                         <?php
                                         $calc_tempo_total =
                                             "SELECT SUM(seconds_worked) as secondsTotal
-                                        from chamado_relato
-                                        where chamado_id = $id_chamado";
+                                        from chamados
+                                        where id = $id_chamado";
 
                                         $seconds_total = mysqli_query($mysqli, $calc_tempo_total);
                                         $res_second = $seconds_total->fetch_array();
