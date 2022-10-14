@@ -16,3 +16,11 @@ text-align: center;
     background-color: #abacac;
     
 }
+
+#styleTableIncidentesAlarm {
+    background-color: #f36b6b;   
+}
+
+#styleTableIncidentesOK {
+    background-color: #40f677;   
+}
