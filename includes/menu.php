@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 // Verifica se existe os dados da sessão de login
 if (!isset($_SESSION["id"])) {
@@ -10,12 +9,8 @@ if (!isset($_SESSION["id"])) {
 $nome = $_SESSION['nome'];
 $id = $_SESSION['id'];
 $perfil = $_SESSION['nome_perfil'];
-$perfil_id = $_SESSION['perfil'];
 $user_ip = $_SESSION['ip_address'];
 $horario = date('d/m/Y H:i');
-
-$versao_atual = "2.0";
-$ultima_versão = "2.0";
 ?>
 
 <?php
@@ -58,8 +53,6 @@ if (empty($chamado['execucao'])) {
 }
 
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -132,10 +125,10 @@ if (empty($chamado['execucao'])) {
 
 
         <?php
-        if ($chamado_exec == $pessoa_id) { 
+        if ($chamado_exec == $pessoa_id) {
           $id_chamado = $chamado['id_chamado'];
           $seconds_in_execution =
-          "SELECT TIMESTAMPDIFF(SECOND, in_execution_start, NOW()) as tempo
+            "SELECT TIMESTAMPDIFF(SECOND, in_execution_start, NOW()) as tempo
           from chamados
           where id = $id_chamado;
           ";
@@ -351,17 +344,5 @@ if (empty($chamado['execucao'])) {
   </header><!-- End Header -->
 
   <?php
-
-  //  if (($perfil == "1") || ($perfil == "2")) {
-  //    include_once "admin_navbar.php";
-  //  } else {
-  //    include_once "user_navbar.php";
-  //  }
-
-  if ($perfil_id == "1") {
-    include_once "superadmin_navbar.php";
-  } else if ($perfil_id == "2") {
-    include_once "admin_navbar.php";
-  } else if ($perfil_id == "3") {
-    include_once "user_navbar.php";
-  }
+  require "navbar.php";
+  ?>

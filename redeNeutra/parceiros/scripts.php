@@ -8,6 +8,7 @@
         let obg = {}
         obg.parceiro = document.getElementById("parceiro").value;
         obg.codigoParceiro = document.getElementById("codigoParceiro").value;
+
         funcaoCadastraOLT('/api/insert_cadastra_parceiro.php', 'GET', obg)
     }
 

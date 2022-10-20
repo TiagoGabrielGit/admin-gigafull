@@ -159,8 +159,8 @@ require "sql_dashboard.php"
                                 <?php
                                 while ($campos_sql_horas_x_clientes = $r_sql_horas_x_clientes->fetch_array()) { ?>
                                     <tr>
-                                        <td><?=$campos_sql_horas_x_clientes['periodo']?></th>
-                                        <td><?=$campos_sql_horas_x_clientes['fantasia']?></td>
+                                        <td><?= $campos_sql_horas_x_clientes['periodo'] ?></th>
+                                        <td><?= $campos_sql_horas_x_clientes['fantasia'] ?></td>
                                         <td><?= gmdate("H:i:s", $campos_sql_horas_x_clientes['tempoTrabalhado']); ?></td>
                                     </tr>
                                 <?php
@@ -185,8 +185,8 @@ require "sql_dashboard.php"
                                 <?php
                                 while ($campos_sql_horas_x_consultores = $r_sql_horas_x_consultores->fetch_array()) { ?>
                                     <tr>
-                                        <td><?=$campos_sql_horas_x_consultores['periodo']?></th>
-                                        <td><?=$campos_sql_horas_x_consultores['consultor']?></td>
+                                        <td><?= $campos_sql_horas_x_consultores['periodo'] ?></th>
+                                        <td><?= $campos_sql_horas_x_consultores['consultor'] ?></td>
                                         <td><?= gmdate("H:i:s", $campos_sql_horas_x_consultores['tempoTrabalhado']); ?></td>
                                     </tr>
                                 <?php

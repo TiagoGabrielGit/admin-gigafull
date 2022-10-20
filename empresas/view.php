@@ -20,8 +20,8 @@ empresa.atributoEmpresaPropria as atributoEmpresaPropria,
 empresa.atributoFornecedor as atributoFornecedor,
 empresa.atributoTransportadora as atributoTransportadora,
 empresa.atributoPrestadorServico as atributoPrestadorServico,
-empresa.criado as data_criado,
-empresa.modificado as data_modificado
+date_format(empresa.criado,'%H:%m:%s %d/%m/%Y') as data_criado,
+date_format(empresa.modificado,'%H:%m:%s %d/%m/%Y') as data_modificado
 FROM
 empresas as empresa
 WHERE

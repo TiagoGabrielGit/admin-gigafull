@@ -20,19 +20,21 @@ require "../../../conexoes/conexao.php";
     <div class="container theme-showcase" role="main">
         <?php
         $nome = $_POST['inputNome'];
+        $tipo_usuario = $_POST['tipoAcesso'];
+        $dashboard = $_POST['dashboard'];
         $nome = $_POST['inputNome'];
         $email = $_POST['inputEmailHidden'];
         $perfil = $_POST['perfil'];
         $senha = md5($_POST['senha']);
+        if ($tipo_usuario == 3) {
+            $parceiroRN = $_POST['parceiroSelect'];
+        } else {
+            $parceiroRN = "";
+        }
 
-        $result_usuario = "INSERT INTO usuarios (pessoa_id, email, senha, cadastroDefault, deleted, criado) VALUES ('$nome', '$email', '$senha', '2', '1', NOW())";
+        $result_usuario = "INSERT INTO usuarios (pessoa_id, tipo_usuario, parceiroRN_id, dashboard, email, senha, perfil_id, active, criado)
+         VALUES ('$nome', '$tipo_usuario', '$parceiroRN', '$dashboard', '$email', '$senha', '$perfil', '1', NOW())";
         $resultado_usuario = mysqli_query($mysqli, $result_usuario);
-
-        //Obtem ID do cadastro realizado
-        $id_usuario = mysqli_insert_id($mysqli);
-
-        $result_perfil = "INSERT INTO usuarios_perfil (usuario_id, permissao_id, deleted, criado) VALUES ('$id_usuario', '$perfil', '1', NOW())";
-        $resultado_perfil = mysqli_query($mysqli, $result_perfil);
 
         if (mysqli_affected_rows($mysqli) > 0) { ?>
             <!-- Modal -->

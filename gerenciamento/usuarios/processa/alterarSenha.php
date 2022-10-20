@@ -1,5 +1,4 @@
 <?php
-require "../../../protect.php";
 require "../../../conexoes/conexao.php";
 ?>
 

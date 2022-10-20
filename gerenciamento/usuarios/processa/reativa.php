@@ -3,10 +3,10 @@ session_start();
 
 include_once("../../../conexoes/conexao.php");
 
-$delete_id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+$active = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
-$delete_usuario = "UPDATE `usuarios` SET `deleted`= '1' WHERE id = '$delete_id' ";
-$res_delete_user = mysqli_query($mysqli, $delete_usuario);
+$ativa_usuario = "UPDATE `usuarios` SET `active`= '1' WHERE id = '$active' ";
+$res_ativa_usuario = mysqli_query($mysqli, $ativa_usuario);
 
 
 if (mysqli_affected_rows($mysqli)) {

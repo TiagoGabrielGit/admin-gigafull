@@ -74,14 +74,14 @@ require "sql.php";
 
                                         <hr class="sidebar-divider">
 
-                                        <input name="ipOLT" type="text" class="form-control" id="ipOLT" placeholder="IP OLT" hidden>
-                                        <input name="userOLT" type="text" class="form-control" id="userOLT" placeholder="USUARIO OLT" hidden>
-                                        <input name="passOLT" type="password" class="form-control" id="passOLT" placeholder="SENHA OLT" hidden>
-                                        <input name="CVLAN" type="text" class="form-control" id="CVLAN" placeholder="CVLAN" hidden>
-                                        <input name="SVLAN" type="text" class="form-control" id="SVLAN" placeholder="SVLAN" hidden>
-                                        <input name="GEMPORT" type="text" class="form-control" id="GEMPORT" placeholder="GEMPORT" hidden>
-                                        <input name="line_profile_id" type="text" class="form-control" id="line_profile_id" placeholder="LINE PROFILE ID" hidden>
-                                        <input name="srv_profile_id" type="text" class="form-control" id="srv_profile_id" placeholder="SRV PROFILE ID" hidden>
+                                        <input name="ipOLT" type="text" class="form-control" id="ipOLT" placeholder="IP OLT" >
+                                        <input name="userOLT" type="text" class="form-control" id="userOLT" placeholder="USUARIO OLT" >
+                                        <input name="passOLT" type="password" class="form-control" id="passOLT" placeholder="SENHA OLT" >
+                                        <input name="CVLAN" type="text" class="form-control" id="CVLAN" placeholder="CVLAN" >
+                                        <input name="SVLAN" type="text" class="form-control" id="SVLAN" placeholder="SVLAN" >
+                                        <input name="GEMPORT" type="text" class="form-control" id="GEMPORT" placeholder="GEMPORT" >
+                                        <input name="line_profile_id" type="text" class="form-control" id="line_profile_id" placeholder="LINE PROFILE ID" >
+                                        <input name="srv_profile_id" type="text" class="form-control" id="srv_profile_id" placeholder="SRV PROFILE ID" >
 
                                         <div class="row">
                                             <div class="col-4">

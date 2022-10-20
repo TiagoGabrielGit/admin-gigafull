@@ -1,5 +1,5 @@
 <?php
-require '../../includes/menu.php';
+require "../../includes/menu.php";
 require "../../conexoes/conexao.php";
 require "../../conexoes/sql.php";
 require "../../includes/remove_setas_number.php";
@@ -9,7 +9,7 @@ require "sql.php";
 <main id="main" class="main">
 
     <div class="pagetitle">
-        <h1>Usuários</h1>
+        <h1>Usuário</h1>
     </div><!-- End Page Title -->
 
     <section class="section">
@@ -26,14 +26,14 @@ require "sql.php";
                                 <div class="col-2">
                                     <div class="card">
                                         <!-- Basic Modal -->
-                                        <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
+                                        <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalNovoUser">
                                             Novo usuário
                                         </button>
                                     </div>
                                 </div>
 
-                                <div class="modal fade" id="basicModal" tabindex="-1">
-                                    <div class="modal-dialog">
+                                <div class="modal fade" id="modalNovoUser" tabindex="-1">
+                                    <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title">Novo Usuário</h5>
@@ -41,11 +41,10 @@ require "sql.php";
                                             </div>
                                             <div class="modal-body">
                                                 <div class="card-body">
-                                                    <!-- Vertical Form -->
                                                     <form method="POST" action="processa/add.php" class="row g-3 needs-validation" novalidate>
 
-                                                        <div class="col-12">
-                                                            <label for="inputNome" class="form-label">Nome*</label>
+                                                        <div class="col-6">
+                                                            <label for="inputNome" class="form-label">Nome</label>
                                                             <select id="inputNome" name="inputNome" class="form-select" required>
                                                                 <option require selected disabled>Selecione a pessoa</option>
                                                                 <?php
@@ -57,41 +56,95 @@ require "sql.php";
                                                             </select>
                                                         </div>
 
-                                                        <div class="col-12">
-                                                            <label for="inputEmail" class="form-label">E-mail/Usuário</label>
-                                                            <select id="inputEmail" name="inputEmail" class="form-select" disabled required></select>
-                                                            <select id="inputEmailHidden" name="inputEmailHidden" class="form-select" hidden></select>
-                                                        </div>
-
-                                                        <div class="col-12">
+                                                        <div class="col-6">
                                                             <label for="inputPerfil" class="form-label">Perfil</label>
                                                             <select name="perfil" id="perfil" class="form-select" required>
-
                                                                 <option selected disabled>Selecione o perfil</option>
                                                                 <?php
                                                                 $resultado = mysqli_query($mysqli, $sql_perfil) or die("Erro ao retornar dados");
                                                                 while ($p = $resultado->fetch_assoc()) : ?>
-                                                                    <option value="<?= $p['id']; ?>"><?= $p['perfil']; ?></option>
+                                                                    <option value="<?= $p['idPerfil']; ?>"><?= $p['perfil']; ?></option>
                                                                 <?php endwhile; ?>
                                                             </select>
                                                         </div>
 
-                                                        <div class="col-12">
+                                                        <div class="col-4">
+                                                            <label for="tipoAcesso" class="form-label">Tipo de Acesso</label>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoAdmin" value="1">
+                                                                <label class="form-check-label" for="tipoAcessoAdmin">
+                                                                    Gigafull Admin
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoPortal" value="2">
+                                                                <label class="form-check-label" for="tipoAcessoPortal">
+                                                                    Gigafull Portal
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check disabled">
+                                                                <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoPortalRN" value="3">
+                                                                <label class="form-check-label" for="tipoAcessoPortalRN">
+                                                                    Gigafull RN
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-4">
+                                                            <label for="dashboard" class="form-label">Dashboard Inicial</label>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="dashboard" id="dashboard1" value="1">
+                                                                <label class="form-check-label" for="dashboard1">
+                                                                    Tipo 1
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="radio" name="dashboard" id="dashboard2" value="2">
+                                                                <label class="form-check-label" for="dashboard2">
+                                                                    Tipo 2
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check disabled">
+                                                                <input class="form-check-input" type="radio" name="dashboard" id="dashboard3" value="3">
+                                                                <label class="form-check-label" for="dashboard3">
+                                                                    Tipo 3
+                                                                </label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-4">
+                                                            <label id="parceiroLabel" for="parceiroLabel" class="form-label">Parceiro</label>
+                                                            <select name="parceiroSelect" id="parceiroSelect" class="form-select" required>
+                                                                <option selected disabled>Selecione a parceiro</option>
+                                                                <?php
+                                                                $resultado = mysqli_query($mysqli, $sql_parceiros) or die("Erro ao retornar dados");
+                                                                while ($p = $resultado->fetch_assoc()) : ?>
+                                                                    <option value="<?= $p['parceiroID']; ?>"><?= $p['parceiro']; ?></option>
+                                                                <?php endwhile; ?>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-6">
+                                                            <label for="inputEmail" class="form-label">E-mail/Usuário</label>
+                                                            <input name="inputEmail" type="text" class="form-control" id="inputEmail" disabled>
+                                                            <input name="inputEmailHidden" type="text" class="form-control" id="inputEmailHidden" hidden>
+                                                        </div>
+
+                                                        <div class="col-6">
                                                             <label for="yourPassword" class="form-label">Senha</label>
                                                             <input type="password" name="senha" class="form-control" id="yourPassword" required>
                                                             <div class="invalid-feedback">Digite uma senha.</div>
                                                         </div>
 
-                                                        <div class="col-12">
-                                                            <button class="btn btn-danger w-100" type="submit">Cadastrar usuário</button>
+                                                        <div class="col-12" style="text-align: center;">
+                                                            <button class="btn btn-danger" type="submit">Cadastrar usuário</button>
                                                         </div>
-
                                                     </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div><!-- End Basic Modal-->
+                                </div>
 
                             </div>
 
@@ -104,6 +157,8 @@ require "sql.php";
                             <thead>
                                 <tr>
                                     <th scope="col">Nome</th>
+                                    <th scope="col">Dashboard</th>
+                                    <th scope="col">Tipo</th>
                                     <th scope="col">Perfil</th>
                                     <th scope="col">E-mail/Usuário</th>
                                     <th scope="col">Ativo</th>
@@ -118,64 +173,63 @@ require "sql.php";
                                 $sql =
                                     "SELECT 
                                         user.id as id,
+                                        CASE
+                                            WHEN user.dashboard = 1 THEN 'Tipo 1'
+                                            WHEN user.dashboard = 2 THEN 'Tipo 2'
+                                            WHEN user.dashboard = 3 THEN 'Tipo 3'
+                                        END as dashboard,
                                         pess.nome as nome,
+                                        CASE
+                                            WHEN user.tipo_usuario = 1 THEN 'Gigafull Admin'
+                                            WHEN user.tipo_usuario = 2 THEN 'Gigafull Portal'
+                                            WHEN user.tipo_usuario = 3 THEN 'Gigafull RN'
+                                        END as tipo,
                                         user.email as email,
                                         user.senha as senha,
-                                        user.deleted as deleted,
-                                        userPerfil.permissao_id as perfil,
-                                        perfil.perfil as nome_perfil,
+                                        p.perfil as nome_perfil,
                                         CASE
-                                            WHEN user.deleted = 1 THEN 'Ativado'
-                                            WHEN user.deleted = 2 THEN 'Inativado'
-                                        END AS deleted
+                                            WHEN user.active = 1 THEN 'Ativado'
+                                            WHEN user.active = 0 THEN 'Inativado'
+                                        END AS active
                                         FROM 
                                         usuarios as user
-                                        LEFT JOIN
-                                        usuarios_perfil as userPerfil
-                                        ON
-                                        userPerfil.usuario_id = user.id
-                                        LEFT JOIN
-                                        perfil_permissoes as perfil
-                                        ON
-                                        perfil.id = userPerfil.permissao_id
                                         LEFT JOIN                            
                                         pessoas as pess
                                         ON
                                         pess.id = user.pessoa_id
-                                        WHERE
-                                        userPerfil.permissao_id != 1
+                                        LEFT JOIN
+                                        perfil as p
+                                        ON
+                                        p.id = user.perfil_id
                                         ORDER BY
                                         pess.nome ASC
                                         ";
 
                                 $resultado = mysqli_query($mysqli, $sql) or die("Erro ao retornar dados");
 
-                                // Obtendo os dados por meio de um loop while
                                 while ($campos = $resultado->fetch_array()) {
                                     $id = $campos['id'];
                                     $usuario = $campos['nome'];
-                                    $deleted = $campos['deleted'];
-                                    echo "<tr>";
-                                ?> 
-                                    <td><?php echo $campos['nome']; ?></td>
-                                    <td><?php echo $campos['nome_perfil']; ?></td>
-                                    <td><?php echo $campos['email']; ?></td>
-                                    <td><?php echo $campos['deleted']; ?></td>
-                                    <td style="text-align: center;">
-                                        <?php
-                                        if ($campos['deleted'] == "Ativado") {
-                                            echo "<a href='/gerenciamento/usuarios/processa/deleta.php?id=" . $campos['id'] . "' data-confirm='Tem certeza que deseja excluir permanentemente esse registro?'" . " class='bi bi-arrow-left-right' </a>";
-                                        } else if ($campos['deleted'] == "Inativado") {
-                                            echo "<a href='/gerenciamento/usuarios/processa/reativa.php?id=" . $campos['id'] . "' data-confirm='Tem certeza que deseja excluir permanentemente esse registro?'" . " class='bi bi-arrow-left-right' </a>";
-                                        }
-                                        ?>
-                                    </td> 
-                                    <td style="text-align: center;">
-
-                                        <!--  <a href="#" style="margin-top: 15px" class="bi bi-key-fill" data-bs-toggle="modal" data-bs-target="#basicModalSenha"></a> -->
-                                        <a onclick="capturaDadosLogin(<?php echo $campos['id'] ?>,'<?php echo $campos['email'] ?>','<?php echo $campos['nome'] ?>')" class="bi bi-key-fill" role="button" data-bs-toggle="modal" data-bs-target="#basicModalSenha"></a>
-
-                                    </td>
+                                ?>
+                                    <tr>
+                                        <td><?= $campos['nome']; ?></td>
+                                        <td><?= $campos['dashboard']; ?></td>
+                                        <td><?= $campos['tipo']; ?></td>
+                                        <td><?= $campos['nome_perfil']; ?></td>
+                                        <td><?= $campos['email']; ?></td>
+                                        <td><?= $campos['active']; ?></td>
+                                        <td style="text-align: center;">
+                                            <?php
+                                            if ($campos['active'] == "Ativado") {
+                                                echo "<a href='/gerenciamento/usuarios/processa/inativa.php?id=" . $campos['id'] . "' data-confirm='Tem certeza que deseja excluir permanentemente esse registro?'" . " class='bi bi-arrow-left-right' </a>";
+                                            } else if ($campos['active'] == "Inativado") {
+                                                echo "<a href='/gerenciamento/usuarios/processa/reativa.php?id=" . $campos['id'] . "' data-confirm='Tem certeza que deseja excluir permanentemente esse registro?'" . " class='bi bi-arrow-left-right' </a>";
+                                            }
+                                            ?>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <a onclick="capturaDadosLogin(<?php echo $campos['id'] ?>,'<?php echo $campos['email'] ?>','<?php echo $campos['nome'] ?>')" class="bi bi-key-fill" role="button" data-bs-toggle="modal" data-bs-target="#basicModalSenha"></a>
+                                        </td>
                                     </tr>
                                 <?php } ?>
                             </tbody>

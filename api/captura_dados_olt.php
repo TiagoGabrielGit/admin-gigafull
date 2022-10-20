@@ -15,7 +15,7 @@ WHERE
 	rno.id = $id
 ";
 
-$consulta = mysqli_query($mysqli, $sql);
+/*$consulta = mysqli_query($mysqli, $sql);
 if ($consulta) :
     while ($campo = mysqli_fetch_object($consulta)) :
         echo $campo->ipOLT;
@@ -25,4 +25,10 @@ if ($consulta) :
 
 else :
     echo "Algo deu errado";
-endif;
+endif;*/
+ 
+ 
+$consulta = mysqli_query($mysqli, $sql);
+
+$result = mysqli_fetch_assoc($consulta);
+echo json_encode($result);

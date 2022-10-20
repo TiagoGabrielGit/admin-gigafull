@@ -13,34 +13,29 @@ if (isset($_POST['email']) || isset($_POST['senha'])) {
     $senha = $mysqli->real_escape_string(md5($_POST['senha']));
 
     $sql_code =
-      "SELECT 
-      user.id as id,
-      pess.nome as nome,
-      user.email as email,
-      user.senha as senha,
-      userPerfil.permissao_id as perfil,
-      perfil.perfil as nome_perfil
-      FROM 
-      usuarios as user
+      "SELECT
+        u.id as id,
+        p.nome as nome,
+        u.email as email,
+        u.senha as senha,
+        u.perfil_id as perfil,
+        pe.perfil as nome_perfil
+      FROM
+	      usuarios as u
       LEFT JOIN
-      usuarios_perfil as userPerfil
+        pessoas as p
       ON
-      userPerfil.usuario_id = user.id
+        p.id = u.pessoa_id
       LEFT JOIN
-      perfil_permissoes as perfil
+        perfil as pe
       ON
-      perfil.id = userPerfil.permissao_id
-      LEFT JOIN
-      pessoas as pess
-      ON
-      pess.id = user.pessoa_id
-      WHERE 
-      user.email = '$email' 
-      AND 
-      user.senha = '$senha'
-      AND
-      user.deleted = '1'
-    ";
+        u.perfil_id = pe.id
+      WHERE
+        u.email = '$email' 
+	    AND 
+	      u.senha = '$senha'
+	    AND
+	      u.active = 1";
 
     $sql_query = $mysqli->query($sql_code) or die("Falha na execução do código SQL: " . $mysqli->error);
 
@@ -75,7 +70,7 @@ if (isset($_POST['email']) || isset($_POST['senha'])) {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="PT-BR">
 
 <head>
   <meta charset="utf-8">

@@ -18,6 +18,55 @@ require "../includes/menu.php";
             <!-- Default Accordion -->
             <div class="accordion" id="accordionExample">
 
+              <!-- Versão 3.0 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading3-0">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3-0" aria-expanded="false" aria-controls="collapse3-0">
+                    Versão 3.0 - 20/10/2022
+                  </button>
+                </h2>
+                <div id="collapse3-0" class="accordion-collapse collapse" aria-labelledby="heading3-0" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <strong>Novas funcionalidades</strong><br>
+                    # Criado página de cadastro de perfil;<br>
+
+                    <br><strong>Melhorias</strong><br>
+                    # Reformulação no cadastro de usuários;<br>
+                    # Permissões de acesso por perfil;<br>
+                    # Correções nos formatos de data e hora;<br>
+
+                    <br><strong>Correções de BUG</strong><br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criado tabela url_menu;<br>
+                    # Criado tabela url_submenu;<br>
+                    # Criado tabela perfil;<br>
+                    # Criado tabela perfil_permissoes_menu;<br>
+                    # Criado tabela perfil_permissoes_submenu;<br>
+                    # Alterado tabela usuarios;<br>
+                    # Excluido tabela usuarios_perfil;<br>
+
+                    <br><strong>Previsto para próxima atualização</strong><br>
+                    # Menu "Meu perfil";<br>
+                    # Editar usuário;<br>
+                    # Ajustes internos no javascript de coleta de dados da OLT em Ativação de Rede Neutra;<br>
+                    # Travamento para parceiro RN ter acesso somente a suas ONUs;<br>
+                    # Travamento para parceiro RN ver somente incidentes que corresponde as OLTs que estão liberadas para ele;<br>
+                    # Variedade de dashboards;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Relatórios;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Criação de contratos;<br>
+                    # Componentes de equipamentos;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                    # Integração com API's de CEP;<br>
+                    # Segurança individual por páginas;<br>
+                  </div>
+                </div>
+              </div>
+
               <!-- Versão 2.9 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading2-9">
@@ -49,7 +98,6 @@ require "../includes/menu.php";
                   </div>
                 </div>
               </div>
-
 
               <!-- Versão 2.8 -->
               <div class="accordion-item">

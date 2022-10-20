@@ -19,7 +19,7 @@ if($consulta):
     
     while($campo = mysqli_fetch_object($consulta)):
         
-       echo "<option value='$campo->pessoa_email'> $campo->pessoa_email </option>";
+       echo "$campo->pessoa_email";
     endwhile;
 
 else: 

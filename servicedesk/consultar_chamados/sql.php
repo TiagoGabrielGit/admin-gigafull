@@ -1,12 +1,12 @@
 <?php
 
-$sql_chamado1 =
+$sql_chamado1 = 
 "SELECT
 c.id as id_chamado,
 c.assuntoChamado as assunto,
 c.relato_inicial as relato_inicial,
-c.data_abertura as abertura,
-c.data_fechamento as fechado,
+date_format(c.data_abertura,'%H:%m:%s %d/%m/%Y') as abertura,
+date_format(c.data_fechamento,'%H:%m:%s %d/%m/%Y') as fechado,
 c.atendente_id as id_atendente,
 c.in_execution as in_execution,
 c.in_execution_atd_id as in_execution_atd_id,
@@ -76,8 +76,8 @@ cr.id as id_relato,
 cr.chamado_id as id_chamado,
 p.nome as relatante,
 cr.relato as relato,
-cr.relato_hora_inicial as inicio,
-cr.relato_hora_final as final,
+date_format(cr.relato_hora_inicial,'%H:%m:%s %d/%m/%Y') as inicio,
+date_format(cr.relato_hora_final,'%H:%m:%s %d/%m/%Y') as final,
 cr.seconds_worked as seconds_worked
 FROM
 chamado_relato as cr
