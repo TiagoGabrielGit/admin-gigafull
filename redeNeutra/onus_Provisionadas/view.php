@@ -57,6 +57,7 @@ rnop.slot_olt as slotOLT,
 rnop.pon_olt as ponOLT,
 rnop.id_onu as idONU,
 rnop.serial_onu as serialONU,
+date_format(rnop.data_provisionamento,'%H:%m:%s %d/%m/%Y') as data_provisionamento,
 e.fantasia as fantasia,
 rno.olt_name as nameOLT,
 rnop.olt_id as idOLT
@@ -148,6 +149,13 @@ $campos = $r_provisionamento->fetch_array();
                                                         <div class="col-8">
                                                             <label class="form-label">OLT</label>
                                                             <input value="<?= $campos['nameOLT'] ?>" type="text" class="form-control" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                    <div class="row">
+                                                        <div class="col-6">
+                                                            <label class="form-label">Data Provisionamento</label>
+                                                            <input value="<?= $campos['data_provisionamento'] ?>" type="text" class="form-control" disabled>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -29,6 +29,7 @@ require "sql.php";
                                     <th scope="col">ID Onu</th>
                                     <th scope="col">Serial</th>
                                     <th scope="col">Descrição</th>
+                                    <th scope="col">Data Provisionamento</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -46,6 +47,7 @@ require "sql.php";
                                         <td><?= $campos['id_onu']; ?></td>
                                         <td><?= $campos['serial_onu']; ?></td>
                                         <td><?= $campos['descricao']; ?></td>
+                                        <td><?= $campos['data_provisionamento']; ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>

@@ -33,12 +33,6 @@ $linhaONTID = $retorno1[$linhaONTID];
 $posicaoONTID = strpos($linhaONTID, 'ONTID :');
 $idONU = substr($linhaONTID, $posicaoONTID + 7);
 
-//$linha = $retorno1[36];
-//$posicao = strpos($linha, 'ONTID :');
-//$idONU = substr($linha, $posicao + 7);
-
-//echo "PON | ID:" . $linha . PHP_EOL;
-//echo $posicao . PHP_EOL;
 echo "ID ONU:" . $idONU . PHP_EOL;
 
 echo "=============" . PHP_EOL;
@@ -57,8 +51,8 @@ foreach ($retorno2 as $key2) {
 }
 
 if ($valida3 === false) {
-    $sql_insert = "INSERT INTO redeneutra_onu_provisionadas (metodo, olt_id, parceiro_id, descricao, slot_olt, pon_olt, id_onu, serial_onu, active)
-    VALUES ('1', '$olt', '$parceiro', '$descricaoONU', '$slotOLT', '$ponOLT', '$idONU', '$serialONU', '1')";
+    $sql_insert = "INSERT INTO redeneutra_onu_provisionadas (metodo, olt_id, parceiro_id, descricao, slot_olt, pon_olt, id_onu, serial_onu, active, data_provisionamento)
+    VALUES ('1', '$olt', '$parceiro', '$descricaoONU', '$slotOLT', '$ponOLT', '$idONU', '$serialONU', '1', NOW())";
     mysqli_query($mysqli, $sql_insert);
     $idProvisionamento = mysqli_insert_id($mysqli);
 }

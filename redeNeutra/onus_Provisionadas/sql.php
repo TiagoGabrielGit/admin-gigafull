@@ -9,6 +9,7 @@ rnup.slot_olt as slot_olt,
 rnup.pon_olt as pon_olt,
 rnup.id_onu as id_onu,
 rnup.serial_onu as serial_onu,
+date_format(rnup.data_provisionamento,'%d/%m/%Y') as data_provisionamento,
 e.fantasia as parceiro,
 rno.olt_name as olt
 FROM

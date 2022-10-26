@@ -309,19 +309,9 @@ if (empty($chamado['execucao'])) {
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="/profile.php">
+              <a class="dropdown-item d-flex align-items-center" href="/gerenciamento/usuarios/profile.php?id=<?=$id?>">
                 <i class="bi bi-person"></i>
                 <span>Meu perfil</span>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="/pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>Precisa Ajuda?</span>
               </a>
             </li>
             <li>

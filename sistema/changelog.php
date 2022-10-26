@@ -18,6 +18,52 @@ require "../includes/menu.php";
             <!-- Default Accordion -->
             <div class="accordion" id="accordionExample">
 
+              <!-- Versão 3.1 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading3-1">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3-1" aria-expanded="false" aria-controls="collapse3-1">
+                    Versão 3.1 - 26/10/2022
+                  </button>
+                </h2>
+                <div id="collapse3-1" class="accordion-collapse collapse" aria-labelledby="heading3-1" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <strong>Novas funcionalidades</strong><br>
+                    # Menu "Meu perfil";<br>
+
+                    <br><strong>Melhorias</strong><br>
+                    # Ajustes internos no javascript de coleta de dados da OLT em Ativação de Rede Neutra;<br>
+                    # Editar usuário;<br>
+                    # Armazenagem da data de provisionamento de ONU;<br>
+
+                    <br><strong>Correções de BUG</strong><br>
+                    # Correção de vincular integrantes à equipes;<br>
+                    # Correção modal de permissões de privacidade;<br>
+                    # Correção dashboard inicial;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Adicionado coluna data_provisionamento na tabela redeneutra_onu_provisionadas;<br>
+
+                    <br><strong>Previsto para próxima atualização</strong><br>
+                    # Travamento para parceiro RN ter acesso somente a suas ONUs;<br>
+                    # Travamento para parceiro RN ver somente incidentes que corresponde as OLTs que estão liberadas para ele;<br>
+                    # Variedade de dashboards;<br>
+                    # Melhorias no cadastro de profiles;<br>                    
+
+                    <br><strong>Backlog</strong><br>
+                    # Relatórios;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Criação de contratos;<br>
+                    # Componentes de equipamentos;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                    # Integração com API's de CEP;<br>
+                    # Segurança individual por páginas;<br>
+                    # Ferramenta de calculo de potencia DWDM;<br>
+                  </div>
+                </div>
+              </div>
+
+
               <!-- Versão 3.0 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading3-0">
@@ -45,6 +91,7 @@ require "../includes/menu.php";
                     # Criado tabela perfil_permissoes_submenu;<br>
                     # Alterado tabela usuarios;<br>
                     # Excluido tabela usuarios_perfil;<br>
+                    # Excluido tabela perfil_permissoes;<br>
 
                     <br><strong>Previsto para próxima atualização</strong><br>
                     # Menu "Meu perfil";<br>
@@ -53,6 +100,8 @@ require "../includes/menu.php";
                     # Travamento para parceiro RN ter acesso somente a suas ONUs;<br>
                     # Travamento para parceiro RN ver somente incidentes que corresponde as OLTs que estão liberadas para ele;<br>
                     # Variedade de dashboards;<br>
+                    # Correção de vincular integrantes à equipes;<br>
+                    # Melhorias no cadastro de profiles;<br>
 
                     <br><strong>Backlog</strong><br>
                     # Relatórios;<br>
@@ -63,6 +112,7 @@ require "../includes/menu.php";
                     # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
                     # Integração com API's de CEP;<br>
                     # Segurança individual por páginas;<br>
+                    # Ferramenta de calculo de potencia DWDM;<br>
                   </div>
                 </div>
               </div>

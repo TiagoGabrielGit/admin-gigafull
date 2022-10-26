@@ -111,7 +111,7 @@ if ($statusEquipe  == 'Ativo') {
                                                     ON
                                                         e.id = ei.equipe_id
                                                     WHERE
-                                                        u.deleted = 1
+                                                        u.active = 1
                                                     AND
                                                         ei.integrante_id NOT IN (
                                                             SELECT
@@ -121,7 +121,7 @@ if ($statusEquipe  == 'Ativo') {
                                                             WHERE
                                                                 equipe_id = $id_equipe)
                                                     OR
-                                                        u.deleted = 1
+                                                        u.active = 1
                                                     AND
                                                         ei.equipe_id IS NULL
                                                     GROUP BY

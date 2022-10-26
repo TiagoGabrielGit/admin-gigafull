@@ -119,7 +119,7 @@ if ($credencialTipo == "E-mail") {
                                                     ON
                                                     p.id = u.pessoa_id
                                                     WHERE
-                                                    u.deleted = 1
+                                                    u.active = 1
                                                     ORDER BY
                                                     p.nome ASC
                                                     ";

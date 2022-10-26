@@ -19,7 +19,7 @@ require "../../../conexoes/conexao.php";
 <body>
     <div class="container theme-showcase" role="main">
         <?php
-        $id = isset($_POST['id']) ? $_POST['id'] : "";
+        $id = $_POST['id'];
         $usuario = $_POST['usuario'];
         $senha = md5($_POST['senha']);
         $senhaRepeat = md5($_POST['senhaRepeat']);
@@ -45,7 +45,7 @@ require "../../../conexoes/conexao.php";
                                 <?php echo $usuario; ?>
                             </div>
                             <div class="modal-footer">
-                                <a href="/gerenciamento/usuarios/usuarios.php"><button type="button" class="btn btn-success">Ok</button></a>
+                                <a href="/index.php"><button type="button" class="btn btn-success">Ok</button></a>
                             </div>
                         </div>
                     </div>
@@ -69,7 +69,7 @@ require "../../../conexoes/conexao.php";
                                 <?php echo $usuario; ?>
                             </div>
                             <div class="modal-footer">
-                                <a href="/gerenciamento/usuarios/usuarios.php"><button type="button" class="btn btn-danger">Ok</button></a>
+                                <a href="/index.php"><button type="button" class="btn btn-danger">Ok</button></a>
                             </div>
                         </div>
                     </div>
@@ -88,10 +88,11 @@ require "../../../conexoes/conexao.php";
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Senhas não coincidem!</h4>
+                            <h4 class="modal-title" id="myModalLabel">Senhas não coincidem!
+                            </h4>
                         </div>
                         <div class="modal-footer">
-                            <a href="/gerenciamento/usuarios/usuarios.php"><button type="button" class="btn btn-danger">Ok</button></a>
+                            <a href="/index.php"><button type="button" class="btn btn-danger">Ok</button></a>
                         </div>
                     </div>
                 </div>
