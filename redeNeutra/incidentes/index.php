@@ -1,6 +1,5 @@
 <?php
 require "../../includes/menu.php";
-require "sql.php";
 ?>
 <main id="main" class="main">
     <div class="pagetitle">
@@ -16,6 +15,80 @@ require "sql.php";
                         <div class="accordion" id="accordionFlushExample">
 
                             <?php
+                            $usuarioID = $_SESSION['id'];
+                            $sql_parceiro =
+                                "SELECT
+                            parceiroRN_id as parceiro
+                            FROM
+                            usuarios as u
+                            WHERE
+                            u.id = $usuarioID
+                            ";
+
+                            $r_sql_parceiro = mysqli_query($mysqli, $sql_parceiro);
+                            $campo_parceiro = $r_sql_parceiro->fetch_array();
+                            $parceiroID = $campo_parceiro['parceiro'];
+                            if ($campo_parceiro['parceiro'] == NULL) {
+                                $sql_incidentes =
+                                    "SELECT
+                                    rni.id as idIncidente,
+                                    rni.zabbix_event_id as zabbixID,
+                                    eqpop.hostname as equipamento,
+                                    rni.descricaoIncidente as descricaoIncidente,
+                                    CASE
+                                    WHEN rni.active = 1 THEN 'Incidente aberto'
+                                    WHEN rni.active = 0 THEN 'Normalizado'
+                                    END active,
+                                    rni.active as activeID,
+                                    date_format(rni.inicioIncidente,'%H:%m:%s %d/%m/%Y') as horainicial,
+                                    date_format(rni.fimIncidente,'%H:%m:%s %d/%m/%Y') as horafinal,
+                                    IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
+                                    FROM
+                                    redeneutra_incidentes as rni
+                                    LEFT JOIN
+                                    equipamentospop as eqpop
+                                    ON
+                                    eqpop.id = rni.equipamento_id
+                                    ORDER BY
+                                    rni.inicioIncidente DESC";
+                            } else {
+                                $sql_incidentes =
+                                    "SELECT
+                                    rni.id as idIncidente,
+                                    rni.zabbix_event_id as zabbixID,
+                                    eqpop.hostname as equipamento,
+                                    rni.descricaoIncidente as descricaoIncidente,
+                                    CASE
+                                    WHEN rni.active = 1 THEN 'Incidente aberto'
+                                    WHEN rni.active = 0 THEN 'Normalizado'
+                                    END active,
+                                    rni.active as activeID,
+                                    date_format(rni.inicioIncidente,'%H:%m:%s %d/%m/%Y') as horainicial,
+                                    date_format(rni.fimIncidente,'%H:%m:%s %d/%m/%Y') as horafinal,
+                                    IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
+                                    FROM
+                                    redeneutra_parceiro_olt as rnpo
+                                    LEFT JOIN
+                                    redeneutra_olts as rno
+                                    ON
+                                    rno.id = rnpo.olt_id
+                                    LEFT JOIN
+                                    redeneutra_incidentes as rni
+                                    ON
+                                    rni.equipamento_id = rno.equipamento_id
+                                    LEFT JOIN
+                                    equipamentospop as eqpop
+                                    ON
+                                    eqpop.id = rni.equipamento_id
+                                    WHERE
+                                    rnpo.parceiro_id = $parceiroID
+                                    and
+                                    rnpo.active = 1
+                                    ORDER BY
+                                    rni.inicioIncidente DESC";
+                            }
+
+
                             $r_sql_incidentes = mysqli_query($mysqli, $sql_incidentes);
 
                             $cont = 1;
@@ -34,7 +107,7 @@ require "sql.php";
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="flush-heading<?= $cont ?>">
                                         <button class="accordion-button collapsed" id="<?= $estiloTable ?>" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<?= $cont ?>" aria-expanded="false" aria-controls="flush-collapse<?= $cont ?>">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" fill="<?=$corBandeira?>" class="bi bi-flag-fill" viewBox="0 0 16 16">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" stroke="black" fill="<?= $corBandeira ?>" class="bi bi-flag-fill" viewBox="0 0 16 16">
                                                 <path d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12.435 12.435 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A19.626 19.626 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a19.587 19.587 0 0 0 1.349-.476l.019-.007.004-.002h.001"></path>
                                             </svg> &nbsp; &nbsp; Incidente: <?= $campos['descricaoIncidente'] ?>
                                         </button>

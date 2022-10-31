@@ -22,7 +22,7 @@ require "../includes/menu.php";
 <div class="accordion-item">
                 <h2 class="accordion-header" id="heading3-2">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3-2" aria-expanded="false" aria-controls="collapse3-2">
-                    Versão 3.2 - X/10/2022
+                    Versão 3.2 - 31/10/2022
                   </button>
                 </h2>
                 <div id="collapse3-2" class="accordion-collapse collapse" aria-labelledby="heading3-2" data-bs-parent="#accordionExample">
@@ -30,16 +30,20 @@ require "../includes/menu.php";
                     <strong>Novas funcionalidades</strong><br>
 
                     <br><strong>Melhorias</strong><br>
+                    # Travamento para parceiro RN ter acesso somente a suas ONUs;<br>
+                    # Travamento para parceiro RN ver somente incidentes que corresponde as OLTs que estão liberadas para ele;<br>
 
                     <br><strong>Correções de BUG</strong><br>
                     
                     <br><strong>Alterações banco de dados</strong><br>
+                    # Criado coluna equipamento_id na tabela redeneutra_olts;<br>
 
                     <br><strong>Previsto para próxima atualização</strong><br>
-                    # Travamento para parceiro RN ter acesso somente a suas ONUs;<br>
-                    # Travamento para parceiro RN ver somente incidentes que corresponde as OLTs que estão liberadas para ele;<br>
                     # Variedade de dashboards;<br>
                     # Melhorias no cadastro de profiles;<br>                    
+                    # Correção do modal editar senha no admin;<br>
+                    # Travamento parceiro ao ativar ONU;<br>
+                    
 
                     <br><strong>Backlog</strong><br>
                     # Relatórios;<br>

@@ -1,8 +1,6 @@
 <?php
 require "../../includes/menu.php";
-?>
 
-<?php
 $usuarioID = $_SESSION['id'];
 $sql_parceiro =
     "SELECT
@@ -16,7 +14,7 @@ u.id = $usuarioID
 $r_sql_parceiro = mysqli_query($mysqli, $sql_parceiro);
 $campo_parceiro = $r_sql_parceiro->fetch_array();
 
-if ($campo_parceiro['parceiro'] != "") {
+if ($campo_parceiro['parceiro'] == NULL) {
     $parceidoID = "%";
 } else {
     $parceidoID = $campo_parceiro['parceiro'];
@@ -58,9 +56,7 @@ rnop.parceiro_id LIKE ('$parceidoID')
 
 $r_provisionamento = mysqli_query($mysqli, $sql_provisionamento);
 $campos = $r_provisionamento->fetch_array();
-?>
 
-<?php
 if ($campos['contagem'] == 1) { ?>
 
     <style>
