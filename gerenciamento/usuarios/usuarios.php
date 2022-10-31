@@ -214,7 +214,7 @@ require "sql.php";
                                     <tr>
 
                                         <td style="text-align: center;">
-                                            <a style="color: red;" href="view?id=<?= $campos['id'] ?>"><?= $campos['nome']; ?></a>
+                                            <a style="color: red;" href="view.php?id=<?= $campos['id'] ?>"><?= $campos['nome']; ?></a>
                                         </td>
 
                                         <td><?= $campos['dashboard']; ?></td>

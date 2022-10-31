@@ -28,6 +28,8 @@ ON
 rno.id = rnup.olt_id
 WHERE
 rnup.active = 1
+and
+rnup.parceiro_id LIKE '$parceiroID'
 order by
 rnup.slot_olt asc,
 rnup.pon_olt asc,

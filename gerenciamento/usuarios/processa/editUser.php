@@ -44,7 +44,7 @@ require "../../../conexoes/conexao.php";
                             Alterações realizadas.
                         </div>
                         <div class="modal-footer">
-                            <a href="/gerenciamento/usuarios/view?id=<?=$id?>"><button type="button" class="btn btn-success">Ok</button></a>
+                            <a href="/gerenciamento/usuarios/view.php?id=<?=$id?>"><button type="button" class="btn btn-success">Ok</button></a>
                         </div>
                     </div>
                 </div>
@@ -68,7 +68,7 @@ require "../../../conexoes/conexao.php";
                             Erro, verifique.
                         </div>
                         <div class="modal-footer">
-                            <a href="/gerenciamento/usuarios/view?id=<?=$id?>"><button type="button" class="btn btn-danger">Ok</button></a>
+                            <a href="/gerenciamento/usuarios/view.php?id=<?=$id?>"><button type="button" class="btn btn-danger">Ok</button></a>
                         </div>
                     </div>
                 </div>

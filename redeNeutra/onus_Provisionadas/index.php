@@ -1,6 +1,5 @@
 <?php
 require "../../includes/menu.php";
-require "sql.php";
 ?>
 
 
@@ -35,6 +34,27 @@ require "sql.php";
                             <tbody>
 
                                 <?php
+                                $usuarioID = $_SESSION['id'];
+
+                                $sql_parceiroID =
+                                    "SELECT
+                                    u.parceiroRN_id as parceiro
+                                FROM
+                                    usuarios as u
+                                WHERE
+                                    u.id = $usuarioID
+                                ";
+
+                                $r_sql_parceiroID = mysqli_query($mysqli, $sql_parceiroID);
+                                $camposParceiro = $r_sql_parceiroID->fetch_array();
+
+                                if ($camposParceiro['parceiro'] != "") {
+                                    $parceiroID = $camposParceiro['parceiro'];
+                                } else {
+                                    $parceiroID = "%";
+                                }
+
+                                require "sql.php";
                                 $r_onus_provisionadas = mysqli_query($mysqli, $onus_provisionadas);
 
                                 while ($campos = $r_onus_provisionadas->fetch_array()) { ?>
@@ -52,14 +72,12 @@ require "sql.php";
                                 <?php } ?>
                             </tbody>
                         </table>
-                        <!-- End Table with stripped rows -->
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-</main><!-- End #main -->
+</main>
 
 <?php
 require "../../includes/footer.php"
