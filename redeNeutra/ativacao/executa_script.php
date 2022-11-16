@@ -1,25 +1,6 @@
 <?php
 require "../../conexoes/conexao.php"; 
 
-/*OLD
-$ipOLT = $_GET['ipOLT'];
-$userOLT = $_GET['userOLT'];
-$passOLT = $_GET['passOLT'];
-$slotOLT = $_GET['slotOLT'];
-$ponOLT = $_GET['ponOLT'];
-$serialONU = $_GET['serialONU'];
-$line_profile_id = $_GET['line_profile_id'];
-$srv_profile_id = $_GET['srv_profile_id'];
-$codigoParceiro = $_GET['codigoParceiro'];
-$codigoReserva = $_GET['codigoReserva'];
-$CVLAN = $_GET['CVLAN'];
-$SVLAN = $_GET['SVLAN'];
-$GEMPORT = $_GET['GEMPORT'];
-$parceiro = $_GET['parceiro'];
-$olt = $_GET['olt'];
-*/
-
-/*NEW*/
 $profile = $_GET['profile'];
 $slotOLT = $_GET['slotOLT'];
 $ponOLT = $_GET['ponOLT'];
@@ -60,7 +41,7 @@ $r_sql = mysqli_query($mysqli, $sql);
 $c_sql = $r_sql->fetch_array();
 
 $ipOLT = $c_sql['ipOLT'];
-$olt = $_GET['oltId'];
+$olt = $c_sql['oltId'];
 $userOLT = $c_sql['userOLT'];
 $passOLT = $c_sql['passOLT'];
 $line_profile_id = $c_sql['line_profile_id'];
@@ -68,7 +49,6 @@ $srv_profile_id = $c_sql['srv_profile_id'];
 $CVLAN = $c_sql['CVLAN'];
 $SVLAN = $c_sql['SVLAN'];
 $GEMPORT = $c_sql['GEMPORT'];
-/*NEW*/
 
 $descricaoONU = $codigoParceiro . "_" . $codigoReserva;
 
