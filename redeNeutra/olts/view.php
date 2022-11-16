@@ -102,7 +102,7 @@ rnpo.olt_id = $idOLT
                                         </div>
                                     </div>
 
-                                    <br><br><br><br>
+                                    <br><br>
                                     <div class="row">
                                         <div class="col-12" style="text-align: center;">
                                             <input id="btnEditOLT" name="btnEditOLT" type="button" value="Aplicar Alterações" class="btn btn-danger"></input>
@@ -113,12 +113,14 @@ rnpo.olt_id = $idOLT
                             </div>
 
                             <div class="col-lg-4 border border-color rounded">
-                                <form id="formCriarPerfil" method="POST">
+                                <span id="msgAlerta"></span>
+                                <form id="formCriarPerfil">
+                                    <span id="msgAlertaErroCad"></span>
                                     <input name="idOLT" type="text" class="form-control" id="idOLT" value="<?= $idOLT ?>" hidden>
 
                                     <div class="row">
                                         <div class="col-6">
-                                            <label for="service" class="form-label">Serviço</label>
+                                            <label for="service" class="form-label">Profile</label>
                                             <input name="service" type="text" class="form-control" id="service" placeholder="Ex: Internet">
                                         </div>
                                     </div>
@@ -138,22 +140,6 @@ rnpo.olt_id = $idOLT
                                         </div>
                                     </div>
 
-
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <label for="CVLAN" class="form-label">CVLAN</label>
-                                            <input name="CVLAN" type="number" class="form-control" id="CVLAN" maxlength="4">
-                                        </div>
-                                        <div class="col-3">
-                                            <label for="SVLAN" class="form-label">SVLAN</label>
-                                            <input name="SVLAN" type="number" class="form-control" id="SVLAN" maxlength="4">
-                                        </div>
-                                        <div class="col-3">
-                                            <label for="GEMPORT" class="form-label">GEMPORT</label>
-                                            <input name="GEMPORT" type="number" class="form-control" id="GEMPORT" maxlength="4">
-                                        </div>
-                                    </div>
-
                                     <div class="row">
                                         <div class="col-5">
                                             <label for="lineProfile" class="form-label">Line Profile ID</label>
@@ -164,11 +150,10 @@ rnpo.olt_id = $idOLT
                                             <input name="srvProfile" type="number" class="form-control" id="srvProfile">
                                         </div>
                                     </div>
-
-                                    <br>
+                                    <br><br>
                                     <div class="row">
                                         <div class="col-12" style="text-align: center; margin-top: 2px;">
-                                            <input id="btnCriarPerfil" name="btnCriarPerfil" type="button" value="Criar Profile" class="btn btn-danger"></input>
+                                            <input type="submit" class="btn btn-danger" id="btnCriarPerfil" value="Criar Profile"></input>
                                         </div>
                                     </div>
                                 </form>
@@ -195,7 +180,7 @@ rnpo.olt_id = $idOLT
                                         </div>
                                     </div>
 
-                                    <br><br><br><br><br><br>
+                                    <br><br><br><br>
                                     <div class="row">
                                         <div class="col-12" style="text-align: center;  margin-top: 22px;">
                                             <input id="btnCriaPON" name="btnCriaPON" type="button" value="Criar PON" class="btn btn-danger"></input>
@@ -209,37 +194,36 @@ rnpo.olt_id = $idOLT
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Lista de Perfil</h5>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h1 class="card-title">Perfil</h1>
 
-                        <table class="table table-striped" id="styleTable">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Parceiro</th>
-                                    <th scope="col">Serviço</th>
-                                    <th scope="col">OLT</th>
-                                    <th scope="col">CVLAN</th>
-                                    <th scope="col">SVLAN</th>
-                                    <th scope="col">GEMPORT</th>
-                                    <th scope="col">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $sql_perfil =
-                                    "SELECT
+                            <table class="table table-striped" id="styleTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Line Prof.</th>
+                                        <th scope="col">Perfil</th>
+                                        <th scope="col">SRV Prof.</th>
+                                        <th scope="col">Parceiro</th>
+                                        <th scope="col">OLT</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $sql_perfil =
+                                        "SELECT
                                     rnpp.id as idPerfil,
-                                    rnpp.service as servico,
-                                    rnpp.CVLAN as CVLAN,
-                                    rnpp.svlan as SVLAN,
-                                    rnpp.gemport as gemport,
+                                    rnpp.line_profile_id as lineProfile,
+                                    rnpp.srv_profile_id as srvProfile,
+                                    rnpp.perfil as perfil,
                                     rno.olt_name as nameOLT,
                                     e.fantasia as fantasia,
                                     CASE
                                         WHEN rnpp.active = 1 THEN 'Ativo'
                                         WHEN rnpp.active = 0 THEN 'Inativo'
-                                    END as statuaPerfil
+                                    END as statusPerfil
                                 FROM
                                     redeneutra_profile_parceiro AS rnpp
                                 LEFT JOIN
@@ -258,21 +242,23 @@ rnpo.olt_id = $idOLT
                                     rnpp.redeneutra_olt_id = $idOLT
                                 ";
 
-                                $r_perfil = mysqli_query($mysqli, $sql_perfil);
-                                while ($campos_perfil = $r_perfil->fetch_array()) {
-                                ?>
-                                    <tr>
-                                        <td><?= $campos_perfil['fantasia']; ?></td>
-                                        <td><?= $campos_perfil['servico']; ?></td>
-                                        <td><?= $campos_perfil['nameOLT']; ?></td>
-                                        <td><?= $campos_perfil['CVLAN']; ?></td>
-                                        <td><?= $campos_perfil['SVLAN']; ?></td>
-                                        <td><?= $campos_perfil['gemport']; ?></td>
-                                        <td><?= $campos_perfil['statuaPerfil']; ?></td>
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
+                                    $r_perfil = mysqli_query($mysqli, $sql_perfil);
+                                    while ($campos_perfil = $r_perfil->fetch_array()) {
+                                    ?>
+                                        <tr>
+                                            <td><?= $campos_perfil['lineProfile']; ?></td>
+                                            <td style="text-align: center;">
+                                                <a style="color: red;" href="perfilOlt.php?id=<?= $campos_perfil['idPerfil']; ?>"><?= $campos_perfil['perfil']; ?></a>
+                                            </td>
+                                            <td><?= $campos_perfil['srvProfile']; ?></td>
+                                            <td><?= $campos_perfil['fantasia']; ?></td>
+                                            <td><?= $campos_perfil['nameOLT']; ?></td>
+                                            <td><?= $campos_perfil['statusPerfil']; ?></td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -284,7 +270,6 @@ rnpo.olt_id = $idOLT
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
-
 
 <script>
     document.getElementById("btnEditOLT").addEventListener("click", eventoFuncaoEditOLT);
@@ -311,31 +296,48 @@ rnpo.olt_id = $idOLT
 </script>
 
 <script>
-    document.getElementById("btnCriarPerfil").addEventListener("click", eventoFuncaoCriaPerfil);
+    const cadForm = document.getElementById("formCriarPerfil");
+    const msgAlertaErroCad = document.getElementById("msgAlertaErroCad");
+    const msgAlerta = document.getElementById("msgAlerta");
 
-    function eventoFuncaoCriaPerfil() {
-        let obg = {}
-        obg.idOLT = document.getElementById("idOLT").value;
-        obg.service = document.getElementById("service").value;
-        obg.parceiro = document.getElementById("parceiro").value;
-        obg.CVLAN = document.getElementById("CVLAN").value;
-        obg.SVLAN = document.getElementById("SVLAN").value;
-        obg.GEMPORT = document.getElementById("GEMPORT").value;
-        obg.lineProfile = document.getElementById("lineProfile").value;
-        obg.srvProfile = document.getElementById("srvProfile").value;
-        funcaoCriaEvento('/api/insert_perfil_olt.php', 'GET', obg)
-    }
+    cadForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-    function funcaoCriaEvento(url, metodo, obg) {
-        $.ajax({
-            url: url,
-            method: metodo,
-            dataType: "HTML",
-            data: obg,
-        })
-        window.location.replace("/redeNeutra/olts/view.php?idOLT=<?= $idOLT ?>");
-    }
+        const dadosForm = new FormData(cadForm);
+
+        document.getElementById("btnCriarPerfil").value = "Salvando...";
+
+        const dados = await fetch("cadastra_perfil.php", {
+            method: "POST",
+            body: dadosForm,
+        });
+
+        const resposta = await dados.json();
+
+        if (resposta['erro']) {
+            msgAlertaErroCad.innerHTML = resposta['msg'];
+        } else {
+            msgAlerta.innerHTML = resposta['msg'];
+            cadForm.reset();
+
+            setTimeout(function() {
+                window.location.reload(1);
+            }, 1200);
+        }
+        document.getElementById("btnCriarPerfil").value = "Cadastrar";
+    });
 </script>
+<!--
+<script>
+    function modalProfile() {
+        $("#largeModal").modal({
+            show: true
+        });
+    }
+
+    setTimeout(modalProfile, 1000);
+</script>
+-->
 
 <?php
 require "../../includes/footer.php";

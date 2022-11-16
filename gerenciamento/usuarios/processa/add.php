@@ -33,7 +33,7 @@ require "../../../conexoes/conexao.php";
         }
 
         $result_usuario = "INSERT INTO usuarios (pessoa_id, tipo_usuario, parceiroRN_id, dashboard, email, senha, perfil_id, active, criado)
-         VALUES ('$nome', '$tipo_usuario', '$parceiroRN', '$dashboard', '$email', '$senha', '$perfil', '1', NOW())";
+         VALUES ('$nome', '$tipo_usuario', NULLIF('$parceiroRN', ''), '$dashboard', '$email', '$senha', '$perfil', '1', NOW())";
         $resultado_usuario = mysqli_query($mysqli, $result_usuario);
 
         if (mysqli_affected_rows($mysqli) > 0) { ?>

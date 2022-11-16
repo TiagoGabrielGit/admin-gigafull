@@ -18,8 +18,52 @@ require "../includes/menu.php";
             <!-- Default Accordion -->
             <div class="accordion" id="accordionExample">
 
-<!-- Versão 3.2 -->
-<div class="accordion-item">
+              <!-- Versão 3.3 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading3-3">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3-3" aria-expanded="false" aria-controls="collapse3-3">
+                    Versão 3.3 - 16/11/2022
+                  </button>
+                </h2>
+                <div id="collapse3-3" class="accordion-collapse collapse" aria-labelledby="heading3-3" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <strong>Novas funcionalidades</strong><br>
+
+                    <br><strong>Melhorias</strong><br>
+                    # Separado a criação do profile da criação dos serviços do profile;<br>
+
+                    <br><strong>Correções de BUG</strong><br>
+                    # Corrigido query de cadastro de novo usuário quando não esta vinculado a parceiro de rede neutra;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Excluido colunas da tabela redeneutra_profile_parceiro;<br>
+                    # Criado tabela redeneutra_profile_serviço;<br>
+
+                    <br><strong>Previsto para próxima atualização</strong><br>
+                    # Variedade de dashboards;<br>
+                    # Correção do modal editar senha no admin;<br>
+                    # Travamento parceiro ao ativar ONU;<br>
+                    # Seleção de profile no momento do provisionamento;<br>
+                    # Remover as informações de OLT e Profile no index de ativação;<br>
+                    # Form de editar o profile OLT;<br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas;<br>
+
+
+                    <br><strong>Backlog</strong><br>
+                    # Relatórios;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Criação de contratos;<br>
+                    # Componentes de equipamentos;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                    # Integração com API's de CEP;<br>
+                    # Segurança individual
+                  </div>
+                </div>
+              </div>
+
+              <!-- Versão 3.2 -->
+              <div class="accordion-item">
                 <h2 class="accordion-header" id="heading3-2">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3-2" aria-expanded="false" aria-controls="collapse3-2">
                     Versão 3.2 - 31/10/2022
@@ -34,16 +78,16 @@ require "../includes/menu.php";
                     # Travamento para parceiro RN ver somente incidentes que corresponde as OLTs que estão liberadas para ele;<br>
 
                     <br><strong>Correções de BUG</strong><br>
-                    
+
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado coluna equipamento_id na tabela redeneutra_olts;<br>
 
                     <br><strong>Previsto para próxima atualização</strong><br>
                     # Variedade de dashboards;<br>
-                    # Melhorias no cadastro de profiles;<br>                    
+                    # Melhorias no cadastro de profiles;<br>
                     # Correção do modal editar senha no admin;<br>
                     # Travamento parceiro ao ativar ONU;<br>
-                    
+
 
                     <br><strong>Backlog</strong><br>
                     # Relatórios;<br>
@@ -89,7 +133,7 @@ require "../includes/menu.php";
                     # Travamento para parceiro RN ter acesso somente a suas ONUs;<br>
                     # Travamento para parceiro RN ver somente incidentes que corresponde as OLTs que estão liberadas para ele;<br>
                     # Variedade de dashboards;<br>
-                    # Melhorias no cadastro de profiles;<br>                    
+                    # Melhorias no cadastro de profiles;<br>
 
                     <br><strong>Backlog</strong><br>
                     # Relatórios;<br>

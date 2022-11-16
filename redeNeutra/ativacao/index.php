@@ -14,12 +14,10 @@ require "sql.php";
             <div class="col-lg-12">
                 <div class="card-body">
                     <div class="row g-3">
-
                         <div class="col-lg-6">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Execução</h5>
-
                                     <form id="formExecutaScript" method="POST">
                                         <div class="row">
                                             <div class="col-6">
@@ -91,9 +89,7 @@ require "sql.php";
                                                 <button id="buttonExecutandoScript" class="btn btn-danger" type="button" disabled="" hidden><span class="spinner-border spinner-border-sm" role="status" aria-hidden="false"></span> Executando</button>
                                             </div>
                                         </div>
-
                                     </form>
-
                                 </div>
                             </div>
                         </div>
