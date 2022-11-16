@@ -16,11 +16,15 @@ $sql_olt =
     "SELECT
 rno.id as idOLT,
 rno.olt_name as nameOLT,
-rno.olt_ipAddress as ipOLT,
+eqp.ipaddress as ipOLT,
 rno.olt_username as userOLT,
 rno.olt_password as passOLT
 FROM
 redeneutra_olts as rno
+LEFT JOIN
+equipamentospop as eqp
+ON
+eqp.id = rno.equipamento_id
 WHERE
 rno.id = $idOLT
 ";
@@ -87,7 +91,7 @@ rnpo.olt_id = $idOLT
                                         </div>
                                         <div class="col-4">
                                             <label for="ipOLT" class="form-label">IP</label>
-                                            <input name="ipOLT" type="text" class="form-control" id="ipOLT" value="<?= $campos['ipOLT']; ?>">
+                                            <input name="ipOLT" type="text" class="form-control" id="ipOLT" value="<?= $campos['ipOLT']; ?>" disabled>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -120,8 +124,8 @@ rnpo.olt_id = $idOLT
 
                                     <div class="row">
                                         <div class="col-6">
-                                            <label for="service" class="form-label">Profile</label>
-                                            <input name="service" type="text" class="form-control" id="service" placeholder="Ex: Internet">
+                                            <label for="perfil" class="form-label">Profile</label>
+                                            <input name="perfil" type="text" class="form-control" id="perfil" placeholder="Ex: Internet">
                                         </div>
                                     </div>
 
@@ -202,11 +206,10 @@ rnpo.olt_id = $idOLT
                             <table class="table table-striped" id="styleTable">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Line Prof.</th>
-                                        <th scope="col">Perfil</th>
-                                        <th scope="col">SRV Prof.</th>
                                         <th scope="col">Parceiro</th>
-                                        <th scope="col">OLT</th>
+                                        <th scope="col">Perfil</th>
+                                        <th scope="col">Line Prof.</th>
+                                        <th scope="col">SRV Prof.</th>
                                         <th scope="col">Status</th>
                                     </tr>
                                 </thead>
@@ -246,13 +249,13 @@ rnpo.olt_id = $idOLT
                                     while ($campos_perfil = $r_perfil->fetch_array()) {
                                     ?>
                                         <tr>
-                                            <td><?= $campos_perfil['lineProfile']; ?></td>
+                                            <td><?= $campos_perfil['fantasia']; ?></td>
                                             <td style="text-align: center;">
                                                 <a style="color: red;" href="perfilOlt.php?id=<?= $campos_perfil['idPerfil']; ?>"><?= $campos_perfil['perfil']; ?></a>
                                             </td>
+                                            <td><?= $campos_perfil['lineProfile']; ?></td>
                                             <td><?= $campos_perfil['srvProfile']; ?></td>
-                                            <td><?= $campos_perfil['fantasia']; ?></td>
-                                            <td><?= $campos_perfil['nameOLT']; ?></td>
+
                                             <td><?= $campos_perfil['statusPerfil']; ?></td>
                                         </tr>
                                     <?php } ?>

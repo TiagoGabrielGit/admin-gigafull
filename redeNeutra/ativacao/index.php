@@ -41,6 +41,13 @@ require "sql.php";
                                                     <option selected disabled>Selecione a OLT</option>
                                                 </select>
                                             </div>
+
+                                            <div class="col-6">
+                                                <label for="profile" class="form-label">Profile</label>
+                                                <select id="profile" name="profile" class="form-select" aria-label="Default select example">
+                                                    <option selected disabled>Selecione o profile</option>
+                                                </select>
+                                            </div>
                                         </div>
 
                                         <div class="row">
@@ -71,15 +78,6 @@ require "sql.php";
                                         </div>
 
                                         <hr class="sidebar-divider">
-
-                                        <input name="ipOLT" type="text" class="form-control" id="ipOLT" placeholder="IP OLT" hidden>
-                                        <input name="userOLT" type="text" class="form-control" id="userOLT" placeholder="USUARIO OLT" hidden>
-                                        <input name="passOLT" type="password" class="form-control" id="passOLT" placeholder="SENHA OLT" hidden>
-                                        <input name="CVLAN" type="text" class="form-control" id="CVLAN" placeholder="CVLAN" hidden>
-                                        <input name="SVLAN" type="text" class="form-control" id="SVLAN" placeholder="SVLAN" hidden>
-                                        <input name="GEMPORT" type="text" class="form-control" id="GEMPORT" placeholder="GEMPORT" hidden>
-                                        <input name="line_profile_id" type="text" class="form-control" id="line_profile_id" placeholder="LINE PROFILE ID" hidden>
-                                        <input name="srv_profile_id" type="text" class="form-control" id="srv_profile_id" placeholder="SRV PROFILE ID" hidden>
 
                                         <div class="row">
                                             <div class="col-4">

@@ -14,30 +14,40 @@ require "sql.php";
                 <div class="card-body">
                     <div class="row g-3">
 
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Cadastrar OLT</h5>
 
-                                    <form id="formCadastraOLT" method="POST">
+                                    <span id="msgAlerta"></span>
+                                    <form id="formCadastraOLT">
+                                        <span id="msgAlertaErroCad"></span>
                                         <div class="row">
                                             <div class="col-5">
-                                                <label for="nomeOLT" class="form-label">OLT</label>
-                                                <input name="nomeOLT" type="text" class="form-control" id="nomeOLT" required>
+                                                <label for="equipamento" class="form-label">OLT</label>
+                                                <select class="form-select" id="equipamento" name="equipamento" required>
+                                                    <option disabled selected value="">Selecione a OLT</option>
+                                                    <?php
+                                                    $resultado = mysqli_query($mysqli, $lista_equipamentos);
+                                                    while ($equipamento = mysqli_fetch_object($resultado)) :
+                                                        echo "<option value='$equipamento->idEquipamento'> $equipamento->equipamento</option>";
+                                                    endwhile;
+                                                    ?>
+                                                </select>
                                             </div>
                                             <div class="col-7">
-                                                <label for="ipOLT" class="form-label">IP</label>
-                                                <input name="ipOLT" type="text" class="form-control" id="ipOLT" required>
+                                                <label for="olt" class="form-label">Apelido</label>
+                                                <input name="olt" type="text" class="form-control" id="olt" required>
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-6">
-                                                <label for="usuarioOLT" class="form-label">Usuário</label>
+                                                <label for="usuarioOLT" class="form-label">Usuário integração</label>
                                                 <input name="usuarioOLT" type="text" class="form-control" id="usuarioOLT" required>
                                             </div>
                                             <div class="col-6">
-                                                <label for="senhaOLT" class="form-label">Senha</label>
+                                                <label for="senhaOLT" class="form-label">Senha integração</label>
                                                 <input name="senhaOLT" type="text" class="form-control" id="senhaOLT" required>
                                             </div>
                                         </div>
@@ -45,14 +55,14 @@ require "sql.php";
                                         <hr class="sidebar-divider">
 
                                         <div class="col-12" style="text-align: center;">
-                                            <button id="buttonCadastraOLT" class="btn btn-danger" type="button">Cadastrar</button>
+                                            <input type="submit" class="btn btn-danger" id="buttonCadastraOLT" value="Cadastrar"></input>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-lg-8">
+                        <div class="col-lg-6">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Informações</h5>
@@ -98,7 +108,44 @@ require "sql.php";
     </section>
 </main>
 
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+
+<script>
+    const cadForm = document.getElementById("formCadastraOLT");
+    const msgAlertaErroCad = document.getElementById("msgAlertaErroCad");
+    const msgAlerta = document.getElementById("msgAlerta");
+
+    cadForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const dadosForm = new FormData(cadForm);
+
+        document.getElementById("buttonCadastraOLT").value = "Salvando...";
+
+        const dados = await fetch("cadastra_olt.php", {
+            method: "POST",
+            body: dadosForm,
+        });
+
+        const resposta = await dados.json();
+
+        if (resposta['erro']) {
+            msgAlertaErroCad.innerHTML = resposta['msg'];
+        } else {
+            msgAlerta.innerHTML = resposta['msg'];
+            cadForm.reset();
+
+            setTimeout(function() {
+                window.location.reload(1);
+            }, 1200);
+        }
+        document.getElementById("buttonCadastraOLT").value = "Cadastrar";
+    });
+</script>
+
+
 <?php
-require "scripts.php";
 require "../../includes/footer.php";
 ?>

@@ -18,6 +18,48 @@ require "../includes/menu.php";
             <!-- Default Accordion -->
             <div class="accordion" id="accordionExample">
 
+
+              <!-- Versão 3.4 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading3-4">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3-4" aria-expanded="false" aria-controls="collapse3-4">
+                    Versão 3.4 - 16/11/2022
+                  </button>
+                </h2>
+                <div id="collapse3-4" class="accordion-collapse collapse" aria-labelledby="heading3-4" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <strong>Novas funcionalidades</strong><br>
+
+                    <br><strong>Melhorias</strong><br>
+                    # Vinculado cadastro de OLT a equipamento;<br>
+                    # Seleção de profile no momento do provisionamento;<br>
+                    # Removido as informações de OLT e Profile no index de ativação;<br>
+
+                    <br><strong>Correções de BUG</strong><br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+
+                    <br><strong>Previsto para próxima atualização</strong><br>
+                    # Variedade de dashboards;<br>
+                    # Correção do modal editar senha no admin;<br>
+                    # Travamento parceiro ao ativar ONU;<br>
+                    # Form de editar o profile OLT;<br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas;<br>
+                    # Ajuste dos checkbox tipo de equipamento no cadastro de produto;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Relatórios;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Criação de contratos;<br>
+                    # Componentes de equipamentos;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                    # Integração com API's de CEP;<br>
+                    # Segurança individual
+                  </div>
+                </div>
+              </div>
+
               <!-- Versão 3.3 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading3-3">

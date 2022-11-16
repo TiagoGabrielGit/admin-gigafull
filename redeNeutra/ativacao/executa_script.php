@@ -1,6 +1,7 @@
 <?php
-require "../../conexoes/conexao.php";
+require "../../conexoes/conexao.php"; 
 
+/*OLD
 $ipOLT = $_GET['ipOLT'];
 $userOLT = $_GET['userOLT'];
 $passOLT = $_GET['passOLT'];
@@ -16,6 +17,58 @@ $SVLAN = $_GET['SVLAN'];
 $GEMPORT = $_GET['GEMPORT'];
 $parceiro = $_GET['parceiro'];
 $olt = $_GET['olt'];
+*/
+
+/*NEW*/
+$profile = $_GET['profile'];
+$slotOLT = $_GET['slotOLT'];
+$ponOLT = $_GET['ponOLT'];
+$serialONU = $_GET['serialONU'];
+$codigoParceiro = $_GET['codigoParceiro'];
+$codigoReserva = $_GET['codigoReserva'];
+$parceiro = $_GET['parceiro'];
+
+$sql =
+    "SELECT
+    rnps.cvlan as CVLAN,
+    rnps.svlan as SVLAN,
+    rnps.gemport as GEMPORT,
+    rnpp.line_profile_id as line_profile_id,
+    rnpp.srv_profile_id as srv_profile_id,
+    rno.olt_username as userOLT,
+    rno.olt_password as passOLT,
+    eqp.ipaddress as ipOLT,
+    rno.id as oltId
+FROM
+    redeneutra_profile_parceiro as rnpp
+LEFT JOIN
+	redeneutra_profile_service as rnps
+ON
+	rnpp.id = rnps.profile_id
+LEFT JOIN
+	redeneutra_olts as rno
+ON
+	rno.id = rnpp.redeneutra_olt_id
+LEFT JOIN
+equipamentospop as eqp
+ON
+eqp.id = rno.equipamento_id
+WHERE
+    rnpp.id = $profile";
+
+$r_sql = mysqli_query($mysqli, $sql);
+$c_sql = $r_sql->fetch_array();
+
+$ipOLT = $c_sql['ipOLT'];
+$olt = $_GET['oltId'];
+$userOLT = $c_sql['userOLT'];
+$passOLT = $c_sql['passOLT'];
+$line_profile_id = $c_sql['line_profile_id'];
+$srv_profile_id = $c_sql['srv_profile_id'];
+$CVLAN = $c_sql['CVLAN'];
+$SVLAN = $c_sql['SVLAN'];
+$GEMPORT = $c_sql['GEMPORT'];
+/*NEW*/
 
 $descricaoONU = $codigoParceiro . "_" . $codigoReserva;
 

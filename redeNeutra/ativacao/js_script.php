@@ -22,23 +22,19 @@
 
 <script>
     $("#olt").change(function() {
-        var oltSelecionada = $(this).children("option:selected").val();
+        var oltSelecionada = $("#olt").children("option:selected").val();
+        var parceiroSelecionado = $("#parceiro").children("option:selected").val();
 
         $.ajax({
-            url: "/api/captura_dados_olt.php",
+            url: "/api/captura_profile.php",
             method: "GET",
-            dataType: "JSON",
+            dataType: "HTML",
             data: {
-                id: oltSelecionada
+                idParceiro: parceiroSelecionado,
+                idOLT: oltSelecionada
             }
         }).done(function(resposta) {
-            document.getElementById("ipOLT").value = '';
-            document.getElementById("userOLT").value = '';
-            document.getElementById("passOLT").value = '';
-
-            document.getElementById("ipOLT").value = (resposta.ipOLT);
-            document.getElementById("userOLT").value = (resposta.userOLT);
-            document.getElementById("passOLT").value = (resposta.passOLT);
+            $("#profile").html(resposta);
         }).fail(function(resposta) {
             alert(resposta)
         });
@@ -46,17 +42,15 @@
 </script>
 
 <script>
-    $("#olt").change(function() {
-        var oltSelecionada = $("#olt").children("option:selected").val();
-        var parceiroSelecionado = $("#parceiro").children("option:selected").val();
+    $("#profile").change(function() {
+        var profileSelecionado = $("#profile").children("option:selected").val();
 
         $.ajax({
             url: "/api/captura_dados_profile.php",
             method: "GET",
             dataType: "JSON",
             data: {
-                idOLT: oltSelecionada,
-                idParceiro: parceiroSelecionado
+                idProfile: profileSelecionado,
             }
 
         }).done(function(resposta) {
@@ -64,7 +58,13 @@
             document.getElementById("srv_profile_id").value = '';
             document.getElementById("CVLAN").value = '';
             document.getElementById("SVLAN").value = '';
+            document.getElementById("ipOLT").value = '';
+            document.getElementById("userOLT").value = '';
+            document.getElementById("passOLT").value = '';
 
+            document.getElementById("ipOLT").value = (resposta.ipOLT);
+            document.getElementById("userOLT").value = (resposta.userOLT);
+            document.getElementById("passOLT").value = (resposta.passOLT);
             document.getElementById("line_profile_id").value = (resposta.line_profile_id);
             document.getElementById("srv_profile_id").value = (resposta.srv_profile_id);
             document.getElementById("CVLAN").value = (resposta.CVLAN);
@@ -97,7 +97,50 @@
     });
 </script>
 
-<script>
+<!--NEW-->
+<script> 
+    document.getElementById("buttonExecutaScript").addEventListener("click", eventoExecutaScript);
+
+    async function eventoExecutaScript() {
+        document.querySelector("#buttonExecutaScript").hidden = true;
+        document.querySelector("#buttonExecutandoScript").hidden = false;
+
+        let obg = {}
+        obg.profile = document.getElementById("profile").value;
+        obg.codigoParceiro = document.getElementById("codigoParceiro").value;
+        obg.codigoReserva = document.getElementById("codigoReserva").value;
+        obg.serialONU = document.getElementById("serialONU").value;
+        obg.parceiro = document.getElementById("parceiro").value;
+        obg.slotOLT = document.getElementById("slotOLT").value;
+        obg.ponOLT = document.getElementById("ponOLT").value;
+
+        const retorno = await funcaoExecutaScript('executa_script.php', 'GET', obg)
+
+        document.querySelector("#buttonExecutaScript").hidden = false;
+        document.querySelector("#buttonExecutandoScript").hidden = true;
+        document.querySelector("#loadingProvisionamento").hidden = false;
+        document.querySelector("#resultScript > textarea").value = retorno;
+        document.querySelector("#loadingProvisionamento").hidden = true;
+        document.querySelector("#timer").hidden = true;
+        document.querySelector("#spanMensagem").textContent = "PROVISIONADA COM SUCESSO"
+        document.querySelector("#irParaONU").hidden = false;
+        document.querySelector("#okProvisionamento").hidden = false;
+    }
+
+    async function funcaoExecutaScript(url, metodo, obg) {
+        return $.ajax({
+            url: url,
+            method: metodo,
+            dataType: "HTML",
+            data: obg,
+        })
+    }
+</script>
+<!--NEW-->
+
+
+<!--OLD
+    <script> 
     document.getElementById("buttonExecutaScript").addEventListener("click", eventoExecutaScript);
 
     async function eventoExecutaScript() {
@@ -142,7 +185,7 @@
             data: obg,
         })
     }
-</script>
+</script>-->
 
 <script>
     document.getElementById("buttonExecutaScript").addEventListener("click", funcaoContador);
