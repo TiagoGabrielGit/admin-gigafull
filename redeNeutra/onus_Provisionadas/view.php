@@ -252,14 +252,14 @@ if ($campos['contagem'] == 1) { ?>
                                                             <button style="height: 50px;" data-bs-toggle="modal" data-bs-target="#modalTAGVLAN" id="buttonTAGVLAN" class="btn btn-secondary" type="button">Adicionar TAG VLAN</button>
                                                         </div>
                                                         <div class="row col-12" style="margin-top: 3px;">
-                                                            <button style="height: 50px;" type="button" class="btn btn-secondary">Trocar ONU</button>
+                                                            <button style="height: 50px;" type="button" class="btn btn-secondary" disabled>Trocar ONU</button>
                                                         </div>
                                                         <div class="row col-12" style="margin-top: 3px;">
                                                             <button id="btnConsultaPortasLAN" style="height: 50px;" type="button" class="btn btn-secondary">Status Portas LAN</button>
                                                             <button id="btnConsultandoPortasLAN" style="height: 50px;" class="btn btn-secondary" type="button" disabled="" hidden>Status Portas LAN <span class="spinner-border spinner-border-sm" role="status" aria-hidden="false"></span> </button>
                                                         </div>
                                                         <div class="row col-12" style="margin-top: 3px;">
-                                                            <button style="height: 50px;" type="button" class="btn btn-warning">Reiniciar ONU</button>
+                                                            <button style="height: 50px;" type="button" class="btn btn-warning" disabled>Reiniciar ONU</button>
                                                         </div>
                                                     </div>
 
@@ -276,7 +276,7 @@ if ($campos['contagem'] == 1) { ?>
                                                         </div>
 
                                                         <div class="row col-12" style="margin-top: 3px;">
-                                                            <button style="height: 50px;" type="button" class="btn btn-danger">Resetar ONU</button>
+                                                            <button style="height: 50px;" type="button" class="btn btn-danger" disabled>Resetar ONU</button>
                                                         </div>
                                                         <div class="row col-12" style="margin-top: 3px;">
                                                             <button style="height: 50px;" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDesprovisionar">Desprovisionar</button>

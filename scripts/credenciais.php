@@ -150,8 +150,5 @@
             $("#msg").slideUp('slow', function() {});
             
         }, 1700);
-
-    }
-
-    
+    }   
 </script>

@@ -18,7 +18,7 @@ usuarios as u
 LEFT JOIN
 pessoas as p
 ON
-p.id = u.perfil_id
+p.id = u.pessoa_id
 LEFT JOIN
 perfil as pf
 ON

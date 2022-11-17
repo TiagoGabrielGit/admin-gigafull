@@ -281,7 +281,6 @@ rnpo.olt_id = $idOLT
         let obg = {}
         obg.idOLT = document.getElementById("idOLT").value;
         obg.olt = document.getElementById("olt").value;
-        obg.ipOLT = document.getElementById("ipOLT").value;
         obg.userOLT = document.getElementById("userOLT").value;
         obg.passOLT = document.getElementById("passOLT").value;
         funcaoEditOLT('/api/update_cadastro_olt.php', 'GET', obg)

@@ -12,8 +12,8 @@ eqp.rack as rack,
 eqp.tamanho as tamanho,
 eqp.equipamento as equipamento,
 fab.fabricante as fabricante,
-eqp.criado as criado,
-eqp.modificado as modificado
+date_format(eqp.criado,'%H:%m:%s %d/%m/%Y') as criado,
+date_format(eqp.modificado,'%H:%m:%s %d/%m/%Y') as modificado
 FROM equipamentos AS eqp
 left join fabricante as fab
 on fab.id = eqp.fabricante
@@ -43,97 +43,122 @@ $row = mysqli_fetch_assoc($resultado);
                                 </div>
                             </div>
 
-                            <div class="col-4">
-                                <label for="inputEquipamento" class="col-sm-12 col-form-label">Equipamento</label>
-                                <input name="equipamento" type="text" class="form-control" id="inputEquipamento" value="<?php echo $row['equipamento']; ?>">
-                            </div>
+                            <div class="col-lg-4">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="inputEquipamento" class="col-sm-12 col-form-label">Equipamento</label>
+                                        <input name="equipamento" type="text" class="form-control" id="inputEquipamento" value="<?php echo $row['equipamento']; ?>">
+                                    </div>
 
-                            <div class="col-4">
-                                <label for="inputFabricante" class="form-label">Fabricante</label>
-                                <select name="fabricante" class="form-select" aria-label="Default select example">
-                                    <option value="<?= $row['idfabricante']; ?>"><?= $row['fabricante']; ?></option>
-                                    <?php
-                                    $resultado = mysqli_query($mysqli, $sql_fabricante) or die("Erro ao retornar dados");
-                                    while ($c = $resultado->fetch_assoc()) : ?>
-                                        <option value="<?= $c['id']; ?>"><?= $c['fabricante']; ?></option>
-                                    <?php endwhile; ?>
-                                </select>
-                            </div>
-
-                            <div class="col-2">
-                                <label  class="col-sm-12 col-form-label">Tipo rack</label>
-                                <input disabled type="text" class="form-control" value="<?php if ($row['rack'] == '1') {echo "Sim";} else {echo "Não";}  ?>">
-                            </div>
-
-                            <?php
-                            if ($row['rack'] == 1) { ?>
-                                <div class="col-2">
-                                    <label for="inputTamanho" class="form-label">Tamanho (U)</label>
-                                    <select name="inputTamanho" class="form-select" aria-label="Default select example">
-                                        <option value="<?= $row['tamanho']; ?>"><?= $row['tamanho']; ?>U</option>
-                                        <option value="1">1U</option>
-                                        <option value="2">2U's</option>
-                                        <option value="3">3U's</option>
-                                        <option value="4">4U's</option>
-                                        <option value="5">5U's</option>
-                                        <option value="6">6U's</option>
-                                        <option value="7">7U's</option>
-                                        <option value="8">8U's</option>
-                                        <option value="9">9U's</option>
-                                        <option value="10">10u's</option>
-                                    </select>
+                                    <div class="col-6">
+                                        <label for="inputFabricante" class="form-label">Fabricante</label>
+                                        <select name="fabricante" class="form-select" aria-label="Default select example">
+                                            <option value="<?= $row['idfabricante']; ?>"><?= $row['fabricante']; ?></option>
+                                            <?php
+                                            $resultado = mysqli_query($mysqli, $sql_fabricante) or die("Erro ao retornar dados");
+                                            while ($c = $resultado->fetch_assoc()) : ?>
+                                                <option value="<?= $c['id']; ?>"><?= $c['fabricante']; ?></option>
+                                            <?php endwhile; ?>
+                                        </select>
+                                    </div>
                                 </div>
-                            <?php } else { ?>
-                                <div class="col-2"> </div>
-                            <?php } ?>
 
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label class="col-sm-12 col-form-label">Tipo rack</label>
+                                        <input disabled type="text" class="form-control" value="<?php if ($row['rack'] == '1') {
+                                                                                                    echo "Sim";
+                                                                                                } else {
+                                                                                                    echo "Não";
+                                                                                                }  ?>">
+                                    </div>
 
+                                    <?php
+                                    if ($row['rack'] == 1) { ?>
+                                        <div class="col-5">
+                                            <label for="inputTamanho" class="form-label">Tamanho (U)</label>
+                                            <select name="inputTamanho" class="form-select" aria-label="Default select example">
+                                                <option value="<?= $row['tamanho']; ?>"><?= $row['tamanho']; ?>U</option>
+                                                <option value="1">1U</option>
+                                                <option value="2">2U's</option>
+                                                <option value="3">3U's</option>
+                                                <option value="4">4U's</option>
+                                                <option value="5">5U's</option>
+                                                <option value="6">6U's</option>
+                                                <option value="7">7U's</option>
+                                                <option value="8">8U's</option>
+                                                <option value="9">9U's</option>
+                                                <option value="10">10u's</option>
+                                            </select>
+                                        </div>
+                                    <?php } else { ?>
+                                        <div class="col-2"> </div>
+                                    <?php } ?>
+                                </div>
+                            </div>
 
-
-                            <div class="col-6">
+                            <div class="col-lg-8">
                                 <label for="inputTipoEquipamento" class="form-label">Tipo de equipamento</label>
-                                <ul class="list-group" style="list-style: none;">
-
+                                <div class="row justify-content-between">
                                     <?php
                                     $sql_lista_tipo =
                                         "SELECT
-                                    ea.active as active,
-                                    te.tipo as tipo,
                                     te.id as id_tipo,
-                                    ea.id as id_eq
-                                    FROM
-                                    equipamentos_atributos as ea
-                                    LEFT JOIN
+                                    te.tipo as tipo
+                                FROM
                                     tipoequipamento as te
-                                    ON
-                                    te.id = ea.tipoequipamento_id
-                                    WHERE
-                                    ea.equipamento_id = '$id_equipamento'
-                                    ORDER BY
-                                    te.tipo ASC
-                                    ";
+                                WHERE
+                                    te.deleted = 1
+                                ORDER BY
+                                    te.tipo ASC    
+                                ";
 
-                                    $resultado = mysqli_query($mysqli, $sql_lista_tipo);
-                                    while ($campo = $resultado->fetch_assoc()) : ?>
-                                        <li>
-                                            <input id="atributo<?= $campo['id_eq']; ?>" onclick="let id_eq = capturaID(<?= $campo['id_eq']; ?>) ; salvaAtributos(<?= $id_equipamento ?>,<?= $campo['id_tipo']; ?>, id_eq);" class="form-check-input me-1" name="<?= $campo['tipo']; ?>" type="checkbox" value="1" <?= $campo['active'] == 1 ? "checked" : "" ?>>
-                                            <label for="<?= $campo['tipo']; ?>"><?= $campo['tipo']; ?></label>
-                                        </li>
-                                    <?php endwhile; ?>
-                                </ul>
+                                    $r_lista_tipo = mysqli_query($mysqli, $sql_lista_tipo);
+
+                                    while ($campos_tipo = $r_lista_tipo->fetch_array()) {
+                                        $id_tipo = $campos_tipo['id_tipo'];
+
+                                        $sql_PO =
+                                            "SELECT
+                                            count(*) as countPO,
+                                            ea.id as idAtributoAtivo
+                                        FROM
+                                            equipamentos_atributos as ea
+                                        WHERE
+                                            ea.equipamento_id = $id_equipamento
+                                            and
+                                            ea.tipoequipamento_id = $id_tipo
+                                            and
+                                            ea.active = 1";
+
+                                        $r_sql_PO = mysqli_query($mysqli, $sql_PO);
+                                        $campos_PO = $r_sql_PO->fetch_array();
+                                    ?>
+                                        <div class="col-3">
+                                            <div class="form-check">
+                                                <?php
+                                                if ($campos_PO['countPO'] == 1) { ?>
+                                                    <input onclick="removerAtributo(<?= $campos_PO['idAtributoAtivo'] ?>)" class="form-check-input" type="checkbox" id="tipo<?= $campos_tipo['tipo'] ?>" checked="" data-bs-toggle="modal" data-bs-target="#modalRemoverAtributo">
+                                                <?php } else { ?>
+                                                    <input onclick="permitirAtributo(<?= $id_equipamento ?>, '<?= $id_tipo ?>')" class="form-check-input" type="checkbox" id="tipo<?= $campos_tipo['tipo'] ?>" data-bs-toggle="modal" data-bs-target="#modalPermitirAtributo">
+                                                <?php } ?>
+                                                <label class="form-check-label" for="tipo<?= $campos_tipo['id_tipo'] ?>"><?= $campos_tipo['tipo'] ?></label>
+                                            </div>
+                                        </div>
+
+                                    <?php } ?>
+                                </div>
                             </div>
 
-                            <div class="col-6"></div>
+                            <div class="row">
+                                <div class="col-2">
+                                    <label class="form-label">Data criação</label>
+                                    <input type="text" class="form-control" value="<?= $row['criado']; ?>" disabled>
+                                </div>
 
-                            <div class="col-4">
-                                <label for="dateCreated" class="form-label">Data criação</label>
-                                <input name="dateCreated" type="text" class="form-control" id="dateCreated" value="<?php echo $row['criado']; ?>" disabled>
-                            </div>
-
-                            <div class="col-md-6">
-                                <label for="dateModified" class="form-label">última modificação</label>
-                                <div class="col-sm-6">
-                                    <input name="dateModified" type="text" class="form-control" id="dateModified" value="<?php echo $row['modificado']; ?>" disabled>
+                                <div class="col-2">
+                                    <label class="form-label">última modificação</label>
+                                    <input type="text" class="form-control" value="<?= $row['modificado']; ?>" disabled>
                                 </div>
                             </div>
 
@@ -190,5 +215,7 @@ $row = mysqli_fetch_assoc($resultado);
 
 
 <?php
+require "modalRemoveAtributo.php";
+require "modalPermiteAtributo.php";
 require "../../../includes/footer.php";
 ?>

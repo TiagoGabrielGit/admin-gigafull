@@ -2,7 +2,7 @@
 require "../../includes/menu.php";
 require "../../conexoes/conexao.php";
 require "../../includes/remove_setas_number.php";
-require "sql.php";
+
 ?>
 
 <main id="main" class="main">
@@ -25,6 +25,27 @@ require "sql.php";
                                                 <select class="form-select" id="parceiro" name="parceiro" required>
                                                     <option disabled selected value="">Selecione o parceiro</option>
                                                     <?php
+                                                    $usuarioID = $_SESSION['id'];
+
+                                                    $sql_parceiroID =
+                                                        "SELECT
+                                                            u.parceiroRN_id as parceiro
+                                                        FROM
+                                                            usuarios as u
+                                                        WHERE
+                                                            u.id = $usuarioID";
+
+                                                    $r_sql_parceiroID = mysqli_query($mysqli, $sql_parceiroID);
+                                                    $camposParceiro = $r_sql_parceiroID->fetch_array();
+
+                                                    if ($camposParceiro['parceiro'] != "") {
+                                                        $parceiroID = $camposParceiro['parceiro'];
+                                                    } else {
+                                                        $parceiroID = "%";
+                                                    }
+
+                                                    require "sql.php";
+
                                                     $resultado = mysqli_query($mysqli, $redeneutra_parceiro);
                                                     while ($parceiro = mysqli_fetch_object($resultado)) :
                                                         echo "<option value='$parceiro->idparceiro'> $parceiro->parceiro</option>";

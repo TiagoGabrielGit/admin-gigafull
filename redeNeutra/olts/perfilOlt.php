@@ -54,81 +54,79 @@ $campos = $r_sql_perfil->fetch_array();
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Perfil: <?= $campos['perfil']; ?></h5>
+                        <form id="formEditPerfil" method="POST">
+                            <div class="row">
+                                <div class="col-lg-6">
 
-                        <div class="row">
-                            <div class="col-lg-6">
+                                    <input type="Text" name="id" id="id" value="<?= $campos['idPerfil']; ?>" hidden>
 
-                                <input type="Text" name="id" id="id" value="<?= $campos['idPerfil']; ?>" hidden>
+                                    <div class="col-6">
+                                        <label class="form-label">Perfil </label>
+                                        <input type="Text" name="perfil" id="perfil" class="form-control" value="<?= $campos['perfil']; ?>">
+                                    </div>
 
-                                <div class="col-6">
-                                    <label class="form-label">Perfil </label>
-                                    <input type="Text" class="form-control" value="<?= $campos['perfil']; ?>">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label class="form-label">Parceiro</label>
+                                            <input type="Text" class="form-control" value="<?= $campos['parceiro']; ?>" disabled>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <label class="form-label">OLT</label>
+                                            <input type="Text" class="form-control" value="<?= $campos['olt']; ?>" disabled>
+                                        </div>
+                                    </div>
                                 </div>
 
-                                <div class="row">
+                                <?php
+                                if ($campos['active'] == "Ativado") {
+                                    $checkSituacao1 = "checked";
+                                    $checkSituacao0 = "";
+                                } else if ($campos['active'] == "Inativado") {
+                                    $checkSituacao0 = "checked";
+                                    $checkSituacao1 = "";
+                                }
+                                ?>
+
+                                <div class="col-lg-3">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label class="form-label">Line Profile ID</label>
+                                            <input name="lineprofile" id="lineprofile" type="Text" class="form-control" value="<?= $campos['lineProfile']; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <label class="form-label">SRV Profile ID</label>
+                                            <input name="srvprofile" id="srvprofile" type="Text" class="form-control" value="<?= $campos['srvProfile']; ?>">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-3">
                                     <div class="col-4">
-                                        <label class="form-label">Parceiro</label>
-                                        <input type="Text" class="form-control" value="<?= $campos['parceiro']; ?>" disabled>
-                                    </div>
+                                        <label for="situacao" class="form-label">Situação</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="situacao" id="situacao" value="1" <?= $checkSituacao1 ?>>
+                                            <label class="form-check-label" for="situacao" value="1">Ativo</label>
+                                        </div>
 
-                                    <div class="col-4">
-                                        <label class="form-label">OLT</label>
-                                        <input type="Text" class="form-control" value="<?= $campos['olt']; ?>" disabled>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="situacao" id="situacao" value="0" <?= $checkSituacao0 ?>>
+                                            <label class="form-check-label" for="situacao" value="0">Inativo</label>
+                                        </div>
                                     </div>
+                                    <br><br><br>
+                                </div>
+
+                                <hr class="sidebar-divider">
+
+                                <div class="col-lg-12" style="text-align: center;">
+                                    <input id="btnEditPerfil" name="btnEditPerfil" type="button" value="Aplicar Alterações" class="btn btn-danger"></input>
+                                    <a class="btn btn-secondary" href="/redeNeutra/olts/view.php?idOLT=<?= $campos['oltId']; ?>">Voltar</a>
                                 </div>
                             </div>
-
-                            <?php
-                            if ($campos['active'] == "Ativado") {
-                                $checkSituacao1 = "checked";
-                                $checkSituacao0 = "";
-                            } else if ($campos['active'] == "Inativado") {
-                                $checkSituacao0 = "checked";
-                                $checkSituacao1 = "";
-                            }
-                            ?>
-
-                            <div class="col-lg-3">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <label class="form-label">Line Profile ID</label>
-                                        <input type="Text" class="form-control" value="<?= $campos['lineProfile']; ?>">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <label class="form-label">SRV Profile ID</label>
-                                        <input type="Text" class="form-control" value="<?= $campos['srvProfile']; ?>">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-3">
-                                <div class="col-4">
-                                    <label for="situacao" class="form-label">Situação</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="situacao" id="situacaoAtivo" value="1" <?= $checkSituacao1 ?>>
-                                        <label class="form-check-label" for="situacaoAtivo">
-                                            Ativo
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="situacao" id="situacaoInativo" value="0" <?= $checkSituacao0 ?>>
-                                        <label class="form-check-label" for="situacaoInativo">
-                                            Inativo
-                                        </label>
-                                    </div>
-                                </div>
-                                <br><br><br>
-                            </div>
-
-                            <hr class="sidebar-divider">
-
-                            <div class="col-lg-12" style="text-align: center;">
-                                <button class="btn btn-danger" type="submit">Aplicar Alterações</button>
-                                <a class="btn btn-secondary" href="/redeNeutra/olts/view.php?idOLT=<?= $campos['oltId']; ?>">Voltar</a>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -295,6 +293,29 @@ $campos = $r_sql_perfil->fetch_array();
     });
 </script>
 
+<script>
+    document.getElementById("btnEditPerfil").addEventListener("click", eventoFuncaoEditPerfil);
+
+    function eventoFuncaoEditPerfil() {
+        let obg = {}
+        obg.id = document.getElementById("id").value;
+        obg.perfil = document.getElementById("perfil").value;
+        obg.lineprofile = document.getElementById("lineprofile").value;
+        obg.srvprofile = document.getElementById("srvprofile").value;
+        obg.situacao = document.querySelector("#situacao").checked;
+        funcaoEditPerfil('/api/update_rn_perfil.php', 'GET', obg)
+    }
+
+    function funcaoEditPerfil(url, metodo, obg) {
+        $.ajax({
+            url: url,
+            method: metodo,
+            dataType: "HTML",
+            data: obg,
+        })
+        window.location.replace("/redeNeutra/olts/perfilOlt.php?id=<?= $idPerfil ?>");
+    }
+</script>
 
 <?php
 require "../../includes/footer.php";

@@ -2,7 +2,6 @@
 require "../../../../conexoes/conexao.php";
 ?>
 
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -34,36 +33,6 @@ require "../../../../conexoes/conexao.php";
         $resultado = mysqli_query($mysqli, $result);
 
         $equipamento_id = mysqli_insert_id($mysqli);
-
-        $busca_atributos =
-        "SELECT
-        te.id as id_te,
-        te.tipo as tipo
-        FROM
-        tipoequipamento as te
-        WHERE
-        te.deleted = 1
-        ";
-
-        $result_busca_atributos = mysqli_query($mysqli, $busca_atributos);
-
-        while ($campo = $result_busca_atributos->fetch_assoc()) :
-            $id_tipoequipamento = $campo['id_te'];
-
-            $result_insert_atributo = "INSERT INTO equipamentos_atributos (equipamento_id, tipoequipamento_id, active) VALUES ('$equipamento_id','$id_tipoequipamento', '0')";
-            $insert_atributos = mysqli_query($mysqli, $result_insert_atributo);
-
-        endwhile;
-
-
-
-        if (isset($_POST['inputTipoEquipamento'])) {
-            foreach ($_POST['inputTipoEquipamento'] as $id) {
-
-                $result_atributo = "UPDATE equipamentos_atributos SET active='1' WHERE equipamento_id = '$equipamento_id' and tipoequipamento_id = '$id'";
-                $resultado_atributo = mysqli_query($mysqli, $result_atributo);
-            }
-        }
 
         if (mysqli_affected_rows($mysqli) > 0) { ?>
 

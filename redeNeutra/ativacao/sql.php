@@ -12,19 +12,8 @@ ON
     e.id = rnp.empresa_id         
 WHERE
     rnp.active = 1
+    and
+    rnp.id LIKE '$parceiroID'
 ORDER BY
     e.fantasia ASC
-";
-
-$redeneutra_scripts = 
-"SELECT
-    rns.id as idScript,
-    rns.descricao as descricao,
-    rns.scriptName as scriptName
-FROM
-    redeneutra_scripts as rns
-WHERE
-    rns.active = 1
-ORDER BY
-    rns.scriptName ASC
 ";
