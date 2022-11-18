@@ -20,12 +20,11 @@ require "../../../conexoes/conexao.php";
     <div class="container theme-showcase" role="main">
         <?php
         $id = $_POST['id'];
-        $dashboard = $_POST['dashboard'];
         $tipoUser = $_POST['tipoAcesso'];
         $perfil = $_POST['perfil'];
         $active = $_POST['situacao'];
 
-        $resultEditUser = "UPDATE usuarios SET dashboard='$dashboard', tipo_usuario='$tipoUser', perfil_id='$perfil', active='$active', modificado=NOW() WHERE id='$id'"
+        $resultEditUser = "UPDATE usuarios SET tipo_usuario='$tipoUser', perfil_id='$perfil', active='$active', modificado=NOW() WHERE id='$id'"
         ?>
 
         <?php

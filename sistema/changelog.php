@@ -19,6 +19,46 @@ require "../includes/menu.php";
             <div class="accordion" id="accordionExample">
 
 
+              <!-- Versão 3.6 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading3-6">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3-6" aria-expanded="false" aria-controls="collapse3-6">
+                    Versão 3.6 - 18/11/2022
+                  </button>
+                </h2>
+                <div id="collapse3-6" class="accordion-collapse collapse" aria-labelledby="heading3-6" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <strong>Novas funcionalidades</strong><br>
+
+                    <br><strong>Melhorias</strong><br>
+                    # Melhorias ao cadastrar usuario de parceiro de RN;<br>
+
+                    <br><strong>Correções de BUG</strong><br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Excluido coluna dashboard da tabela "usuarios";<br>
+
+                    <br><strong>Previsto para próxima atualização</strong><br>
+                    # Variedade de dashboards (Rede Neutra e Provedor);<br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas;<br>
+                    # Chamados RN;<br>
+                    # Visualização de incidentes RN após desautorizar OLT do parceiro;<br>
+                    # Melhorias para editar usuário;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Relatórios;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Criação de contratos;<br>
+                    # Componentes de equipamentos;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                    # Integração com API's de CEP;<br>
+                    # Segurança individual
+                  </div>
+                </div>
+              </div>
+
+
               <!-- Versão 3.5 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading3-5">

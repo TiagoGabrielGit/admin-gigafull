@@ -44,17 +44,32 @@
 
 <script>
     $(document).ready(function() {
+        //Esconde label parceiro
         $('#parceiroLabel').hide();
         $('#parceiroSelect').hide();
-        $('#perfil').on('change', function() {
-            var selectValor = +$(this).val();
-            if (selectValor == 2) {
+
+        //Inicialmente desmarca o CheckBox
+        $('#tipoAcessoPortalRN').removeAttr('checked');
+
+        $('#tipoAcessoPortalRN').change(function() {
+            if (this.checked) {
                 $('#parceiroLabel').show();
                 $('#parceiroSelect').show();
-            } else {
+            }
+        });
+
+        $('#tipoAcessoAdmin').change(function() {
+            if (this.checked) {
                 $('#parceiroLabel').hide();
                 $('#parceiroSelect').hide();
             }
-        })
-    })
+        });
+
+        $('#tipoAcessoPortal').change(function() {
+            if (this.checked) {
+                $('#parceiroLabel').hide();
+                $('#parceiroSelect').hide();
+            }
+        });
+    });
 </script>

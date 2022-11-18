@@ -53,9 +53,9 @@ if (isset($_POST['email']) || isset($_POST['senha'])) {
       $_SESSION['nome'] = $usuario['nome'];
       $_SESSION['perfil'] = $usuario['perfil'];
       $_SESSION['nome_perfil'] = $usuario['nome_perfil'];
+      $_SESSION['dashboard'] = $usuario['tipo_usuario'];
       $_SESSION['ip_address'] = $_SERVER['REMOTE_ADDR'];
-
-
+      
       $usuario_id = $_SESSION['id'];
       $ip_address = $_SESSION['ip_address'];
 

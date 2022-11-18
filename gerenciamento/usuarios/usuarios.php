@@ -91,28 +91,6 @@ require "sql.php";
                                                         </div>
 
                                                         <div class="col-4">
-                                                            <label for="dashboard" class="form-label">Dashboard Inicial</label>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="radio" name="dashboard" id="dashboard1" value="1">
-                                                                <label class="form-check-label" for="dashboard1">
-                                                                    Tipo 1
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="radio" name="dashboard" id="dashboard2" value="2">
-                                                                <label class="form-check-label" for="dashboard2">
-                                                                    Tipo 2
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check disabled">
-                                                                <input class="form-check-input" type="radio" name="dashboard" id="dashboard3" value="3">
-                                                                <label class="form-check-label" for="dashboard3">
-                                                                    Tipo 3
-                                                                </label>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-4">
                                                             <label id="parceiroLabel" for="parceiroLabel" class="form-label">Parceiro</label>
                                                             <select name="parceiroSelect" id="parceiroSelect" class="form-select" required>
                                                                 <option selected disabled>Selecione a parceiro</option>
@@ -157,7 +135,6 @@ require "sql.php";
                             <thead>
                                 <tr>
                                     <th scope="col">Nome</th>
-                                    <th scope="col">Dashboard</th>
                                     <th scope="col">Tipo</th>
                                     <th scope="col">Perfil</th>
                                     <th scope="col">E-mail/Usuário</th>
@@ -173,11 +150,6 @@ require "sql.php";
                                 $sql =
                                     "SELECT 
                                         user.id as id,
-                                        CASE
-                                            WHEN user.dashboard = 1 THEN 'Tipo 1'
-                                            WHEN user.dashboard = 2 THEN 'Tipo 2'
-                                            WHEN user.dashboard = 3 THEN 'Tipo 3'
-                                        END as dashboard,
                                         pess.nome as nome,
                                         CASE
                                             WHEN user.tipo_usuario = 1 THEN 'Gigafull Admin'
@@ -217,7 +189,6 @@ require "sql.php";
                                             <a style="color: red;" href="view.php?id=<?= $campos['id'] ?>"><?= $campos['nome']; ?></a>
                                         </td>
 
-                                        <td><?= $campos['dashboard']; ?></td>
                                         <td><?= $campos['tipo']; ?></td>
                                         <td><?= $campos['nome_perfil']; ?></td>
                                         <td><?= $campos['email']; ?></td>

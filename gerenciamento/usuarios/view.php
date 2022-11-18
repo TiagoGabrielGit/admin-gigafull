@@ -8,11 +8,6 @@ $idUsuario = $_GET['id'];
 $sql_usuario =
     "SELECT 
 user.id as id,
-CASE
-    WHEN user.dashboard = 1 THEN 'Tipo 1'
-    WHEN user.dashboard = 2 THEN 'Tipo 2'
-    WHEN user.dashboard = 3 THEN 'Tipo 3'
-END as dashboard,
 pess.nome as nome,
 CASE
     WHEN user.tipo_usuario = 1 THEN 'Gigafull Admin'
@@ -106,7 +101,7 @@ p.active = 1"; ?>
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-4">
+                                    <div class="col-6">
                                         <label class="form-label">E-mail/Usuário </label>
                                         <input type="Text" class="form-control" value="<?= $campos['email']; ?>" disabled>
                                     </div>
@@ -163,42 +158,32 @@ p.active = 1"; ?>
                                         </div>
                                     </div>
 
-                                    <?php
-                                    if ($campos['dashboard'] == "Tipo 1") {
-                                        $checkDash1 = "checked";
-                                        $checkDash2 = "";
-                                        $checkDash3 = "";
-                                    } else if ($campos['dashboard'] == "Tipo 2") {
-                                        $checkDash1 = "";
-                                        $checkDash2 = "checked";
-                                        $checkDash3 = "";
-                                    } else if ($campos['dashboard'] == "Tipo 3") {
-                                        $checkDash1 = "";
-                                        $checkDash2 = "";
-                                        $checkDash3 = "checked";
-                                    }
-                                    ?>
-
                                     <div class="col-4">
-                                        <label for="dashboard" class="form-label">Dashboard Inicial</label>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="dashboard" id="dashboard1" value="1" <?= $checkDash1 ?>>
-                                            <label class="form-check-label" for="dashboard1">
-                                                Tipo 1
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="dashboard" id="dashboard2" value="2" <?= $checkDash2 ?>>
-                                            <label class="form-check-label" for="dashboard2">
-                                                Tipo 2
-                                            </label>
-                                        </div>
-                                        <div class="form-check disabled">
-                                            <input class="form-check-input" type="radio" name="dashboard" id="dashboard3" value="3" <?= $checkDash3 ?>>
-                                            <label class="form-check-label" for="dashboard3">
-                                                Tipo 3
-                                            </label>
-                                        </div>
+                                        <label id="parceiroLabel" for="parceiroLabel" class="form-label">Parceiro</label>
+                                        <select name="parceiroSelect" id="parceiroSelect" class="form-select" required>
+                                            <option selected disabled>Selecione a parceiro</option>
+                                            <?php
+                                            $sql_parceiros =
+                                                "SELECT
+    rnp.id as parceiroID,
+    e.fantasia as parceiro
+FROM
+    redeneutra_parceiro as rnp
+LEFT JOIN
+    empresas as e
+ON
+    e.id = rnp.empresa_id         
+WHERE
+    rnp.active = 1
+ORDER BY
+    e.fantasia ASC
+";
+
+                                            $resultado = mysqli_query($mysqli, $sql_parceiros) or die("Erro ao retornar dados");
+                                            while ($p = $resultado->fetch_assoc()) : ?>
+                                                <option value="<?= $p['parceiroID']; ?>"><?= $p['parceiro']; ?></option>
+                                            <?php endwhile; ?>
+                                        </select>
                                     </div>
                                 </div>
                                 <hr class="sidebar-divider">
@@ -215,9 +200,40 @@ p.active = 1"; ?>
     </section>
 
 </main><!-- End #main -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 
+<script>
+    $(document).ready(function() {
+        //Esconde label parceiro
+        $('#parceiroLabel').hide();
+        $('#parceiroSelect').hide();
 
+        //Inicialmente desmarca o CheckBox
+        $('#tipoAcessoPortalRN').removeAttr('checked');
 
+        $('#tipoAcessoPortalRN').change(function() {
+            if (this.checked) {
+                $('#parceiroLabel').show();
+                $('#parceiroSelect').show();
+            }
+        });
+
+        $('#tipoAcessoAdmin').change(function() {
+            if (this.checked) {
+                $('#parceiroLabel').hide();
+                $('#parceiroSelect').hide();
+            }
+        });
+
+        $('#tipoAcessoPortal').change(function() {
+            if (this.checked) {
+                $('#parceiroLabel').hide();
+                $('#parceiroSelect').hide();
+            }
+        });
+    });
+</script>
 <?php
 require "../../includes/footer.php"
 ?>
