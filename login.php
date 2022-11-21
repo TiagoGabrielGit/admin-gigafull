@@ -18,6 +18,7 @@ if (isset($_POST['email']) || isset($_POST['senha'])) {
         p.nome as nome,
         u.email as email,
         u.senha as senha,
+		u.tipo_usuario as tipo_usuario,
         u.perfil_id as perfil,
         pe.perfil as nome_perfil
       FROM

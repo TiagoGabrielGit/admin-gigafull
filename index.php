@@ -1,7 +1,6 @@
 <?php
 require "includes/menu.php";
 require "conexoes/conexao.php";
-require "sql_dashboard.php"
 ?>
 
 <main id="main" class="main">
