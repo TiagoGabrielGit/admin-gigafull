@@ -161,23 +161,48 @@ p.active = 1"; ?>
                                     <div class="col-4">
                                         <label id="parceiroLabel" for="parceiroLabel" class="form-label">Parceiro</label>
                                         <select name="parceiroSelect" id="parceiroSelect" class="form-select" required>
-                                            <option selected disabled>Selecione a parceiro</option>
+                                            <?php
+                                            $user_parceiro = "SELECT
+                                            e.fantasia as parceiro,
+                                            rp.id as idParceiro
+                                            FROM
+                                            usuarios as u
+                                            LEFT JOIN
+                                            redeneutra_parceiro as rp
+                                            ON
+                                            rp.id = u.parceiroRN_id
+                                            LEFT JOIN
+                                            empresas as e
+                                            ON
+                                            e.id = rp.empresa_id
+                                            WHERE
+                                            u.id = $idUsuario";
+
+                                            $r_user_parceiro = mysqli_query($mysqli, $user_parceiro);
+                                            $c_user_parceiro = $r_user_parceiro->fetch_assoc();
+
+                                            if ($c_user_parceiro['idParceiro'] <> NULL) { ?>
+                                                <option value="<?= $c_user_parceiro['idParceiro'] ?>"><?= $c_user_parceiro['parceiro'] ?></option>
+                                            <?php } else { ?>
+                                                <option selected disabled>Selecione a parceiro</option>
+                                            <?php }
+                                            ?>
+
                                             <?php
                                             $sql_parceiros =
                                                 "SELECT
-    rnp.id as parceiroID,
-    e.fantasia as parceiro
-FROM
-    redeneutra_parceiro as rnp
-LEFT JOIN
-    empresas as e
-ON
-    e.id = rnp.empresa_id         
-WHERE
-    rnp.active = 1
-ORDER BY
-    e.fantasia ASC
-";
+                                                rnp.id as parceiroID,
+                                                e.fantasia as parceiro
+                                                FROM
+                                                redeneutra_parceiro as rnp
+                                                LEFT JOIN
+                                                empresas as e
+                                                ON
+                                                e.id = rnp.empresa_id         
+                                                WHERE
+                                                rnp.active = 1
+                                                ORDER BY
+                                                e.fantasia ASC";
 
                                             $resultado = mysqli_query($mysqli, $sql_parceiros) or die("Erro ao retornar dados");
                                             while ($p = $resultado->fetch_assoc()) : ?>
@@ -203,37 +228,67 @@ ORDER BY
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 
-<script>
-    $(document).ready(function() {
-        //Esconde label parceiro
-        $('#parceiroLabel').hide();
-        $('#parceiroSelect').hide();
+<?php
+if ($campos['tipo'] == "Gigafull RN") { ?>
+    <script>
+        $(document).ready(function() {
 
-        //Inicialmente desmarca o CheckBox
-        $('#tipoAcessoPortalRN').removeAttr('checked');
+            $('#tipoAcessoPortalRN').change(function() {
+                if (this.checked) {
+                    $('#parceiroLabel').show();
+                    $('#parceiroSelect').show();
+                }
+            });
 
-        $('#tipoAcessoPortalRN').change(function() {
-            if (this.checked) {
-                $('#parceiroLabel').show();
-                $('#parceiroSelect').show();
-            }
+            $('#tipoAcessoAdmin').change(function() {
+                if (this.checked) {
+                    $('#parceiroLabel').hide();
+                    $('#parceiroSelect').hide();
+                }
+            });
+
+            $('#tipoAcessoPortal').change(function() {
+                if (this.checked) {
+                    $('#parceiroLabel').hide();
+                    $('#parceiroSelect').hide();
+                }
+            });
         });
+    </script>
+<?php } else { ?>
+    <script>
+        $(document).ready(function() {
 
-        $('#tipoAcessoAdmin').change(function() {
-            if (this.checked) {
-                $('#parceiroLabel').hide();
-                $('#parceiroSelect').hide();
-            }
-        });
+            $('#parceiroLabel').hide();
+            $('#parceiroSelect').hide();
 
-        $('#tipoAcessoPortal').change(function() {
-            if (this.checked) {
-                $('#parceiroLabel').hide();
-                $('#parceiroSelect').hide();
-            }
+            //Inicialmente desmarca o CheckBox
+            $('#tipoAcessoPortalRN').removeAttr('checked');
+
+            $('#tipoAcessoPortalRN').change(function() {
+                if (this.checked) {
+                    $('#parceiroLabel').show();
+                    $('#parceiroSelect').show();
+                }
+            });
+
+            $('#tipoAcessoAdmin').change(function() {
+                if (this.checked) {
+                    $('#parceiroLabel').hide();
+                    $('#parceiroSelect').hide();
+                }
+            });
+
+            $('#tipoAcessoPortal').change(function() {
+                if (this.checked) {
+                    $('#parceiroLabel').hide();
+                    $('#parceiroSelect').hide();
+                }
+            });
         });
-    });
-</script>
+    </script>
+<?php }
+?>
 <?php
 require "../../includes/footer.php"
 ?>

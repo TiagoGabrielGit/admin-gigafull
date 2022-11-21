@@ -123,3 +123,35 @@ consultor ASC
 ";
 
 $r_sql_horas_x_consultores = mysqli_query($mysqli, $sql_horas_x_consultores);
+
+//ONUs POR PARCEIRO
+$sql_onu_parceiro = "SELECT
+COUNT(*) as qtde,
+e.fantasia as parceiro
+FROM
+redeneutra_onu_provisionadas as rop
+LEFT JOIN
+redeneutra_parceiro as rp
+ON
+rp.id = rop.parceiro_id
+LEFT JOIN
+empresas as e
+ON
+e.id = rp.empresa_id
+WHERE
+rop.active = 1
+GROUP BY
+rop.parceiro_id";
+
+$r_onu_parceiro = mysqli_query($mysqli, $sql_onu_parceiro);
+
+//INCIDENTES
+$incidentes = "SELECT
+count(*) as qtde
+FROM
+redeneutra_incidentes as ri
+WHERE
+ri.active = 1";
+
+$r_incidentes = mysqli_query($mysqli, $incidentes);
+$c_incidentes = $r_incidentes->fetch_array();

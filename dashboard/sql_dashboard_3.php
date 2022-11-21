@@ -76,3 +76,55 @@ parceiro_id = $parceiroID";
 
 $r_ultimos_7_dias = mysqli_query($mysqli, $sql_ultimos_7_dias);
 $c_ultimos_7_dias = $r_ultimos_7_dias->fetch_array();
+
+//Últimas 10 ONUs PROVISIONADAS
+$last_10_onu = "SELECT
+rnp.id as id,
+rno.olt_name as olt,
+rnp.slot_olt as slot,
+rnp.pon_olt as pon,
+rnp.id_onu as idONU,
+rnp.serial_onu as serialONU,
+rnp.descricao as descricao,
+date_format(rnp.data_provisionamento,'%H:%m:%s %d/%m/%Y') as dataP,
+p.nome as provisionado
+FROM
+redeneutra_onu_provisionadas as rnp
+LEFT JOIN
+redeneutra_olts as rno
+ON
+rno.id = rnp.olt_id
+LEFT JOIN
+usuarios as u
+ON
+rnp.criado_por = u.id
+LEFT JOIN
+pessoas as p
+ON
+p.id = u.pessoa_id
+WHERE
+rnp.active = 1
+and
+rnp.parceiro_id = $parceiroID
+ORDER BY
+rnp.data_provisionamento DESC
+LIMIT 10";
+
+$r_last_10_onu = mysqli_query($mysqli, $last_10_onu);
+
+//ONUs POR OLT
+$sql_onu_olt = "SELECT
+count(*) as qtde,
+ro.olt_name as olt
+FROM
+redeneutra_onu_provisionadas as rop
+LEFT JOIN
+redeneutra_olts as ro
+ON
+ro.id = rop.olt_id
+WHERE
+rop.active = 1
+group by
+rop.olt_id";
+
+$r_onu_olt = mysqli_query($mysqli, $sql_onu_olt);

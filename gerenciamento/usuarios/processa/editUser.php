@@ -20,11 +20,26 @@ require "../../../conexoes/conexao.php";
     <div class="container theme-showcase" role="main">
         <?php
         $id = $_POST['id'];
-        $tipoUser = $_POST['tipoAcesso'];
+
         $perfil = $_POST['perfil'];
         $active = $_POST['situacao'];
+        $tipoUser = $_POST['tipoAcesso'];
 
-        $resultEditUser = "UPDATE usuarios SET tipo_usuario='$tipoUser', perfil_id='$perfil', active='$active', modificado=NOW() WHERE id='$id'"
+        if ($tipoUser == "3") {
+            if (empty($_POST['parceiroSelect'])) {
+                $parceiro = "";
+            } else {
+                $parceiro = $_POST['parceiroSelect'];
+            }
+        } else {
+            $parceiro = "";
+        }
+
+
+
+
+        $resultEditUser = "UPDATE usuarios SET parceiroRN_id=NULLIF('$parceiro', ''), tipo_usuario='$tipoUser', perfil_id='$perfil', active='$active', modificado=NOW() WHERE id='$id'"
+
         ?>
 
         <?php
@@ -43,7 +58,7 @@ require "../../../conexoes/conexao.php";
                             Alterações realizadas.
                         </div>
                         <div class="modal-footer">
-                            <a href="/gerenciamento/usuarios/view.php?id=<?=$id?>"><button type="button" class="btn btn-success">Ok</button></a>
+                            <a href="/gerenciamento/usuarios/view.php?id=<?= $id ?>"><button type="button" class="btn btn-success">Ok</button></a>
                         </div>
                     </div>
                 </div>
@@ -67,7 +82,7 @@ require "../../../conexoes/conexao.php";
                             Erro, verifique.
                         </div>
                         <div class="modal-footer">
-                            <a href="/gerenciamento/usuarios/view.php?id=<?=$id?>"><button type="button" class="btn btn-danger">Ok</button></a>
+                            <a href="/gerenciamento/usuarios/view.php?id=<?= $id ?>"><button type="button" class="btn btn-danger">Ok</button></a>
                         </div>
                     </div>
                 </div>
