@@ -3,6 +3,7 @@ require "../../includes/menu.php";
 require "../../conexoes/conexao.php";
 require "equipamentos/sql.php";
 require "portal/sql.php";
+require "vm/sql.php";
 ?>
 
 
