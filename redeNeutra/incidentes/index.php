@@ -28,6 +28,21 @@ require "../../includes/menu.php";
                             $r_sql_parceiro = mysqli_query($mysqli, $sql_parceiro);
                             $campo_parceiro = $r_sql_parceiro->fetch_array();
                             $parceiroID = $campo_parceiro['parceiro'];
+
+                            // Verifica se a variável tá declarada, senão deixa na primeira página como padrão
+                            if (isset($_GET["pagina"])) {
+                                $p = $_GET["pagina"];
+                            } else {
+                                $p = 1;
+                            }
+                            // Defina aqui a quantidade máxima de registros por página.
+                            $qnt = 20;
+
+                            // O sistema calcula o início da seleção calculando: 
+                            // (página atual * quantidade por página) - quantidade por página
+                            $inicio = ($p * $qnt) - $qnt;
+
+
                             if ($campo_parceiro['parceiro'] == NULL) {
                                 $sql_incidentes =
                                     "SELECT
@@ -50,7 +65,8 @@ require "../../includes/menu.php";
                                     ON
                                     eqpop.id = rni.equipamento_id
                                     ORDER BY
-                                    rni.inicioIncidente DESC";
+                                    rni.inicioIncidente DESC
+                                    LIMIT $inicio, $qnt";
                             } else {
                                 $sql_incidentes =
                                     "SELECT
@@ -85,14 +101,13 @@ require "../../includes/menu.php";
                                     and
                                     rnpo.active = 1
                                     ORDER BY
-                                    rni.inicioIncidente DESC";
+                                    rni.inicioIncidente DESC
+                                    LIMIT $inicio, $qnt";
                             }
-
 
                             $r_sql_incidentes = mysqli_query($mysqli, $sql_incidentes);
 
                             $cont = 1;
-
                             while ($campos = $r_sql_incidentes->fetch_array()) {
                                 $id_incidente = $campos['idIncidente'];
                                 if ($campos['activeID'] == "1") {
@@ -141,9 +156,137 @@ require "../../includes/menu.php";
                                         </div>
                                     </div>
                                 </div>
-
                             <?php $cont++;
-                            } ?>
+                            }
+
+                            // Depois que selecionou todos os nome, pula uma linha para exibir os links(próxima, última...)
+                            echo "<br />";
+
+                            // Faz uma nova seleção no banco de dados, desta vez sem LIMIT,
+                            // para pegarmos o número total de registros
+                            if ($campo_parceiro['parceiro'] == NULL) {
+                                $sql_select_all =
+                                    "SELECT
+                                    rni.id as idIncidente,
+                                    rni.zabbix_event_id as zabbixID,
+                                    eqpop.hostname as equipamento,
+                                    rni.descricaoIncidente as descricaoIncidente,
+                                    CASE
+                                    WHEN rni.active = 1 THEN 'Incidente aberto'
+                                    WHEN rni.active = 0 THEN 'Normalizado'
+                                    END active,
+                                    rni.active as activeID,
+                                    date_format(rni.inicioIncidente,'%H:%m:%s %d/%m/%Y') as horainicial,
+                                    date_format(rni.fimIncidente,'%H:%m:%s %d/%m/%Y') as horafinal,
+                                    IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
+                                    FROM
+                                    redeneutra_incidentes as rni
+                                    LEFT JOIN
+                                    equipamentospop as eqpop
+                                    ON
+                                    eqpop.id = rni.equipamento_id
+                                    ORDER BY
+                                    rni.inicioIncidente DESC";
+                            } else {
+                                $sql_select_all =
+                                    "SELECT
+                                    rni.id as idIncidente,
+                                    rni.zabbix_event_id as zabbixID,
+                                    eqpop.hostname as equipamento,
+                                    rni.descricaoIncidente as descricaoIncidente,
+                                    CASE
+                                    WHEN rni.active = 1 THEN 'Incidente aberto'
+                                    WHEN rni.active = 0 THEN 'Normalizado'
+                                    END active,
+                                    rni.active as activeID,
+                                    date_format(rni.inicioIncidente,'%H:%m:%s %d/%m/%Y') as horainicial,
+                                    date_format(rni.fimIncidente,'%H:%m:%s %d/%m/%Y') as horafinal,
+                                    IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
+                                    FROM
+                                    redeneutra_parceiro_olt as rnpo
+                                    LEFT JOIN
+                                    redeneutra_olts as rno
+                                    ON
+                                    rno.id = rnpo.olt_id
+                                    LEFT JOIN
+                                    redeneutra_incidentes as rni
+                                    ON
+                                    rni.equipamento_id = rno.equipamento_id
+                                    LEFT JOIN
+                                    equipamentospop as eqpop
+                                    ON
+                                    eqpop.id = rni.equipamento_id
+                                    WHERE
+                                    rnpo.parceiro_id = $parceiroID
+                                    and
+                                    rnpo.active = 1
+                                    ORDER BY
+                                    rni.inicioIncidente DESC";
+                            }
+
+
+                            // Executa o query da seleção acimas
+                            $sql_query_all = mysqli_query($mysqli, $sql_select_all);
+
+
+                            // Gera uma variável com o número total de registros no banco de dados
+                            $total_registros = mysqli_num_rows($sql_query_all);
+
+                            // Gera outra variável, desta vez com o número de páginas que será precisa.
+                            // O comando ceil() arredonda "para cima" o valor
+
+                            if ($total_registros == "0") {
+                                $pags = "1";
+                            } else {
+                                $pags = ceil($total_registros / $qnt);
+                            }
+
+                            // Número máximos de botões de paginação
+                            $max_links = 5; ?>
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <?php
+                                    // Exibe o primeiro link "primeira página", que não entra na contagem acima(3)
+                                    ?>
+                                    <li class="page-item"><a class="page-link" href="/redeNeutra/incidentes/index.php?pagina=1">Primeira Página</a></li>
+                                    <?php
+                                    // Cria um for() para exibir os 3 links antes da página atual
+                                    for ($i = $p - $max_links; $i <= $p - 1; $i++) {
+                                        // Se o número da página for menor ou igual a zero, não faz nada
+                                        // (afinal, não existe página 0, -1, -2..)
+                                        if ($i <= 0) {
+                                            //faz nada
+                                            // Se estiver tudo OK, cria o link para outra página
+                                        } else {
+                                    ?>
+                                            <li class="page-item"><a class="page-link" href="/redeNeutra/incidentes/index.php?pagina=<?= $i ?>"><?= $i ?></a></li>
+                                    <?php
+
+                                        }
+                                    }
+                                    // Exibe a página atual, sem link, apenas o número
+                                    ?>
+                                    <li class="page-item active"><a class="page-link"><?= $p ?></a></li>
+                                    <?php
+                                    // Cria outro for(), desta vez para exibir 3 links após a página atual
+                                    for ($i = $p + 1; $i <= $p + $max_links; $i++) {
+                                        // Verifica se a página atual é maior do que a última página. Se for, não faz nada.
+                                        if ($i > $pags) {
+                                            //faz nada
+                                        }
+                                        // Se tiver tudo Ok gera os links.
+                                        else {
+                                    ?>
+                                            <li class="page-item"><a class="page-link" href="/redeNeutra/incidentes/index.php?pagina=<?= $i ?>"><?= $i ?></a></li>
+                                    <?php
+                                        }
+                                    }
+                                    // Exibe o link "última página"
+                                    ?>
+                                    <li class="page-item"><a class="page-link" href="/redeNeutra/incidentes/index.php?pagina=<?= $pags ?>">Última Página</a></li>
+                                </ul>
+                            </nav><!-- End Basic Pagination -->
+
                         </div>
 
 

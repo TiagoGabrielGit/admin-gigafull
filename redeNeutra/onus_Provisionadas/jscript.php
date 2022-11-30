@@ -30,6 +30,7 @@
             document.querySelector("#sinalONU").value = retornoDiag.sinalONU
             document.querySelector("#sinalOLT").value = retornoDiag.sinalOLT
             document.querySelector("#temperaturaONU").value = retornoDiag.temperaturaONU
+
         } else if (retornoDiag.estado == "offline") {
             document.querySelector("#statusONUOffline").hidden = false
             document.querySelector("#statusONUOffline").value = retornoDiag.estado
@@ -84,6 +85,42 @@
         })
     }
 </script>
+
+<!-- HOMOLOGAÇÃO -->
+<script>
+    document.getElementById("confirmarModalResetar").addEventListener("click", eventoResetar);
+    document.querySelector("#msgModalResetar").hidden = false;
+
+
+    async function eventoResetar() {
+        document.querySelector("#confirmarModalResetar").hidden = true;
+        document.querySelector("#voltarModalResetar").hidden = true;
+        document.querySelector("#msgModalResetar").hidden = true;
+        document.querySelector("#msgModalResetando").hidden = false;
+
+        let obg = {}
+        obg.idOLT = document.getElementById("idOLT").value;
+        obg.slotOLT = document.getElementById("slotOLT").value;
+        obg.ponOLT = document.getElementById("ponOLT").value;
+        obg.idONU = document.getElementById("idONU").value;
+
+        const retorno = await funcaoResetar('scripts/resetONU.php', 'GET', obg)
+
+        document.querySelector("#resultadoScripts").value = retorno
+    }
+
+    async function funcaoResetar(url, metodo, obg) {
+        return $.ajax({
+            url: url,
+            method: metodo,
+            dataType: "HTML",
+            data: obg,
+        })
+    }
+</script>
+<!-- HOMOLOGAÇÃO -->
+
+
 
 <script>
     idProvisionamento = document.getElementById("idProvisionamento").value;
@@ -254,7 +291,7 @@
             obg.LAN4 = ""
         }
         const retorno = await funcaoExecutaTAG('scripts/addTAG.php', 'GET', obg)
-        
+
         document.querySelector("#buttonExecutandoTAG").hidden = true;
         document.querySelector("#buttonExecutadoTAG").hidden = false;
     }

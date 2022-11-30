@@ -105,7 +105,6 @@ require "sql.php";
                                                         <div class="col-6">
                                                             <label for="inputEmail" class="form-label">E-mail/Usuário</label>
                                                             <input name="inputEmail" type="text" class="form-control" id="inputEmail" disabled>
-                                                            <input name="inputEmailHidden" type="text" class="form-control" id="inputEmailHidden" hidden>
                                                         </div>
 
                                                         <div class="col-6">
@@ -156,7 +155,7 @@ require "sql.php";
                                             WHEN user.tipo_usuario = 2 THEN 'Gigafull Portal'
                                             WHEN user.tipo_usuario = 3 THEN 'Gigafull RN'
                                         END as tipo,
-                                        user.email as email,
+                                        pess.email as email,
                                         user.senha as senha,
                                         p.perfil as nome_perfil,
                                         CASE

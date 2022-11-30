@@ -11,7 +11,7 @@ u.id as idUsuario,
 p.nome as nome,
 p.email as email,
 pf.perfil as perfil,
-u.email as usuario,
+p.email as usuario,
 e.fantasia as empresa
 FROM
 usuarios as u
@@ -44,7 +44,7 @@ horario
 FROM
 log_acesso
 WHERE
-usuario_id = 3
+usuario_id = $usuarioID
 ORDER BY
 horario DESC
 LIMIT 10";

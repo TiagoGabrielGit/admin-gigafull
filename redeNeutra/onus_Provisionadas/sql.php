@@ -4,6 +4,7 @@ $onus_provisionadas =
 rnup.id as id,
 rnup.olt_id as olt_id,
 rnup.parceiro_id as parceiro_id,
+p.nome as usuario_ativador,
 rnup.descricao as descricao,
 rnup.slot_olt as slot_olt,
 rnup.pon_olt as pon_olt,
@@ -26,6 +27,14 @@ LEFT JOIN
 redeneutra_olts as rno
 ON
 rno.id = rnup.olt_id
+LEFT JOIN
+usuarios as u
+ON
+u.id = rnup.criado_por
+LEFT JOIN
+pessoas as p
+ON
+p.id = u.pessoa_id
 WHERE
 rnup.active = 1
 and

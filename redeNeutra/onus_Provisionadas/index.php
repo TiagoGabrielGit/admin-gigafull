@@ -29,6 +29,7 @@ require "../../includes/menu.php";
                                     <th scope="col">Serial</th>
                                     <th scope="col">Descrição</th>
                                     <th scope="col">Data Provisionamento</th>
+                                    <th scope="col">Provisionado por</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -68,6 +69,7 @@ require "../../includes/menu.php";
                                         <td><?= $campos['serial_onu']; ?></td>
                                         <td><?= $campos['descricao']; ?></td>
                                         <td><?= $campos['data_provisionamento']; ?></td>
+                                        <td><?= $campos['usuario_ativador']; ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>

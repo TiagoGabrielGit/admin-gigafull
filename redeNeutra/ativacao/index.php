@@ -17,7 +17,7 @@ require "../../includes/remove_setas_number.php";
                         <div class="col-lg-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Execução</h5>
+                                    <h5 class="card-title">Execução</h5> 
                                     <form id="formExecutaScript" method="POST">
                                         <div class="row">
                                             <div class="col-6">
@@ -97,6 +97,8 @@ require "../../includes/remove_setas_number.php";
                                                 <input name="codigoReserva" type="text" class="form-control" id="codigoReserva" required>
                                             </div>
                                         </div>
+
+                                        <input name="usuarioID" type="text" class="form-control" id="usuarioID" value="<?=$usuarioID?>" hidden>
 
                                         <hr class="sidebar-divider">
 

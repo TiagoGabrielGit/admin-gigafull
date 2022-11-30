@@ -1,7 +1,7 @@
 <?php
-require "../../conexoes/conexao.php"; 
+require "../../conexoes/conexao.php";
 
-$usuarioID = $_SESSION['id'];
+$usuarioID = $_GET['usuarioID'];
 $profile = $_GET['profile'];
 $slotOLT = $_GET['slotOLT'];
 $ponOLT = $_GET['ponOLT'];
@@ -86,7 +86,7 @@ foreach ($retorno2 as $key2) {
 
 if ($valida3 === false) {
     $sql_insert = "INSERT INTO redeneutra_onu_provisionadas (metodo, olt_id, parceiro_id, descricao, slot_olt, pon_olt, id_onu, serial_onu, active, data_provisionamento, criado_por)
-    VALUES ('1', '$olt', '$parceiro', '$descricaoONU', '$slotOLT', '$ponOLT', '$idONU', '$serialONU', '1', NOW(), $usuarioID)";
+    VALUES ('1', '$olt', '$parceiro', '$descricaoONU', '$slotOLT', '$ponOLT', '$idONU', '$serialONU', '1', NOW(), '$usuarioID')";
     mysqli_query($mysqli, $sql_insert);
     $idProvisionamento = mysqli_insert_id($mysqli);
 }

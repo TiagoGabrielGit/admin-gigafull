@@ -18,6 +18,58 @@ require "../includes/menu.php";
             <!-- Default Accordion -->
             <div class="accordion" id="accordionExample">
 
+              <!-- Versão 3.9 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading3-9">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3-9" aria-expanded="false" aria-controls="collapse3-9">
+                    Versão 3.9 - 30/11/2022
+                  </button>
+                </h2>
+                <div id="collapse3-9" class="accordion-collapse collapse" aria-labelledby="heading3-9" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Páginação na visualização de chamados;<br>
+                    # Páginação na visualização de incidentes;<br>
+                    # Nome do usuário que esta apropriado do chamado;<br>
+                    # Configurado o email do cadastro como email de login;<br>
+                    # Agrupamento das credenciais no formato de TAB (Pode gerar BUGs na rotina, informar administrador para correção);<br>
+                    # Ordenação por ordem alfabetica a seleção de tipo de chamado na abertura de chamado;<br>
+                    # Informação de usuário provisionador;<br>
+                    # Filtro de chamados encerrados, abertos na consulta de chamados;<br>
+                    # LOGs de acesso no view do usuário;<br>
+                    # Botão resetar ONU; (Em testes)<br>
+
+                    <br><strong>Correções de BUG</strong><br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Excluido coluna email da tabela de usuarios;<br>
+                    # Inserido registro do menu Credenciais na tabela "url_menu";
+                    # Criado tabela "redeneutra_onu_log";<br>
+
+                    <br><strong>Previsto para próxima atualização</strong><br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas;<br>
+                    # Chamados RN;<br>
+                    # Visualização de incidentes RN após desautorizar OLT do parceiro;<br>
+                    # Botão excluir provisionamento sem desprovisionar;<br>
+                    # Botão reiniciar ONU;<br>
+                    # Registro de nivel de sinal de ONU;<br>
+                    # Encaminhamento de responsável por chamado;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Relatórios;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Criação de contratos;<br>
+                    # Componentes de equipamentos;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                    # Integração com API's de CEP;<br>
+                    # Segurança individual
+                  </div>
+                </div>
+              </div>
+
+
 
               <!-- Versão 3.8 -->
               <div class="accordion-item">
@@ -53,13 +105,14 @@ require "../includes/menu.php";
                     # Componentes de equipamentos;<br>
                     # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
                     # Integração com API's de CEP;<br>
-                    # Segurança individual
+                    # Segurança individual;<br>
+                    # Agendamento de chamados;<br>
                   </div>
                 </div>
               </div>
 
 
-            
+
               <!-- Versão 3.7 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading3-7">
@@ -73,7 +126,7 @@ require "../includes/menu.php";
 
                     <br><strong>Melhorias</strong><br>
                     # Dashboard de parceiro de RN;<br>
-                    
+
                     <br><strong>Correções de BUG</strong><br>
 
                     <br><strong>Alterações banco de dados</strong><br>

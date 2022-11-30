@@ -7,12 +7,14 @@ require "sql1.php";
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $empresa_id = $_POST['empresaPesquisa'];
     $atendentePesquisa = $_POST['atendentePesquisa'];
+    $statusChamado = $_POST['statusChamado'];
 } else {
     $empresa_id = "%";
     $atendentePesquisa = "%";
+    $statusChamado = "%";
 }
 
-$lista_chamados =
+/*$lista_chamados =
     "SELECT
 ch.id as id_chamado,
 ch.assuntoChamado as assunto,
@@ -49,7 +51,7 @@ and
 ch.atendente_id LIKE '$atendentePesquisa'
 ORDER BY
 ch.data_abertura DESC
-";
+";*/
 
 $id_usuario = $_SESSION['id'];
 
@@ -256,6 +258,28 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                 </select>
                             </div>
 
+                            <div class="col-4">
+                                <label for="statusChamado" class="form-label">Status</label>
+                                <select id="statusChamado" name="statusChamado" class="form-select">
+                                    <option selected value="%">Todos</option>
+                                    <option value="1">Aberto</option>
+                                    <option value="2">Andamento</option>
+                                    <option value="3">Fechado</option>
+
+                                    <?php if ($_SERVER["REQUEST_METHOD"] == 'POST') : ?>
+                                        <script>
+                                            let statusChamado = '<?= $_POST['statusChamado']; ?>'
+                                            if (statusChamado == '%') {} else {
+                                                document.querySelector("#statusChamado").value = statusChamado
+                                            }
+                                        </script>
+                                    <?php
+                                    endif;
+                                    ?>
+
+                                </select>
+                            </div>
+
                             <div class="col-6">
                                 <button style="margin-top: 30px; " type="submit" class="btn btn-danger">Filtrar</button>
                             </div>
@@ -267,19 +291,72 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                         <div class="accordion" id="accordionFlushExample">
 
                             <?php
-                            $resultado = mysqli_query($mysqli, $lista_chamados) or die("Erro ao retornar dados");
+                            // Verifica se a variável tá declarada, senão deixa na primeira página como padrão
+                            if (isset($_GET["pagina"])) {
+                                $p = $_GET["pagina"];
+                            } else {
+                                $p = 1;
+                            }
+                            // Defina aqui a quantidade máxima de registros por página.
+                            $qnt = 10;
 
+                            // O sistema calcula o início da seleção calculando: 
+                            // (página atual * quantidade por página) - quantidade por página
+                            $inicio = ($p * $qnt) - $qnt;
+
+                            $sql_select =
+                                "SELECT
+                            ch.id as id_chamado,
+                            ch.assuntoChamado as assunto,
+                            ch.relato_inicial as relato_inicial,
+                            ch.atendente_id as id_atendente,
+                            date_format(ch.data_abertura,'%H:%m:%s %d/%m/%Y') as dataAbertura,
+                            ch.in_execution as inExecution,
+                            ch.status_id as id_status,
+                            cs.status_chamado as statusChamado,
+                            tc.tipo as tipoChamado,
+                            emp.fantasia as fantasia,
+                            p.nome as atendente
+                            FROM
+                            chamados as ch
+                            LEFT JOIN
+                            empresas as emp
+                            ON
+                            ch.empresa_id = emp.id
+                            LEFT JOIN
+                            tipos_chamados as tc
+                            ON
+                            ch.tipochamado_id  = tc.id
+                            LEFT JOIN
+                            chamados_status as cs
+                            ON
+                            cs.id = ch.status_id
+                            LEFT JOIN
+                            pessoas as p
+                            ON
+                            p.id = ch.atendente_id
+                            WHERE
+                            ch.empresa_id LIKE '$empresa_id'
+                            and
+                            ch.atendente_id LIKE '$atendentePesquisa'
+                            and
+                            ch.status_id LIKE '$statusChamado'
+                            ORDER BY
+                            ch.data_abertura DESC
+                            LIMIT $inicio, $qnt
+                            ";
+
+                            // Executa o Query
+                            $sql_query = mysqli_query($mysqli, $sql_select);
                             $cont = 1;
-
-                            while ($campos = $resultado->fetch_array()) {
+                            // Cria um while para pegar as informações do BD
+                            while ($campos = $sql_query->fetch_array()) {
                                 $id_chamado = $campos['id_chamado'];
-
                                 if (empty($campos['atendente'])) {
                                     $atendente = "Sem atendente";
                                 } else {
                                     $atendente = $campos['atendente'];
                                 }
-
                                 if ($campos['inExecution'] == 1) {
                                     $Color = "inExecution";
                                 } else if ($campos['id_status'] == 3) {
@@ -298,11 +375,10 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                 $res_second = $seconds_total->fetch_array();
 
                             ?>
-
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="flush-heading<?= $cont ?>">
                                         <button class="accordion-button collapsed <?= $Color ?>" id="<?= $Color ?>" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<?= $cont ?>" aria-expanded="false" aria-controls="flush-collapse<?= $cont ?>">
-                                            Chamado #<?= $id_chamado ?> - <?= $campos['tipoChamado']; ?> - <?= $campos['assunto']; ?>
+                                            Chamado #<?= $id_chamado ?> - <?= $campos['tipoChamado']; ?> - <?= $campos['assunto']; ?> - <?= $atendente ?>
                                         </button>
                                     </h2>
                                     <div id="flush-collapse<?= $cont ?>" class="accordion-collapse collapse" aria-labelledby="flush-heading<?= $cont ?>" data-bs-parent="#accordionFlushExample">
@@ -336,8 +412,110 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                     </div>
                                 </div>
 
+
                             <?php $cont++;
-                            } ?>
+                            }
+
+                            // Depois que selecionou todos os nome, pula uma linha para exibir os links(próxima, última...)
+                            echo "<br />";
+
+                            // Faz uma nova seleção no banco de dados, desta vez sem LIMIT,
+                            // para pegarmos o número total de registros
+                            $sql_select_all = "SELECT
+                            ch.id as id_chamado,
+                            ch.assuntoChamado as assunto,
+                            ch.relato_inicial as relato_inicial,
+                            ch.atendente_id as id_atendente,
+                            date_format(ch.data_abertura,'%H:%m:%s %d/%m/%Y') as dataAbertura,
+                            ch.in_execution as inExecution,
+                            ch.status_id as id_status,
+                            cs.status_chamado as statusChamado,
+                            tc.tipo as tipoChamado,
+                            emp.fantasia as fantasia,
+                            p.nome as atendente
+                            FROM
+                            chamados as ch
+                            LEFT JOIN
+                            empresas as emp
+                            ON
+                            ch.empresa_id = emp.id
+                            LEFT JOIN
+                            tipos_chamados as tc
+                            ON
+                            ch.tipochamado_id = tc.id
+                            LEFT JOIN
+                            chamados_status as cs
+                            ON
+                            cs.id = ch.status_id
+                            LEFT JOIN
+                            pessoas as p
+                            ON
+                            p.id = ch.atendente_id
+                            WHERE
+                            ch.empresa_id LIKE '$empresa_id'
+                            and
+                            ch.atendente_id LIKE '$atendentePesquisa'
+                            and
+                            ch.status_id LIKE '$statusChamado'
+                            ORDER BY
+                            ch.data_abertura DESC";
+
+                            // Executa o query da seleção acimas
+                            $sql_query_all = mysqli_query($mysqli, $sql_select_all);
+
+
+                            // Gera uma variável com o número total de registros no banco de dados
+                            $total_registros = mysqli_num_rows($sql_query_all);
+
+                            // Gera outra variável, desta vez com o número de páginas que será precisa.
+                            // O comando ceil() arredonda "para cima" o valor
+                            $pags = ceil($total_registros / $qnt);
+
+                            // Número máximos de botões de paginação
+                            $max_links = 5; ?>
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <?php
+                                    // Exibe o primeiro link "primeira página", que não entra na contagem acima(3)
+                                    ?>
+                                    <li class="page-item"><a class="page-link" href="/servicedesk/consultar_chamados/index.php?pagina=1">Primeira Página</a></li>
+                                    <?php
+                                    // Cria um for() para exibir os 3 links antes da página atual
+                                    for ($i = $p - $max_links; $i <= $p - 1; $i++) {
+                                        // Se o número da página for menor ou igual a zero, não faz nada
+                                        // (afinal, não existe página 0, -1, -2..)
+                                        if ($i <= 0) {
+                                            //faz nada
+                                            // Se estiver tudo OK, cria o link para outra página
+                                        } else {
+                                    ?>
+                                            <li class="page-item"><a class="page-link" href="/servicedesk/consultar_chamados/index.php?pagina=<?= $i ?>"><?= $i ?></a></li>
+                                    <?php
+
+                                        }
+                                    }
+                                    // Exibe a página atual, sem link, apenas o número
+                                    ?>
+                                    <li class="page-item active"><a class="page-link"><?= $p ?></a></li>
+                                    <?php
+                                    // Cria outro for(), desta vez para exibir 3 links após a página atual
+                                    for ($i = $p + 1; $i <= $p + $max_links; $i++) {
+                                        // Verifica se a página atual é maior do que a última página. Se for, não faz nada.
+                                        if ($i > $pags) {
+                                            //faz nada
+                                        }
+                                        // Se tiver tudo Ok gera os links.
+                                        else {
+                                    ?>
+                                            <li class="page-item"><a class="page-link" href="/servicedesk/consultar_chamados/index.php?pagina=<?= $i ?>"><?= $i ?></a></li>
+                                    <?php
+                                        }
+                                    }
+                                    // Exibe o link "última página"
+                                    ?>
+                                    <li class="page-item"><a class="page-link" href="/servicedesk/consultar_chamados/index.php?pagina=<?= $pags ?>">Última Página</a></li>
+                                </ul>
+                            </nav><!-- End Basic Pagination -->
                         </div>
 
                         <!-- End Table with stripped rows -->

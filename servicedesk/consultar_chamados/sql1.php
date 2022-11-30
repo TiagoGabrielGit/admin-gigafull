@@ -21,4 +21,6 @@ FROM
 tipos_chamados as tipo
 WHERE
 tipo.active = 1
+ORDER BY
+tipo.tipo ASC
 ";

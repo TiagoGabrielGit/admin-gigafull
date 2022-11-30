@@ -16,7 +16,7 @@ if (isset($_POST['email']) || isset($_POST['senha'])) {
       "SELECT
         u.id as id,
         p.nome as nome,
-        u.email as email,
+        p.email as email,
         u.senha as senha,
 		u.tipo_usuario as tipo_usuario,
         u.perfil_id as perfil,
@@ -32,7 +32,7 @@ if (isset($_POST['email']) || isset($_POST['senha'])) {
       ON
         u.perfil_id = pe.id
       WHERE
-        u.email = '$email' 
+        p.email = '$email' 
 	    AND 
 	      u.senha = '$senha'
 	    AND

@@ -41,13 +41,13 @@
                         <div class="col-12">
                             <label for="senha" class="form-label">Digite a senha nova</label>
                             <input type="password" name="senha" class="form-control" id="senha" required>
-                            <div class="invalid-feedback">Digite seu e-mail.</div>
+                            <div class="invalid-feedback">Digite a senha</div>
                         </div>
 
                         <div class="col-12">
                             <label for="senhaRepeat" class="form-label">Repita a senha</label>
                             <input type="password" name="senhaRepeat" class="form-control" id="senhaRepeat" required>
-                            <div class="invalid-feedback">Digite seu e-mail.</div>
+                            <div class="invalid-feedback">Digite a senha</div>
                         </div>
 
                         <div class="col-4"></div>

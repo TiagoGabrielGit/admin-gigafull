@@ -158,7 +158,7 @@ require "validaRotina.php";
 
         <?php if ($c_nav_chamados['c'] == 1) { ?>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="/servicedesk/consultar_chamados/index.php">
+                <a class="nav-link collapsed" href="/servicedesk/consultar_chamados/index.php?pagina=1">
                     <i class="bi bi-file-text"></i>
                     <span>Chamados</span>
                 </a>
@@ -185,6 +185,15 @@ require "validaRotina.php";
 
         <?php if ($c_valida_telecom['c'] > 0) { ?>
             <li class="nav-heading">Telecom</li>
+        <?php } ?>
+
+        <?php if ($c_nav_credenciais['c'] == 1) { ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/telecom/credentials/index.php">
+                    <i class="bi bi-key"></i>
+                    <span>Credenciais</span>
+                </a>
+            </li>
         <?php } ?>
 
         <?php if ($c_nav_guardpass['c'] == 1) { ?>

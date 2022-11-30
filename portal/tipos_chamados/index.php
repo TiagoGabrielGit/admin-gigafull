@@ -51,7 +51,7 @@ require "sql.php";
                                                         <hr class="sidebar-divider">
 
                                                         <div class="text-center">
-                                                            <input id="btnSalvar" name="btnSalvar" type="button" value="Salvar" class="btn btn-primary"></input>
+                                                            <input id="btnSalvar" name="btnSalvar" type="button" value="Salvar" class="btn btn-danger"></input>
                                                             <a href="/portal/tipos_chamados/index.php"> <input type="button" value="Voltar" class="btn btn-secondary"></input></a>
                                                         </div>
                                                     </form>
@@ -144,7 +144,7 @@ require "sql.php";
                         </div>
 
                         <div class="col-12">
-                            <button class="btn btn-primary w-100" type="submit">Editar</button>
+                            <button class="btn btn-danger w-100" type="submit">Editar</button>
                         </div>
 
                     </form>

@@ -70,6 +70,7 @@
 
         let obg = {}
         obg.profile = document.getElementById("profile").value;
+        obg.usuarioID = document.getElementById("usuarioID").value;
         obg.codigoParceiro = document.getElementById("codigoParceiro").value;
         obg.codigoReserva = document.getElementById("codigoReserva").value;
         obg.serialONU = document.getElementById("serialONU").value;
