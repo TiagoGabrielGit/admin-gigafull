@@ -181,6 +181,24 @@ $r_nav_sub_tiposEquipamentos = mysqli_query($mysqli, $nav_sub_tiposEquipamentos)
 $c_nav_sub_tiposEquipamentos = mysqli_fetch_assoc($r_nav_sub_tiposEquipamentos);
 /////////////////////////////////////////
 
+//SUBMENU >> REDE NEUTRA >> AUDITORIA
+$nav_sub_auditoria = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '21'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_auditoria = mysqli_query($mysqli, $nav_sub_auditoria);
+$c_nav_sub_auditoria = mysqli_fetch_assoc($r_nav_sub_auditoria);
+/////////////////////////////////////////
+
 //SUBMENU >> REDE NEUTRA >> ATIVAÇÃO
 $nav_sub_ativacao = "SELECT
 count(*) as c

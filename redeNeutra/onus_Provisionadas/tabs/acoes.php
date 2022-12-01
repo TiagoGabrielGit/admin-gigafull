@@ -66,7 +66,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div hidden id="msgModalResetar" class="modal-body" style="text-align: center;">
-                Tem certeza que deseja resetar a ONU?<br> 
+                Tem certeza que deseja resetar a ONU?<br>
                 <b style="color:red;"> Esta ação ira remover todas as configuração do equipamento!</b>
             </div>
             <div hidden id="msgModalResetando" class="modal-body" style="text-align: center;">
@@ -82,7 +82,7 @@
             <div class="modal-footer">
                 <button id="voltarModalResetar" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
                 <button id="confirmarModalResetar" onclick="resetar()" type="button" class="btn btn-danger">Confirmar</button>
-                <a href="/redeNeutra/onus_Provisionadas/index.php"> <input hidden id="okModalDesprovisionar" type="button" value="Ok" class="btn btn-danger"></input></a>
+                <input hidden id="okModalResetar" type="button" value="Ok" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"></input>
             </div>
         </div>
     </div>

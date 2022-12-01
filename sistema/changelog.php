@@ -18,6 +18,50 @@ require "../includes/menu.php";
             <!-- Default Accordion -->
             <div class="accordion" id="accordionExample">
 
+              <!-- Versão 4.0 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading4-0">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4-0" aria-expanded="false" aria-controls="collapse4-0">
+                    Versão 4.0 - 30/11/2022
+                  </button>
+                </h2>
+                <div id="collapse4-0" class="accordion-collapse collapse" aria-labelledby="heading4-0" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Mensagem ao fim do reset de ONU;<br>
+                    # Botão excluir ONU sem desprovisionar;<br>
+                    # Criado menu auditoria para validar seriais e códigos duplicados;<br>
+
+                    <br><strong>Correções de BUG</strong><br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Inserido submenu "Auditoria" na tabela de sub-menu;<br>
+
+                    <br><strong>Previsto para próxima atualização</strong><br>
+                    # Correção BUG service-port - Previsão 01/12/2022;<br>
+                    # Encaminhamento de responsável por chamado - Previsão 02/12/2022;<br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas - Previsão 06/12/2022;<br>
+                    # Visualização de incidentes RN após desautorizar OLT do parceiro - Previsão 09/12/2022;<br>
+                    # Botão reiniciar ONU - Previsão 09/12/2022;<br>
+                    # Registro de nivel de sinal de ONU - Previsão 09/12/2022;<br>
+                    # Chamados RN - Previsão 16/12/2022;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Relatórios;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Criação de contratos;<br>
+                    # Componentes de equipamentos;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                    # Integração com API's de CEP;<br>
+                    # Segurança individual;<br>
+                    # Agendamento de chamado;<br>
+                  </div>
+                </div>
+              </div>
+
+
               <!-- Versão 3.9 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading3-9">
@@ -44,7 +88,7 @@ require "../includes/menu.php";
 
                     <br><strong>Alterações banco de dados</strong><br>
                     # Excluido coluna email da tabela de usuarios;<br>
-                    # Inserido registro do menu Credenciais na tabela "url_menu";
+                    # Inserido registro do menu Credenciais na tabela "url_menu";<br>
                     # Criado tabela "redeneutra_onu_log";<br>
 
                     <br><strong>Previsto para próxima atualização</strong><br>

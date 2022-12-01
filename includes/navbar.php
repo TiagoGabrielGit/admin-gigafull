@@ -238,6 +238,15 @@ require "validaRotina.php";
                     <i class="bi bi-layout-text-window-reverse"></i><span>Rede Neutra</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="redeNeutra-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <?php if ($c_nav_sub_auditoria['c'] == 1) { ?>
+                        <li>
+                            <a href="/redeNeutra/auditoria/index.php">
+                                <i class="bi bi-circle"></i><span>Auditoria</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+
                     <?php if ($c_nav_sub_ativacao['c'] == 1) { ?>
                         <li>
                             <a href="/redeNeutra/ativacao/index.php">

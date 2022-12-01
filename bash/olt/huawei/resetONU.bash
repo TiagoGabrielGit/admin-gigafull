@@ -21,9 +21,9 @@ echo "config"
 sleep 0.2
 echo "interface gpon 0/$4"
 sleep 0.3
-echo "display ont port state $5 $6 eth-port all"
+echo "ont factory-setting-restore $5 $6"
 sleep 0.3
-echo ""
+echo "y"
 sleep 0.3
 echo "quit"
 sleep 0.3

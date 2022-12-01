@@ -105,6 +105,9 @@
         obg.idONU = document.getElementById("idONU").value;
 
         const retorno = await funcaoResetar('scripts/resetONU.php', 'GET', obg)
+        document.querySelector("#msgResetar").textContent = "Operação concluida.";
+        document.querySelector("#msgModalResetando").hidden = true;
+        document.querySelector("#okModalResetar").hidden = false;
 
         document.querySelector("#resultadoScripts").value = retorno
     }
