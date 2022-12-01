@@ -2,7 +2,8 @@
 $sql_log_acesso =
 "SELECT
 la.id as id,
-date_format(la.horario,'%H:%m:%s %d/%m/%Y') as horario,
+la.id as sessao,
+date_format(la.horario,'%H:%i:%S %d/%m/%Y') as horario,
 la.ip_address as ip_address,
 p.nome as usuario
 FROM

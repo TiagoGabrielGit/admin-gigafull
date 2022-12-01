@@ -252,6 +252,7 @@ p.active = 1"; ?>
                                                         <table class="table">
                                                             <thead>
                                                                 <tr>
+                                                                    <th scope="col">Sessão</th>
                                                                     <th scope="col">IP</th>
                                                                     <th scope="col">Horário</th>
                                                                 </tr>
@@ -261,7 +262,8 @@ p.active = 1"; ?>
                                                                 $log_acesso =
                                                                     "SELECT
                                                                         ip_address,
-                                                                        horario
+                                                                        horario,
+                                                                        id
                                                                         FROM
                                                                         log_acesso
                                                                         WHERE
@@ -275,6 +277,7 @@ p.active = 1"; ?>
 
                                                                 while ($campos_log = $r_log->fetch_array()) { ?>
                                                                     <tr>
+                                                                        <td><?= $campos_log['id'] ?></td>
                                                                         <td><?= $campos_log['ip_address'] ?></td>
                                                                         <td><?= $campos_log['horario'] ?></td>
                                                                     </tr>

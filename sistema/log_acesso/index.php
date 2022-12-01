@@ -29,6 +29,7 @@ require "sql.php";
                         <table class="table table-striped">
                             <thead>
                                 <tr>
+                                    <th scope="col">Sessão</th>
                                     <th scope="col">Usuário</th>
                                     <th scope="col">IP de acesso</th>
                                     <th scope="col">Data/Hora</th>
@@ -44,6 +45,7 @@ require "sql.php";
                                     $id = $campos['id'];
                                     echo "<tr>";
                                 ?>
+                                    <td><?php echo $campos['sessao']; ?></td>
                                     <td><?php echo $campos['usuario']; ?></td>
                                     <td><?php echo $campos['ip_address']; ?></td>
                                     <td><?php echo $campos['horario']; ?></td>

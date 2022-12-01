@@ -31,7 +31,7 @@ rnop.slot_olt as slotOLT,
 rnop.pon_olt as ponOLT,
 rnop.id_onu as idONU,
 rnop.serial_onu as serialONU,
-date_format(rnop.data_provisionamento,'%H:%m:%s %d/%m/%Y') as data_provisionamento,
+date_format(rnop.data_provisionamento,'%H:%i:%s %d/%m/%Y') as data_provisionamento,
 e.fantasia as fantasia,
 rno.olt_name as nameOLT,
 rnop.olt_id as idOLT

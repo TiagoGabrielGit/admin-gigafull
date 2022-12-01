@@ -13,7 +13,7 @@ count(rop.serial_onu) > 1";
 $r_serial_duplicado = mysqli_query($mysqli, $serial_duplicado);
 
 $codigo_duplicado = "SELECT
-rop.descricao as descicao
+rop.descricao as descricao
 FROM
 redeneutra_onu_provisionadas as rop
 WHERE

@@ -35,8 +35,8 @@ WHEN rni.active = 1 THEN 'Incidente aberto'
 WHEN rni.active = 0 THEN 'Normalizado'
 END active,
 rni.active as activeID,
-date_format(rni.inicioIncidente,'%H:%m:%s %d/%m/%Y') as horainicial,
-date_format(rni.fimIncidente,'%H:%m:%s %d/%m/%Y') as horafinal,
+date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
+date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
 IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
 FROM
 redeneutra_incidentes as rni
@@ -95,7 +95,7 @@ if ($campos['contagem'] >= 1) { ?>
                                     rnir.id as id_relato,
                                     rnir.relato as relato,
                                     rni.zabbix_event_id as zabbixID,
-                                    date_format(rnir.horarioRelato,'%H:%m:%s %d/%m/%Y') as horarioRelato
+                                    date_format(rnir.horarioRelato,'%H:%i:%s %d/%m/%Y') as horarioRelato
                                 FROM
                                     redeneutra_incidentes_relatos as rnir
                                 LEFT JOIN

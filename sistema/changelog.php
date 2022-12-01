@@ -18,6 +18,48 @@ require "../includes/menu.php";
             <!-- Default Accordion -->
             <div class="accordion" id="accordionExample">
 
+              <!-- Versão 4.1 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading4-1">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4-1" aria-expanded="false" aria-controls="collapse4-1">
+                    Versão 4.1 - 01/12/2022
+                  </button>
+                </h2>
+                <div id="collapse4-1" class="accordion-collapse collapse" aria-labelledby="heading4-1" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+
+                    <br><strong>Correções de BUG</strong><br>
+                    # Correção BUG service-port;<br>
+                    # Correção de formato data/hora (BUG em minutos);<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+
+                    <br><strong>Previsto para próxima atualização</strong><br>
+                    # Encaminhamento de responsável por chamado - Previsão 02/12/2022;<br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas - Previsão 06/12/2022;<br>
+                    # Visualização de incidentes RN após desautorizar OLT do parceiro - Previsão 09/12/2022;<br>
+                    # Botão reiniciar ONU - Previsão 09/12/2022;<br>
+                    # Registro de nivel de sinal de ONU - Previsão 09/12/2022;<br>
+                    # Filtros ONUs Provisionadas - Previsão 09/12/2022;<br> 
+                    # Chamados RN - Previsão 16/12/2022;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Relatórios;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Criação de contratos;<br>
+                    # Componentes de equipamentos;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                    # Integração com API's de CEP;<br>
+                    # Segurança individual;<br>
+                    # Agendamento de chamado;<br>
+                  </div>
+                </div>
+              </div>
+
+
               <!-- Versão 4.0 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading4-0">

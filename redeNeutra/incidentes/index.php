@@ -55,8 +55,8 @@ require "../../includes/menu.php";
                                     WHEN rni.active = 0 THEN 'Normalizado'
                                     END active,
                                     rni.active as activeID,
-                                    date_format(rni.inicioIncidente,'%H:%m:%s %d/%m/%Y') as horainicial,
-                                    date_format(rni.fimIncidente,'%H:%m:%s %d/%m/%Y') as horafinal,
+                                    date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
+                                    date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
                                     IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
                                     FROM
                                     redeneutra_incidentes as rni
@@ -79,8 +79,8 @@ require "../../includes/menu.php";
                                     WHEN rni.active = 0 THEN 'Normalizado'
                                     END active,
                                     rni.active as activeID,
-                                    date_format(rni.inicioIncidente,'%H:%m:%s %d/%m/%Y') as horainicial,
-                                    date_format(rni.fimIncidente,'%H:%m:%s %d/%m/%Y') as horafinal,
+                                    date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
+                                    date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
                                     IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
                                     FROM
                                     redeneutra_parceiro_olt as rnpo
@@ -176,8 +176,8 @@ require "../../includes/menu.php";
                                     WHEN rni.active = 0 THEN 'Normalizado'
                                     END active,
                                     rni.active as activeID,
-                                    date_format(rni.inicioIncidente,'%H:%m:%s %d/%m/%Y') as horainicial,
-                                    date_format(rni.fimIncidente,'%H:%m:%s %d/%m/%Y') as horafinal,
+                                    date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
+                                    date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
                                     IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
                                     FROM
                                     redeneutra_incidentes as rni
@@ -199,8 +199,8 @@ require "../../includes/menu.php";
                                     WHEN rni.active = 0 THEN 'Normalizado'
                                     END active,
                                     rni.active as activeID,
-                                    date_format(rni.inicioIncidente,'%H:%m:%s %d/%m/%Y') as horainicial,
-                                    date_format(rni.fimIncidente,'%H:%m:%s %d/%m/%Y') as horafinal,
+                                    date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
+                                    date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
                                     IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
                                     FROM
                                     redeneutra_parceiro_olt as rnpo
