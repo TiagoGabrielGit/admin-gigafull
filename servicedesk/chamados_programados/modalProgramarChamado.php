@@ -67,7 +67,7 @@
 
                         <span>Dados do Chamado</span>
 
-                        <input hidden id="solicitante" name="solicitante" value="<?= $pessoaID['pessoaID']; ?>"></input>
+                        <input hidden id="solicitante" name="solicitante" value="<?= $id_usuario ?>"></input> 
 
                         <div class="col-6">
                             <label for="empresaChamado" class="form-label">Empresa</label>

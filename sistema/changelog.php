@@ -18,6 +18,51 @@ require "../includes/menu.php";
             <!-- Default Accordion -->
             <div class="accordion" id="accordionExample">
 
+              <!-- Versão 4.2 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading4-2">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4-2" aria-expanded="false" aria-controls="collapse4-2">
+                    Versão 4.2 - 01/12/2022
+                  </button>
+                </h2>
+                <div id="collapse4-2" class="accordion-collapse collapse" aria-labelledby="heading4-2" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Encaminhamento de responsável por chamado<br>
+                    # Alterado identificador de id de pessoa para id de usuário em registro de chamados. Isso pode afetar informações de solicitantes e atendentes;<br>
+
+                    <br><strong>Correções de BUG</strong><br>
+                    # Corrigido contagem de ONUs provisionadas no último dia;<br>
+                    # Corrigido contagem de ONUs provisionadas na última semana;<br>
+                    # BUG Credenciais Portal;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+
+                    <br><strong>Previsto para próxima atualização</strong><br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas - Previsão 06/12/2022;<br>
+                    # Visualização de incidentes RN após desautorizar OLT do parceiro - Previsão 09/12/2022;<br>
+                    # Botão reiniciar ONU - Previsão 09/12/2022;<br>
+                    # Registro de nivel de sinal de ONU - Previsão 09/12/2022;<br>
+                    # Filtros ONUs Provisionadas - Previsão 09/12/2022;<br>
+                    # Chamados RN - Previsão 16/12/2022;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Relatórios;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Criação de contratos;<br>
+                    # Componentes de equipamentos;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                    # Integração com API's de CEP;<br>
+                    # Segurança individual;<br>
+                    # Agendamento de chamado;<br>
+                    # Autofind no provisionamento;<br>
+                  </div>
+                </div>
+              </div>
+
+
               <!-- Versão 4.1 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading4-1">
@@ -42,7 +87,7 @@ require "../includes/menu.php";
                     # Visualização de incidentes RN após desautorizar OLT do parceiro - Previsão 09/12/2022;<br>
                     # Botão reiniciar ONU - Previsão 09/12/2022;<br>
                     # Registro de nivel de sinal de ONU - Previsão 09/12/2022;<br>
-                    # Filtros ONUs Provisionadas - Previsão 09/12/2022;<br> 
+                    # Filtros ONUs Provisionadas - Previsão 09/12/2022;<br>
                     # Chamados RN - Previsão 16/12/2022;<br>
 
                     <br><strong>Backlog</strong><br>

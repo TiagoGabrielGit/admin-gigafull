@@ -50,9 +50,13 @@ p.nome as solicitante
 FROM
 chamados as c
 LEFT JOIN
+usuarios as u
+ON
+c.solicitante_id = u.id
+LEFT JOIN
 pessoas as p
 ON
-p.id = c.solicitante_id
+u.pessoa_id = p.id
 WHERE
 c.id = '$id_chamado'
 ";
@@ -63,9 +67,13 @@ p.nome as atendente
 FROM
 chamados as c
 LEFT JOIN
+usuarios as u
+ON
+u.id = c.atendente_id
+LEFT JOIN
 pessoas as p
 ON
-p.id = c.atendente_id
+p.id = u.pessoa_id
 WHERE
 c.id = '$id_chamado'
 ";
@@ -105,4 +113,22 @@ and
 cs.id != 2
 ORDER BY
 cs.status_chamado ASC
+";
+
+$lista_atendentes = 
+"SELECT
+p.nome as atendente,
+u.id as idUsuario
+FROM
+usuarios as u
+LEFT JOIN
+pessoas as p
+ON
+p.id = u.pessoa_id
+WHERE
+u.active = 1
+AND
+u.parceiroRN_id IS NULL
+ORDER BY
+p.nome ASC
 ";

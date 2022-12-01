@@ -150,7 +150,7 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
 
                                                         <span id="msg"></span>
 
-                                                        <input hidden id="solicitante" name="solicitante" value="<?= $pessoaID['pessoaID']; ?>"></input>
+                                                        <input hidden id="solicitante" name="solicitante" value="<?= $id_usuario ?>"></input>
 
                                                         <div class="col-6">
                                                             <label for="empresaChamado" class="form-label">Empresa</label>
@@ -332,9 +332,13 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                             ON
                             cs.id = ch.status_id
                             LEFT JOIN
+                            usuarios as u
+                            ON
+                            u.id = ch.atendente_id
+                            LEFT JOIN
                             pessoas as p
                             ON
-                            p.id = ch.atendente_id
+                            p.id = u.pessoa_id
                             WHERE
                             ch.empresa_id LIKE '$empresa_id'
                             and

@@ -55,7 +55,7 @@ redeneutra_onu_provisionadas
 WHERE
 active = 1
 and
-date(data_provisionamento) = CURDATE() - 1
+date(data_provisionamento) = CURDATE() - interval 1 day
 and
 parceiro_id = $parceiroID";
 
@@ -70,7 +70,7 @@ redeneutra_onu_provisionadas
 WHERE
 active = 1
 and
-date(data_provisionamento) BETWEEN CURRENT_DATE()-7 AND CURRENT_DATE()  
+date(data_provisionamento) BETWEEN DATE_ADD(CURRENT_DATE(), INTERVAL -7 DAY) AND CURRENT_DATE()  
 and
 parceiro_id = $parceiroID";
 

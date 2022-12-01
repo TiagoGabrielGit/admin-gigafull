@@ -12,7 +12,6 @@
                             <!-- APENSAS PARA PASSAR ID PARA O SQL -->
                             <input hidden name="usuarioCriador" type="text" class="form-control" id="usuarioCriador" value="<?= $_SESSION['id']; ?>">
                             <input hidden name="id" type="text" class="form-control" id="id" value="<?= $row['cred_id']; ?>">
-                            <input hidden name="IDEmpresa" type="text" class="form-control" id="IDEmpresa" value="<?= $row['emp_id'];  ?>">
                             <input hidden name="IDTipo" type="text" class="form-control" id="IDTipo" value="<?= $row['cred_tipo'];  ?>">
                             <!-- FIM -->
 
@@ -46,30 +45,30 @@
                                     <input class="form-check-input" type="radio" name="editPrivacidade" id="editPrivacidade" value="3" <?= $checkSomEu ?>>
                                     <label class="form-check-label" for="editPrivacidade" value="3">Somente criador</label>
                                 </div>
-
+                                
                                 <?= $aplicaButton ?>
+
                             </div>
 
                             <div class="col-9"> </div>
-
-                            <div class="col-3">
+                            
+                            <div class="col-3"> 
                                 <label for="nomeUsuarioCriador" class="form-label">Usuário Criador</label>
                                 <input name="nomeUsuarioCriador" type="text" class="form-control" id="nomeUsuarioCriador" value="<?= $row['nomeCriador']; ?>" disabled>
                             </div>
-
-
+ 
                             <hr class="sidebar-divider">
 
-                            <div class="col-6" style="display: inline-block;">
+                            <div class="col-4" style="display: inline-block;">
                                 <label for="editDescricao" class="form-label">Descrição</label>
                                 <input name="editDescricao" type="text" class="form-control" id="editDescricao" value="<?= $row['cred_descricao']; ?>">
                             </div>
 
-
-                            <div class="col-4" style="display: inline-block;">
-                                <label for="editWebmail" class="form-label">Webmail</label>
-                                <input name="editWebmail" type="text" class="form-control" id="editWebmail" value="<?= $row['cred_webmail']; ?>">
+                            <div class="col-6" style="display: inline-block;">
+                                <label for="editPagina" class="form-label">Página de Acesso</label>
+                                <input name="editPagina" type="text" class="form-control" id="editPagina" value="<?= $row['cred_portal']; ?>">
                             </div>
+
                             <div class="col-2" style="display: inline-block;"> </div>
 
                             <div class="col-4" style="display: inline-block;">
@@ -85,8 +84,8 @@
                             <hr class="sidebar-divider">
 
                             <div class="col-12">
-                                <label for="anotacaoEmail" class="form-label">Anotações</label>
-                                <textarea id="anotacaoEmail" name="anotacaoEmail" class="form-control" maxlength="10000" rows="4"><?= $row['anotacaoEmail'] ?></textarea>
+                                <label for="anotacaoPortal" class="form-label">Anotações</label>
+                                <textarea id="anotacaoPortal" name="anotacaoPortal" class="form-control" maxlength="10000" rows="4"><?= $row['anotacaoEmail'] ?></textarea>
                             </div>
 
                             <hr class="sidebar-divider">
