@@ -86,7 +86,7 @@ rnp.pon_olt as pon,
 rnp.id_onu as idONU,
 rnp.serial_onu as serialONU,
 rnp.descricao as descricao,
-date_format(rnp.data_provisionamento,'%H:%m:%s %d/%m/%Y') as dataP,
+date_format(rnp.data_provisionamento,'%H:%i:%s %d/%m/%Y') as dataP,
 p.nome as provisionado
 FROM
 redeneutra_onu_provisionadas as rnp

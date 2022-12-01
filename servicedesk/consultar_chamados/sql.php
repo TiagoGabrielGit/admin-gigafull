@@ -90,9 +90,13 @@ cr.seconds_worked as seconds_worked
 FROM
 chamado_relato as cr
 LEFT JOIN
+usuarios as u
+ON
+u.id = cr.relator_id
+LEFT JOIN
 pessoas as p
 ON
-p.id = cr.relator_id
+p.id = u.pessoa_id
 WHERE
 cr.chamado_id = '$id_chamado'
 ORDER BY

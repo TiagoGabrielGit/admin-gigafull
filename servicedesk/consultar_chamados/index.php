@@ -14,45 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $statusChamado = "%";
 }
 
-/*$lista_chamados =
-    "SELECT
-ch.id as id_chamado,
-ch.assuntoChamado as assunto,
-ch.relato_inicial as relato_inicial,
-ch.atendente_id as id_atendente,
-date_format(ch.data_abertura,'%H:%m:%s %d/%m/%Y') as dataAbertura,
-ch.in_execution as inExecution,
-ch.status_id as id_status,
-cs.status_chamado as statusChamado,
-tc.tipo as tipoChamado,
-emp.fantasia as fantasia,
-p.nome as atendente
-FROM
-chamados as ch
-LEFT JOIN
-empresas as emp
-ON
-ch.empresa_id = emp.id
-LEFT JOIN
-tipos_chamados as tc
-ON
-ch.tipochamado_id  = tc.id
-LEFT JOIN
-chamados_status as cs
-ON
-cs.id = ch.status_id
-LEFT JOIN
-pessoas as p
-ON
-p.id = ch.atendente_id
-WHERE
-ch.empresa_id LIKE '$empresa_id'
-and
-ch.atendente_id LIKE '$atendentePesquisa'
-ORDER BY
-ch.data_abertura DESC
-";*/
-
 $id_usuario = $_SESSION['id'];
 
 $sql_captura_id_pessoa =
@@ -240,7 +201,7 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                 <label for="atendentePesquisa" class="form-label">Atendente</label>
                                 <select id="atendentePesquisa" name="atendentePesquisa" class="form-select">
                                     <option selected value="%">Todos</option>
-                                    <option value="1">Minhas</option>
+                                    <option value="<?=$id_usuario?>">Minhas</option>
                                     <option value="0">Sem atendente</option>
 
 

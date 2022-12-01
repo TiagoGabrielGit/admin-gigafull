@@ -18,6 +18,48 @@ require "../includes/menu.php";
             <!-- Default Accordion -->
             <div class="accordion" id="accordionExample">
 
+              <!-- Versão 4.3 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading4-3">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4-3" aria-expanded="false" aria-controls="collapse4-3">
+                    Versão 4.3 - 01/12/2022
+                  </button>
+                </h2>
+                <div id="collapse4-3" class="accordion-collapse collapse" aria-labelledby="heading4-3" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Alterar de pessoa ID para usuario ID nos relatos de chamados;<br>
+                    # Alterar de pessoa ID para usuario ID o botão "Apropriar" chamados;<br>
+                    # Ajustar dashboard de chamados sem atendentes e meus chamados;<br>
+
+                    <br><strong>Correções de BUG</strong><br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+
+                    <br><strong>Previsto para próxima atualização</strong><br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas - Previsão 06/12/2022;<br>
+                    # Visualização de incidentes RN após desautorizar OLT do parceiro - Previsão 09/12/2022;<br>
+                    # Botão reiniciar ONU - Previsão 09/12/2022;<br>
+                    # Registro de nivel de sinal de ONU - Previsão 09/12/2022;<br>
+                    # Filtros ONUs Provisionadas - Previsão 09/12/2022;<br>
+                    # Chamados RN - Previsão 16/12/2022;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Relatórios;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Criação de contratos;<br>
+                    # Componentes de equipamentos;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                    # Integração com API's de CEP;<br>
+                    # Segurança individual;<br>
+                    # Agendamento de chamado;<br>
+                    # Autofind no provisionamento;<br>
+                  </div>
+                </div>
+              </div>
+
               <!-- Versão 4.2 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading4-2">

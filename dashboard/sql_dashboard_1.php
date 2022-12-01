@@ -28,18 +28,14 @@ c.status_id <> 3
 $chamados_sematendente = mysqli_query($mysqli, $sql_count_chamados_sematendente);
 $campos_chamados_sematendentes = $chamados_sematendente->fetch_array();
 
-//CHAMADOS SEM ATENDENTE
+//CHAMADOS MEUS CHAMADOS
 $sql_count_chamados_meus = 
 "SELECT
 count(*) as quantidade
 FROM
 chamados as c
-LEFT JOIN
-usuarios as u
-ON
-u.pessoa_id = c.atendente_id
 WHERE
-u.id = $usuarioID
+c.atendente_id = $usuarioID
 and
 c.status_id <> 3
 ";

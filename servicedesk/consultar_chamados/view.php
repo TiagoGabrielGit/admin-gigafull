@@ -98,13 +98,13 @@ if ($chamado['in_execution'] == 1) {
                                         <div class="col-lg-2">
                                             <div class="col-12">
                                                 <?php
-                                                if ($pessoaID['pessoaID'] != $chamado['id_atendente'] && $chamado['status'] != "Fechado") { ?>
-                                                    <a href="processa/apropriar.php?id=<?= $id_chamado  ?>&pessoa=<?= $pessoaID['pessoaID'] ?> "><button style="margin-top: 15px" class="btn btn-danger row col-12">Apropriar</button></a>
-                                                <?php } else if ($pessoaID['pessoaID'] == $chamado['id_atendente'] && $chamado['in_execution'] == '1' && $chamado['in_execution_atd_id'] == $pessoaID['pessoaID']) { ?>
+                                                if ($id_usuario != $chamado['id_atendente'] && $chamado['status'] != "Fechado") { ?>
+                                                    <a href="processa/apropriar.php?id=<?= $id_chamado  ?>&pessoa=<?= $id_usuario ?> "><button style="margin-top: 15px" class="btn btn-danger row col-12">Apropriar</button></a>
+                                                <?php } else if ($id_usuario == $chamado['id_atendente'] && $chamado['in_execution'] == '1' && $chamado['in_execution_atd_id'] == $pessoaID['pessoaID']) { ?>
                                                     <button style="margin-top: 15px" type="button" class="btn btn-danger row col-12" data-bs-toggle="modal" data-bs-target="#basicModal">
                                                         Inserir um relato
                                                     </button>
-                                                <?php } else if ($pessoaID['pessoaID'] == $chamado['id_atendente'] && $chamado['in_execution'] == '0' && $chamado['status'] != "Fechado") { ?>
+                                                <?php } else if ($id_usuario == $chamado['id_atendente'] && $chamado['in_execution'] == '0' && $chamado['status'] != "Fechado") { ?>
                                                     <a href="processa/executar.php?id=<?= $id_chamado ?>&pessoa=<?= $pessoaID['pessoaID'] ?> "><button style="margin-top: 15px" class="btn btn-success row col-12">Executar</button></a>
                                                 <?php } ?>
                                             </div>
@@ -139,7 +139,7 @@ if ($chamado['in_execution'] == 1) {
 
                                                         <input hidden id="chamadoID" name="chamadoID" value="<?= $id_chamado ?>"></input>
 
-                                                        <input hidden id="relatorID" name="relatorID" value="<?= $pessoaID['pessoaID']; ?>"></input>
+                                                        <input hidden id="relatorID" name="relatorID" value="<?= $id_usuario ?>"></input>
 
                                                         <input hidden id="startTime" name="startTime" value="<?= $chamado['in_execution_start']; ?>"></input>
 
