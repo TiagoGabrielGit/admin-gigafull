@@ -1,11 +1,29 @@
 <?php
+//session_start();
 require "../../../../conexoes/conexao_pdo.php";
 //include_once '../../../conexoes/conexao_pdo.php';
 
 $idCadastro = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+$tipo = filter_input(INPUT_GET, 'tipo');
 $cont_insert = false;
 
-$sql = "DELETE FROM equipamentospop WHERE id='$idCadastro'";
+if ($tipo == "email") {
+    $tabela = "credenciais_email";
+}
+
+if ($tipo == "equipamento") {
+    $tabela = "credenciais_equipamento";
+}
+
+if ($tipo == "portal") {
+    $tabela = "credenciais_portal";
+}
+
+if ($tipo == "vm") {
+    $tabela = "credenciais_vms";
+}
+
+$sql = "DELETE FROM $tabela WHERE id='$idCadastro'";
 
 $stmt = $pdo->prepare($sql);
 

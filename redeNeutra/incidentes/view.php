@@ -53,6 +53,8 @@ redeneutra_parceiro_olt as rnpo
 ON
 rnpo.olt_id = rno.id
 WHERE
+rnpo.active = 1
+and
 rni.id = $id_incidente
 and
 rnpo.parceiro_id LIKE ('$parceidoID')

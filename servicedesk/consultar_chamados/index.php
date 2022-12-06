@@ -259,7 +259,7 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                 $p = 1;
                             }
                             // Defina aqui a quantidade máxima de registros por página.
-                            $qnt = 10;
+                            $qnt = 25;
 
                             // O sistema calcula o início da seleção calculando: 
                             // (página atual * quantidade por página) - quantidade por página

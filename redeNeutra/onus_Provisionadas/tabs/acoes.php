@@ -1,62 +1,88 @@
 <h5 class="card-title">ONU: <?= $campos['descricaoONU'] ?></h5>
 <input id="idProvisionamento" value="<?= $idProvisionamento ?>" type="text" class="form-control" hidden>
 <hr class="sidebar-divider">
-<div class="row">
-
-    <div class="col-lg-12">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="col-lg-12">
-                    <div class="row col-12" style="margin-top: 3px;">
-                        <button style="height: 50px;" data-bs-toggle="modal" data-bs-target="#modalTAGVLAN" id="buttonTAGVLAN" class="btn btn-secondary" type="button">Adicionar TAG VLAN</button>
-                    </div>
-                    <div class="row col-12" style="margin-top: 3px;">
-                        <button style="height: 50px;" type="button" class="btn btn-secondary" disabled>Trocar ONU</button>
-                    </div>
-                    <div class="row col-12" style="margin-top: 3px;">
-                        <button id="btnConsultaPortasLAN" style="height: 50px;" type="button" class="btn btn-secondary">Status Portas LAN</button>
-                        <button id="btnConsultandoPortasLAN" style="height: 50px;" class="btn btn-secondary" type="button" disabled="" hidden>Status Portas LAN <span class="spinner-border spinner-border-sm" role="status" aria-hidden="false"></span> </button>
-                    </div>
-                    <div class="row col-12" style="margin-top: 3px;">
-                        <button style="height: 50px;" type="button" class="btn btn-warning" disabled>Reiniciar ONU</button>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="row col-12" style="margin-top: 3px;">
-                        <button id="btnConsultaUltimosLogs" style="height: 50px;" type="button" class="btn btn-secondary">Últimos LOGs</button>
-                        <button id="btnConsultandoUltimosLogs" style="height: 50px;" class="btn btn-secondary" type="button" disabled="" hidden>Últimos LOGs <span class="spinner-border spinner-border-sm" role="status" aria-hidden="false"></span> </button>
-                    </div>
-                    <div class="row col-12" style="margin-top: 3px;">
-                        <button id="btnConsultaConfiguracoes" style="height: 50px;" type="button" class="btn btn-secondary">Configurações ONU</button>
-                        <button id="btnConsultandoConfiguracoes" style="height: 50px;" class="btn btn-secondary" type="button" disabled="" hidden>Configurações ONU <span class="spinner-border spinner-border-sm" role="status" aria-hidden="false"></span> </button>
-                    </div>
-                    <div class="row col-12" style="margin-top: 3px;">
-                        <button style="height: 50px;" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalResetar">Resetar ONU</button>
-                    </div>
-                    <div class="row col-12" style="margin-top: 3px;">
-                        <button style="height: 50px;" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDesprovisionar">Desprovisionar</button>
-                    </div>
-                </div>
+<div class="row col-lg-12">
+    <div class="row col-lg-6">
+        <div class="col-lg-6">
+            <div class="row col-12" style="margin-top: 3px;">
+                <button style="height: 50px;" data-bs-toggle="modal" data-bs-target="#modalTAGVLAN" id="buttonTAGVLAN" class="btn btn-secondary" type="button">Adicionar TAG VLAN</button>
             </div>
-
-            <div class="col-lg-6">
-                <form>
-                    <input id="idOLT" value="<?= $campos['idOLT'] ?>" type="text" class="form-control" hidden>
-                    <input id="slotOLT" value="<?= $campos['slotOLT'] ?>" type="text" class="form-control" hidden>
-                    <input id="ponOLT" value="<?= $campos['ponOLT'] ?>" type="text" class="form-control" hidden>
-                    <input id="idONU" value="<?= $campos['idONU'] ?>" type="text" class="form-control" hidden>
-
-                    <div class="col-12">
-                        <label class="form-label">Resultados</label>
-
-                        <textarea id="resultadoScripts" rows="15" type="text" class="form-control" disabled></textarea>
-                    </div>
-                </form>
+            <div class="row col-12" style="margin-top: 3px;">
+                <button id="btnConsultaConfiguracoes" style="height: 50px;" type="button" class="btn btn-secondary">Configurações ONU</button>
+                <button id="btnConsultandoConfiguracoes" style="height: 50px;" class="btn btn-secondary" type="button" disabled="" hidden>Configurações ONU <span class="spinner-border spinner-border-sm" role="status" aria-hidden="false"></span> </button>
             </div>
+            <div class="row col-12" style="margin-top: 3px;">
+                <button style="height: 50px;" type="button" class="btn btn-secondary" disabled>Trocar ONU</button>
+            </div>
+            <div class="row col-12" style="margin-top: 3px;">
+                <button id="btnConsultaPortasLAN" style="height: 50px;" type="button" class="btn btn-secondary">Status Portas LAN</button>
+                <button id="btnConsultandoPortasLAN" style="height: 50px;" class="btn btn-secondary" type="button" disabled="" hidden>Status Portas LAN <span class="spinner-border spinner-border-sm" role="status" aria-hidden="false"></span> </button>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="row col-12" style="margin-top: 3px;">
+                <button id="btnConsultaUltimosLogs" style="height: 50px;" type="button" class="btn btn-secondary">Últimos LOGs</button>
+                <button id="btnConsultandoUltimosLogs" style="height: 50px;" class="btn btn-secondary" type="button" disabled="" hidden>Últimos LOGs <span class="spinner-border spinner-border-sm" role="status" aria-hidden="false"></span> </button>
+            </div>
+            <div class="row col-12" style="margin-top: 3px;">
+                <button style="height: 50px;" type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalReiniciar">Reiniciar ONU</button>
+            </div>
+            <div class="row col-12" style="margin-top: 3px;">
+                <button style="height: 50px;" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalResetar">Resetar ONU</button>
+            </div>
+            <div class="row col-12" style="margin-top: 3px;">
+                <button style="height: 50px;" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalDesprovisionar">Desprovisionar</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="col-lg-12">
+            <form>
+                <input id="idOLT" value="<?= $campos['idOLT'] ?>" type="text" class="form-control" hidden>
+                <input id="slotOLT" value="<?= $campos['slotOLT'] ?>" type="text" class="form-control" hidden>
+                <input id="ponOLT" value="<?= $campos['ponOLT'] ?>" type="text" class="form-control" hidden>
+                <input id="idONU" value="<?= $campos['idONU'] ?>" type="text" class="form-control" hidden>
+
+                <div class="col-12">
+                    <label class="form-label">Resultados</label>
+
+                    <textarea id="resultadoScripts" rows="15" type="text" class="form-control" disabled></textarea>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
+<div class="modal fade" id="modalReiniciar" tabindex="-1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Reiniciar ONU</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div hidden id="msgModalReiniciar" class="modal-body" style="text-align: center;">
+                Tem certeza que deseja reiniciar a ONU?<br>
+                <b style="color:red;"> Esta ação ira interromper temporariamente os serviços!</b>
+            </div>
+            <div hidden id="msgModalReiniciando" class="modal-body" style="text-align: center;">
+                <div class="spinner-border" style="width: 50px; height: 50px;" role="status">
+                </div><br>
+                Reiniciando...
+            </div>
+
+            <div class="modal-body" style="text-align: center;">
+                <span id="msgReiniciar"></span>
+            </div>
+
+            <div class="modal-footer">
+                <button id="voltarModalReiniciar" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Voltar</button>
+                <button id="confirmarModalReiniciar" onclick="resetar()" type="button" class="btn btn-danger">Confirmar</button>
+                <input hidden id="okModalReiniciar" type="button" value="Ok" class="btn btn-danger" data-bs-dismiss="modal" aria-label="Close"></input>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="modalResetar" tabindex="-1" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">

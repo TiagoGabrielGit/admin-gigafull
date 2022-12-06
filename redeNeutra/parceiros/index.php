@@ -19,8 +19,9 @@ require "sql.php";
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Cadastrar parceiro</h5>
-
-                                    <form id="formCadastraParceiro" method="POST">
+                                    <span id="msgAlerta"></span>
+                                    <form id="formCadastraParceiro">
+                                        <span id="msgAlertaErroCad"></span>
                                         <div class="row">
                                             <div class="col-4">
                                                 <label for="codigoParceiro" class="form-label">Código</label>
@@ -46,7 +47,8 @@ require "sql.php";
                                         <hr class="sidebar-divider">
 
                                         <div class="col-12" style="text-align: center;">
-                                            <button id="buttonCadastraParceiro" class="btn btn-danger" type="button">Cadastrar</button>
+                                            <input type="submit" class="btn btn-danger" id="buttonCadastraParceiro" value="Cadastrar"></input>
+
                                         </div>
                                     </form>
                                 </div>

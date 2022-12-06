@@ -174,7 +174,7 @@ $varDescricao = $_POST['pesquisaDescricao'];
 
                                                     <div class="text-center">
                                                         <input id="btnSalvar" name="btnSalvar" type="button" value="Salvar" class="btn btn-danger"></input>
-                                                        <a href="/telecom/credenciais/index.php"> <input type="button" value="Voltar" class="btn btn-secondary"></input></a>
+                                                        <a href="/telecom/credentials/index.php"> <input type="button" value="Voltar" class="btn btn-secondary"></input></a>
                                                     </div>
                                                 </form><!-- Vertical Form -->
                                             </div>

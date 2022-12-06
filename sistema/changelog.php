@@ -18,6 +18,52 @@ require "../includes/menu.php";
             <!-- Default Accordion -->
             <div class="accordion" id="accordionExample">
 
+
+              <!-- Versão 4.4 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading4-4">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4-4" aria-expanded="false" aria-controls="collapse4-4">
+                    Versão 4.4 - 06/12/2022
+                  </button>
+                </h2>
+                <div id="collapse4-4" class="accordion-collapse collapse" aria-labelledby="heading4-4" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Corrigido falha que permitia continuar visualizando incidente após OLT não estar mais permitida ao parceiro;<br>
+                    # Botão reiniciar ONU; (Testar)<br>
+                    # Registro de nivel de sinal de ONU; (Testar)<br>
+                    # Filtros ONUs Provisionadas - Previsão 09/12/2022; <br>
+
+                    <br><strong>Correções de BUG</strong><br>
+                    # BUG Cadastrar credencial Portal;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Editado colunas da tabela "redeneutra_onu_log";<br>
+
+                    <br><strong>Previsto para próxima atualização</strong><br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas - Previsão 09/12/2022;<br>
+                    # Botão troca ONU - Previsão 09/12/2022;<br>
+                    # Chamados RN - Previsão 16/12/2022;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Cadastro de PONs;<br>
+                    # Validação sinal antes de adicionar serviços;<br>
+                    # Relatórios;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Criação de contratos;<br>
+                    # Componentes de equipamentos;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                    # Integração com API's de CEP;<br>
+                    # Segurança individual;<br>
+                    # Agendamento de chamado;<br>
+                    # Autofind no provisionamento;<br>
+                  </div>
+                </div>
+              </div>
+
+
               <!-- Versão 4.3 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading4-3">

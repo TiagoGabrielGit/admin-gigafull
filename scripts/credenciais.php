@@ -90,7 +90,7 @@
     $("#btnSalvar").click(function() {
         var dados = $("#addCredenciais").serialize();
 
-        $.post("processa/add.php", dados, function(retorna) {
+        $.post("portal/processa/add.php", dados, function(retorna) {
             $("#msg").slideDown('slow').html(retorna);
 
             //Limpar os campos

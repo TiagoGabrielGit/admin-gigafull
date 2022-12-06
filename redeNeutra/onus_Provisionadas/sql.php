@@ -39,6 +39,8 @@ WHERE
 rnup.active = 1
 and
 rnup.parceiro_id LIKE '$parceiroID'
+and
+date(data_provisionamento) LIKE '$filter_data'
 order by
 rnup.slot_olt asc,
 rnup.pon_olt asc,

@@ -31,6 +31,20 @@
             document.querySelector("#sinalOLT").value = retornoDiag.sinalOLT
             document.querySelector("#temperaturaONU").value = retornoDiag.temperaturaONU
 
+            obg.id_onu = document.getElementById("idONU").value;
+            obg.signal = retornoDiag.sinalONU;
+            funcaoRegisterLOG('/api/insert_register_log_onu.php', 'GET', obg)
+
+            function funcaoRegisterLOG(url, metodo, obg) {
+                $.ajax({
+                    url: url,
+                    method: metodo,
+                    dataType: "HTML",
+                    data: obg,
+                })
+            }
+
+
         } else if (retornoDiag.estado == "offline") {
             document.querySelector("#statusONUOffline").hidden = false
             document.querySelector("#statusONUOffline").value = retornoDiag.estado
@@ -86,7 +100,43 @@
     }
 </script>
 
-<!-- HOMOLOGAÇÃO -->
+<!--HOMOLOGAÇÃO-->
+<script>
+    document.getElementById("confirmarModalReiniciar").addEventListener("click", eventoReiniciar);
+    document.querySelector("#msgModalReiniciar").hidden = false;
+
+
+    async function eventoReiniciar() {
+        document.querySelector("#confirmarModalReiniciar").hidden = true;
+        document.querySelector("#voltarModalReiniciar").hidden = true;
+        document.querySelector("#msgModalReiniciar").hidden = true;
+        document.querySelector("#msgModalReiniciando").hidden = false;
+
+        let obg = {}
+        obg.idOLT = document.getElementById("idOLT").value;
+        obg.slotOLT = document.getElementById("slotOLT").value;
+        obg.ponOLT = document.getElementById("ponOLT").value;
+        obg.idONU = document.getElementById("idONU").value;
+
+        const retorno = await funcaoResetar('scripts/reiniciarONU.php', 'GET', obg)
+        document.querySelector("#msgReiniciar").textContent = "Operação concluida.";
+        document.querySelector("#msgModalReiniciando").hidden = true;
+        document.querySelector("#okModalReiniciar").hidden = false;
+
+        document.querySelector("#resultadoScripts").value = retorno
+    }
+
+    async function funcaoResetar(url, metodo, obg) {
+        return $.ajax({
+            url: url,
+            method: metodo,
+            dataType: "HTML",
+            data: obg,
+        })
+    }
+</script>
+<!--HOMOLOGAÇÃO-->
+
 <script>
     document.getElementById("confirmarModalResetar").addEventListener("click", eventoResetar);
     document.querySelector("#msgModalResetar").hidden = false;
@@ -121,7 +171,7 @@
         })
     }
 </script>
-<!-- HOMOLOGAÇÃO -->
+
 
 
 

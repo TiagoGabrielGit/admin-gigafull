@@ -1,24 +1,37 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 
+<!--HOMOLOGANDO-->
 <script>
-    document.getElementById("buttonCadastraParceiro").addEventListener("click", eventoFuncaoCadastraParceiro);
+    const cadForm = document.getElementById("formCadastraParceiro");
+    const msgAlertaErroCad = document.getElementById("msgAlertaErroCad");
+    const msgAlerta = document.getElementById("msgAlerta");
 
-    function eventoFuncaoCadastraParceiro() {
-        let obg = {}
-        obg.parceiro = document.getElementById("parceiro").value;
-        obg.codigoParceiro = document.getElementById("codigoParceiro").value;
+    cadForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-        funcaoCadastraOLT('/api/insert_cadastra_parceiro.php', 'GET', obg)
-    }
+        const dadosForm = new FormData(cadForm);
 
-    function funcaoCadastraOLT(url, metodo, obg) {
-        $.ajax({
-            url: url,
-            method: metodo,
-            dataType: "HTML",
-            data: obg,
-        })
-        window.location.replace("/redeNeutra/parceiros/index.php");
-    }
+        document.getElementById("buttonCadastraParceiro").value = "Cadastrando...";
+
+        const dados = await fetch("/api/insert_cadastra_parceiro.php", { 
+            method: "POST",
+            body: dadosForm,
+        });
+
+        const resposta = await dados.json();
+
+        if (resposta['erro']) {
+            msgAlertaErroCad.innerHTML = resposta['msg'];
+        } else {
+            msgAlerta.innerHTML = resposta['msg'];
+            cadForm.reset();
+
+            setTimeout(function() {
+                window.location.reload(1);
+            }, 1200);
+        }
+        document.getElementById("buttonCadastraParceiro").value = "Cadastrar";
+    });
 </script>
+<!--HOMOLOGANDO-->
