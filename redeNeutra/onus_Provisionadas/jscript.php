@@ -15,7 +15,7 @@
 
         const retornoDiag = await funcaoDiagONU('scripts/diag_onu.php', 'GET', diag)
 
-        console.log(retornoDiag);
+        
 
         document.querySelector("#loadingDiagONU").hidden = true
         document.querySelector("#diagONU").hidden = false
@@ -31,8 +31,12 @@
             document.querySelector("#sinalOLT").value = retornoDiag.sinalOLT
             document.querySelector("#temperaturaONU").value = retornoDiag.temperaturaONU
 
-            obg.id_onu = document.getElementById("idONU").value;
-            obg.signal = retornoDiag.sinalONU;
+            let obg = {}
+            obg.id_onu = document.getElementById("provID").value;
+
+obg.signal = "Sinal RX da ONU coletado através da consulta de ONU. Sinal " + await retornoDiag.sinalONU;
+          
+
             funcaoRegisterLOG('/api/insert_register_log_onu.php', 'GET', obg)
 
             function funcaoRegisterLOG(url, metodo, obg) {

@@ -4,7 +4,11 @@ require "sql_filtros.php";
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $empresa_id = $_POST['empresaPesquisa'];
-    $filter_data = $_POST['filterDate'];
+    if (empty($_POST['filterDate'])) {
+        $filter_data = "%";
+    } else {
+        $filter_data = $_POST['filterDate'];
+    }
 } else {
     $empresa_id = "%";
     $filter_data = "%";
@@ -83,8 +87,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                         <script>
                                             let dataFilter = '<?= $_POST['filterDate']; ?>'
                                             if (dataFilter == '%') {} else {
-                                                    document.querySelector("#filterDate").value = dataFilter
-                                                }
+                                                document.querySelector("#filterDate").value = dataFilter
+                                            }
                                         </script>
                                     <?php endif;
                                     ?>

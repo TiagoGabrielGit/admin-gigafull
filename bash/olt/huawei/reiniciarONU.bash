@@ -21,7 +21,7 @@ echo "config"
 sleep 0.2
 echo "interface gpon 0/$4"
 sleep 0.3
-echo "ont factory-setting-restore $5 $6"
+echo "ont reset $5 $6"
 sleep 0.3
 echo "y"
 sleep 0.3

@@ -43,6 +43,7 @@
                 <input id="slotOLT" value="<?= $campos['slotOLT'] ?>" type="text" class="form-control" hidden>
                 <input id="ponOLT" value="<?= $campos['ponOLT'] ?>" type="text" class="form-control" hidden>
                 <input id="idONU" value="<?= $campos['idONU'] ?>" type="text" class="form-control" hidden>
+                <input id="provID" value="<?= $idProvisionamento ?>" type="text" class="form-control" hidden>
 
                 <div class="col-12">
                     <label class="form-label">Resultados</label>
