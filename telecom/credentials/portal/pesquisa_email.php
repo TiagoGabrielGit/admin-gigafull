@@ -40,31 +40,35 @@ while ($campos_email = $resultado_email->fetch_array()) {
 
     if ($campos_email['idPrivacidade'] == '1') { ?>
         <!--Apresenta se a privacidade for publico-->
-        <tr onclick="location.href='portal/view.php?id=<?= $id ?>&tipo=E-mail'">
+        <tr>
+            <td style="text-align: center;">
+                <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=E-mail"><?= $campos_email['cred_desc']; ?></a>
             </td>
             <td style="text-align: center;"><?= $campos_email['emp_fant'] ?></td>
             <td style="text-align: center;"><?= $campos_email['cred_tipo'] ?></td>
-            <td style="text-align: center;"><?= $campos_email['cred_desc'] ?></td>
             <td style="text-align: center;"><?= $campos_email['cred_usuario'] ?></td>
             <td style="text-align: center;"><?= $campos_email['cred_priv'] ?></td>
         </tr>
     <?php } else if ($campos_email['usuarioCriador'] == $idSessao) { ?>
         <!--Apresenta se o for do usuario criador-->
-        <tr onclick="location.href='portal/view.php?id=<?= $id ?>&tipo=E-mail'">
+        <tr>
+            <td style="text-align: center;">
+                <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=E-mail"><?= $campos_email['cred_desc']; ?></a>
             </td>
             <td style="text-align: center;"><?= $campos_email['emp_fant'] ?></td>
             <td style="text-align: center;"><?= $campos_email['cred_tipo'] ?></td>
-            <td style="text-align: center;"><?= $campos_email['cred_desc'] ?></td>
             <td style="text-align: center;"><?= $campos_email['cred_usuario'] ?></td>
             <td style="text-align: center;"><?= $campos_email['cred_priv'] ?></td>
         </tr>
     <?php } else if ($campos_email['idPrivacidade'] == '3' && $campos_email['usuarioCriador'] == $idSessao) {  ?>
         <!--Apresenta se a privacidade for somente eu e o usuario criador é o usuario logado-->
-        <tr onclick="location.href='portal/view.php?id=<?= $id ?>&tipo=E-mail'">
+        <tr>
+            </td>
+            <td style="text-align: center;">
+                <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=E-mail"><?= $campos_email['cred_desc']; ?></a>
             </td>
             <td style="text-align: center;"><?= $campos_email['emp_fant'] ?></td>
             <td style="text-align: center;"><?= $campos_email['cred_tipo'] ?></td>
-            <td style="text-align: center;"><?= $campos_email['cred_desc'] ?></td>
             <td style="text-align: center;"><?= $campos_email['cred_usuario'] ?></td>
             <td style="text-align: center;"><?= $campos_email['cred_priv'] ?></td>
         </tr>
@@ -102,10 +106,12 @@ while ($campos_email = $resultado_email->fetch_array()) {
 
         if (empty($checkPermiUsuario) && empty($checkPermiEquipe)) { //Apresenta se a privacidade for privada e der match em alguma equipe do usuario
         } else { ?>
-            <tr onclick="location.href='portal/portal/view.php?id=<?= $id ?>&tipo=E-mail'">
+            <tr>
+                <td style="text-align: center;">
+                    <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=E-mail"><?= $campos_email['cred_desc']; ?></a>
+                </td>
                 <td style="text-align: center;"><?= $campos_email['emp_fant'] ?></td>
                 <td style="text-align: center;"><?= $campos_email['cred_tipo'] ?></td>
-                <td style="text-align: center;"><?= $campos_email['cred_desc'] ?></td>
                 <td style="text-align: center;"><?= $campos_email['cred_usuario'] ?></td>
                 <td style="text-align: center;"><?= $campos_email['cred_priv'] ?></td>
             </tr>

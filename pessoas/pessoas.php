@@ -184,8 +184,17 @@ require '../includes/remove_setas_number.php';
                                 // Obtendo os dados por meio de um loop while
                                 while ($campos = $resultado->fetch_array()) {
                                     $id = $campos['id']; ?>
-                                    <tr onclick="location.href='view.php?id=<?= $campos['id'] ?>'">
+                                    <tr>
+
+
+
                                         <td><?= $campos['id']; ?></td>
+
+                                        <td style="text-align: center;">
+                                            <a style="color: red;" href="view.php?id=<?= $campos['id'] ?>"><?= $campos['nome']; ?></a>
+                                        </td>
+
+
                                         <td><?= $campos['nome']; ?></td>
                                         <td><?= $campos['email']; ?></td>
                                         <td><?= $campos['cpf']; ?></td>

@@ -12,9 +12,7 @@ text-align: center;
 }
 
 #styleTable tbody tr:hover {
-    cursor: pointer;
-    background-color: #abacac;
-    
+    background-color: #abacac; 
 }
 
 #styleTableIncidentesAlarm {

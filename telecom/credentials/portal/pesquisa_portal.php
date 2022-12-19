@@ -40,31 +40,34 @@ while ($campos_portal = $resultado_portal->fetch_array()) {
 
     if ($campos_portal['idPrivacidade'] == '1') { ?>
         <!--Apresenta se a privacidade for publico-->
-        <tr onclick="location.href='portal/view.php?id=<?= $id ?>&tipo=Portal'">
+        <tr>
+            <td style="text-align: center;">
+                <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=Portal"><?= $campos_portal['cred_desc']; ?></a>
             </td>
             <td style="text-align: center;"><?= $campos_portal['emp_fant'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_tipo'] ?></td>
-            <td style="text-align: center;"><?= $campos_portal['cred_desc'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_usuario'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_priv'] ?></td>
         </tr>
     <?php } else if ($campos_portal['usuarioCriador'] == $idSessao) { ?>
         <!--Apresenta se o for do usuario criador-->
-        <tr onclick="location.href='portal/view.php?id=<?= $id ?>&tipo=Portal'">
+        <tr>
+            <td style="text-align: center;">
+                <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=Portal"><?= $campos_portal['cred_desc']; ?></a>
             </td>
             <td style="text-align: center;"><?= $campos_portal['emp_fant'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_tipo'] ?></td>
-            <td style="text-align: center;"><?= $campos_portal['cred_desc'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_usuario'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_priv'] ?></td>
         </tr>
     <?php } else if ($campos_portal['idPrivacidade'] == '3' && $campos_portal['usuarioCriador'] == $idSessao) {  ?>
         <!--Apresenta se a privacidade for somente eu e o usuario criador é o usuario logado-->
-        <tr onclick="location.href='portal/view.php?id=<?= $id ?>&tipo=Portal'">
+        <tr>
+            <td style="text-align: center;">
+                <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=Portal"><?= $campos_portal['cred_desc']; ?></a>
             </td>
             <td style="text-align: center;"><?= $campos_portal['emp_fant'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_tipo'] ?></td>
-            <td style="text-align: center;"><?= $campos_portal['cred_desc'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_usuario'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_priv'] ?></td>
         </tr>
@@ -102,11 +105,12 @@ while ($campos_portal = $resultado_portal->fetch_array()) {
 
         if (empty($checkPermiUsuario) && empty($checkPermiEquipe)) { //Apresenta se a privacidade for privada e der match em alguma equipe do usuario
         } else { ?>
-            <tr onclick="location.href='portal/portal/view.php?id=<?= $id ?>&tipo=Portal'">
+            <tr>
+                <td style="text-align: center;">
+                    <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=Portal"><?= $campos_portal['cred_desc']; ?></a>
                 </td>
                 <td style="text-align: center;"><?= $campos_portal['emp_fant'] ?></td>
                 <td style="text-align: center;"><?= $campos_portal['cred_tipo'] ?></td>
-                <td style="text-align: center;"><?= $campos_portal['cred_desc'] ?></td>
                 <td style="text-align: center;"><?= $campos_portal['cred_usuario'] ?></td>
                 <td style="text-align: center;"><?= $campos_portal['cred_priv'] ?></td>
             </tr>

@@ -14,15 +14,12 @@
         diag.idONU = document.getElementById("idONU").value;
 
         const retornoDiag = await funcaoDiagONU('scripts/diag_onu.php', 'GET', diag)
-        const retornoService = await funcaoService('scripts/services.php', 'GET', service)
 
         document.querySelector("#loadingDiagONU").hidden = true
         document.querySelector("#diagONU").hidden = false
 
         document.querySelector("#descONU").value = retornoDiag.descricao
         document.querySelector("#serialONU").value = retornoDiag.serial
-
-        document.querySelector("#resultadoServicosAlocados").value = retornoService
 
         if (retornoDiag.estado == "online") {
             document.querySelector("#statusONUOnline").hidden = false
@@ -67,15 +64,6 @@
             method: metodo,
             dataType: "json",
             data: diag,
-        })
-    }
-
-    async function funcaoService(url, metodo, service) {
-        return $.ajax({
-            url: url,
-            method: metodo,
-            dataType: "json",
-            data: service,
         })
     }
 </script>

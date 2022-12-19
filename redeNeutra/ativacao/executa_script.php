@@ -73,6 +73,7 @@ echo "=============" . PHP_EOL;
 
 exec("bash ../../bash/service_port.bash $ipOLT $userOLT $passOLT $CVLAN $slotOLT $ponOLT $idONU $SVLAN $SVLAN $GEMPORT", $retorno2);
 exec("bash ../../bash/consulta_service-port.bash $ipOLT $userOLT $passOLT $slotOLT $ponOLT $idONU", $retorno3);
+
 $r3 = $retorno3[33];
 $valida3 = strpos($r3, "Failure");
 
@@ -90,3 +91,58 @@ if ($valida3 === false) {
     mysqli_query($mysqli, $sql_insert);
     $idProvisionamento = mysqli_insert_id($mysqli);
 }
+?>
+
+<!-- script novo HOMOLOGAÇÃO 4.6 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", eventoDiagONU());
+
+    async function eventoDiagONU() {
+
+        let diag = {}
+        diag.idOLT = document.getElementById("idOLT").value;
+        diag.slotOLT = document.getElementById("slotOLT").value;
+        diag.ponOLT = document.getElementById("ponOLT").value;
+        diag.idONU = document.getElementById("idONU").value;
+
+        const retornoDiag = await funcaoDiagONU('scripts/diag_onu.php', 'GET', diag)
+
+
+        let obg = {}
+        obg.id_onu = document.getElementById("provID").value;
+
+        obg.signal = "Sinal RX da ONU coletado através do provisionamento de ONU. Sinal " + await retornoDiag.sinalONU;
+
+        funcaoRegisterLOG('/api/insert_register_log_onu.php', 'GET', obg)
+
+        function funcaoRegisterLOG(url, metodo, obg) {
+            $.ajax({
+                url: url,
+                method: metodo,
+                dataType: "HTML",
+                data: obg,
+            })
+        }
+    }
+
+    async function funcaoDiagONU(url, metodo, diag) {
+        return $.ajax({
+            url: url,
+            method: metodo,
+            dataType: "json",
+            data: diag,
+        })
+    }
+
+    async function funcaoService(url, metodo, service) {
+        return $.ajax({
+            url: url,
+            method: metodo,
+            dataType: "json",
+            data: service,
+        })
+    }
+</script>

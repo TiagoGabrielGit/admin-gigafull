@@ -265,9 +265,9 @@ $varDescricao = $_POST['pesquisaDescricao'];
                     <table class="table table-striped" id="styleTable">
                         <thead>
                             <tr>
+                                <th style="text-align: center;" scope="col">Descrição</th>
                                 <th style="text-align: center;" scope="col">Empresa</th>
                                 <th style="text-align: center;" scope="col">Tipo</th>
-                                <th style="text-align: center;" scope="col">Descrição</th>
                                 <th style="text-align: center;" scope="col">Usuário</th>
                                 <th style="text-align: center;" scope="col">Privacidade</th>
                             </tr>

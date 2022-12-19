@@ -90,8 +90,11 @@ require "sql.php";
 
                                             while ($campos_olts = $r_lista_OLTs->fetch_array()) {
                                             ?>
-                                                <tr onclick="location.href='view.php?idOLT=<?= $campos_olts['idOLT']; ?>'">
-                                                    <td><?= $campos_olts['olt_name']; ?></td>
+                                                <tr>
+
+                                                    <td style="text-align: center;">
+                                                        <a style="color: red;" href="view.php?idOLT=<?= $campos_olts['idOLT']; ?>"><?= $campos_olts['olt_name']; ?></a>
+                                                    </td>
                                                     <td><?= $campos_olts['olt_ipAddress']; ?></td>
                                                     <td><?= $campos_olts['olt_status']; ?></td>
                                                 </tr>

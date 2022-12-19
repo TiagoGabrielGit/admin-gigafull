@@ -18,8 +18,54 @@ require "../includes/menu.php";
             <!-- Default Accordion -->
             <div class="accordion" id="accordionExample">
 
- <!-- Versão 4.5 -->
- <div class="accordion-item">
+              <!-- Versão 4.6 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading4-6">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4-6" aria-expanded="false" aria-controls="collapse4-6">
+                    Versão 4.6 - xx/12/2022
+                  </button>
+                </h2>
+                <div id="collapse4-6" class="accordion-collapse collapse" aria-labelledby="heading4-6" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # TAB "Serviços" com os serviços provisionados para ONU - TESTAR;<br>
+
+                    <br><strong>Correções de BUG</strong><br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Adicionado coluna "profile" na tabela "redeneutra_onu_provisionadas";<br>
+
+                    <br><strong>Previsto para próxima atualização</strong><br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas - Previsão 09/12/2022;<br>
+                    # Botão troca ONU - Previsão 09/12/2022;<br>
+                    # Armazenar LOG sinal do cliente após provisionamento - (FAZENDO) Previsão 09/12/2022;<br>
+                    # Chamados RN - Previsão 16/12/2022;<br>
+                    # Manter pagina correta active após filtros de credenciais - Previsão 16/12/2022;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Classificação de incidentes;<br>
+                    # Cadastro de PONs;<br>
+                    # Validação sinal antes de adicionar serviços;<br>
+                    # Relatórios;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Criação de contratos;<br>
+                    # Componentes de equipamentos;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                    # Integração com API's de CEP;<br>
+                    # Segurança individual;<br>
+                    # Agendamento de chamado;<br>
+                    # Autofind no provisionamento;<br>
+                  </div>
+                </div>
+              </div>
+
+
+
+
+              <!-- Versão 4.5 -->
+              <div class="accordion-item">
                 <h2 class="accordion-header" id="heading4-5">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4-5" aria-expanded="false" aria-controls="collapse4-5">
                     Versão 4.5 - 06/12/2022
@@ -38,6 +84,7 @@ require "../includes/menu.php";
                     <br><strong>Previsto para próxima atualização</strong><br>
                     # Ativar os serviços do profile dentro do menu de ONUs Provisionadas - Previsão 09/12/2022;<br>
                     # Botão troca ONU - Previsão 09/12/2022;<br>
+                    # Armazenar LOG sinal do cliente após provisionamento - Previsão 09/12/2022;<br>
                     # Chamados RN - Previsão 16/12/2022;<br>
 
                     <br><strong>Backlog</strong><br>

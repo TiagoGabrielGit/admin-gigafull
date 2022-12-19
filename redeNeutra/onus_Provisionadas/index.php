@@ -150,8 +150,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                 $r_onus_provisionadas = mysqli_query($mysqli, $onus_provisionadas);
 
                                 while ($campos = $r_onus_provisionadas->fetch_array()) { ?>
-                                    <tr onclick="location.href='view.php?idProvisionamento=<?= $campos['id']; ?>'">
-                                        <td><?= $campos['id'] ?></th>
+                                    <tr>
+
+
+                                        <td style="text-align: center;">
+                                            <a style="color: red;" href="view.php?idProvisionamento=<?= $campos['id']; ?>"><?= $campos['id']; ?></a>
+                                        </td>
+
                                         <td><?= $campos['parceiro'] ?></td>
                                         <td><?= $campos['olt']; ?></td>
                                         <td><?= $campos['slot_olt']; ?></td>

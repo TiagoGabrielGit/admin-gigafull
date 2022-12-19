@@ -83,9 +83,12 @@ require "sql.php";
 
                                             while ($campos = $r_lista->fetch_array()) {
                                             ?>
-                                                <tr onclick="location.href='view.php?idParceiro=<?= $campos['idParceiro']; ?>'">
+                                                <tr>
                                                     <td><?= $campos['codigoParceiro']; ?></td>
-                                                    <td><?= $campos['parceiroFantasia']; ?></td>
+                                                    <td style="text-align: center;">
+                                                        <a style="color: red;" href="view.php?idParceiro=<?= $campos['idParceiro']; ?>"><?= $campos['parceiroFantasia']; ?></a>
+                                                    </td>
+
                                                     <td><?= $campos['parceiro_status']; ?></td>
                                                 </tr>
                                             <?php } ?>

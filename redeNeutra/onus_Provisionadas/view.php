@@ -130,7 +130,10 @@ if ($campos['contagem'] == 1) { ?>
                                                 <button class="nav-link active" id="informacoes-tab" data-bs-toggle="tab" data-bs-target="#informacoes" type="button" role="tab" aria-controls="informacoes" aria-selected="true">Informações</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
-                                                <button class="nav-link" id="diagnostico-tab" data-bs-toggle="tab" data-bs-target="#diagnostico" type="button" role="tab" aria-controls="diagnostico" aria-selected="true">Diagnóstico</button>
+                                                <button class="nav-link" id="services-tab" data-bs-toggle="tab" data-bs-target="#services" type="button" role="tab" aria-controls="services" aria-selected="false">Serviços</button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="diagnostico-tab" data-bs-toggle="tab" data-bs-target="#diagnostico" type="button" role="tab" aria-controls="diagnostico" aria-selected="false">Diagnóstico</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="acoes-tab" data-bs-toggle="tab" data-bs-target="#acoes" type="button" role="tab" aria-controls="portal" aria-selected="false">Ações</button>
@@ -143,6 +146,11 @@ if ($campos['contagem'] == 1) { ?>
                                             <div class="tab-pane fade show active" id="informacoes" role="tabpanel" aria-labelledby="informacoes-tab">
                                                 <?php
                                                 require "tabs/informacoes.php";
+                                                ?>
+                                            </div>
+                                            <div class="tab-pane fade" id="services" role="tabpanel" aria-labelledby="services-tab">
+                                                <?php
+                                                require "tabs/services.php";
                                                 ?>
                                             </div>
                                             <div class="tab-pane fade" id="diagnostico" role="tabpanel" aria-labelledby="diagnostico-tab">

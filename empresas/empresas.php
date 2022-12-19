@@ -173,7 +173,7 @@ require '../includes/remove_setas_number.php';
                         <p>Listagem de empresas</p>
 
                         <!-- Table with stripped rows -->
-                        <table class="table table-striped" id="styleTable"> 
+                        <table class="table table-striped" id="styleTable">
                             <thead>
                                 <tr>
                                     <th scope="col">Razão Social</th>
@@ -188,15 +188,20 @@ require '../includes/remove_setas_number.php';
                                 // Obtendo os dados por meio de um loop while
                                 while ($campos = $resultado->fetch_array()) {
                                     $id = $campos['id']; ?>
-                                    <tr onclick="location.href='view.php?id=<?= $campos['id'] ?>'">
-                                        <td><?= $campos['razaoSocial']; ?></td>
+                                    <tr>
+
+
+                                        <td style="text-align: center;">
+                                            <a style="color: red;" href="view.php?id=<?= $campos['id'] ?>"><?= $campos['razaoSocial']; ?></a>
+                                        </td>
+
                                         <td><?= $campos['fantasia']; ?></td>
                                         <td><?= $campos['cnpj']; ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
                         </table>
-                        <!-- End Table with stripped rows --> 
+                        <!-- End Table with stripped rows -->
                     </div>
                 </div>
 
