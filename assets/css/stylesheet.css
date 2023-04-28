@@ -1,0 +1,24 @@
+#formularioCredenciais div {
+    display: none;
+}
+
+#styleTable thead tr th{
+text-align: center;
+}
+
+#styleTable tbody tr td {
+    text-align: center;
+    font-size: 12px;
+}
+
+#styleTable tbody tr:hover {
+    background-color: #abacac; 
+}
+
+#styleTableIncidentesAlarm {
+    background-color: #f36b6b;   
+}
+
+#styleTableIncidentesOK {
+    background-color: #40f677;   
+}
