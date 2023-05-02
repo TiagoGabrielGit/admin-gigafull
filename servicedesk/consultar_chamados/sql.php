@@ -13,7 +13,8 @@ c.in_execution_atd_id as in_execution_atd_id,
 c.in_execution_start as in_execution_start,
 tc.tipo as tipo,
 cs.status_chamado as status,
-e.fantasia as empresa
+e.fantasia as empresa,
+e.id as idEmpresa
 FROM
 chamados as c 
 LEFT JOIN

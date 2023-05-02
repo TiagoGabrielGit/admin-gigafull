@@ -16,11 +16,63 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
 
+              <!-- Versão 5.3 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading5-3">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5-3" aria-expanded="false" aria-controls="collapse5-3">
+                    Versão 5.3 - 02/05/2023
+                  </button>
+                </h2>
+                <div id="collapse5-3" class="accordion-collapse collapse" aria-labelledby="heading5-3" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Tenant abrir chamado;<br>
+                    # Tenant relatar em chamado;<br>
+                    # Tenant visualizar somente chamados atribuitos a sua empresa;<br>
+                    # Limitar tipos de chamados que podem ser abertos por Tenant;<br>
+                    # Filtro chamados para Tenant;<br>
+
+                    <br><strong>Correções de BUG</strong><br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criado tabela "chamados_autorizados";<br>
+
+                    <br><strong>Previsto para próximas atualizaçõs</strong><br>
+                    # Abertura manual de incidentes;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Notificaçãoes de novos incidentes e relatos;<br>
+                    # Busca automatica de info-summary ao identificar incidente;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Update tabela version após atualização aplicação;<br>
+                    # Abertura de chamados de clientes;<br>
+                    # Cadastro de PONs;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Criação de contratos;<br>
+                    # Componentes de equipamentos;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                    # Integração com API's de CEP;<br>
+                    # Segurança individual;<br>
+                    # Agendamento de chamado;<br>
+
+                    <br><strong>Backlog --- Rede Neutra</strong><br>
+                    # BUG retorna código em resultado do provisionamento;<br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas;<br>
+                    # Botão troca ONU;<br>
+                    # Armazenar LOG sinal do cliente após provisionamento;<br>
+                    # Validação sinal antes de adicionar serviços;<br>
+                    # Autofind no provisionamento;<br><br>
+                  </div>
+                </div>
+              </div>
+
               <!-- Versão 5.2 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading5-2">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5-2" aria-expanded="false" aria-controls="collapse5-2">
-                    Versão 5.2 - XX/04/2023
+                    Versão 5.2 - 28/04/2023
                   </button>
                 </h2>
                 <div id="collapse5-2" class="accordion-collapse collapse" aria-labelledby="heading5-2" data-bs-parent="#accordionExample">
@@ -37,6 +89,7 @@ require "../includes/menu.php";
                     # Inserido o submenu "Incidentes Fechados" na tabela url_submenu;<br>
                     # Inserido a coluna "previsaoNormalizacao" na tabela redeneutra_incidentes;<br>
                     # Inserido a coluna "classificacao" na tabela redeneutra_incidentes;<br>
+                    # Inserido a coluna "relato_autor" na tabela redeneutra_incidentes_relatos;<br>
 
 
                     <br><strong>Previsto para próxima atualização</strong><br>
@@ -67,7 +120,6 @@ require "../includes/menu.php";
                   </div>
                 </div>
               </div>
-
 
               <!-- Versão 5.1 -->
               <div class="accordion-item">
@@ -111,8 +163,6 @@ require "../includes/menu.php";
                   </div>
                 </div>
               </div>
-
-
 
               <!-- Versão 5.0 -->
               <div class="accordion-item">

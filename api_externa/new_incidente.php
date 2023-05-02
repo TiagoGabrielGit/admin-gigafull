@@ -6,8 +6,8 @@ $ipHost = $_GET["ipHost"];
 $descricaoIncidente = $_GET["descricaoIncidente"];
 $zabbixEventID = $_GET["eventID"];
 
-$sql_dados_equipamento = 
-"SELECT
+$sql_dados_equipamento =
+    "SELECT
 eqpop.id as idEquipamento
 FROM
 equipamentospop as eqpop
@@ -24,7 +24,7 @@ $idEquipamento = $result['idEquipamento'];
 if ($idEquipamento == "") {
     $idEquipamento = "0";
     $sql_new_incidente =
-    "INSERT INTO redeneutra_incidentes (zabbix_event_id, equipamento_id, descricaoIncidente, inicioIncidente, active)
+        "INSERT INTO redeneutra_incidentes (zabbix_event_id, equipamento_id, descricaoIncidente, inicioIncidente, active)
     VALUES (:zabbix_event_id, :equipamento_id, :descricaoIncidente, NOW(), '1')";
     $stmt = $pdo->prepare($sql_new_incidente);
     $stmt->bindParam(':equipamento_id', $idEquipamento);
@@ -32,13 +32,13 @@ if ($idEquipamento == "") {
     $stmt->bindParam(':zabbix_event_id', $zabbixEventID);
     $stmt->execute();
     $idIncidente = $pdo->lastInsertId();
-    
+
     if ($idIncidente <> "0") {
-        echo "Incidente $idIncidente gerado, sem equipamento vinculado!";     
+        echo "Incidente $idIncidente gerado, sem equipamento vinculado!";
     }
 } else {
     $sql_new_incidente =
-    "INSERT INTO redeneutra_incidentes (zabbix_event_id, equipamento_id, descricaoIncidente, inicioIncidente, active)
+        "INSERT INTO redeneutra_incidentes (zabbix_event_id, equipamento_id, descricaoIncidente, inicioIncidente, active)
     VALUES (:zabbix_event_id, :equipamento_id, :descricaoIncidente, NOW(), '1')";
     $stmt = $pdo->prepare($sql_new_incidente);
     $stmt->bindParam(':equipamento_id', $idEquipamento);
@@ -46,8 +46,8 @@ if ($idEquipamento == "") {
     $stmt->bindParam(':zabbix_event_id', $zabbixEventID);
     $stmt->execute();
     $idIncidente = $pdo->lastInsertId();
-    
+
     if ($idIncidente <> "0") {
-        echo "Incidente $idIncidente gerado!";     
+        echo "Incidente $idIncidente gerado!";
     }
 }
