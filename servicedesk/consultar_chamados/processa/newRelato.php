@@ -10,7 +10,9 @@ $novoRelato = $_POST['novoRelato'];
 $statusChamado = $_POST['statusChamado'];
 
 if ($tipoUsuario == 1) {
+    $private = $_POST['privateChamado'];
     $horaInicial = $_POST['startTime'];
+
     $relato_hora_final = date("Y-m-d H:i:s");
     #Calcula o tempo do relato que vai ser adicionado
     $calcula_tempo =
@@ -19,6 +21,7 @@ if ($tipoUsuario == 1) {
     $res_calc = $calculo->fetch_array();
     $seconds_worked = $res_calc['tempo'];
 } else if ($tipoUsuario == 3) {
+    $private = "1";
     $horaInicial = date("Y-m-d H:i:s");
     $relato_hora_final = date("Y-m-d H:i:s");
     $seconds_worked = "0";
@@ -33,10 +36,11 @@ $seconds = $res_sec['second'];
 $total_seconds_worked = ($seconds_worked + $seconds);
 
 #Prepara a a insercao do relato no chamado
-$sql1 = "INSERT INTO chamado_relato (chamado_id, relator_id, relato, relato_hora_inicial, relato_hora_final, seconds_worked)
-        VALUES (:chamado_id, :relator_id, :relato, :relato_hora_inicial, :relato_hora_final, :seconds_worked)";
+$sql1 = "INSERT INTO chamado_relato (chamado_id, relator_id, relato, relato_hora_inicial, relato_hora_final, seconds_worked, private)
+        VALUES (:chamado_id, :relator_id, :relato, :relato_hora_inicial, :relato_hora_final, :seconds_worked, :private)";
 $stmt1 = $pdo->prepare($sql1);
 $stmt1->bindParam(':chamado_id', $chamadoID);
+$stmt1->bindParam(':private', $private);
 $stmt1->bindParam(':relator_id', $relatorID);
 $stmt1->bindParam(':relato_hora_inicial', $horaInicial);
 $stmt1->bindParam(':relato_hora_final', $relato_hora_final);

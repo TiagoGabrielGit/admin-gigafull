@@ -33,10 +33,8 @@ rni.zabbix_event_id as zabbixID,
 rni.active as statusID,
 rni.autor_id as autor_id,
 eqpop.hostname as equipamento,
-CASE
-WHEN rni.classificacaO = 1 THEN 'Informativo'
-WHEN rni.classificacaO = 2 THEN 'Afeta Cliente'
-END classificacao,
+rni.classificacao as idClassificacao,
+ic.classificacao as classificacao,
 rni.descricaoIncidente as descricaoIncidente,
 CASE
 WHEN rni.active = 1 THEN 'Incidente aberto'
@@ -61,6 +59,10 @@ LEFT JOIN
 redeneutra_parceiro_olt as rnpo
 ON
 rnpo.olt_id = rno.id
+LEFT JOIN
+incidentes_classificacao as ic
+ON
+ic.id = rni.classificacao
 WHERE
 rnpo.active = 1
 and
@@ -263,8 +265,27 @@ if ($campos['contagem'] >= 1) { ?>
                                         <label for="classIncidente" class="form-label">Classificação</label>
                                         <select id="classIncidente" name="classIncidente" class="form-select">
                                             <option selected value="">Selecione</option>
-                                            <option value="1">Informativo</option>
-                                            <option value="2">Afeta Cliente</option>
+
+                                            <?php
+                                            $sql_classificacao =
+                                                "SELECT
+ic.id as idClassificacao,
+ic.classificacao as classificacao
+FROM
+incidentes_classificacao as ic
+WHERE
+ic.active = 1
+ORDER BY
+ic.classificacao ASC
+";
+
+                                            $r_classificacao = mysqli_query($mysqli, $sql_classificacao);
+                                            while ($c_classificacao = mysqli_fetch_object($r_classificacao)) :
+                                                echo "<option value='$c_classificacao->idClassificacao'> $c_classificacao->classificacao</option>";
+                                            endwhile;
+                                            ?>
+
+
 
                                         </select>
                                     </div>

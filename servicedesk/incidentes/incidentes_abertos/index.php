@@ -50,6 +50,8 @@ require "../../../includes/menu.php";
                                     rni.zabbix_event_id as zabbixID,
                                     eqpop.hostname as equipamento,
                                     rni.descricaoIncidente as descricaoIncidente,
+                                    ic.classificacao as classificacao,
+rni.descricaoIncidente as descricaoIncidente,
                                     CASE
                                     WHEN rni.active = 1 THEN 'Incidente aberto'
                                     WHEN rni.active = 0 THEN 'Normalizado'
@@ -57,6 +59,7 @@ require "../../../includes/menu.php";
                                     rni.active as activeID,
                                     date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
                                     date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
+                                    date_format(rni.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
                                     IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
                                     FROM
                                     redeneutra_incidentes as rni
@@ -64,6 +67,10 @@ require "../../../includes/menu.php";
                                     equipamentospop as eqpop
                                     ON
                                     eqpop.id = rni.equipamento_id
+                                    LEFT JOIN
+incidentes_classificacao as ic
+ON
+ic.id = rni.classificacao
                                     WHERE
                                     rni.active = 1
                                     ORDER BY
@@ -76,11 +83,14 @@ require "../../../includes/menu.php";
                                     rni.zabbix_event_id as zabbixID,
                                     eqpop.hostname as equipamento,
                                     rni.descricaoIncidente as descricaoIncidente,
+                                    ic.classificacao as classificacao,
+rni.descricaoIncidente as descricaoIncidente,
                                     CASE
                                     WHEN rni.active = 1 THEN 'Incidente aberto'
                                     WHEN rni.active = 0 THEN 'Normalizado'
                                     END active,
                                     rni.active as activeID,
+                                    date_format(rni.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
                                     date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
                                     date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
                                     IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
@@ -98,6 +108,10 @@ require "../../../includes/menu.php";
                                     equipamentospop as eqpop
                                     ON
                                     eqpop.id = rni.equipamento_id
+                                    LEFT JOIN
+incidentes_classificacao as ic
+ON
+ic.id = rni.classificacao
                                     WHERE
                                     rnpo.parceiro_id = $parceiroID
                                     and
@@ -138,6 +152,26 @@ require "../../../includes/menu.php";
                                                     <b>Autor: </b> <?php if ($campos['zabbixID'] <> null) {
                                                                         echo "Integração Zabbix";
                                                                     } ?><br>
+
+
+
+                                                    <b>Classificação: </b>
+                                                    <?php
+                                                    if ($campos['classificacao'] == NULL) {
+                                                        echo "Não Classificado";
+                                                    } else {
+                                                        echo $campos['classificacao'];
+                                                    } ?> <br>
+
+
+                                                    <b>Previsão Normalização: </b>
+                                                    <?php
+                                                    if ($campos['previsaoNormalizacao'] == NULL) {
+                                                        echo "Sem Previsão";
+                                                    } else {
+                                                        echo $campos['previsaoNormalizacao'];
+                                                    } ?> <br>
+
                                                 </div>
                                                 <div class="col-5">
                                                     <b>Hora Inicial: </b><?= $campos['horainicial']; ?><br>
@@ -265,7 +299,7 @@ require "../../../includes/menu.php";
                                             // Se estiver tudo OK, cria o link para outra página
                                         } else {
                                     ?>
-                                            
+
                                             <li class="page-item"><a class="page-link" href="/servicedesk/incidentes/incidentes_abertos/index.php?pagina=<?= $i ?>"><?= $i ?></a></li>
                                     <?php
 

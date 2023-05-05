@@ -83,6 +83,7 @@ $sql_relatos =
 "SELECT
 cr.id as id_relato,
 cr.chamado_id as id_chamado,
+cr.private as privacidade,
 p.nome as relatante,
 cr.relato as relato,
 date_format(cr.relato_hora_inicial,'%H:%i:%s %d/%m/%Y') as inicio,

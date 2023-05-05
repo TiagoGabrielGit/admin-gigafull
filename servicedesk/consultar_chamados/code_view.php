@@ -87,7 +87,7 @@ if ($chamado['in_execution'] == 1) {
 
 
                                             <?php
-                                            if ($tipoUsuario == 3) { ?>
+                                            if ($tipoUsuario == 3 && $chamado['status'] != "Fechado") { ?>
                                                 <div class="col-12">
                                                     <button style="margin-top: 15px" type="button" class="btn btn-danger row col-12" data-bs-toggle="modal" data-bs-target="#basicModal">
                                                         Inserir um relato
@@ -135,7 +135,17 @@ if ($chamado['in_execution'] == 1) {
                                                                     endwhile;
                                                                     ?>
                                                                 </select>
-                                                            </div> <?php } ?>
+                                                            </div>
+                                                            <div class="col-4"></div>
+                                                            <div class="col-4">
+                                                                <label for="privateChamado" class="form-label">Privacidade</label>
+                                                                <select class="form-select" id="privateChamado" name="privateChamado" required>
+                                                                    <option selected value="">Selecione</option>
+                                                                    <option value='1'> Público</option>
+                                                                    <option value='0'> Privado</option>
+                                                                </select>
+                                                            </div>
+                                                        <?php } ?>
 
                                                         <div class="col-12">
                                                             <label for="novoRelato" class="form-label">Relato</label>
@@ -170,22 +180,53 @@ if ($chamado['in_execution'] == 1) {
                             while ($campos = $resultado_relatos->fetch_array()) {
                                 $id_relato = $campos['id_relato'];
                                 $tempoAtendimento = gmdate("H:i:s", $campos['seconds_worked']);
+                                $private = $campos['privacidade'];
+                                if ($tipoUsuario == 1) { ?>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-heading<?= $cont ?>"> <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<?= $cont ?>" aria-expanded="false" aria-controls="flush-collapse<?= $cont ?>">Relato #<?= $id_relato ?> - <?= $campos['relatante']; ?></button></h2>
+                                        <div id="flush-collapse<?= $cont ?>" class="accordion-collapse collapse" aria-labelledby="flush-heading<?= $cont ?>" data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+                                                <b>Relatante: </b> <?= $campos['relatante']; ?> <br>
+                                                <b>Período: </b> <?= $campos['inicio']; ?> à <?= $campos['final']; ?><br>
+                                                <b>Tempo de atendimento: </b> <?= $tempoAtendimento ?><br>
+                                                <b>Privacidade: </b> <?php
+                                                                        if ($private == 1) {
+                                                                            echo "Público";
+                                                                        } else {
+                                                                            echo "Privado";
+                                                                        };
 
-                            ?>
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="flush-heading<?= $cont ?>"> <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<?= $cont ?>" aria-expanded="false" aria-controls="flush-collapse<?= $cont ?>">Relato #<?= $id_relato ?> - <?= $campos['relatante']; ?></button></h2>
-                                    <div id="flush-collapse<?= $cont ?>" class="accordion-collapse collapse" aria-labelledby="flush-heading<?= $cont ?>" data-bs-parent="#accordionFlushExample">
-                                        <div class="accordion-body">
-                                            <b>Relatante: </b> <?= $campos['relatante']; ?> <br>
-                                            <b>Período: </b> <?= $campos['inicio']; ?> à <?= $campos['final']; ?><br>
-                                            <b>Tempo de atendimento: </b> <?= $tempoAtendimento ?><br>
+                                                                        ?><br>
+                                                <hr class="sidebar-divider">
 
-                                            <hr class="sidebar-divider">
-
-                                            <b>Descrição: </b> <br><?= nl2br($campos['relato']); ?>
+                                                <b>Descrição: </b> <br><?= nl2br($campos['relato']); ?>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                <?php } else if ($tipoUsuario == 3 && $private == 1) { ?>
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="flush-heading<?= $cont ?>"> <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<?= $cont ?>" aria-expanded="false" aria-controls="flush-collapse<?= $cont ?>">Relato #<?= $id_relato ?> - <?= $campos['relatante']; ?></button></h2>
+                                        <div id="flush-collapse<?= $cont ?>" class="accordion-collapse collapse" aria-labelledby="flush-heading<?= $cont ?>" data-bs-parent="#accordionFlushExample">
+                                            <div class="accordion-body">
+                                                <b>Relatante: </b> <?= $campos['relatante']; ?> <br>
+                                                <b>Período: </b> <?= $campos['inicio']; ?> à <?= $campos['final']; ?><br>
+                                                <b>Tempo de atendimento: </b> <?= $tempoAtendimento ?><br>
+                                                <b>Privacidade: </b> <?php
+                                                                        if ($private == 1) {
+                                                                            echo "Público";
+                                                                        } else {
+                                                                            echo "Privado";
+                                                                        };
+
+                                                                        ?><br>
+                                                <hr class="sidebar-divider">
+
+                                                <b>Descrição: </b> <br><?= nl2br($campos['relato']); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php }
+                                ?>
 
 
                             <?php $cont++;
