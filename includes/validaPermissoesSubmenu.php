@@ -379,8 +379,8 @@ $r_nav_sub_logAdmin = mysqli_query($mysqli, $nav_sub_logAdmin);
 $c_nav_sub_logAdmin = mysqli_fetch_assoc($r_nav_sub_logAdmin);
 /////////////////////////////////////////
 
-//SUBMENU >> SERVICE DESK >> INCIDENTES ABERTOS
-$nav_sub_incidentes_abertos = "SELECT
+//SUBMENU >> SERVICE DESK >> INCIDENTES
+$nav_sub_incidentes = "SELECT
 count(*) as c
 FROM
 url_submenu as usm
@@ -393,26 +393,8 @@ usm.id = '22'
 and
 ppsm.perfil_id = $perfil_id";
 
-$r_nav_sub_incidentes_abertos = mysqli_query($mysqli, $nav_sub_incidentes_abertos);
-$c_nav_sub_incidentes_abertos = mysqli_fetch_assoc($r_nav_sub_incidentes_abertos);
-/////////////////////////////////////////
-
-//SUBMENU >> SERVICE DESK >> INCIDENTES FECHADOS
-$nav_sub_incidentes_fechados = "SELECT
-count(*) as c
-FROM
-url_submenu as usm
-LEFT JOIN
-perfil_permissoes_submenu as ppsm
-ON
-ppsm.url_submenu = usm.id
-WHERE
-usm.id = '23'
-and
-ppsm.perfil_id = $perfil_id";
-
-$r_nav_sub_incidentes_fechados = mysqli_query($mysqli, $nav_sub_incidentes_fechados);
-$c_nav_sub_incidentes_fechados = mysqli_fetch_assoc($r_nav_sub_incidentes_fechados);
+$r_nav_sub_incidentes = mysqli_query($mysqli, $nav_sub_incidentes);
+$c_nav_sub_incidentes = mysqli_fetch_assoc($r_nav_sub_incidentes);
 /////////////////////////////////////////
 
 $nav_sub_configuracoes_incidentes = "SELECT

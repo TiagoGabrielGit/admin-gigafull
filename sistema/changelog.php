@@ -16,6 +16,58 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
 
+
+              <!-- Versão 5.6 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading5-6">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5-6" aria-expanded="false" aria-controls="collapse5-6">
+                    Versão 5.6 - 08/05/2023
+                  </button>
+                </h2>
+                <div id="collapse5-6" class="accordion-collapse collapse" aria-labelledby="heading5-6" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Organização de incidentes e filtros;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Editado o id 17 da tabela "url_menu" para "Informativos";<br>
+                    # Excluido o id 23 da tabela "url_submenu";<br>
+                    # Editado o id 22 da tabela "url_submenu";<br>
+                    # Criado classificação de incidente "Não Classificado" com id "0";<br>
+
+                    <br><strong>Previsto para próximas atualizaçõs</strong><br>
+                    # Abertura manual de incidentes;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Notificaçãoes de novos incidentes e relatos;<br>
+                    # Busca automatica de info-summary ao identificar incidente;<br>
+                    # Abertura de Chamados por Clientes ISP e Setores;<br>
+                    # Vinculo de chamado a incidente;<br>
+                    # Menu vistoria POP;<br>
+                    # BUG só edita primeiro serviço "/cadastros/produtos/servicos/index.php";<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Update tabela version após atualização aplicação;<br>
+                    # Cadastro de PONs;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Componentes de equipamentos;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                    # Integração com API's de CEP;<br>
+                    # Segurança individual;<br>
+                    # Agendamento de chamado;<br>
+
+                    <br><strong>Backlog --- Rede Neutra</strong><br>
+                    # BUG retorna código em resultado do provisionamento;<br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas;<br>
+                    # Botão troca ONU;<br>
+                    # Armazenar LOG sinal do cliente após provisionamento;<br>
+                    # Validação sinal antes de adicionar serviços;<br>
+                    # Autofind no provisionamento;<br><br>
+                  </div>
+                </div>
+              </div>
+
               <!-- Versão 5.5 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading5-5">
@@ -46,6 +98,7 @@ require "../includes/menu.php";
                     # Vinculo de chamado a incidente;<br>
                     # Alerta para previsão de normalização excedida;<br>
                     # Menu vistoria POP;<br>
+                    # BUG só edita primeiro serviço "/cadastros/produtos/servicos/index.php";<br>
 
                     <br><strong>Backlog</strong><br>
                     # Update tabela version após atualização aplicação;<br>

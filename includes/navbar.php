@@ -174,25 +174,17 @@ require "validaRotina.php";
             </li>
         <?php } ?>
 
-        <?php if ($c_nav_incidentes['c'] == 1) { ?>
+        <?php if ($c_nav_informativos['c'] == 1) { ?>
             <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#incidentes-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-layout-text-window-reverse"></i><span>Incidentes</span><i class="bi bi-chevron-down ms-auto"></i>
+                <a class="nav-link collapsed" data-bs-target="#informativos-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-layout-text-window-reverse"></i><span>Informativos</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
-                <ul id="incidentes-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <ul id="informativos-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
-                    <?php if ($c_nav_sub_incidentes_abertos['c'] == 1) { ?>
+                    <?php if ($c_nav_sub_incidentes['c'] == 1) { ?>
                         <li>
-                            <a href="/servicedesk/incidentes/incidentes_abertos/index.php">
-                                <i class="bi bi-circle"></i><span>Incidentes Abertos</span>
-                            </a>
-                        </li>
-                    <?php } ?>
-
-                    <?php if ($c_nav_sub_incidentes_fechados['c'] == 1) { ?>
-                        <li>
-                            <a href="/servicedesk/incidentes/incidentes_fechados/index.php">
-                                <i class="bi bi-circle"></i><span>Incidentes Fechados</span>
+                            <a href="/servicedesk/incidentes/index.php">
+                                <i class="bi bi-circle"></i><span>Incidentes</span>
                             </a>
                         </li>
                     <?php } ?>

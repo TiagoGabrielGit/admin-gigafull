@@ -127,8 +127,8 @@ $r_nav_chamadosProgramados = mysqli_query($mysqli, $nav_chamadosProgramados);
 $c_nav_chamadosProgramados = mysqli_fetch_assoc($r_nav_chamadosProgramados);
 /////////////////////////////////////////
 
-//MENU >> CHAMADOS PROGRAMADOS
-$nav_incidentes = "SELECT
+//MENU >> INFORMATIVOS
+$nav_informativos = "SELECT
 count(*) as c
 FROM
 url_menu as um
@@ -141,8 +141,8 @@ um.id = '17'
 and
 ppm.perfil_id = $perfil_id";
 
-$r_nav_incidentes = mysqli_query($mysqli, $nav_incidentes);
-$c_nav_incidentes = mysqli_fetch_assoc($r_nav_incidentes);
+$r_nav_informativos = mysqli_query($mysqli, $nav_informativos);
+$c_nav_informativos = mysqli_fetch_assoc($r_nav_informativos);
 /////////////////////////////////////////
 
 
