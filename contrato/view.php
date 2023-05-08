@@ -48,6 +48,9 @@ $c_contrato = $r_contrato->fetch_array();
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="service-tab" data-bs-toggle="tab" data-bs-target="#service" type="button" role="tab" aria-controls="service" aria-selected="false">Serviços</button>
                                         </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="itemService-tab" data-bs-toggle="tab" data-bs-target="#itemService" type="button" role="tab" aria-controls="itemService" aria-selected="false">Item de Serviço</button>
+                                        </li>
                                     </ul>
                                     <div class="tab-content pt-2" id="myTabContent">
                                         <div class="tab-pane fade show active" id="information" role="tabpanel" aria-labelledby="information-tab">
@@ -58,6 +61,11 @@ $c_contrato = $r_contrato->fetch_array();
                                         <div class="tab-pane fade" id="service" role="tabpanel" aria-labelledby="service-tab">
                                             <?php
                                             require "tab/service.php";
+                                            ?>
+                                        </div>
+                                        <div class="tab-pane fade" id="itemService" role="tabpanel" aria-labelledby="itemService-tab">
+                                            <?php
+                                            require "tab/itemService.php";
                                             ?>
                                         </div>
                                     </div><!-- End Default Tabs -->
@@ -77,6 +85,26 @@ $c_contrato = $r_contrato->fetch_array();
 
 
 <script>
+    $("#btnAdicionarIten").click(function() {
+        var dados2 = $("#adicionaItem").serialize();
+        $.post("/contrato/processa/addItenService.php", dados2, function(retorna2) {
+            $("#itemMsgAdiciona").slideDown('slow').html(retorna2);
+
+            //Limpar os campos
+            $('#adicionaItem')[0].reset();
+
+            //Apresentar a mensagem leve
+            retirarMsgIten();
+        });
+    });
+
+    //Retirar a mensagem após 1700 milissegundos
+    function retirarMsgIten() {
+        setTimeout(function() {
+            $("#itemMsgAdiciona").slideUp('slow', function() {});
+        }, 1700);
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
     $("#adicionarService").click(function() {
         var dados1 = $("#adicionaServico").serialize();
         $.post("/contrato/processa/addService.php", dados1, function(retorna1) {

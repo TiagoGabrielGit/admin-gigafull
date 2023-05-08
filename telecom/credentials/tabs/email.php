@@ -37,13 +37,13 @@ $varDescricao = $_POST['pesquisaDescricao'];
                             <div class="col-2">
                                 <div class="card">
                                     <!-- Basic Modal -->
-                                    <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalNovoPortal">
+                                    <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalNovoEmail">
                                         Cadastrar novo
                                     </button>
                                 </div>
                             </div>
 
-                            <div class="modal fade" id="modalNovoPortal" tabindex="-1">
+                            <div class="modal fade" id="modalNovoEmail" tabindex="-1">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -51,14 +51,14 @@ $varDescricao = $_POST['pesquisaDescricao'];
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <div class="card-body"> 
+                                            <div class="card-body">
 
                                                 <!-- Vertical Form -->
-                                                <form id="addCredenciaisPortal" method="POST" class="row g-3">
+                                                <form id="addCredenciaisEmail" method="POST" class="row g-3">
 
                                                     <input name="usuarioCriador" type="text" class="form-control" id="usuarioCriador" value="<?php echo $_SESSION['id']; ?>" hidden>
 
-                                                    <span id="msgNewPortal"></span>
+                                                    <span id="msgNewEmail"></span>
 
                                                     <div class="col-6">
                                                         <label for="cadastroEmpresa" class="form-label">Empresa*</label>
@@ -94,37 +94,39 @@ $varDescricao = $_POST['pesquisaDescricao'];
 
                                                     <hr class="sidebar-divider">
 
+
+
                                                     <div class="col-8" style="display: inline-block;">
-                                                        <label for="portalPaginaAcesso" class="form-label">Página de Acesso</label>
-                                                        <input name="portalPaginaAcesso" type="text" class="form-control" id="portalPaginaAcesso">
+                                                        <label for="acessoWebmail" class="form-label">Webmail</label>
+                                                        <input name="acessoWebmail" type="text" class="form-control" id="acessoWebmail">
                                                     </div>
 
                                                     <div class="col-6" style="display: inline-block;">
-                                                        <label for="portalDescricao" class="form-label">Descrição</label>
-                                                        <input name="portalDescricao" type="text" class="form-control" id="portalDescricao">
+                                                        <label for="emailDescricao" class="form-label">Descrição</label>
+                                                        <input name="emailDescricao" type="text" class="form-control" id="emailDescricao">
                                                     </div>
 
                                                     <div class="col-4" style="display: inline-block;"> </div>
 
                                                     <div class="col-6" style="display: inline-block;">
-                                                        <label for="portalUsuario" class="form-label">Usuário</label>
-                                                        <input name="portalUsuario" type="text" class="form-control" id="portalUsuario">
+                                                        <label for="emailUsuario" class="form-label">E-mail</label>
+                                                        <input name="emailUsuario" type="text" class="form-control" id="emailUsuario">
                                                     </div>
 
                                                     <div class="col-5" style="display: inline-block;">
-                                                        <label for="portalSenha" class="form-label">Senha</label>
-                                                        <input name="portalSenha" type="text" class="form-control" id="portalSenha">
+                                                        <label for="emailSenha" class="form-label">Senha</label>
+                                                        <input name="emailSenha" type="text" class="form-control" id="emailSenha">
                                                     </div>
 
                                                     <div class="col-12">
-                                                        <label for="portalAnotacao" class="form-label">Anotações</label>
-                                                        <textarea id="portalAnotacao" name="portalAnotacao" class="form-control" maxlength="10000" rows="4"></textarea>
+                                                        <label for="emailAnotacao" class="form-label">Anotações</label>
+                                                        <textarea id="emailAnotacao" name="emailAnotacao" class="form-control" maxlength="10000" rows="4"></textarea>
                                                     </div>
 
                                                     <hr class="sidebar-divider">
 
                                                     <div class="text-center">
-                                                        <input id="btnSalvarNovoPortal" name="btnSalvarNovoPortal" type="button" value="Salvar" class="btn btn-danger"></input>
+                                                        <input id="btnSalvarNovoEmail" name="btnSalvarNovoEmail" type="button" value="Salvar" class="btn btn-danger"></input>
                                                         <a href="/telecom/credentials/index.php"> <input type="button" value="Voltar" class="btn btn-secondary"></input></a>
                                                     </div>
                                                 </form><!-- Vertical Form -->
@@ -138,7 +140,7 @@ $varDescricao = $_POST['pesquisaDescricao'];
 
                     <form method="POST" action="#" class="row g-3">
 
-                        <input type="hidden" id="tabportal" name="tabportal">
+                        <input type="hidden" id="tabemail" name="tabemail">
 
                         <div class="col-4">
                             <label for="empresaPesquisa" class="form-label">Empresa</label>
@@ -163,7 +165,7 @@ $varDescricao = $_POST['pesquisaDescricao'];
                                 endif;
                                 ?>
                             </select>
-                        </div>
+                        </div>              
 
                         <div class="col-4">
                             <label for="pesquisaDescricao" class="form-label">Descrição</label>
@@ -204,7 +206,7 @@ $varDescricao = $_POST['pesquisaDescricao'];
                         <tbody>
 
                             <?php
-                            require "portal/pesquisa_portal.php";
+                            require "email/pesquisa_email.php";
                             ?>
 
                         </tbody>

@@ -42,7 +42,7 @@ $sql_captura_id_pessoa =
 
 $result_cap_pessoa = mysqli_query($mysqli, $sql_captura_id_pessoa);
 $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
-$idParceiro = $pessoaID['idEmpresa'];
+$idEmpresa = $pessoaID['idEmpresa'];
 ?>
 
 <style>
@@ -126,7 +126,7 @@ $idParceiro = $pessoaID['idEmpresa'];
                                                         <span id="msg"></span>
 
                                                         <input hidden id="solicitante" name="solicitante" value="<?= $id_usuario ?>"></input>
-                                                        <input hidden id="empresaChamado" name="empresaChamado" value="<?= $idParceiro ?>"></input>
+                                                        <input hidden id="empresaChamado" name="empresaChamado" value="<?= $idEmpresa ?>"></input>
                                                         <div class="col-6">
                                                             <label for="tipoChamado" class="form-label">Tipo de chamado</label>
                                                             <select class="form-select" id="tipoChamado" name="tipoChamado" required>
@@ -149,18 +149,18 @@ $idParceiro = $pessoaID['idEmpresa'];
 
                                                                     $valida_permissao_equipe =
                                                                         "SELECT
-                                                            *
-                                                        FROM
-                                                            chamados_autorizados as ca
-                                                        WHERE
-                                                            ca.tipo_id = $idTipoChamado
-                                                        AND 
-                                                            ca.equipe_id IN ((SELECT
-                                                            ei.equipe_id as idEquipe
-                                                        FROM
-                                                            equipes_integrantes as ei
-                                                        WHERE
-                                                            ei.integrante_id = $id_usuario))";
+                                                                        *
+                                                                        FROM
+                                                                        chamados_autorizados as ca
+                                                                        WHERE
+                                                                        ca.tipo_id = $idTipoChamado
+                                                                        AND 
+                                                                        ca.equipe_id IN ((SELECT
+                                                                        ei.equipe_id as idEquipe
+                                                                        FROM
+                                                                        equipes_integrantes as ei
+                                                                        WHERE
+                                                                        ei.integrante_id = $id_usuario))";
                                                                     $r_valida_permissao_equipe = mysqli_query($mysqli, $valida_permissao_equipe);
                                                                     $c_valida_permissao_equipe = $r_valida_permissao_equipe->fetch_array();
                                                                     if (empty($c_valida_permissao_equipe)) {
@@ -173,6 +173,57 @@ $idParceiro = $pessoaID['idEmpresa'];
                                                                 ?>
                                                             </select>
                                                         </div>
+                                                        <div class="col-6"></div>
+                                                        <div class="col-6">
+                                                            <label for="selectService" class="form-label">Serviço*</label>
+                                                            <select class="form-select" id="selectService" name="selectService" required>
+
+                                                                <?php
+                                                                $sql_services =
+                                                                    "SELECT
+                                                                    c.id as contractID,
+                                                                    cs.id as contractServiceID,
+                                                                    s.service as service
+                                                                    FROM
+                                                                    contract_service as cs
+                                                                    LEFT JOIN
+                                                                    contract as c
+                                                                    ON
+                                                                    cs.contract_id = c.id
+                                                                    LEFT JOIN
+                                                                    service as s
+                                                                    ON
+                                                                    s.id = cs.service_id
+                                                                    WHERE
+                                                                    c.empresa_id = $idEmpresa 
+                                                                    and
+                                                                    c.active = 1 
+                                                                    and
+                                                                    cs.active = 1
+                                                                    ORDER BY
+                                                                    s.service ASC";
+
+                                                                $options = '<option disabled selected value="">Selecione o serviço</option>';
+                                                                $r_services = mysqli_query($mysqli, $sql_services);
+                                                                while ($c_services = mysqli_fetch_assoc($r_services)) {
+
+                                                                    $options .= "<option value='{$c_services['contractServiceID']}'>{$c_services['contractID']}/{$c_services['contractServiceID']} - {$c_services['service']}</option>";
+                                                                }
+                                                                // Retorna as opções dos serviços como resposta para a requisição AJAX
+                                                                echo $options;
+                                                                ?>
+                                                            </select>
+                                                        </div>
+
+                                                        <div class="col-6">
+                                                            <label for="selectIten" class="form-label">Item de Serviço</label>
+                                                            <select class="form-select" id="selectIten" name="selectIten" required>
+                                                                <option disabled selected value="">Selecione um serviço</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <br><br><br>
+                                                        <hr class="sidebar-divider">
 
                                                         <div class="col-6">
                                                             <label for="assuntoChamado" class="form-label">Assunto</label>
@@ -300,7 +351,9 @@ $idParceiro = $pessoaID['idEmpresa'];
                             cs.status_chamado as statusChamado,
                             tc.tipo as tipoChamado,
                             emp.fantasia as fantasia,
-                            p.nome as atendente
+                            p.nome as atendente,
+                            s.service as service,
+                            ise.item as itemService
                             FROM
                             chamados as ch
                             LEFT JOIN
@@ -323,8 +376,26 @@ $idParceiro = $pessoaID['idEmpresa'];
                             pessoas as p
                             ON
                             p.id = u.pessoa_id
+
+                            LEFT JOIN
+                            contract_service as cser
+                            ON 
+                            cser.id = ch.service_id
+                            LEFT JOIN
+                            service as s
+                            ON
+                            s.id = cser.service_id
+                            LEFT JOIN
+                            contract_iten_service as cis
+                            ON
+                            cis.id = ch.iten_service_id
+                            LEFT JOIN
+                            iten_service as ise
+                            ON
+                            ise.id = cis.iten_service
+
                             WHERE
-                            ch.empresa_id LIKE '$idParceiro'
+                            ch.empresa_id LIKE '$idEmpresa'
 
                             and
                             ch.status_id $statusChamado
@@ -383,6 +454,8 @@ $idParceiro = $pessoaID['idEmpresa'];
                                                     <b>Descrição: </b><br><?= nl2br($campos['relato_inicial']); ?>
                                                 </div>
                                                 <div class="col-5">
+                                                    <b>Serviço: </b><?= $campos['service']; ?><br>
+                                                    <b>Item de Serviço: </b><?= $campos['itemService']; ?><br>
                                                     <b>Data abertura: </b><?= $campos['dataAbertura']; ?><br>
                                                     <b>Status: </b><?= $campos['statusChamado']; ?><br><br>
                                                     <b>Tempo total atendimento: </b> <?= gmdate("H:i:s", $res_second['secondsTotal']); ?>
@@ -443,7 +516,7 @@ $idParceiro = $pessoaID['idEmpresa'];
                             ON
                             p.id = ch.atendente_id
                             WHERE
-                            ch.empresa_id LIKE '$idParceiro'
+                            ch.empresa_id LIKE '$idEmpresa'
                             and
                             ch.status_id $statusChamado
                             and
@@ -522,6 +595,6 @@ $idParceiro = $pessoaID['idEmpresa'];
 </main><!-- End #main -->
 
 <?php
-require "../../scripts/abrir_chamado.php";
+require "scripts/abrir_chamado_rn.php";
 require "../../includes/footer.php";
 ?>

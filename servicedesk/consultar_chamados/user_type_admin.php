@@ -125,7 +125,7 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                                         <input hidden id="solicitante" name="solicitante" value="<?= $id_usuario ?>"></input>
 
                                                         <div class="col-6">
-                                                            <label for="empresaChamado" class="form-label">Empresa</label>
+                                                            <label for="empresaChamado" class="form-label">Empresa*</label>
                                                             <select class="form-select" id="empresaChamado" name="empresaChamado" required>
                                                                 <option disabled selected value="">Selecione a empresa</option>
                                                                 <?php
@@ -138,7 +138,7 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                                         </div>
 
                                                         <div class="col-6">
-                                                            <label for="tipoChamado" class="form-label">Tipo de chamado</label>
+                                                            <label for="tipoChamado" class="form-label">Tipo de chamado*</label>
                                                             <select class="form-select" id="tipoChamado" name="tipoChamado" required>
                                                                 <option disabled selected value="">Selecione o tipo de chamado</option>
                                                                 <?php
@@ -179,18 +179,33 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                                                     }
                                                                 }
 
-
                                                                 ?>
                                                             </select>
                                                         </div>
 
                                                         <div class="col-6">
-                                                            <label for="assuntoChamado" class="form-label">Assunto</label>
+                                                            <label for="selectService" class="form-label">Serviço*</label>
+                                                            <select class="form-select" id="selectService" name="selectService" required>
+                                                                <option disabled selected value="">Selecione a Empresa</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <label for="selectIten" class="form-label">Item de Serviço</label>
+                                                            <select class="form-select" id="selectIten" name="selectIten" required>
+                                                                <option disabled selected value="">Selecione um serviço</option>
+                                                            </select>
+                                                        </div>
+
+                                                        <br><br><br>
+                                                        <hr class="sidebar-divider">
+
+                                                        <div class="col-6">
+                                                            <label for="assuntoChamado" class="form-label">Assunto*</label>
                                                             <input type="text" class="form-control" id="assuntoChamado" name="assuntoChamado" required>
                                                         </div>
 
                                                         <div class="col-12">
-                                                            <label for="relatoChamado" class="form-label">Descreva a situação</label>
+                                                            <label for="relatoChamado" class="form-label">Descreva a situação*</label>
                                                             <textarea id="relatoChamado" name="relatoChamado" class="form-control" maxlength="1000" required></textarea>
 
                                                         </div>
@@ -363,7 +378,10 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                             cs.status_chamado as statusChamado,
                             tc.tipo as tipoChamado,
                             emp.fantasia as fantasia,
-                            p.nome as atendente
+                            p.nome as atendente,
+                            s.service as service,
+                            ise.item as itemService
+                            
                             FROM
                             chamados as ch
                             LEFT JOIN
@@ -386,6 +404,22 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                             pessoas as p
                             ON
                             p.id = u.pessoa_id
+                            LEFT JOIN
+                            contract_service as cser
+                            ON 
+                            cser.id = ch.service_id
+                            LEFT JOIN
+                            service as s
+                            ON
+                            s.id = cser.service_id
+                            LEFT JOIN
+                            contract_iten_service as cis
+                            ON
+                            cis.id = ch.iten_service_id
+                            LEFT JOIN
+                            iten_service as ise
+                            ON
+                            ise.id = cis.iten_service
                             WHERE
                             ch.empresa_id LIKE '$empresa_id'
                             and
@@ -447,6 +481,8 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                                     <b>Descrição: </b><br><?= nl2br($campos['relato_inicial']); ?>
                                                 </div>
                                                 <div class="col-5">
+                                                    <b>Serviço: </b><?= $campos['service']; ?><br>
+                                                    <b>Item de Serviço: </b><?= $campos['itemService']; ?><br>
                                                     <b>Data abertura: </b><?= $campos['dataAbertura']; ?><br>
                                                     <b>Status: </b><?= $campos['statusChamado']; ?><br><br>
                                                     <b>Tempo total atendimento: </b> <?= gmdate("H:i:s", $res_second['secondsTotal']); ?>
@@ -588,6 +624,6 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
 </main><!-- End #main -->
 
 <?php
-require "../../scripts/abrir_chamado.php";
+require "scripts/abrir_chamado_admin.php";
 require "../../includes/footer.php";
 ?>

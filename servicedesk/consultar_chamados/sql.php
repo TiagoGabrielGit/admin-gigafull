@@ -1,7 +1,7 @@
 <?php
 
-$sql_chamado1 = 
-"SELECT
+$sql_chamado1 =
+    "SELECT
 c.id as id_chamado,
 c.assuntoChamado as assunto,
 c.relato_inicial as relato_inicial,
@@ -14,7 +14,9 @@ c.in_execution_start as in_execution_start,
 tc.tipo as tipo,
 cs.status_chamado as status,
 e.fantasia as empresa,
-e.id as idEmpresa
+e.id as idEmpresa,
+s.service as service,
+ise.item as itemService  
 FROM
 chamados as c 
 LEFT JOIN
@@ -41,12 +43,32 @@ LEFT JOIN
 empresas as e
 ON
 e.id = c.empresa_id
+
+
+LEFT JOIN
+contract_service as cser
+ON 
+cser.id = c.service_id
+LEFT JOIN
+service as s
+ON
+s.id = cser.service_id
+LEFT JOIN
+contract_iten_service as cis
+ON
+cis.id = c.iten_service_id
+LEFT JOIN
+iten_service as ise
+ON
+ise.id = cis.iten_service
+
+
 WHERE
 c.id = '$id_chamado'
 ";
 
 $sql_solicitante =
-"SELECT
+    "SELECT
 p.nome as solicitante
 FROM
 chamados as c
@@ -63,7 +85,7 @@ c.id = '$id_chamado'
 ";
 
 $sql_atendente =
-"SELECT
+    "SELECT
 p.nome as atendente
 FROM
 chamados as c
@@ -80,7 +102,7 @@ c.id = '$id_chamado'
 ";
 
 $sql_relatos =
-"SELECT
+    "SELECT
 cr.id as id_relato,
 cr.chamado_id as id_chamado,
 cr.private as privacidade,
@@ -106,7 +128,7 @@ cr.id DESC
 ";
 
 $sql_status_chamados =
-"SELECT
+    "SELECT
 cs.id as id_status,
 cs.status_chamado as status_chamado
 FROM
@@ -121,8 +143,8 @@ ORDER BY
 cs.status_chamado ASC
 ";
 
-$lista_atendentes = 
-"SELECT
+$lista_atendentes =
+    "SELECT
 p.nome as atendente,
 u.id as idUsuario
 FROM

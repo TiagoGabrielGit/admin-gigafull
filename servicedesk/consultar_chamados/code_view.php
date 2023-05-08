@@ -53,6 +53,8 @@ if ($chamado['in_execution'] == 1) {
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="col-12">
+                                                <b>Serviço: </b><?= $chamado['service']; ?><br>
+                                                <b>Item de Serviço: </b><?= $chamado['itemService']; ?><br>
                                                 <b>Data abertura: </b><?= $chamado['abertura']; ?> <br>
                                                 <b>Data fechamento: </b><?= $chamado['fechado']; ?> <br>
                                                 <b>Status: </b><?= $chamado['status']; ?> <br><br>

@@ -4,7 +4,7 @@ $sql_pesquisa_portal =
     ("SELECT
 emp.fantasia as emp_fant,
 portal.id as cred_id,
-portal.privacidade as idPrivacidade,
+portal.privacidade as idPrivacidade, 
 portal.usuario_id as usuarioCriador,
 CASE
     WHEN portal.tipo = 'portal' THEN 'Portal'
@@ -45,7 +45,6 @@ while ($campos_portal = $resultado_portal->fetch_array()) {
                 <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=Portal"><?= $campos_portal['cred_desc']; ?></a>
             </td>
             <td style="text-align: center;"><?= $campos_portal['emp_fant'] ?></td>
-            <td style="text-align: center;"><?= $campos_portal['cred_tipo'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_usuario'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_priv'] ?></td>
         </tr>
@@ -56,7 +55,6 @@ while ($campos_portal = $resultado_portal->fetch_array()) {
                 <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=Portal"><?= $campos_portal['cred_desc']; ?></a>
             </td>
             <td style="text-align: center;"><?= $campos_portal['emp_fant'] ?></td>
-            <td style="text-align: center;"><?= $campos_portal['cred_tipo'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_usuario'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_priv'] ?></td>
         </tr>
@@ -67,7 +65,6 @@ while ($campos_portal = $resultado_portal->fetch_array()) {
                 <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=Portal"><?= $campos_portal['cred_desc']; ?></a>
             </td>
             <td style="text-align: center;"><?= $campos_portal['emp_fant'] ?></td>
-            <td style="text-align: center;"><?= $campos_portal['cred_tipo'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_usuario'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_priv'] ?></td>
         </tr>
@@ -110,7 +107,6 @@ while ($campos_portal = $resultado_portal->fetch_array()) {
                     <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=Portal"><?= $campos_portal['cred_desc']; ?></a>
                 </td>
                 <td style="text-align: center;"><?= $campos_portal['emp_fant'] ?></td>
-                <td style="text-align: center;"><?= $campos_portal['cred_tipo'] ?></td>
                 <td style="text-align: center;"><?= $campos_portal['cred_usuario'] ?></td>
                 <td style="text-align: center;"><?= $campos_portal['cred_priv'] ?></td>
             </tr>

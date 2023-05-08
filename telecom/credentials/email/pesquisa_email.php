@@ -42,10 +42,9 @@ while ($campos_email = $resultado_email->fetch_array()) {
         <!--Apresenta se a privacidade for publico-->
         <tr>
             <td style="text-align: center;">
-                <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=E-mail"><?= $campos_email['cred_desc']; ?></a>
+                <a style="color: red;" href="email/view.php?id=<?= $id ?>&tipo=E-mail"><?= $campos_email['cred_desc']; ?></a>
             </td>
             <td style="text-align: center;"><?= $campos_email['emp_fant'] ?></td>
-            <td style="text-align: center;"><?= $campos_email['cred_tipo'] ?></td>
             <td style="text-align: center;"><?= $campos_email['cred_usuario'] ?></td>
             <td style="text-align: center;"><?= $campos_email['cred_priv'] ?></td>
         </tr>
@@ -53,10 +52,9 @@ while ($campos_email = $resultado_email->fetch_array()) {
         <!--Apresenta se o for do usuario criador-->
         <tr>
             <td style="text-align: center;">
-                <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=E-mail"><?= $campos_email['cred_desc']; ?></a>
+                <a style="color: red;" href="email/view.php?id=<?= $id ?>&tipo=E-mail"><?= $campos_email['cred_desc']; ?></a>
             </td>
             <td style="text-align: center;"><?= $campos_email['emp_fant'] ?></td>
-            <td style="text-align: center;"><?= $campos_email['cred_tipo'] ?></td>
             <td style="text-align: center;"><?= $campos_email['cred_usuario'] ?></td>
             <td style="text-align: center;"><?= $campos_email['cred_priv'] ?></td>
         </tr>
@@ -65,10 +63,9 @@ while ($campos_email = $resultado_email->fetch_array()) {
         <tr>
             </td>
             <td style="text-align: center;">
-                <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=E-mail"><?= $campos_email['cred_desc']; ?></a>
+                <a style="color: red;" href="email/view.php?id=<?= $id ?>&tipo=E-mail"><?= $campos_email['cred_desc']; ?></a>
             </td>
             <td style="text-align: center;"><?= $campos_email['emp_fant'] ?></td>
-            <td style="text-align: center;"><?= $campos_email['cred_tipo'] ?></td>
             <td style="text-align: center;"><?= $campos_email['cred_usuario'] ?></td>
             <td style="text-align: center;"><?= $campos_email['cred_priv'] ?></td>
         </tr>
@@ -96,7 +93,7 @@ while ($campos_email = $resultado_email->fetch_array()) {
             *
         FROM
             credenciais_privacidade_usuario as cpu
-        WHERE
+        WHERE 
             cpu.credencial_id = $id_credencial
         AND 
             cpu.usuario_id = $idSessao";
@@ -108,10 +105,9 @@ while ($campos_email = $resultado_email->fetch_array()) {
         } else { ?>
             <tr>
                 <td style="text-align: center;">
-                    <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=E-mail"><?= $campos_email['cred_desc']; ?></a>
+                    <a style="color: red;" href="email/view.php?id=<?= $id ?>&tipo=E-mail"><?= $campos_email['cred_desc']; ?></a>
                 </td>
                 <td style="text-align: center;"><?= $campos_email['emp_fant'] ?></td>
-                <td style="text-align: center;"><?= $campos_email['cred_tipo'] ?></td>
                 <td style="text-align: center;"><?= $campos_email['cred_usuario'] ?></td>
                 <td style="text-align: center;"><?= $campos_email['cred_priv'] ?></td>
             </tr>

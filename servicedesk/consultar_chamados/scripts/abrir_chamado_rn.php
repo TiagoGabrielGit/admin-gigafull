@@ -6,7 +6,8 @@
     $("#btnSalvar").click(function() {
         var dados = $("#abrirChamado").serialize();
 
-        $.post("/chamado/consultar_chamados/processa/add.php", dados, function(retorna) {
+
+        $.post("/servicedesk/consultar_chamados/processa/add.php", dados, function(retorna) {
             $("#msg").slideDown('slow').html(retorna);
 
             //Limpar os campos
@@ -22,5 +23,23 @@
         setTimeout(function() {
             $("#msg").slideUp('slow', function() {});
         }, 1700);
-    }
+    };
+
+
+
+    $(document).ready(function() {
+        $('#selectService').change(function() {
+            var serviceID = $(this).val();
+            $.ajax({
+                url: 'buscar_itens.php',
+                type: 'POST',
+                data: {
+                    serviceID: serviceID
+                },
+                success: function(responseItens) {
+                    $('#selectIten').html(responseItens);
+                }
+            });
+        });
+    });
 </script>

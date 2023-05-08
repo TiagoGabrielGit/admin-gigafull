@@ -4,6 +4,7 @@ require "../../../../conexoes/conexao_pdo.php";
 $id = $_POST['serviceID'];
 $service = $_POST['servicoEditar'];
 $active = $_POST['activeEditar'];
+$itemEdit = $_POST['itemEdit'];
 $description = $_POST['descricaoEditar'];
 
 $cont_insert = false;
@@ -11,10 +12,11 @@ $cont_insert = false;
 $data = [
     'descricao' => $description,
     'servico' => $service,
+    'item_service' => $itemEdit,
     'active' => $active,
     'id' => $id,
 ];
-$sql = "UPDATE service SET service=:servico, description=:descricao, active=:active WHERE id=:id";
+$sql = "UPDATE service SET service=:servico, description=:descricao, item_service=:item_service, active=:active WHERE id=:id";
 $stmt= $pdo->prepare($sql);
 
 if ($stmt->execute($data)) {
