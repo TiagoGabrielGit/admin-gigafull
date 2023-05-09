@@ -1,12 +1,60 @@
 <?php
 require "../../includes/menu.php";
-require "../../conexoes/conexao.php";
-require "../../includes/remove_setas_number.php";
 require "sql.php";
-?>
 
-<?php
-$id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+$usuarioID = $_SESSION['id'];
+
+
+if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+    if (isset($_POST['tabInformacoes'])) {
+        $tab_informacoes = "show active";
+        $nav_informacoes = "active";
+        $tab_rack = "";
+        $nav_rack = "";
+        $tab_equipamentos = "";
+        $nav_equipamentos = "";
+        $tab_vistoria = "";
+        $nav_vistoria = "";
+    } else if (isset($_POST['tabRack'])) {
+        $tab_informacoes = "";
+        $nav_informacoes = "";
+        $tab_rack = "show active";
+        $nav_rack = "active";
+        $tab_equipamentos = "";
+        $nav_equipamentos = "";
+        $tab_vistoria = "";
+        $nav_vistoria = "";
+    } else if (isset($_POST['tabEquipamentos'])) {
+        $tab_informacoes = "";
+        $nav_informacoes = "";
+        $tab_rack = "";
+        $nav_rack = "";
+        $tab_equipamentos = "show active";
+        $nav_equipamentos = "active";
+        $tab_vistoria = "";
+        $nav_vistoria = "";
+    } else if (isset($_POST['tabVistoria'])) {
+        $tab_informacoes = "";
+        $nav_informacoes = "";
+        $tab_rack = "";
+        $nav_rack = "";
+        $tab_equipamentos = "";
+        $nav_equipamentos = "";
+        $tab_vistoria = "show active";
+        $nav_vistoria = "active";
+    }
+} else {
+    $tab_informacoes = "show active";
+    $nav_informacoes = "active";
+    $tab_rack = "";
+    $nav_rack = "";
+    $tab_equipamentos = "";
+    $nav_equipamentos = "";
+    $tab_vistoria = "";
+    $nav_vistoria = "";
+}
+
+$idPOP = $_GET['id'];
 
 $sql_pop =
     "SELECT
@@ -58,7 +106,7 @@ bairro.cidade = city.id
 WHERE
 pop.active = 1
 and
-pop.id = $id        
+pop.id = $idPOP        
 ORDER BY
 emp.fantasia asc,
 city.cidade asc,
@@ -68,7 +116,53 @@ pop.pop asc
 $resultado = mysqli_query($mysqli, $sql_pop);
 $row = mysqli_fetch_assoc($resultado);
 
+$sql_lista_rack =
+    "SELECT
+    rack.id as rack_id,
+    pop.pop as pop,
+    rack.nomenclatura as rack,
+    rack.tamanho as tamanho,
+    rack.polegada as polegada
+    FROM
+    pop_rack as rack
+    LEFT JOIN
+    pop as pop
+    ON
+    pop.id = rack.pop_id
+    WHERE
+    rack.pop_id LIKE '$idPOP'                   ";
 
+$r_lista_rack = mysqli_query($mysqli, $sql_lista_rack);
+
+$sql_lista_equipamentos =
+    "SELECT
+    eqp.id as idEqp,
+    pr.nomenclatura as rack,
+    eqp.hostname as equipamento,
+    eqto.equipamento as modelo,
+    eqp.statusEquipamento as status,
+    EQP.*
+    FROM
+    equipamentospop as eqp
+    LEFT JOIN
+    pop_rack as pr
+    ON
+    pr.id = eqp.rack_id
+    LEFT JOIN
+    equipamentos as eqto
+    ON
+    eqto.id = eqp.equipamento_id
+    WHERE
+    eqp.deleted = 1
+    and
+    eqp.rack_id = 9
+    and
+    eqp.pop_id LIKE '$idPOP'
+    ORDER BY
+    pr.nomenclatura ASC,
+    eqp.hostname ASC";
+
+$r_lista_equipamentos = mysqli_query($mysqli, $sql_lista_equipamentos);
 ?>
 
 <main id="main" class="main">
@@ -76,116 +170,51 @@ $row = mysqli_fetch_assoc($resultado);
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
+
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Código <?php echo $row['id']; ?> - <?php echo $row['pop']; ?></h5>
+                        <h5 class="card-title">POPs</h5>
 
-                        <form method="POST" action="processa/edit.php" class="row g-3">
-
-                            <li class="nav-heading" style="list-style: none;">Dados</li>
-
-
-                            <input name="id" type="text" class="form-control" id="id" value="<?php echo $row['id']; ?>" hidden>
-
-
-                            <div class="col-4">
-                                <label for="inputEmpresa" class="form-label">Empresa</label>
-                                <select id="empresa" name="empresa" class="form-select" aria-label="Default select example">
-                                    <option value="<?= $row['id_empresa']; ?>"><?= $row['empresa']; ?></option>
-                                    <?php
-                                    $resultado = mysqli_query($mysqli, $sql_lista_empresas);
-                                    while ($emp = $resultado->fetch_assoc()) : ?>
-                                        <option value="<?= $emp['id']; ?>"><?= $emp['fantasia']; ?></option>
-                                    <?php endwhile; ?>
-                                    ?>
-                                </select>
+                        <!-- Default Tabs -->
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link <?= $nav_informacoes ?>" id="informacoes-tab" data-bs-toggle="tab" data-bs-target="#informacoes" type="button" role="tab" aria-controls="informacoes" aria-selected="true">Informacoes</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link <?= $nav_rack ?>" id="rack-tab" data-bs-toggle="tab" data-bs-target="#rack" type="button" role="tab" aria-controls="rack" aria-selected="false" tabindex="-1">Rack</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link <?= $nav_equipamentos ?>" id="equipamentos-tab" data-bs-toggle="tab" data-bs-target="#equipamentos" type="button" role="tab" aria-controls="equipamentos" aria-selected="false" tabindex="-1">Equipamentos</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link <?= $nav_vistoria ?>" id="vistoria-tab" data-bs-toggle="tab" data-bs-target="#vistoria" type="button" role="tab" aria-controls="vistoria" aria-selected="false" tabindex="-1">Vistoria</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-2" id="myTabContent">
+                            <div class="tab-pane fade <?= $tab_informacoes ?>" id="informacoes" role="tabpanel" aria-labelledby="informacoes-tab">
+                                <?php require "tabs/informacoes.php" ?>
                             </div>
-
-                            <div class="col-2">
-                                <label for="pop" class="form-label">POP</label>
-                                <input name="pop" type="text" class="form-control" id="pop" value="<?php echo $row['pop']; ?>" required>
+                            <div class="tab-pane fade <?= $tab_rack ?>" id="rack" role="tabpanel" aria-labelledby="rack-tab">
+                                <?php require "tabs/rack.php" ?>
                             </div>
-
-                            <div class="col-6">
-                                <label for="apelidoPop" class="form-label">Descrição</label>
-                                <input name="apelidoPop" type="text" class="form-control" id="apelidoPop" value="<?php echo $row['apelidoPop']; ?>" required>
+                            <div class="tab-pane fade <?= $tab_equipamentos ?>" id="equipamentos" role="tabpanel" aria-labelledby="equipamentos-tab">
+                            <?php require "tabs/equipamentos.php" ?>
                             </div>
-
-                            <hr class="sidebar-divider">
-                            <li class="nav-heading" style="list-style: none;">Localização</li>
-
-                            <div class="col-4">
-                                <label for="cidade" class="form-label">Cidade</label>
-                                <select id="cidade" name="cidade" class="form-select" aria-label="Default select example" value="<?php echo $row['nome_cidade']; ?>">
-                                    <option value="<?= $row['id_cidade']; ?>"><?= $row['nome_cidade']; ?></option>
-                                    <?php
-                                    $resultado = mysqli_query($mysqli, $sql_cidade);
-                                    while ($c = $resultado->fetch_assoc()) : ?>
-                                        <option value="<?= $c['id']; ?>"><?= $c['cidade']; ?></option>
-                                    <?php endwhile; ?>
-                                    ?>
-                                </select>
+                            <div class="tab-pane fade <?= $tab_vistoria ?>" id="vistoria" role="tabpanel" aria-labelledby="vistoria-tab">
+                            <?php require "tabs/vistoria.php" ?>
                             </div>
-
-                            <div class="col-4">
-                                <label for="inputBairro" class="form-label">Bairro</label>
-                                <select id="bairro" name="bairro" class="form-select" aria-label="Default select example" value="<?php echo $row['nome_bairro']; ?>">
-                                    <option value="<?= $row['id_bairro']; ?>"><?= $row['nome_bairro']; ?></option>
-                                </select>
-                            </div>
-
-                            <div class="col-2">
-                                <label for="cep" class="form-label">CEP</label>
-                                <select disabled id="cep" name="cep" class="form-select" aria-label="Default select example">
-                                    <option value="<?= $row['cep']; ?>"><?= $row['cep']; ?></option>
-                                </select>
-                            </div>
-
-
-                            <div class="col-6">
-                                <label for="inputLogradouro" class="form-label">Logradouro</label>
-                                <select id="logradouro" name="logradouro" class="form-select" aria-label="Default select example" value="<?php echo $row['nome_logradouro']; ?>">
-                                    <option value="<?= $row['id_logradouro']; ?>"><?= $row['nome_logradouro']; ?></option>
-                                </select>
-                            </div>
-
-                            <div class="col-2">
-                                <label for="numero" class="form-label">Número</label>
-                                <input name="numero" type="number" class="form-control" id="numero" value="<?php echo $row['numero']; ?>" required>
-                            </div>
-
-                            <div class="col-4">
-                                <label for="complemento" class="form-label">Complemento</label>
-                                <input name="complemento" type="text" class="form-control" id="complemento" value="<?php echo $row['complemento']; ?>">
-                            </div>
-
-                            <hr class="sidebar-divider">
-
-                            <div class="col-4" style="text-align: left;">
-                                <a href="/telecom/sitepop/rack.php?id=<?= $id ?>&pop=<?=$row['pop']?>"><input type="button" class="btn btn-info" value="Visualizar racks"></input></a>
-                            </div>
-
-                            <div class="col-4" style="text-align: center;">
-                                <button name="salvar" type="submit" class="btn btn-primary">Salvar</button>
-                                <input type="button" value="Voltar" onClick="history.go(-1)" class="btn btn-secondary">
-                            </div>
-
-                            <div class="col-4" style="text-align: right;">
-                                <a href="processa/delete.php?id=<?= $id ?>"><input type="button" class="btn btn-danger" value="Excluir permanente"></input></a>
-                            </div>
-
-                        </form><!-- Vertical Form -->
+                        </div><!-- End Default Tabs -->
 
                     </div>
                 </div>
+
             </div>
 
         </div>
     </section>
 
-</main><!-- End #main -->
+</main>
 
 <?php
-require "../../scripts/pop.php";
 require "../../includes/footer.php";
 ?>
