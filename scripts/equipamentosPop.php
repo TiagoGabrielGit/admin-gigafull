@@ -290,10 +290,23 @@
             .then(function() {
                 // Copiado com sucesso
                 console.log("Texto copiado para a área de transferência: " + tempElement.value);
+
+                // Mostrar o botão "Copiado"
+                var copiadoBtn = document.getElementById("h_" + inputId);
+                copiadoBtn.disabled = false;
+                copiadoBtn.hidden = false;
+
+                // Desaparecer após 2 segundos
+                setTimeout(function() {
+                    copiadoBtn.disabled = true;
+                    copiadoBtn.hidden = true;
+                }, 2000);
+
             })
             .catch(function(error) {
                 // Ocorreu um erro ao copiar
                 console.error("Erro ao copiar o texto para a área de transferência: " + error);
+                
             })
             .finally(function() {
                 // Remove o elemento de texto temporário

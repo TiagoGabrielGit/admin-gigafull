@@ -12,6 +12,7 @@
                         </div>
                         <div class="col-sm-3">
                             <button id="ip-copy<?= $id_credencial ?>" class="btn btn-secondary" onclick="copyToClipboard('ip-input<?= $id_credencial ?>')">Copiar</button>
+                            <button id="h_ip-copy<?= $id_credencial ?>" class="btn btn-success" disabled hidden>Copiado</button>
                         </div>
                     </div>
 
@@ -30,6 +31,7 @@
                         </div>
                         <div class="col-sm-3">
                             <button id="usuario-copy<?= $id_credencial ?>" class="btn btn-secondary" onclick="copyToClipboard('usuario-input<?= $id_credencial ?>')">Copiar</button>
+                            <button id="h_usuario-copy<?= $id_credencial ?>" class="btn btn-success" disabled hidden>Copiado</button>
                         </div>
                     </div>
 
@@ -40,6 +42,7 @@
                         </div>
                         <div class="col-sm-3">
                             <button id="senha-copy<?= $id_credencial ?>" class="btn btn-secondary" onclick="copyToClipboard('senha-input<?= $id_credencial ?>')">Copiar</button>
+                            <button id="h_senha-copy<?= $id_credencial ?>" class="btn btn-success" disabled hidden>Copiado</button>
                         </div>
                     </div>
                 </div>
