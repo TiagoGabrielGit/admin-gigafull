@@ -8,7 +8,7 @@
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label"><strong>IP:</strong></label>
                         <div class="col-sm-5">
-                            <input id="ip-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['ip'] ?>" disabled>
+                            <input id="ip-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['ip'] ?>" readonly>
                         </div>
                         <div class="col-sm-3">
                             <button id="ip-copy<?= $id_credencial ?>" class="btn btn-secondary" onclick="copyToClipboard('ip-input<?= $id_credencial ?>')">Copiar</button>
@@ -19,7 +19,7 @@
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label"><strong>Privacidade:</strong></label>
                         <div class="col-sm-5">
-                            <input id="privacidade-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['privacidade'] ?>" disabled>
+                            <input id="privacidade-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['privacidade'] ?>" readonly>
                         </div>
                     </div>
 
@@ -27,7 +27,7 @@
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label"><strong>Usuário:</strong></label>
                         <div class="col-sm-5">
-                            <input id="usuario-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['eqpuser'] ?>" disabled>
+                            <input id="usuario-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['eqpuser'] ?>" readonly>
                         </div>
                         <div class="col-sm-3">
                             <button id="usuario-copy<?= $id_credencial ?>" class="btn btn-secondary" onclick="copyToClipboard('usuario-input<?= $id_credencial ?>')">Copiar</button>
@@ -38,7 +38,7 @@
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label"><strong>Senha:</strong></label>
                         <div class="col-sm-5">
-                            <input id="senha-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['eqpsenha'] ?>" disabled>
+                            <input id="senha-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['eqpsenha'] ?>" readonly>
                         </div>
                         <div class="col-sm-3">
                             <button id="senha-copy<?= $id_credencial ?>" class="btn btn-secondary" onclick="copyToClipboard('senha-input<?= $id_credencial ?>')">Copiar</button>
