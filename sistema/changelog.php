@@ -28,7 +28,11 @@ require "../includes/menu.php";
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
+                    # Melhorias em POP/Site e opção de vistoria;<br>
 
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criado tabela "vistoria";<br>
+                    
                     <br><strong>Previsto para próximas atualizaçõs</strong><br>
                     # Abertura manual de incidentes;<br>
                     # Integração para abrir chamado no Voalle;<br>
@@ -36,7 +40,6 @@ require "../includes/menu.php";
                     # Busca automatica de info-summary ao identificar incidente;<br>
                     # Abertura de Chamados por Clientes ISP e Setores;<br>
                     # Vinculo de chamado a incidente;<br>
-                    # Menu vistoria POP;<br>
                     # BUG só edita primeiro serviço "/cadastros/produtos/servicos/index.php";<br>
                     # Cadastro competencias;<br>
 
