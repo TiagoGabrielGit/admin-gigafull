@@ -157,6 +157,6 @@ $row = mysqli_fetch_assoc($resultado);
 
 
 <?php
-require "../../scripts/rack.php";
+
 require "../../includes/footer.php";
 ?>

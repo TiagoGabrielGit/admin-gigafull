@@ -3,7 +3,7 @@ require "../../includes/menu.php";
 require "sql.php";
 
 $usuarioID = $_SESSION['id'];
-
+$idPOP = $_GET['id'];
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     if (isset($_POST['tabInformacoes'])) {
@@ -53,8 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $tab_vistoria = "";
     $nav_vistoria = "";
 }
-
-$idPOP = $_GET['id'];
 
 $sql_pop =
     "SELECT
@@ -155,14 +153,42 @@ $sql_lista_equipamentos =
     WHERE
     eqp.deleted = 1
     and
-    eqp.rack_id = 9
-    and
     eqp.pop_id LIKE '$idPOP'
     ORDER BY
     pr.nomenclatura ASC,
     eqp.hostname ASC";
 
 $r_lista_equipamentos = mysqli_query($mysqli, $sql_lista_equipamentos);
+$r_lista_vistoria_equipamentos = mysqli_query($mysqli, $sql_lista_equipamentos);
+
+$sql_usuarios =
+    "SELECT
+u.id as idUsuario,
+p.nome as usuario
+FROM
+usuarios as u
+LEFT JOIN
+pessoas as p
+ON
+p.id = u.pessoa_id
+WHERE
+u.active = 1
+ORDER BY
+p.nome ASC";
+
+$r_usuarios = mysqli_query($mysqli, $sql_usuarios);
+
+$sql_datas_vistorias =
+    "SELECT
+v.id as idVistoria,
+date_format(v.date, '%d/%m/%Y') as date 
+FROM
+vistoria as v
+WHERE
+v.pop_id LIKE '$idPOP'
+ORDER BY
+v.date DESC";
+$r_datas_vistorias = mysqli_query($mysqli, $sql_datas_vistorias);
 ?>
 
 <main id="main" class="main">
@@ -198,10 +224,10 @@ $r_lista_equipamentos = mysqli_query($mysqli, $sql_lista_equipamentos);
                                 <?php require "tabs/rack.php" ?>
                             </div>
                             <div class="tab-pane fade <?= $tab_equipamentos ?>" id="equipamentos" role="tabpanel" aria-labelledby="equipamentos-tab">
-                            <?php require "tabs/equipamentos.php" ?>
+                                <?php require "tabs/equipamentos.php" ?>
                             </div>
                             <div class="tab-pane fade <?= $tab_vistoria ?>" id="vistoria" role="tabpanel" aria-labelledby="vistoria-tab">
-                            <?php require "tabs/vistoria.php" ?>
+                                <?php require "tabs/vistoria.php" ?>
                             </div>
                         </div><!-- End Default Tabs -->
 
@@ -216,5 +242,6 @@ $r_lista_equipamentos = mysqli_query($mysqli, $sql_lista_equipamentos);
 </main>
 
 <?php
+require "js.php";
 require "../../includes/footer.php";
 ?>

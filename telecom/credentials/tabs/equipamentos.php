@@ -432,7 +432,6 @@ LIMIT $limiteBusca
                                     <td style="text-align: center;">
                                         <a style="color: red;" href="equipamentos/view.php?id=<?= $campos['id_equipop']; ?>"><?= $campos['hostname']; ?></a>
                                     </td>
-                                    <td><?= $campos['hostname']; ?></td>
                                     <td><?= $campos['empresa']; ?> / <?= $campos['pop']; ?></td>
                                     <td><?= $campos['ipaddress']; ?></td>
                                     <td><?= $campos['equipamento']; ?></td>
