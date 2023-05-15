@@ -163,3 +163,12 @@
         }, 1700);
     }
 </script>
+
+<script>
+    function copyToClipboard(inputId) {
+        let textoCopiado = document.getElementById(inputId);
+        textoCopiado.select();
+        textoCopiado.setSelectionRange(0, 99999)
+        document.execCommand("copy");
+    }
+</script>

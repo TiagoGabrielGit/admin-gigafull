@@ -8,10 +8,47 @@
         <div class="accordion-body">
             <div class="row justify-content-between">
                 <div class="col-9">
-                    <strong>IP:</strong> <?= $campos['ip']; ?><br>
-                    <strong>Privacidade:</strong> <?= $campos['privacidade']; ?><br>
-                    <strong>Usuário:</strong> <?= $campos['vmuser']; ?> <br>
-                    <strong>Senha:</strong> <?= $campos['vmsenha']; ?><br>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label"><strong>IP:</strong></label>
+                        <div class="col-sm-5">
+                            <input id="ip-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['ip'] ?>" disabled>
+                        </div>
+                        <div class="col-sm-3">
+                            <button id="ip-copy<?= $id_credencial ?>" class="btn btn-secondary" onclick="copyToClipboard('ip-input<?= $id_credencial ?>')">Copiar</button>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label"><strong>Privacidade:</strong></label>
+                        <div class="col-sm-5">
+                            <input id="privacidade-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['privacidade'] ?>" disabled>
+                        </div>
+                        <div class="col-sm-3">
+                            <button id="privacidade-copy<?= $id_credencial ?>" class="btn btn-secondary" onclick="copyToClipboard('privacidade-input<?= $id_credencial ?>')">Copiar</button>
+                        </div>
+                    </div>
+
+
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label"><strong>Usuário:</strong></label>
+                        <div class="col-sm-5">
+                            <input id="usuario-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['vmuser'] ?>" disabled>
+                        </div>
+                        <div class="col-sm-3">
+                            <button id="usuario-copy<?= $id_credencial ?>" class="btn btn-secondary" onclick="copyToClipboard('usuario-input<?= $id_credencial ?>')">Copiar</button>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label class="col-sm-4 col-form-label"><strong>Senha:</strong></label>
+                        <div class="col-sm-5">
+                            <input id="senha-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['vmsenha'] ?>" disabled>
+                        </div>
+                        <div class="col-sm-3">
+                            <button id="senha-copy<?= $id_credencial ?>" class="btn btn-secondary" onclick="copyToClipboard('senha-input<?= $id_credencial ?>')">Copiar</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-3">
                     <a href="/telecom/credentials/view.php?id=<?= $id_credencial ?>&tipo=VM" title="Editar">
