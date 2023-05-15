@@ -183,6 +183,18 @@
             .then(function() {
                 // Copiado com sucesso
                 console.log("Texto copiado para a área de transferência: " + tempElement.value);
+                var btnCopiado = `#hbtn_${inputId}`;
+                var btnCopiar = `#btn_${inputId}`;
+                document.querySelector(btnCopiar).hidden = true;
+                document.querySelector(btnCopiado).hidden = false;
+
+                // Desaparecer após 2 segundos
+                setTimeout(function() {
+                    document.querySelector(btnCopiado).hidden = true;
+                    document.querySelector(btnCopiar).hidden = false;
+
+                }, 1000);
+
             })
             .catch(function(error) {
                 // Ocorreu um erro ao copiar
