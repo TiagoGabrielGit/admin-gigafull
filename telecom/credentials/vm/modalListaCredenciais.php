@@ -24,9 +24,6 @@
                         <div class="col-sm-5">
                             <input id="privacidade-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['privacidade'] ?>" disabled>
                         </div>
-                        <div class="col-sm-3">
-                            <button id="privacidade-copy<?= $id_credencial ?>" class="btn btn-secondary" onclick="copyToClipboard('privacidade-input<?= $id_credencial ?>')">Copiar</button>
-                        </div>
                     </div>
 
 

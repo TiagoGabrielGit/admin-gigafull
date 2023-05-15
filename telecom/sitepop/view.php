@@ -138,8 +138,7 @@ $sql_lista_equipamentos =
     pr.nomenclatura as rack,
     eqp.hostname as equipamento,
     eqto.equipamento as modelo,
-    eqp.statusEquipamento as status,
-    EQP.*
+    eqp.statusEquipamento as status
     FROM
     equipamentospop as eqp
     LEFT JOIN

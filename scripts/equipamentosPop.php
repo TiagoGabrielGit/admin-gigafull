@@ -1,4 +1,4 @@
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 
 
@@ -251,12 +251,12 @@
         var dados = $("#cadastraSenhaEquipamento").serialize();
 
         $.post("processa/addNovaSenha.php", dados, function(retorna) {
-            $("#msgAlertCad").slideDown('slow').html(retorna); 
+            $("#msgAlertCad").slideDown('slow').html(retorna);
 
             //Limpar os campos
-            document.getElementById('equipamentoDescricao').value='';
-            document.getElementById('equipamentoUsuario').value='';
-            document.getElementById('equipamentoSenha').value='';
+            document.getElementById('equipamentoDescricao').value = '';
+            document.getElementById('equipamentoUsuario').value = '';
+            document.getElementById('equipamentoSenha').value = '';
 
 
             //Apresentar a mensagem leve
@@ -269,5 +269,38 @@
         setTimeout(function() {
             $("#msgAlertCad").slideUp('slow', function() {});
         }, 1700);
+    }
+</script>
+
+<script>
+    function copyToClipboard(inputId) {
+        var inputElement = document.getElementById(inputId);
+        var fieldValue = inputElement.value;
+        // Cria um elemento de texto temporário
+        var tempElement = document.createElement('textarea');
+        tempElement.value = fieldValue;
+        document.body.appendChild(tempElement);
+
+        // Seleciona o texto no elemento de texto temporário
+        tempElement.select();
+        tempElement.setSelectionRange(0, 99999); /* Para dispositivos móveis */
+
+        // Copia o texto selecionado para a área de transferência usando a API Clipboard
+        navigator.clipboard.writeText(tempElement.value)
+            .then(function() {
+                // Copiado com sucesso
+                console.log("Texto copiado para a área de transferência: " + tempElement.value);
+            })
+            .catch(function(error) {
+                // Ocorreu um erro ao copiar
+                console.error("Erro ao copiar o texto para a área de transferência: " + error);
+            })
+            .finally(function() {
+                // Remove o elemento de texto temporário
+                document.body.removeChild(tempElement);
+
+                // Deseleciona o campo de entrada
+                inputElement.blur();
+            });
     }
 </script>
