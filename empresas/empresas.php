@@ -96,46 +96,32 @@ require '../includes/remove_setas_number.php';
                                                         <hr class="sidebar-divider">
                                                         <li class="nav-heading" style="list-style: none;">Localização</li>
 
-                                                        <div class="col-6">
-                                                            <label for="inputPaís" class="form-label">País</label>
-                                                            <select id="pais" name="pais" class="form-select" aria-label="Default select example">
-                                                                <option selected disabled>Selecione o país</option>
-                                                                <?php
-                                                                $resultado = mysqli_query($mysqli, $sql_pais);
-                                                                while ($pais = mysqli_fetch_object($resultado)) :
-                                                                    echo "<option value='$pais->id'> $pais->pais</option>";
-                                                                endwhile;
-                                                                ?>
-                                                            </select>
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <label for="cep" class="form-label">CEP</label>
+                                                                <input name="cep" type="text" class="form-control" id="cep" onblur="buscarEnderecoPorCep()" required>
+                                                            </div>
                                                         </div>
-
                                                         <div class="col-6">
-                                                            <label for="inputEstado" class="form-label">Estado</label>
-                                                            <select id="estado" name="estado" class="form-select" aria-label="Default select example">
-                                                                <option selected disabled>Selecione o país</option>
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="col-6">
-                                                            <label for="inputCidade" class="form-label">Cidade</label>
-                                                            <select id="cidade" name="cidade" class="form-select" aria-label="Default select example">
-                                                                <option selected disabled>Selecione o estado</option>
-                                                            </select>
+                                                            <label for="inputLogradouro" class="form-label">Logradouro</label>
+                                                            <input name="logradouro" type="text" class="form-control" id="logradouro" readonly required>
                                                         </div>
 
                                                         <div class="col-6">
                                                             <label for="inputBairro" class="form-label">Bairro</label>
-                                                            <select id="bairro" name="bairro" class="form-select" aria-label="Default select example">
-                                                                <option selected disabled>Selecione a cidade</option>
-                                                            </select>
+                                                            <input name="bairro" type="text" class="form-control" id="bairro" readonly>
                                                         </div>
 
-                                                        <div class="col-12">
-                                                            <label for="inputLogradouro" class="form-label">Logradouro</label>
-                                                            <select id="logradouro" name="logradouro" class="form-select" aria-label="Default select example">
-                                                                <option selected disabled>Selecione o bairro</option>
-                                                            </select>
+                                                        <div class="col-6">
+                                                            <label for="inputCidade" class="form-label">Cidade</label>
+                                                            <input name="cidade" type="text" class="form-control" id="cidade" readonly>
                                                         </div>
+
+                                                        <div class="col-6">
+                                                            <label for="inputEstado" class="form-label">Estado</label>
+                                                            <input name="estado" type="text" class="form-control" id="estado" readonly>
+                                                        </div>
+
 
                                                         <div class="col-2">
                                                             <label for="numero" class="form-label">Número</label>
@@ -147,16 +133,12 @@ require '../includes/remove_setas_number.php';
                                                             <input name="complemento" type="text" class="form-control" id="complemento">
                                                         </div>
 
-                                                        <div class="col-6">
-                                                            <label for="cep" class="form-label">CEP</label>
-                                                            <select id="cep" name="cep" class="form-select" disabled></select>
 
-                                                        </div>
 
                                                         <hr class="sidebar-divider">
 
                                                         <div class="text-center">
-                                                            <button name="salvar" type="submit" class="btn btn-primary">Salvar</button>
+                                                            <button name="salvar" type="submit" class="btn btn-danger">Salvar</button>
                                                             <button type="reset" class="btn btn-secondary">Limpar</button>
                                                         </div>
                                                     </form><!-- Vertical Form -->
@@ -212,6 +194,6 @@ require '../includes/remove_setas_number.php';
 </main><!-- End #main -->
 
 <?php
-require '../scripts/empresas.php';
+require 'js.php';
 require '../includes/footer.php';
 ?>
