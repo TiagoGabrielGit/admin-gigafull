@@ -47,5 +47,42 @@
                 alert('Erro ao buscar os dados.'); // Exibir mensagem de erro, se ocorrer algum problema
             }
         });
+
+        $.ajax({
+            url: "processa/buscar_vistorias.php",
+            method: "POST",
+            dataType: "HTML",
+            data: {
+                data: dataSelecionada
+            }
+        }).done(function(responseBuscaVistorias) {
+            $("#equipamento-select").html(responseBuscaVistorias);
+        }).fail(function(responseBuscaVistorias) {
+            alert(responseBuscaVistorias)
+        });
+    }
+</script>
+
+<script>
+    function buscarDadosEquipamento() {
+        var idVistoriaEquipamento = $('#equipamento-select').val();
+        // Fazer a solicitação AJAX para buscar os dados no servidor
+        $.ajax({
+            url: 'processa/buscar_vistoria_equipamento.php', // URL do script PHP que buscará os dados no banco de dados
+            type: 'POST',
+            data: {
+                id: idVistoriaEquipamento
+            }, // Enviar a data selecionada como parâmetro
+            success: function(responseVistoriaEquipamentos) {
+                // Preencher os campos no código HTML com base nos dados retornados
+                $('#resultEnergia').val(responseVistoriaEquipamentos.energia);
+                $('#resultLimpeza').val(responseVistoriaEquipamentos.limpeza);
+                $('#resultFonte').val(responseVistoriaEquipamentos.detalhes_fonte);
+                $('#resultObs').val(responseVistoriaEquipamentos.observacao);
+            },
+            error: function() {
+                alert('Erro ao buscar os dados.'); // Exibir mensagem de erro, se ocorrer algum problema
+            }
+        });
     }
 </script>

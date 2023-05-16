@@ -20,15 +20,18 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading5-8">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5-8" aria-expanded="false" aria-controls="collapse5-8">
-                    Versão 5.8 - XX/05/2023
+                    Versão 5.8 - 16/05/2023
                   </button>
                 </h2>
                 <div id="collapse5-8" class="accordion-collapse collapse" aria-labelledby="heading5-8" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
-
+                    # Melhorias nos botões de copiar credenciais;<br>
+                    # Melhorias no menu de vistoria;<br>
+                    
                     <br><strong>Alterações banco de dados</strong><br>
+                    # Criada a tabela "vistoria_equipamentos";<br>
 
                     <br><strong>Previsto para próximas atualizaçõs</strong><br>
                     # Abertura manual de incidentes;<br>

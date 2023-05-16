@@ -3,27 +3,20 @@ require "../../../conexoes/conexao.php";
 require "../../../conexoes/conexao_pdo.php";
 
 // Obtém a data selecionada enviada pela requisição POST
-$idVistoria = $_POST['data'];
+$idVistoriaEquipamento = $_POST['id'];
 
 // Constrói a consulta SQL
-$sql_busca_vistoria = "SELECT
-v.id as idVistoria,
-v.limpeza as limpeza,
-v.organizacao as organizacao,
-v.obs_geral as obsGeral,
-p.nome as responsavel
+$sql_busca_vistoria = 
+"SELECT
+ve.energia as energia,
+ve.limpeza as limpeza,
+ve.detalhes_fonte as detalhes_fonte,
+ve.observacao as observacao
 FROM
-vistoria as v
-LEFT JOIN
-usuarios as u
-ON
-u.id = v.responsavel_id
-LEFT JOIN
-pessoas as p
-ON
-p.id = u.pessoa_id
+vistoria_equipamento as ve
 WHERE
-v.id = $idVistoria";
+ve.id = $idVistoriaEquipamento";
+
 $r_busca_vistoria = mysqli_query($mysqli, $sql_busca_vistoria);
 
 // Verifica se há resultados
@@ -32,10 +25,10 @@ if ($r_busca_vistoria->num_rows > 0) {
     $row = $r_busca_vistoria->fetch_assoc();
     // Cria um array associativo com os dados
     $dados = array(
-        'buscaLimpezaVistoria' => $row['limpeza'],
-        'buscaOrganizacaoVistoria' => $row['organizacao'],
-        'buscaObsGeralVistoria' => $row['obsGeral'],
-        'buscaResponsavelVistoria' => $row['responsavel'],
+        'energia' => $row['energia'],
+        'limpeza' => $row['limpeza'],
+        'detalhes_fonte' => $row['detalhes_fonte'],
+        'observacao' => $row['observacao'],
     );
 
     // Retorna os dados como resposta em formato JSON

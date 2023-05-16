@@ -159,6 +159,7 @@ $sql_lista_equipamentos =
 
 $r_lista_equipamentos = mysqli_query($mysqli, $sql_lista_equipamentos);
 $r_lista_vistoria_equipamentos = mysqli_query($mysqli, $sql_lista_equipamentos);
+$r2_lista_vistoria_equipamentos = mysqli_query($mysqli, $sql_lista_equipamentos);
 
 $sql_usuarios =
     "SELECT
