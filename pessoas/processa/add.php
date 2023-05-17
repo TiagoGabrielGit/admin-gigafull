@@ -1,114 +1,76 @@
 <?php
-require "../../protect.php";
-require "../../conexoes/conexao.php";
-require "../../conexoes/sql.php";
-?>
+require "../../conexoes/conexao_pdo.php";
 
-<!DOCTYPE html>
-<html lang="pt-br">
+// Verifica se a requisição é do tipo POST
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Obtém os dados enviados pelo formulário
+    $nomePessoa = $_POST["nomePessoa"];
+    $cpf = $_POST["cpf"];
+    $email = $_POST["email"];
+    $telefone = $_POST["telefone"];
+    $celular = $_POST["celular"];
+    $atributoCliente = isset($_POST["atributoCliente"]) ? $_POST["atributoCliente"] : 0;
+    $permiteUsuario = isset($_POST["permiteUsuario"]) ? $_POST["permiteUsuario"] : 0;
+    $atributoPrestadorServico = isset($_POST["atributoPrestadorServico"]) ? $_POST["atributoPrestadorServico"] : 0;
+    $cep = $_POST["cep"];
+    $ibgecode = $_POST["ibgecode"];
+    $logradouro = $_POST["logradouro"];
+    $bairro = $_POST["bairro"];
+    $cidade = $_POST["cidade"];
+    $estado = $_POST["estado"];
+    $numero = $_POST["numero"];
+    $complemento = $_POST["complemento"];
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Network Admin</title>
-    <link href="../../alerts/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="../../alerts/js/bootstrap.min.js"></script>
-</head>
+    // Verifica se todos os campos obrigatórios foram preenchidos
+    if (empty($nomePessoa) || empty($cpf) || empty($email) || empty($celular) || empty($cep) || empty($logradouro) || empty($bairro) || empty($cidade) || empty($estado) || empty($numero)) {
+        // Mensagem de erro
+        echo "<p style='color:red;'>Error: Por favor, preencha todos os campos obrigatórios.</p>";
+    } else {
+        // Todos os campos estão preenchidos, continue com a lógica de salvamento no banco de dados
+        $sql_insert_pessoas =
+            "INSERT INTO pessoas (nome, email, telefone, celular, cpf, atributoCliente, atributoPrestadorServico, permiteUsuario, deleted, criado) 
+        VALUES (:nome, :email, :telefone, :celular, :cpf, :atributoCliente, :atributoPrestadorServico, :permiteUsuario, '1', NOW())";
 
-<body>
-    <div class="container theme-showcase" role="main">
+        $stmt1 = $pdo->prepare($sql_insert_pessoas);
 
+        $stmt1->bindParam(':nome', $nomePessoa);
+        $stmt1->bindParam(':cpf', $cpf);
+        $stmt1->bindParam(':email', $email);
+        $stmt1->bindParam(':telefone', $telefone);
+        $stmt1->bindParam(':celular', $celular);
+        $stmt1->bindParam(':atributoCliente', $atributoCliente);
+        $stmt1->bindParam(':atributoPrestadorServico', $atributoPrestadorServico);
+        $stmt1->bindParam(':permiteUsuario', $permiteUsuario);
 
-        <?php
+        // Executa a consulta
+        if ($stmt1->execute()) {
+            $peopleId = $pdo->lastInsertId();
 
-        if (!isset($_POST['atributoCliente'])) {
-            $_POST['atributoCliente'] = 2;
+            $sql_insert_address =
+                "INSERT INTO people_address (people_id, ibge_code, cep, street, neighborhood, city, state, number, complement)
+         VALUES (:people_id, :ibge_code, :cep, :street, :neighborhood, :city, :state, :number, :complement)";
+
+            $stmt2 = $pdo->prepare($sql_insert_address);
+            $stmt2->bindParam(':people_id', $peopleId);
+            $stmt2->bindParam(':cep', $cep);
+            $stmt2->bindParam(':ibge_code', $ibgecode);
+            $stmt2->bindParam(':street', $logradouro);
+            $stmt2->bindParam(':neighborhood', $bairro);
+            $stmt2->bindParam(':city', $cidade);
+            $stmt2->bindParam(':state', $estado);
+            $stmt2->bindParam(':number', $numero);
+            $stmt2->bindParam(':complement', $complemento);
+
+            if ($stmt2->execute()) {
+                echo "<p style='color:green;'>Pessoa salva com sucesso.</p>";
+            }
+        } else {
+            // Ocorreu um erro ao salvar a empresa
+            echo "<p style='color:red;'>Error: . $stmt->error</p>";
         }
-
-        if (!isset($_POST['permiteUsuario'])) {
-            $_POST['permiteUsuario'] = 2;
-        }
-
-        if (!isset($_POST['atributoPrestadorServico'])) {
-            $_POST['atributoPrestadorServico'] = 2;
-        }
-
-        $nome = $_POST['nomePessoa'];
-        $cpf = $_POST['cpf'];
-        $email = $_POST['email'];
-        $telefone = $_POST['telefone'];
-        $celular = $_POST['celular'];
-        $atributoCliente = $_POST['atributoCliente'];
-        $permiteUsuario = $_POST['permiteUsuario'];
-        $atributoPrestadorServico = $_POST['atributoPrestadorServico'];
-        $logradouro = $_POST['logradouro'];
-        $numero = $_POST['numero'];
-        $complemento = $_POST['complemento'];
-
-        //Cadastra pessoa
-        $result_pessoas = "INSERT INTO `pessoas`( `nome`, `email`, `telefone`, `celular`, `cpf`, `atributoCliente`, `atributoPrestadorServico`, `permiteUsuario`, `deleted`, `criado`) VALUES ('$nome','$email','$telefone','$celular','$cpf','$atributoCliente', '$atributoPrestadorServico','$permiteUsuario', '1' , NOW())";
-        $resultado = mysqli_query($mysqli, $result_pessoas);
-
-
-        //Obtem ID do cadastro realizado
-        $id_pessoa = mysqli_insert_id($mysqli);
-
-        //Realiza o cadastro do endereco
-        $result_endereco = "INSERT INTO pessoas_endereco (pessoa_id, logradouro_id, numero, complemento, criado) VALUES ('$id_pessoa','$logradouro','$numero','$complemento', NOW())";
-        $resultado_endereco = mysqli_query($mysqli, $result_endereco);
-
-        if (mysqli_affected_rows($mysqli) > 0) { ?>
-
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Cadastro realizado com Sucesso!</h4>
-                        </div>
-                        <div class="modal-body">
-                            <?php echo "$nome"; ?>
-                        </div>
-                        <div class="modal-footer">
-                            <a href="/pessoas/pessoas.php"><button type="button" class="btn btn-success">Ok</button></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <script>
-                $(document).ready(function() {
-                    $('#myModal').modal('show');
-                });
-            </script>
-
-        <?php } else { ?>
-
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Erro ao realizar cadastro!</h4>
-                        </div>
-                        <div class="modal-body">
-                            <?php echo "$razaoSocial"; ?>
-                        </div>
-                        <div class="modal-footer">
-                            <a href="/empresas.php"><button type="button" class="btn btn-danger">Ok</button></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <script>
-                $(document).ready(function() {
-                    $('#myModal').modal('show');
-                });
-            </script>
-
-        <?php } ?>
-
-    </div>
-</body>
-
-</html>
+    }
+} else {
+    // A requisição não é do tipo POST, redireciona para a página do formulário
+    header("Location: /pessoas/pessoas.php");
+    exit();
+}

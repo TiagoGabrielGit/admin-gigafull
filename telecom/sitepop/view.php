@@ -56,59 +56,38 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
 $sql_pop =
     "SELECT
-pop.id as id,
-pop.pop as pop,
-pop.apelidoPop as apelidoPop,
-city.cidade as cidade,
-emp.fantasia as empresa,
-emp.id as id_empresa,
-pais.id as id_pais,
-pais.pais as nome_pais,
-est.id as id_estado,
-est.estado as nome_estado,
-city.id as id_cidade,
-city.cidade as nome_cidade,
-bairro.id as id_bairro,
-bairro.bairro as nome_bairro,
-logradouro.id as id_logradouro,
-logradouro.logradouro as nome_logradouro,
-pop.numero as numero,
-pop.complemento as complemento,
-logradouro.cep as cep
-FROM
-pop as pop
-LEFT JOIN
-logradouros as logradouro
-ON
-logradouro.id = pop.logradouro_id
-LEFT JOIN
-cidades as city
-ON
-city.id = logradouro.cidade
-LEFT JOIN
-empresas as emp
-ON
-emp.id = pop.empresa_id
-LEFT JOIN
-estado as est
-ON
-est.id = city.estado
-LEFT JOIN
-pais as pais
-ON
-pais.id = est.pais
-LEFT JOIN
-bairros as bairro
-ON
-bairro.cidade = city.id
-WHERE
-pop.active = 1
-and
-pop.id = $idPOP        
-ORDER BY
-emp.fantasia asc,
-city.cidade asc,
-pop.pop asc
+    pop.id as id,
+    pop.pop as pop,
+    pop.apelidoPop as apelidoPop,
+    endereco.city as cidade,
+    emp.fantasia as empresa,
+    emp.id as id_empresa,
+endereco.cep as cep,
+endereco.street as logradouro,
+endereco.neighborhood as bairro,
+endereco.city as cidade,
+endereco.state as estado,
+endereco.number as numero,
+endereco.complement as complemento,
+endereco.ibge_code as ibge_code
+    FROM
+    pop as pop
+    LEFT JOIN
+    pop_address as endereco
+    ON
+    endereco.pop_id = pop.id
+    LEFT JOIN
+    empresas as emp
+    ON
+    emp.id = pop.empresa_id
+    WHERE
+    pop.active = 1
+    and
+    pop.id = $idPOP    
+    ORDER BY
+    emp.fantasia asc,
+    endereco.city asc,
+    pop.pop asc
 ";
 
 $resultado = mysqli_query($mysqli, $sql_pop);

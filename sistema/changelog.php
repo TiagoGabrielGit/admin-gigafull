@@ -16,6 +16,62 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
 
+              <!-- Versão 5.9 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading5-9">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5-9" aria-expanded="false" aria-controls="collapse5-9">
+                    Versão 5.9 - 17/05/2023
+                  </button>
+                </h2>
+                <div id="collapse5-9" class="accordion-collapse collapse" aria-labelledby="heading5-9" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Melhorias no cadastro de empresas;<br>
+                    # Melhorias no cadastro de pessoas;<br>
+                    # Melhorias no cadastro de pops;<br>
+                    # Removido o submenu "localidades" da navbar;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criada a tabela "company_address";<br>
+                    # Criada a tabela "people_address";<br>
+                    # Criada a tabela "pop_address";<br>
+                    # Alterado tamanho do varchar das colunas "telefone" e "celular" na tabela "empresas";
+                    # Alterado tamanho do varchar das colunas "telefone" e "celular" na tabela "pessoas";
+                    # Excluido colunas "logradouro_id, numero e complemento" da tabela "pop";<br>
+                    # Removida a linha de localidade da tabela de menu;<br>
+                    # Removida as linhas de localidade da tabela de submenu;<br>
+
+                    <br><strong>Previsto para próximas atualizaçõs</strong><br>
+                    # Abertura manual de incidentes;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Notificaçãoes de novos incidentes e relatos;<br>
+                    # Busca automatica de info-summary ao identificar incidente;<br>
+                    # Abertura de Chamados por Clientes ISP e Setores;<br>
+                    # Vinculo de chamado a incidente;<br>
+                    # BUG só edita primeiro serviço "/cadastros/produtos/servicos/index.php";<br>
+                    # Cadastro competencias;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Cadastro de PONs;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Componentes de equipamentos;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                    # Segurança individual;<br>
+
+                    <br><strong>Backlog --- Rede Neutra</strong><br>
+                    # BUG retorna código em resultado do provisionamento;<br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas;<br>
+                    # Botão troca ONU;<br>
+                    # Armazenar LOG sinal do cliente após provisionamento;<br>
+                    # Validação sinal antes de adicionar serviços;<br>
+                    # Autofind no provisionamento;<br><br>
+                  </div>
+                </div>
+              </div>
+
+
               <!-- Versão 5.8 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading5-8">
@@ -29,7 +85,7 @@ require "../includes/menu.php";
                     <br><strong>Melhorias</strong><br>
                     # Melhorias nos botões de copiar credenciais;<br>
                     # Melhorias no menu de vistoria;<br>
-                    
+
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criada a tabela "vistoria_equipamentos";<br>
 

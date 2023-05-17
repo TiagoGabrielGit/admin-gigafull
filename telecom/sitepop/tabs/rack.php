@@ -23,7 +23,7 @@
                         <?php while ($c_lista_rack = $r_lista_rack->fetch_array()) { ?>
                             <tr>
                                 <td><?= $c_lista_rack['pop']; ?></td>
-                                <td><a href="view_rack.php?id=<?= $c_lista_rack['rack_id'] ?>"><span style="color: red;"><?= $c_lista_rack['rack']; ?></span></a></td>
+                                <td><a href="rack_view.php?id=<?= $c_lista_rack['rack_id'] ?>"><span style="color: red;"><?= $c_lista_rack['rack']; ?></span></a></td>
                                 <td><?= $c_lista_rack['tamanho']; ?></td>
                                 <td><?= $c_lista_rack['polegada']; ?></td>
                             </tr>

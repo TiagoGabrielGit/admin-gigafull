@@ -133,12 +133,12 @@ $row = mysqli_fetch_assoc($resultado);
                             <hr class="sidebar-divider">
 
                             <div class="col-4" style="text-align: left;">
-                                <a href="?id=<?= $id ?>"><input type="button" class="btn btn-info" value="Visualizar equipamentos"></input></a>
+                                
                             </div>
 
                             <div class="col-4" style="text-align: center;">
-                                <input id="btnSalvarEdit" name="btnSalvarEdit" type="button" value="Salvar" class="btn btn-primary"></input>
-                                <a href="/telecom/sitepop/rack.php?id=<?= $row['rack_popid']; ?>&pop=<?=$row['pop_nome']; ?>"><input type="button" value="Voltar" class="btn btn-secondary"></a>
+                                <input id="btnSalvarEdit" name="btnSalvarEdit" type="button" value="Salvar" class="btn btn-danger"></input>
+                                <a href="/telecom/sitepop/view.php?id=<?= $row['rack_popid']; ?>"><input type="button" value="Voltar" class="btn btn-secondary"></a>
                             </div>
 
                             <div class="col-4" style="text-align: right;">

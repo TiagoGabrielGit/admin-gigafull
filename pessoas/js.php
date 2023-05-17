@@ -5,49 +5,51 @@
 
 <script>
     $("#btnSalvar").click(function() {
-        var dadosCadastrarEmpresa = $("#cadastrarEmpresa").serialize();
+        var dadosCadastrarPessoa = $("#cadastraPessoa").serialize();
 
-        $.post("processa/add.php", dadosCadastrarEmpresa, function(retornaCadastrarEmpresa) {
-            $("#msgCadastrarEmpresa").slideDown('slow').html(retornaCadastrarEmpresa);
+        $.post("processa/add.php", dadosCadastrarPessoa, function(retornaCadastrarPessoa) {
+            $("#msgSalvarPessoa1").slideDown('slow').html(retornaCadastrarPessoa);
+            $("#msgSalvarPessoa2").slideDown('slow').html(retornaCadastrarPessoa);
 
-            if (retornaCadastrarEmpresa.includes("Error")) {
+            if (retornaCadastrarPessoa.includes("Error")) {
                 // Lógica para tratar o erro, se necessário
             } else {
                 // Limpar os campos
-                $('#cadastrarEmpresa')[0].reset();
+                $('#cadastraPessoa')[0].reset();
             }
 
             //Apresentar a mensagem leve
-            retirarMsgCadastrarEmpresa();
+            retirarMsgCadastrarPessoa();
         });
     });
 
     //Retirar a mensagem após 1700 milissegundos
-    function retirarMsgCadastrarEmpresa() {
+    function retirarMsgCadastrarPessoa() {
         setTimeout(function() {
-            $("#msgCadastrarEmpresa").slideUp('slow', function() {});
+            $("#msgSalvarPessoa1").slideUp('slow', function() {});
+            $("#msgSalvarPessoa2").slideUp('slow', function() {});
         }, 1700);
     }
 </script>
 
 <script>
     $("#btnEditar").click(function() {
-        var dadosEditarEmpresa = $("#editarEmpresa").serialize();
+        var dadosEditarPessoa = $("#editarPessoa").serialize();
 
-        $.post("processa/edit.php", dadosEditarEmpresa, function(retornaEditarEmpresa) {
-            $("#msgEditarEmpresa").slideDown('slow').html(retornaEditarEmpresa);
-            $("#msgEditarEmpresa2").slideDown('slow').html(retornaEditarEmpresa);
+        $.post("processa/edit.php", dadosEditarPessoa, function(retornaEditarPessoa) {
+            $("#msgEditarPessoa1").slideDown('slow').html(retornaEditarPessoa);
+            $("#msgEditarPessoa2").slideDown('slow').html(retornaEditarPessoa);
 
             //Apresentar a mensagem leve
-            retirarMsgEditarEmpresa();
+            retirarMsgEditarPessoa();
         });
     });
 
     //Retirar a mensagem após 1700 milissegundos
-    function retirarMsgEditarEmpresa() {
+    function retirarMsgEditarPessoa() {
         setTimeout(function() {
-            $("#msgEditarEmpresa").slideUp('slow', function() {});
-            $("#msgEditarEmpresa2").slideUp('slow', function() {});
+            $("#msgEditarPessoa1").slideUp('slow', function() {});
+            $("#msgEditarPessoa2").slideUp('slow', function() {});
         }, 1700);
     }
 </script>
@@ -63,7 +65,7 @@
 </script>
 
 <script>
-    function buscarEnderecoPorCep() {
+ function buscarEnderecoPorCep() {
         var cep = document.getElementById('cep').value;
 
         // Fazer a chamada à API de CEP
@@ -99,7 +101,6 @@
             mensagemErro.textContent = '';
         }, 2000);
     }
-
 
     function preencherCamposEndereco(data) {
         if (!data.erro) {

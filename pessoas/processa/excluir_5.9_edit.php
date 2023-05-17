@@ -1,8 +1,7 @@
 <?php
-require "../../../protect.php";
-require "../../../conexoes/conexao.php";
+require "../../protect.php";
+require "../../conexoes/conexao.php";
 ?>
-
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -11,7 +10,7 @@ require "../../../conexoes/conexao.php";
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Gigafull Admin</title>
+    <title>Network Admin</title>
     <link href="/alerts/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="/alerts/js/bootstrap.min.js"></script>
@@ -19,34 +18,39 @@ require "../../../conexoes/conexao.php";
 
 <body>
     <div class="container theme-showcase" role="main">
+
         <?php
-
-        //Obtem os dados
-        $cadastroEmpresa = $_POST['cadastroEmpresa'];
-        $cadastroPop = $_POST['cadastroPop'];
-        $cadastroServidor = $_POST['cadastroServidor'];
-        $cadastroHostname = $_POST['cadastroHostname'];
-        $cadastroSO = $_POST['cadastroSO'];
-        $cadastroIPAddress = $_POST['cadastroIPAddress'];
-        $cadastroDomino = $_POST['cadastroDomino'];
-        $cadastroVLAN = $_POST['cadastroVLAN'];
-        $cadastroStatusVM = $_POST['cadastroStatusVM'];
-        $cadastroMemoria = $_POST['cadastroMemoria'];
-        $cadastroVCPU = $_POST['cadastroVCPU'];
-        $cadastroDisco1 = $_POST['cadastroDisco1'];
-        $cadastroDisco2 = $_POST['cadastroDisco2'];
-
-        if (empty($_POST['cadastroVLAN'])) {
-            $cadastroVLAN = $_POST['cadastroVLAN'];
-        } else {
-            $cadastroVLAN = "";
+        if (!isset($_POST['atributoCliente'])) {
+            $_POST['atributoCliente'] = 2;
         }
 
-        //Realiza o cadastro
-        $result = "INSERT INTO vms (empresa_id, pop_id, servidor_id, hostname, ipaddress, dominio, vlan, sistemaOperacional, recursoMemoria, recursoCPU, recursoDisco1, recursoDisco2, statusvm, criado) VALUES ('$cadastroEmpresa', '$cadastroPop', '$cadastroServidor', '$cadastroHostname', '$cadastroIPAddress', '$cadastroDomino', '$cadastroVLAN', '$cadastroSO', '$cadastroMemoria', '$cadastroVCPU', '$cadastroDisco1', '$cadastroDisco2', '$cadastroStatusVM', NOW())";
+        if (!isset($_POST['permiteUsuario'])) {
+            $_POST['permiteUsuario'] = 2;
+        }
+
+        if (!isset($_POST['atributoPrestadorServico'])) {
+            $_POST['atributoPrestadorServico'] = 2;
+        }
+
+        $id = $_POST['id'];
+        $nome = $_POST['nomePessoa'];
+        $cpf = $_POST['cpf'];
+        $email = $_POST['email'];
+        $telefone = $_POST['telefone'];
+        $celular = $_POST['celular'];
+        $atributoCliente = $_POST['atributoCliente'];
+        $permiteUsuario = $_POST['permiteUsuario'];
+        $atributoPrestadorServico = $_POST['atributoPrestadorServico'];
+        $logradouro = $_POST['logradouro'];
+        $numero = $_POST['numero'];
+        $complemento = $_POST['complemento'];
+
+        $result = "UPDATE pessoas SET nome='$nome', cpf='$cpf', email='$email', telefone='$telefone', celular='$celular', atributoCliente='$atributoCliente', permiteUsuario='$permiteUsuario', atributoPrestadorServico='$atributoPrestadorServico', modificado=NOW() WHERE id='$id'";
         $resultado = mysqli_query($mysqli, $result);
 
-        $id_vm = mysqli_insert_id($mysqli);
+
+        $result_endereco = "UPDATE pessoas_endereco SET logradouro_id='$logradouro', numero='$numero', complemento='$complemento', modificado=NOW() WHERE pessoa_id='$id'";
+        $resultado_endereco = mysqli_query($mysqli, $result_endereco);
 
         if (mysqli_affected_rows($mysqli) > 0) { ?>
             <!-- Modal -->
@@ -54,12 +58,13 @@ require "../../../conexoes/conexao.php";
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Cadastro realizado com Sucesso!</h4>
+                            <h4 class="modal-title" id="myModalLabel">Editado com Sucesso!</h4>
                         </div>
                         <div class="modal-body">
+                            <?php echo $nome; ?>
                         </div>
                         <div class="modal-footer">
-                        <a href="/telecom/vms/view.php?id=<?= $id_vm?>"><button type="button" class="btn btn-success">Ok</button></a>
+                            <a href="/pessoas/pessoas.php"><button type="button" class="btn btn-success">Ok</button></a>
                         </div>
                     </div>
                 </div>
@@ -76,12 +81,13 @@ require "../../../conexoes/conexao.php";
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Erro ao realizar cadastro!</h4>
+                            <h4 class="modal-title" id="myModalLabel">Erro ao editar!</h4>
                         </div>
                         <div class="modal-body">
+                            <?php echo $nome; ?>
                         </div>
                         <div class="modal-footer">
-                            <a href="/telecom/vms/index.php"><button type="button" class="btn btn-danger">Ok</button></a>
+                            <a href="/pessoas/pessoas.php"><button type="button" class="btn btn-danger">Ok</button></a>
                         </div>
                     </div>
                 </div>
@@ -92,6 +98,7 @@ require "../../../conexoes/conexao.php";
                 });
             </script>
         <?php } ?>
+
 
     </div>
 </body>

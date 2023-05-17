@@ -1,117 +1,85 @@
 <?php
-require "../../conexoes/conexao.php";
-?>
+require "../../conexoes/conexao_pdo.php";
+
+// Verifica se a requisição é do tipo POST
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Obtém os dados enviados pelo formulário
+    $companyId = $_POST["id"];
+    $razaoSocial = $_POST["razaoSocial"];
+    $fantasia = $_POST["fantasia"];
+    $cnpj = $_POST["cnpj"];
+    $email = $_POST["email"];
+    $telefone = $_POST["telefone"];
+    $celular = $_POST["celular"];
+    $atributoCliente = isset($_POST["atributoCliente"]) ? $_POST["atributoCliente"] : 0;
+    $atributoEmpresaPropria = isset($_POST["atributoEmpresaPropria"]) ? $_POST["atributoEmpresaPropria"] : 0;
+    $atributoFornecedor = isset($_POST["atributoFornecedor"]) ? $_POST["atributoFornecedor"] : 0;
+    $atributoPrestadorServico = isset($_POST["atributoPrestadorServico"]) ? $_POST["atributoPrestadorServico"] : 0;
+    $atributoTransportadora = isset($_POST["atributoTransportadora"]) ? $_POST["atributoTransportadora"] : 0;
+    $cep = $_POST["cep"];
+    $ibgecode = $_POST["ibgecode"];
+    $logradouro = $_POST["logradouro"];
+    $bairro = $_POST["bairro"];
+    $cidade = $_POST["cidade"];
+    $estado = $_POST["estado"];
+    $numero = $_POST["numero"];
+    $complemento = $_POST["complemento"];
+
+    // Verifica se todos os campos obrigatórios foram preenchidos
+    if (empty($razaoSocial) || empty($fantasia) || empty($cnpj) || empty($email) || empty($celular) || empty($cep) || empty($logradouro) || empty($bairro) || empty($cidade) || empty($estado) || empty($numero)) {
+        // Mensagem de erro
+        echo "<p style='color:red;'>Error: Por favor, preencha todos os campos obrigatórios.</p>";
+    } else {
+        // Todos os campos estão preenchidos, continue com a lógica de salvamento no banco de dados
+
+        $data = [
+            'razaoSocial' => $razaoSocial,
+            'fantasia' => $fantasia,
+            'cnpj' => $cnpj,
+            'email' => $email,
+            'telefone' => $telefone,
+            'celular' => $celular,
+            'atributoCliente' => $atributoCliente,
+            'atributoEmpresaPropria' => $atributoEmpresaPropria,
+            'atributoFornecedor' => $atributoFornecedor,
+            'atributoPrestadorServico' => $atributoPrestadorServico,
+            'atributoTransportadora' => $atributoTransportadora,
+            'company_id' => $companyId,
+        ];
+
+        $sql_update_empresa = "UPDATE empresas SET razaoSocial=:razaoSocial, fantasia=:fantasia, cnpj=:cnpj, email=:email, telefone=:telefone, celular=:celular,
+        atributoCliente=:atributoCliente, atributoEmpresaPropria=:atributoEmpresaPropria, atributoFornecedor=:atributoFornecedor, atributoPrestadorServico=:atributoPrestadorServico,
+         atributoTransportadora=:atributoTransportadora, modificado=NOW() WHERE id=:company_id";
+
+        $stmt1 = $pdo->prepare($sql_update_empresa);
 
 
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Gigafull Admin</title>
-    <link href="../..//alerts/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="../..//alerts/js/bootstrap.min.js"></script>
-</head>
-
-<body>
-    <div class="container theme-showcase" role="main">
-
-        <?php
-        if (!isset($_POST['atributoCliente'])) {
-            $_POST['atributoCliente'] = 2;
+        // Executa a consulta
+        if ($stmt1->execute($data)) {
+            $data2 = [
+                'company_id' => $companyId,
+                'ibgecode' => $ibgecode,
+                'cep' => $cep,
+                'logradouro' => $logradouro,
+                'bairro' => $bairro,
+                'cidade' => $cidade,
+                'estado' => $estado,
+                'numero' => $numero,
+                'complemento' => $complemento,
+            ];
+            $sql_update_address = "UPDATE company_address SET ibge_code=:ibgecode, cep=:cep, street=:logradouro, neighborhood=:bairro, 
+            city=:cidade, state=:estado, number=:numero, complement=:complemento WHERE company_id=:company_id";
+            $stmt2 = $pdo->prepare($sql_update_address);
+            if ($stmt2->execute($data2)) 
+            echo "<p style='color:green;'>Editado com sucesso!</p>";{
+            }
+        } else {
+            // Ocorreu um erro ao salvar a empresa
+            echo "<p style='color:red;'>Error: . $stmt->error</p>";
         }
-
-        if (!isset($_POST['atributoFornecedor'])) {
-            $_POST['atributoFornecedor'] = 2;
-        }
-
-        if (!isset($_POST['atributoPrestadorServico'])) {
-            $_POST['atributoPrestadorServico'] = 2;
-        }
-
-        if (!isset($_POST['atributoTransportadora'])) {
-            $_POST['atributoTransportadora'] = 2;
-        }
-
-        if (!isset($_POST['atributoEmpresaPropria'])) {
-            $_POST['atributoEmpresaPropria'] = 2;
-        }
-
-        $id = $_POST['id'];
-        $razaoSocial = $_POST['razaoSocial'];
-        $telefone = $_POST['telefone'];
-        $celular = $_POST['celular'];
-        $fantasia = $_POST['fantasia'];
-        $cnpj = $_POST['cnpj'];
-        $email = $_POST['email'];
-        $atributoCliente = $_POST['atributoCliente'];
-        $atributoEmpresaPropria = $_POST['atributoEmpresaPropria'];
-        $atributoFornecedor = $_POST['atributoFornecedor'];
-        $atributoPrestadorServico = $_POST['atributoPrestadorServico'];
-        $atributoTransportadora = $_POST['atributoTransportadora'];
-        $logradouro = $_POST['logradouro'];
-        $numero = $_POST['numero'];
-        $complemento = $_POST['complemento'];
-
-        $result = "UPDATE empresas SET celular='$celular', atributoEmpresaPropria='$atributoEmpresaPropria', atributoTransportadora='$atributoTransportadora', atributoPrestadorServico='$atributoPrestadorServico', atributoCliente='$atributoCliente', atributoFornecedor='$atributoFornecedor', razaoSocial='$razaoSocial', fantasia='$fantasia', cnpj='$cnpj', email='$email', telefone='$telefone', modificado=NOW() WHERE id='$id'";
-        $resultado = mysqli_query($mysqli, $result);
-
-
-        $result_endereco = "UPDATE empresas_endereco SET logradouro_id='$logradouro', numero='$numero', complemento='$complemento', modificado=NOW() WHERE empresa_id='$id'";
-        $resultado_endereco = mysqli_query($mysqli, $result_endereco);
-
-        if (mysqli_affected_rows($mysqli) > 0) { ?>
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Editado com Sucesso!</h4>
-                        </div>
-                        <div class="modal-body">
-                            <?php echo $razaoSocial; ?>
-                        </div>
-                        <div class="modal-footer">
-                            <a href="/empresas/empresas.php"><button type="button" class="btn btn-success">Ok</button></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <script>
-                $(document).ready(function() {
-                    $('#myModal').modal('show');
-                });
-            </script>
-
-        <?php } else { ?>
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Erro ao editar!</h4>
-                        </div>
-                        <div class="modal-body">
-                            <?php echo $razaoSocial; ?>
-                        </div>
-                        <div class="modal-footer">
-                            <a href="/empresas/empresas.php"><button type="button" class="btn btn-danger">Ok</button></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <script>
-                $(document).ready(function() {
-                    $('#myModal').modal('show');
-                });
-            </script>
-        <?php } ?>
-
-
-    </div>
-</body>
-
-</html>
+    }
+} else {
+    // A requisição não é do tipo POST, redireciona para a página do formulário
+    header("Location: /empresas/empresas.php");
+    exit();
+}

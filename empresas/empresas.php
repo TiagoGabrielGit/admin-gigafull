@@ -31,7 +31,7 @@ require '../includes/remove_setas_number.php';
                                 </div>
 
                                 <div class="modal fade" id="basicModal" tabindex="-1">
-                                    <div class="modal-dialog modal-lg">
+                                    <div class="modal-dialog modal-xl">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title">Nova empresa</h5>
@@ -41,38 +41,37 @@ require '../includes/remove_setas_number.php';
                                             <div class="modal-body">
                                                 <div class="card-body">
                                                     <!-- Vertical Form -->
-                                                    <form method="POST" action="/empresas/processa/add.php" class="row g-3">
-
-                                                        <li class="nav-heading" style="list-style: none;">Dados</li>
-
-                                                        <div class="col-12">
+                                                    <form method="POST" id="cadastrarEmpresa" class="row g-3">
+                                                    <span id="msgCadastrarEmpresa"></span>
+                                                        <div class="col-6">
                                                             <label for="razaoSocial" class="form-label">Razão Social</label>
                                                             <input name="razaoSocial" type="text" class="form-control" id="razaoSocial" required>
                                                         </div>
 
-                                                        <div class="col-12">
+                                                        <div class="col-6">
                                                             <label for="fantasia" class="form-label">Fantasia</label>
                                                             <input name="fantasia" type="text" class="form-control" id="fantasia" required>
                                                         </div>
 
                                                         <div class="col-6">
                                                             <label for="cnpj" class="form-label">CNPJ</label>
-                                                            <input name="cnpj" type="text" class="form-control" id="cnpj" minlength="13" maxlength="14" required>
+                                                            <input name="cnpj" type="text" class="form-control" id="cnpj" required>
                                                         </div>
 
                                                         <div class="col-6">
                                                             <label for="email" class="form-label">E-mail</label>
                                                             <input name="email" type="text" class="form-control" id="email" required>
+
                                                         </div>
 
                                                         <div class="col-6">
                                                             <label for="telefone" class="form-label">Tefone</label>
-                                                            <input name="telefone" type="text" class="form-control" id="telefone" minlength="13" maxlength="13">
+                                                            <input name="telefone" type="text" class="form-control" id="telefone">
                                                         </div>
 
                                                         <div class="col-6">
                                                             <label for="celular" class="form-label">Celular</label>
-                                                            <input name="celular" type="text" class="form-control" id="celular" minlength="14" maxlength="14" required>
+                                                            <input name="celular" type="text" class="form-control" id="celular" required>
                                                         </div>
 
                                                         <hr class="sidebar-divider">
@@ -97,27 +96,33 @@ require '../includes/remove_setas_number.php';
                                                         <li class="nav-heading" style="list-style: none;">Localização</li>
 
                                                         <div class="row">
-                                                            <div class="col-6">
+                                                            <div class="col-4">
                                                                 <label for="cep" class="form-label">CEP</label>
                                                                 <input name="cep" type="text" class="form-control" id="cep" onblur="buscarEnderecoPorCep()" required>
                                                             </div>
+
+                                                            <div class="col-4">
+                                                                <label for="ibgecode" class="form-label">Código IBGE</label>
+                                                                <input name="ibgecode" type="text" class="form-control" id="ibgecode" readonly>
+                                                            </div>
                                                         </div>
-                                                        <div class="col-6">
+                                                        <p style='color:red;' id="mensagem-erro"></p>
+                                                        <div class="col-4">
                                                             <label for="inputLogradouro" class="form-label">Logradouro</label>
                                                             <input name="logradouro" type="text" class="form-control" id="logradouro" readonly required>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-4">
                                                             <label for="inputBairro" class="form-label">Bairro</label>
                                                             <input name="bairro" type="text" class="form-control" id="bairro" readonly>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-4">
                                                             <label for="inputCidade" class="form-label">Cidade</label>
                                                             <input name="cidade" type="text" class="form-control" id="cidade" readonly>
                                                         </div>
 
-                                                        <div class="col-6">
+                                                        <div class="col-4">
                                                             <label for="inputEstado" class="form-label">Estado</label>
                                                             <input name="estado" type="text" class="form-control" id="estado" readonly>
                                                         </div>
@@ -133,12 +138,11 @@ require '../includes/remove_setas_number.php';
                                                             <input name="complemento" type="text" class="form-control" id="complemento">
                                                         </div>
 
-
-
                                                         <hr class="sidebar-divider">
 
                                                         <div class="text-center">
-                                                            <button name="salvar" type="submit" class="btn btn-danger">Salvar</button>
+                                                            
+                                                            <input id="btnSalvar" name="btnSalvar" type="button" value="Salvar" class="btn btn-danger"></input>
                                                             <button type="reset" class="btn btn-secondary">Limpar</button>
                                                         </div>
                                                     </form><!-- Vertical Form -->

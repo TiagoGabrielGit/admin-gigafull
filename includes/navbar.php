@@ -52,56 +52,6 @@ require "validaRotina.php";
             <li class="nav-heading">Cadastros</li>
         <?php } ?>
 
-        <?php if ($c_nav_localidades['c'] == 1) { ?>
-            <li class="nav-item">
-                <a class="nav-link collapsed" data-bs-target="#Localidade-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-layout-text-window-reverse"></i><span>Localidades</span><i class="bi bi-chevron-down ms-auto"></i>
-                </a>
-                <ul id="Localidade-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                    <?php if ($c_nav_sub_bairros['c'] == 1) { ?>
-                        <li>
-                            <a href="/cadastros/localidades/bairros.php">
-                                <i class="bi bi-circle"></i><span>Bairros</span>
-                            </a>
-                        </li>
-                    <?php } ?>
-
-                    <?php if ($c_nav_sub_cidades['c'] == 1) { ?>
-                        <li>
-                            <a href="/cadastros/localidades/cidades.php">
-                                <i class="bi bi-circle"></i><span>Cidades</span>
-                            </a>
-                        </li>
-                    <?php } ?>
-
-                    <?php if ($c_nav_sub_estados['c'] == 1) { ?>
-                        <li>
-                            <a href="/cadastros/localidades/estado.php">
-                                <i class="bi bi-circle"></i><span>Estados</span>
-                            </a>
-                        </li>
-                    <?php } ?>
-
-                    <?php if ($c_nav_sub_logradouros['c'] == 1) { ?>
-                        <li>
-                            <a href="/cadastros/localidades/logradouros.php">
-                                <i class="bi bi-circle"></i><span>Logradouros</span>
-                            </a>
-                        </li>
-                    <?php } ?>
-
-                    <?php if ($c_nav_sub_pais['c'] == 1) { ?>
-                        <li>
-                            <a href="/cadastros/localidades/pais.php">
-                                <i class="bi bi-circle"></i><span>País</span>
-                            </a>
-                        </li>
-                    <?php } ?>
-
-                </ul>
-            </li>
-        <?php } ?>
-
         <?php if ($c_nav_produtosServicos['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#Produtos-nav" data-bs-toggle="collapse" href="#">

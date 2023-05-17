@@ -2,7 +2,9 @@
     <h5 class="card-title">Dados do POP</h5>
 
     <!-- Multi Columns Form -->
-    <form class="row g-3">
+
+    <form method="POST" id="editarPOP" class="row g-3">
+        <span id="msgEditarPOP1"></span>
         <input name="id" type="text" class="form-control" id="id" value="<?= $idPOP  ?>" hidden>
         <div class="col-md-4">
             <label for="empresa" class="form-label">Empresa</label>
@@ -22,62 +24,65 @@
         </div>
 
         <div class="col-md-5">
-            <label for="apelidoPop" class="form-label">Descrição</label>
-            <input type="text" class="form-control" id="apelidoPop" name="apelidoPop" value="<?= $row['apelidoPop']; ?>">
+            <label for="descricaoPOP" class="form-label">Descrição</label>
+            <input type="text" class="form-control" id="descricaoPOP" name="descricaoPOP" value="<?= $row['apelidoPop']; ?>">
         </div>
 
         <hr class="sidebar-divider">
         <li class="nav-heading" style="list-style: none;">Localização</li>
 
-        <div class="col-md-4">
-            <label for="cidade" class="form-label">Cidade</label>
-            <select id="cidade" name="cidade" class="form-select" value="<?= $row['nome_bairro']; ?>">
-                <option value="<?= $row['id_cidade']; ?>"><?= $row['nome_cidade']; ?></option>
-                <?php
-                $resultado = mysqli_query($mysqli, $sql_cidade);
-                while ($c = $resultado->fetch_assoc()) : ?>
-                    <option value="<?= $c['id']; ?>"><?= $c['cidade']; ?></option>
-                <?php endwhile; ?>
+        <div class="row">
+            <div class="col-4">
+                <label for="cep" class="form-label">CEP</label>
+                <input value="<?= $row['cep'] ?>" name="cep" type="text" class="form-control" id="cep" onblur="buscarEnderecoPorCep()" required>
+            </div>
 
-            </select>
+
+            <div class="col-4">
+                <label for="ibgecode" class="form-label">Código IBGE</label>
+                <input value="<?= $row['ibge_code'] ?>" name="ibgecode" type="text" class="form-control" id="ibgecode" readonly>
+            </div>
+        </div>
+        <p style='color:red;' id="mensagem-erro"></p>
+        <div class="col-4">
+            <label for="inputLogradouro" class="form-label">Logradouro</label>
+            <input value="<?= $row['logradouro'] ?>" name="logradouro" type="text" class="form-control" id="logradouro" readonly required>
         </div>
 
-        <div class="col-md-4">
-            <label for="bairro" class="form-label">Bairro</label>
-            <select id="bairro" name="bairro" class="form-select">
-                <option value="<?= $row['id_bairro']; ?>"><?= $row['nome_bairro']; ?></option>
-            </select>
+        <div class="col-4">
+            <label for="inputBairro" class="form-label">Bairro</label>
+            <input value="<?= $row['bairro'] ?>" name="bairro" type="text" class="form-control" id="bairro" readonly>
         </div>
 
-        <div class="col-md-4">
-            <label for="cep" class="form-label">CEP</label>
-            <select id="cep" name="cep" class="form-select">
-                <option value="<?= $row['cep']; ?>"><?= $row['cep']; ?></option>
-            </select>
+        <div class="col-4">
+            <label for="inputCidade" class="form-label">Cidade</label>
+            <input value="<?= $row['cidade'] ?>" name="cidade" type="text" class="form-control" id="cidade" readonly>
         </div>
 
-        <div class="col-md-4">
-            <label for="logradouro" class="form-label">Logradouro</label>
-            <select id="logradouro" name="logradouro" class="form-select" aria-label="Default select example">
-                <option value="<?= $row['id_logradouro']; ?>"><?= $row['nome_logradouro']; ?></option>
-            </select>
+        <div class="col-4">
+            <label for="inputEstado" class="form-label">Estado</label>
+            <input value="<?= $row['estado'] ?>" name="estado" type="text" class="form-control" id="estado" readonly>
         </div>
 
-        <div class="col-md-2">
+
+        <div class="col-2">
             <label for="numero" class="form-label">Número</label>
-            <input name="numero" type="number" class="form-control" id="numero" value="<?= $row['numero']; ?>" required>
+            <input value="<?= $row['numero'] ?>" name="numero" type="number" class="form-control" id="numero" required>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-4">
             <label for="complemento" class="form-label">Complemento</label>
-            <input name="complemento" type="text" class="form-control" id="complemento" value="<?= $row['complemento']; ?>">
+            <input value="<?= $row['complemento'] ?>" name="complemento" type="text" class="form-control" id="complemento">
         </div>
+
 
         <hr class="sidebar-divider">
 
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <button name="salvar" type="submit" class="btn btn-danger btn-sm">Atualizar</button>
+
+            <span id="msgEditarPOP2"></span>
+            <input id="btnEditarPOP" name="btnEditarPOP" type="button" value="Salvar" class="btn btn-danger"></input>
             <input type="button" value="Voltar" onClick="history.go(-1)" class="btn btn-secondary btn-sm">
 
         </div>
