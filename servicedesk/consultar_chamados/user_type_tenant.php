@@ -24,25 +24,30 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 }
 
 $id_usuario = $_SESSION['id'];
-$sql_captura_id_pessoa =
-    "SELECT
-    u.pessoa_id as pessoaID,
-    u.tipo_usuario as tipoUsuario,
-    u.parceiroRN_id as parceiroRN_id,
-    rnp.empresa_id as idEmpresa
-    FROM
-    usuarios as u
-    LEFT JOIN
-    redeneutra_parceiro as rnp
-    ON
-    rnp.id = u.parceiroRN_id
-    WHERE
-    u.id = '$id_usuario'
-";
 
-$result_cap_pessoa = mysqli_query($mysqli, $sql_captura_id_pessoa);
-$pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
-$idEmpresa = $pessoaID['idEmpresa'];
+$sql_captura_dados_usuario =
+    "SELECT
+u.id as idUsuario,
+u.pessoa_id as idPessoa,
+u.empresa_id as idEmpresa,
+rnp.id as idParceiro
+FROM
+usuarios as u
+LEFT JOIN
+redeneutra_parceiro as rnp
+ON
+rnp.empresa_id = u.empresa_id
+WHERE
+u.active = 1
+and
+u.id = $id_usuario";
+
+$r_dados_usuario = mysqli_query($mysqli, $sql_captura_dados_usuario);
+$c_dados_usuario = mysqli_fetch_assoc($r_dados_usuario);
+$idUsuario = $c_dados_usuario['idUsuario'];
+$idPessoa = $c_dados_usuario['idPessoa'];
+$idEmpresa = $c_dados_usuario['idEmpresa'];
+$idParceiro = $c_dados_usuario['idParceiro'];
 ?>
 
 <style>
@@ -595,6 +600,6 @@ $idEmpresa = $pessoaID['idEmpresa'];
 </main><!-- End #main -->
 
 <?php
-require "scripts/abrir_chamado_rn.php";
+require "scripts/abrir_chamado_tenant.php";
 require "../../includes/footer.php";
 ?>

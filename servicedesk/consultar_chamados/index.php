@@ -18,6 +18,6 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
 if ($pessoaID['tipoUsuario'] == 1) {
     require "user_type_admin.php";
 } else if($pessoaID['tipoUsuario'] == 3) {
-    require "user_type_rn.php";
+    require "user_type_tenant.php";
 }
 ?>

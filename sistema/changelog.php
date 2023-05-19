@@ -34,6 +34,7 @@ require "../includes/menu.php";
 
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado coluna "empresa_id" na tabela "usuarios";<br>
+                    # Excluido coluna "parceiroRN_id" na tabela "usuarios";<br>
 
                     <br><strong>Previsto para próximas atualizaçõs</strong><br>
                     # Integração para abrir chamado no Voalle;<br>

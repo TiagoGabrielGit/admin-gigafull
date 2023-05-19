@@ -3,13 +3,17 @@
 $usuarioID = $_SESSION['id'];
 
 //PARCEIRO ID
-$sql_parceiro = 
-"SELECT
-parceiroRN_id as parceiro
+$sql_parceiro =
+    "SELECT
+rnp.id as parceiro
 FROM
-usuarios
+usuarios as u
+LEFT JOIN
+redeneutra_parceiro as rnp
+ON
+u.empresa_id = rnp.empresa_id
 WHERE
-id = $usuarioID
+u.id =   $usuarioID
 ";
 $r_parceiro = mysqli_query($mysqli, $sql_parceiro);
 $c_parceiro = $r_parceiro->fetch_array();
@@ -17,8 +21,8 @@ $c_parceiro = $r_parceiro->fetch_array();
 $parceiroID = $c_parceiro['parceiro'];
 
 //TOTAL ONUs PROVISIONADAS
-$sql_total_onu = 
-"SELECT
+$sql_total_onu =
+    "SELECT
 count(*) as total
 FROM
 redeneutra_onu_provisionadas
@@ -31,8 +35,8 @@ $r_total_onu = mysqli_query($mysqli, $sql_total_onu);
 $c_total_onu = $r_total_onu->fetch_array();
 
 //ONUs PROVISIONADAS HOJE
-$sql_hoje_onu = 
-"SELECT
+$sql_hoje_onu =
+    "SELECT
 count(*) as hoje
 FROM
 redeneutra_onu_provisionadas

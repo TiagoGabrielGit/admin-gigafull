@@ -68,12 +68,12 @@ if ($chamado['in_execution'] == 1) {
                                                     <?php
                                                     if ($id_usuario != $chamado['id_atendente'] && $chamado['status'] != "Fechado") { ?>
                                                         <a href="processa/apropriar.php?id=<?= $id_chamado  ?>&pessoa=<?= $id_usuario ?> "><button style="margin-top: 15px" class="btn btn-danger row col-12">Apropriar</button></a>
-                                                    <?php } else if ($id_usuario == $chamado['id_atendente'] && $chamado['in_execution'] == '1' && $chamado['in_execution_atd_id'] == $pessoaID['pessoaID']) { ?>
+                                                    <?php } else if ($id_usuario == $chamado['id_atendente'] && $chamado['in_execution'] == '1' && $chamado['in_execution_atd_id'] == $idPessoa) { ?>
                                                         <button style="margin-top: 15px" type="button" class="btn btn-danger row col-12" data-bs-toggle="modal" data-bs-target="#basicModal">
                                                             Inserir um relato
                                                         </button>
                                                     <?php } else if ($c_usuario_ocupado['qtde'] == '0' && $id_usuario == $chamado['id_atendente'] && $chamado['in_execution'] == '0' && $chamado['status'] != "Fechado") { ?>
-                                                        <a href="processa/executar.php?id=<?= $id_chamado ?>&pessoa=<?= $pessoaID['pessoaID'] ?> "><button style="margin-top: 15px" class="btn btn-success row col-12">Executar</button></a>
+                                                        <a href="processa/executar.php?id=<?= $id_chamado ?>&pessoa=<?= $idPessoa ?> "><button style="margin-top: 15px" class="btn btn-success row col-12">Executar</button></a>
                                                     <?php } ?>
 
                                                 </div>

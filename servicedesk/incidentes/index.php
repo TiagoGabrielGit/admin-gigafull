@@ -4,11 +4,15 @@ require "../../includes/menu.php";
 $usuarioID = $_SESSION['id'];
 $sql_parceiro =
     "SELECT
-parceiroRN_id as parceiro
-FROM
-usuarios as u
-WHERE
-u.id = $usuarioID
+    rnp.id as parceiro
+    FROM
+    usuarios as u
+    LEFT JOIN
+    redeneutra_parceiro as rnp
+    ON
+    u.empresa_id = rnp.empresa_id
+    WHERE
+    u.id =   $usuarioID
 ";
 
 $r_sql_parceiro = mysqli_query($mysqli, $sql_parceiro);

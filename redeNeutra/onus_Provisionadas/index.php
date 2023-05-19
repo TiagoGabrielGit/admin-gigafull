@@ -31,11 +31,15 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                         $sql_parceiroID =
                             "SELECT
-                                    u.parceiroRN_id as parceiro
-                                FROM
-                                    usuarios as u
-                                WHERE
-                                    u.id = $usuarioID
+                            rnp.id as parceiro
+                            FROM
+                            usuarios as u
+                            LEFT JOIN
+                            redeneutra_parceiro as rnp
+                            ON
+                            u.empresa_id = rnp.empresa_id
+                            WHERE
+                            u.id =  $usuarioID
                                 ";
 
                         $r_sql_parceiroID = mysqli_query($mysqli, $sql_parceiroID);

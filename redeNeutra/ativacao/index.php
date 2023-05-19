@@ -27,13 +27,17 @@ require "../../includes/remove_setas_number.php";
                                                     <?php
                                                     $usuarioID = $_SESSION['id'];
 
-                                                    $sql_parceiroID =
+                                                    $sql_parceiroID = 
                                                         "SELECT
-                                                            u.parceiroRN_id as parceiro
+                                                        rnp.id as parceiro
                                                         FROM
-                                                            usuarios as u
+                                                        usuarios as u
+                                                        LEFT JOIN
+                                                        redeneutra_parceiro as rnp
+                                                        ON
+                                                        u.empresa_id = rnp.empresa_id
                                                         WHERE
-                                                            u.id = $usuarioID";
+                                                        u.id =   $usuarioID";
 
                                                     $r_sql_parceiroID = mysqli_query($mysqli, $sql_parceiroID);
                                                     $camposParceiro = $r_sql_parceiroID->fetch_array();

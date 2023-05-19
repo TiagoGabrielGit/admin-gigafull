@@ -24,9 +24,9 @@ require "../../../conexoes/conexao.php";
         $perfil = $_POST['perfil'];
         $active = $_POST['situacao'];
         $tipoUser = $_POST['tipoAcesso'];
-        $parceiro = $_POST['empresaSelect'];
+        $empresaID = $_POST['empresaSelect'];
 
-        $resultEditUser = "UPDATE usuarios SET empresa_id='$parceiro', parceiroRN_id=NULLIF('$parceiro', ''), tipo_usuario='$tipoUser', perfil_id='$perfil', active='$active', modificado=NOW() WHERE id='$id'"
+        $resultEditUser = "UPDATE usuarios SET empresa_id='$empresaID', tipo_usuario='$tipoUser', perfil_id='$perfil', active='$active', modificado=NOW() WHERE id='$id'"
 
         ?>
 

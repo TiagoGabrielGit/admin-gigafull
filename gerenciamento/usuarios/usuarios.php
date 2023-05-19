@@ -151,9 +151,9 @@ require "sql.php";
                                         user.id as id,
                                         pess.nome as nome,
                                         CASE
-                                            WHEN user.tipo_usuario = 1 THEN 'Gigafull Admin'
-                                            WHEN user.tipo_usuario = 2 THEN 'Gigafull Portal'
-                                            WHEN user.tipo_usuario = 3 THEN 'Gigafull RN'
+                                            WHEN user.tipo_usuario = 1 THEN 'Smart'
+                                            WHEN user.tipo_usuario = 2 THEN 'Cliente'
+                                            WHEN user.tipo_usuario = 3 THEN 'Tenant'
                                         END as tipo,
                                         pess.email as email,
                                         user.senha as senha,
