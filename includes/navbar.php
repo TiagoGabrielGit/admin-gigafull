@@ -232,14 +232,6 @@ require "validaRotina.php";
                         </li>
                     <?php } ?>
 
-                    <?php if ($c_nav_sub_incidentes['c'] == 1) { ?>
-                        <li>
-                            <a href="/redeNeutra/incidentes/index.php">
-                                <i class="bi bi-circle"></i><span>Incidentes</span>
-                            </a>
-                        </li>
-                    <?php } ?>
-
                     <?php if ($c_nav_sub_olts['c'] == 1) { ?>
                         <li>
                             <a href="/redeNeutra/olts/index.php">

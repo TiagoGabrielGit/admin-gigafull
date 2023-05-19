@@ -25,13 +25,13 @@ require "../../../conexoes/conexao.php";
         $perfil = $_POST['perfil'];
         $senha = md5($_POST['senha']);
         if ($tipo_usuario == 3) {
-            $parceiroRN = $_POST['parceiroSelect'];
+            $parceiroRN = $_POST['empresaSelect'];
         } else {
             $parceiroRN = "";
         }
 
-        $result_usuario = "INSERT INTO usuarios (pessoa_id, tipo_usuario, parceiroRN_id, senha, perfil_id, active, criado)
-         VALUES ('$nome', '$tipo_usuario', NULLIF('$parceiroRN', ''), '$senha', '$perfil', '1', NOW())";
+        $result_usuario = "INSERT INTO usuarios (pessoa_id, tipo_usuario, empresa_id, parceiroRN_id, senha, perfil_id, active, criado)
+         VALUES ('$nome', '$tipo_usuario', '$parceiroRN', NULLIF('$parceiroRN', ''), '$senha', '$perfil', '1', NOW())";
         $resultado_usuario = mysqli_query($mysqli, $result_usuario);
 
         if (mysqli_affected_rows($mysqli) > 0) { ?>

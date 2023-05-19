@@ -28,18 +28,14 @@ WHERE
 p.active = 1
 ";
 
-$sql_parceiros =
+$sql_empresas =
 "SELECT
-    rnp.id as parceiroID,
-    e.fantasia as parceiro
+    e.id as empresaID,
+    e.fantasia as fantasia
 FROM
-    redeneutra_parceiro as rnp
-LEFT JOIN
-    empresas as e
-ON
-    e.id = rnp.empresa_id         
+    empresas as e        
 WHERE
-    rnp.active = 1
+   e.deleted = 1
 ORDER BY
     e.fantasia ASC
 ";

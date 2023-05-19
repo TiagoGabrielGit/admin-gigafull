@@ -71,7 +71,7 @@ if ($chamado['in_execution'] == 1) {
                                                     <?php } else if ($id_usuario == $chamado['id_atendente'] && $chamado['in_execution'] == '1' && $chamado['in_execution_atd_id'] == $pessoaID['pessoaID']) { ?>
                                                         <button style="margin-top: 15px" type="button" class="btn btn-danger row col-12" data-bs-toggle="modal" data-bs-target="#basicModal">
                                                             Inserir um relato
-                                                        </button> 
+                                                        </button>
                                                     <?php } else if ($c_usuario_ocupado['qtde'] == '0' && $id_usuario == $chamado['id_atendente'] && $chamado['in_execution'] == '0' && $chamado['status'] != "Fechado") { ?>
                                                         <a href="processa/executar.php?id=<?= $id_chamado ?>&pessoa=<?= $pessoaID['pessoaID'] ?> "><button style="margin-top: 15px" class="btn btn-success row col-12">Executar</button></a>
                                                     <?php } ?>
@@ -161,10 +161,7 @@ if ($chamado['in_execution'] == 1) {
                                                         <div class="row">
 
                                                             <div class="col-5">
-                                                                <?php if ($tipoUsuario == 1) { ?>
-                                                                    <input id="btnSalvarRascunho" name="btnSalvarRascunho" type="button" value="Salvar Rascunho" class="btn btn-secondary"></input>
 
-                                                                <?php } ?>
                                                             </div>
                                                             <div class="col-4">
                                                                 <input id="btnRelatar" name="btnRelatar" type="button" value="Relatar" class="btn btn-danger"></input>

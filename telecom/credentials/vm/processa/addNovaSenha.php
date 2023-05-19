@@ -1,6 +1,7 @@
 <?php
 session_start();
-require "../../../conexoes/conexao.php";
+require "../../../../conexoes/conexao.php";
+
 
 $usuario_id = $_SESSION['id'];
 
@@ -24,11 +25,11 @@ $pessoa_id = $pessoa['id_pessoa'];
 
 
 <?php
-require "../../../conexoes/conexao_pdo.php";
+require "../../../../conexoes/conexao_pdo.php";
 
 $id_empresa = $_POST['idEmpresa1'];
 $tipo = "vm";
-$privacidade = $_POST['cadastroPrivacidade'];
+$privacidade = $_POST['cadastroPrivacidade']; 
 $id_VM = $_POST['idVMModalSenha2'];
 $vm_desc = $_POST['vmDescricao'];
 $vm_user = $_POST['vmUsuario'];
@@ -41,7 +42,7 @@ $credenciais_vms = "INSERT INTO credenciais_vms (empresa_id, tipo, usuario_id, p
 $stmt1 = $pdo->prepare($credenciais_vms);
 $stmt1->bindParam(':empresa_id', $id_empresa);
 $stmt1->bindParam(':tipo', $tipo);
-$stmt1->bindParam(':usuario_id', $pessoa_id);
+$stmt1->bindParam(':usuario_id', $usuario_id);
 $stmt1->bindParam(':privacidade', $privacidade);
 $stmt1->bindParam(':vm_id', $id_VM);
 $stmt1->bindParam(':vmdescricao', $vm_desc);

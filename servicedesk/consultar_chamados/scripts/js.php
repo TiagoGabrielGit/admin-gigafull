@@ -1,26 +1,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
-
-<script>
-    $("#btnSalvarRascunho").click(function() {
-        var dadosRascunhoRelato = $("#relatarChamado").serialize();
-
-        $.post("/servicedesk/consultar_chamados/processa/rascunhoRelato.php", dadosRascunhoRelato, function(retornaRascunhoRelato) {
-            $("#msgSalvaRascunhoRelato").slideDown('slow').html(retornaRascunhoRelato);
-
-            //Apresentar a mensagem leve
-            retirarMsgSalvarRascunhoRelato();
-        });
-    });
-
-
-    //Retirar a mensagem após 1700 milissegundos
-    function retirarMsgSalvarRascunhoRelato() {
-        setTimeout(function() {
-            $("#msgSalvaRascunhoRelato").slideUp('slow', function() {});
-        }, 1700);
-    };
-</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
     $("#btnRelatar").click(function() {
@@ -30,11 +10,14 @@
 
             if (retornaRelatar.includes("Error")) {
                 $("#msgRelatar").slideDown('slow').html(retornaRelatar);
+                salvaRascunho();
                 retirarMsgRelatar();
             } else {
+                excluiRascunho();
+                $('#relatarChamado')[0].reset();
                 $("#basicModal").modal('hide');
+                recarregarPagina();
             }
-
         });
     });
 
@@ -43,13 +26,34 @@
             $("#msgRelatar").slideUp('slow', function() {});
         }, 1700);
     };
-
-    $("#basicModal").on('hidden.bs.modal', function() {
-        location.reload();
-    });
 </script>
 
+<script>
+    function recarregarPagina() {
+        location.reload();
+    }
+</script>
 
+<script>
+    function excluiRascunho() {
+        var dadosRascunhoRelatoExcluir = $("#relatarChamado").serialize();
+        $.post("/servicedesk/consultar_chamados/processa/excluirRascunhoRelato.php", dadosRascunhoRelatoExcluir);
+    };
+</script>
+
+<script>
+    $("#basicModal").on('hidden.bs.modal', function() {
+        if (tipoUsuario == 1 && startTime !== "") {
+            salvaRascunho();
+        }
+    });
+
+
+    function salvaRascunho() {
+        var dadosRascunhoRelato = $("#relatarChamado").serialize();
+        $.post("/servicedesk/consultar_chamados/processa/rascunhoRelato.php", dadosRascunhoRelato);
+    };
+</script>
 
 <script>
     var chamadoID = document.querySelector("#chamadoID").value;

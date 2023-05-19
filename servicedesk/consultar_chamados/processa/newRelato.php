@@ -69,7 +69,8 @@ if ($tipoUsuario == 1) {
 
         #Executa o insert
         if ($stmt1->execute() && $stmt2->execute($data)) {
-            try {
+            echo "<p style='color:green;'>Relato salvo como rascunho.</p>";
+            /* try {
                 // Montar a consulta preparada
                 $sql_deleta_rascunho = "DELETE FROM chamados_relatos_rascunho WHERE id_chamado = :chamadoID";
 
@@ -88,7 +89,7 @@ if ($tipoUsuario == 1) {
                 }
             } catch (PDOException $e) {
                 echo "Erro na exclusão no banco de dados: " . $e->getMessage();
-            }
+            } */
         } else {
             echo "<p style='color:red;'>Error: Erro ao salvar.</p>";
         }

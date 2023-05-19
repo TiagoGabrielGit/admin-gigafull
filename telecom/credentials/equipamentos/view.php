@@ -308,6 +308,8 @@ $hostnameEquipamento = $row['hostname'];
                                         $idSessao = $_SESSION['id'];
 
                                         if ($campos['idPrivacidade'] == '1') {
+                                            
+
                                             require "modalListaCredenciais.php";    //Apresenta se a privacidade for publico
                                         } else if ($campos['usuarioCriador'] == $idSessao) {
                                             require "modalListaCredenciais.php";    //Apresenta se o for do usuario criador

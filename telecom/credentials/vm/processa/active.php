@@ -1,5 +1,5 @@
 <?php
-include_once '../../../conexoes/conexao_pdo.php';
+require "../../../../conexoes/conexao_pdo.php";
 
 $idCadastro = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 $idVM = filter_input(INPUT_GET, 'idVM');
@@ -22,7 +22,7 @@ if ($cont_insert) {
 ?>
     <script>
         setTimeout(function() {
-            window.location.href = "/telecom/vms/view.php?id=<?=$idVM?>";
+            window.location.href = "/telecom/credentials/vm/view.php?id=<?=$idVM?>";
         });
 
         alert("Inativado com sucesso!");
@@ -34,7 +34,7 @@ if ($cont_insert) {
         alert("Erro do inativar!");
 
         setTimeout(function() {
-            window.location.href = "/telecom/vms/view.php?id=<?=$idVM?>";
+            window.location.href = "/telecom/credentials/vm/view.php?id=<?=$idVM?>";
         });
     </script>
 <?php

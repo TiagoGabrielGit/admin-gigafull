@@ -73,31 +73,31 @@ require "sql.php";
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoAdmin" value="1">
                                                                 <label class="form-check-label" for="tipoAcessoAdmin">
-                                                                    Gigafull Admin
+                                                                    Smart
                                                                 </label>
                                                             </div>
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoPortal" value="2">
                                                                 <label class="form-check-label" for="tipoAcessoPortal">
-                                                                    Gigafull Portal
+                                                                    Cliente
                                                                 </label>
                                                             </div>
                                                             <div class="form-check disabled">
                                                                 <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoPortalRN" value="3">
                                                                 <label class="form-check-label" for="tipoAcessoPortalRN">
-                                                                    Gigafull RN
+                                                                    Tenant
                                                                 </label>
                                                             </div>
                                                         </div>
 
                                                         <div class="col-4">
-                                                            <label id="parceiroLabel" for="parceiroLabel" class="form-label">Parceiro</label>
-                                                            <select name="parceiroSelect" id="parceiroSelect" class="form-select" required>
-                                                                <option selected disabled>Selecione a parceiro</option>
+                                                            <label for="empresaSelect" class="form-label">Empresa</label>
+                                                            <select name="empresaSelect" id="empresaSelect" class="form-select" required>
+                                                                <option selected disabled>Selecione a empresa</option>
                                                                 <?php
-                                                                $resultado = mysqli_query($mysqli, $sql_parceiros) or die("Erro ao retornar dados");
+                                                                $resultado = mysqli_query($mysqli, $sql_empresas) or die("Erro ao retornar dados");
                                                                 while ($p = $resultado->fetch_assoc()) : ?>
-                                                                    <option value="<?= $p['parceiroID']; ?>"><?= $p['parceiro']; ?></option>
+                                                                    <option value="<?= $p['empresaID']; ?>"><?= $p['fantasia']; ?></option>
                                                                 <?php endwhile; ?>
                                                             </select>
                                                         </div>
@@ -285,6 +285,6 @@ require "sql.php";
 </div><!-- End Basic Modal-->
 
 <?php
-require "../../scripts/usuarios.php";
+require "js.php";
 require "../../includes/footer.php";
 ?>
