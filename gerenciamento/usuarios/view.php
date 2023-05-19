@@ -147,19 +147,19 @@ p.active = 1"; ?>
                                                                     <div class="form-check">
                                                                         <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoAdmin" value="1" <?= $checkTipo1 ?>>
                                                                         <label class="form-check-label" for="tipoAcessoAdmin">
-                                                                            Gigafull Admin
+                                                                            Smart
                                                                         </label>
                                                                     </div>
                                                                     <div class="form-check">
                                                                         <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoPortal" value="2" <?= $checkTipo2 ?>>
                                                                         <label class="form-check-label" for="tipoAcessoPortal">
-                                                                            Gigafull Portal
+                                                                            Cliente
                                                                         </label>
                                                                     </div>
                                                                     <div class="form-check disabled">
                                                                         <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoPortalRN" value="3" <?= $checkTipo3 ?>>
                                                                         <label class="form-check-label" for="tipoAcessoPortalRN">
-                                                                            Gigafull RN
+                                                                           Tenant
                                                                         </label>
                                                                     </div>
                                                                 </div>

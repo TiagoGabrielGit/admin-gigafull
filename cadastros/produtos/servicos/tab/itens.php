@@ -50,65 +50,11 @@
                     <td><?= $c_itens_cadastrados['intCode']; ?></td>
                     <td><?= $c_itens_cadastrados['active']; ?></td>
                     <td>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEditarItem<?= $c_itens_cadastrados['idItem']; ?>">Editar</button>
-
-                        <div class="modal fade" id="modalEditarItem<?= $c_itens_cadastrados['idItem']; ?>" tabindex="-1">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Editar Item</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-
-                                    <div class="modal-body">
-                                        <div class="card-body">
-                                            <form id="editarItem" method="POST" class="row g-3">
-
-                                                <span id="msgEditarItem"></span>
-
-                                                <input hidden id="itemID" name="itemID" value="<?= $c_itens_cadastrados['idItem']; ?>"></input>
-
-                                                <div class="col-6">
-                                                    <label for="item" class="form-label">Item</label>
-                                                    <input type="text" class="form-control" id="item" name="item" value="<?= $c_itens_cadastrados['item']; ?>" required>
-                                                </div>
-
-                                                <div class="col-3"></div>
-
-                                                <div class="col-3">
-                                                    <label for="activeEditar" class="form-label">Status</label>
-                                                    <select class="form-select" id="activeEditar" name="activeEditar" required>
-                                                        <option value="1" <?= $c_itens_cadastrados['active'] == 'Ativo' ? 'selected' : ''; ?>>Ativo</option>
-                                                        <option value="0" <?= $c_itens_cadastrados['active'] == 'Inativo' ? 'selected' : ''; ?>>Inativo</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-3">
-                                                    <label for="codIntEdit" class="form-label">Código Integração</label>
-                                                    <input type="text" class="form-control" id="codIntEdit" name="codIntEdit" value="<?= $c_itens_cadastrados['intCode']; ?>" required>
-                                                </div>
-
-                                                <div class="col-9">
-                                                    <label for="descricaoItemEdit" class="form-label">Descrição</label>
-                                                    <textarea id="descricaoItemEdit" name="descricaoItemEdit" class="form-control" maxlength="100" required><?= $c_itens_cadastrados['description']; ?></textarea>
-                                                </div>
-
-                                                <hr class="sidebar-divider">
-
-                                                <div class="col-4"></div>
-
-                                                <div class="col-4" style="text-align: center;">
-                                                    <input id="btnEditarItem" name="btnEditarItem" type="button" value="Editar" class="btn btn-danger"></input>
-
-                                                </div>
-
-                                                <div class="col-4"></div>
-                                            </form><!-- End Horizontal Form -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <button type="button" class="btn btn-danger btn-editarItem" data-bs-toggle="modal" data-bs-target="#modalEditarItem"    data-id="<?= $c_itens_cadastrados['idItem'] ?>"
+                                                                                                                                                data-intCode="<?= $c_itens_cadastrados['intCode'] ?>" 
+                                                                                                                                                data-item="<?= $c_itens_cadastrados['item']; ?>" data-description="<?= $c_itens_cadastrados['description'] ?>" data-active="<?= $c_itens_cadastrados['active'] ?>">
+                            Editar
+                        </button>
                     </td>
 
                 </tr>
@@ -134,7 +80,7 @@
                         <span id="msgCadastroItem"></span>
 
                         <div class="col-6">
-                            <label for="cadItem" class="form-label">Item</label>
+                            <label for="cadItem" class="form-label">Item*</label>
                             <input type="text" class="form-control" id="cadItem" name="cadItem" required>
                         </div>
 
@@ -142,11 +88,11 @@
 
                         <div class="col-3">
                             <label for="cadItemCodInt" class="form-label">Código Integração</label>
-                            <input type="text" class="form-control" id="cadItemCodInt" name="cadItemCodInt">
+                            <input type="number" class="form-control" id="cadItemCodInt" name="cadItemCodInt">
                         </div>
 
                         <div class="col-12">
-                            <label for="descricaoItem" class="form-label">Descrição</label>
+                            <label for="descricaoItem" class="form-label">Descrição*</label>
                             <textarea id="descricaoItem" name="descricaoItem" class="form-control" maxlength="100" required></textarea>
                         </div>
 
@@ -162,6 +108,65 @@
                 </div>
             </div>
 
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEditarItem" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="card-body">
+                    <form id="editarItem" method="POST" class="row g-3">
+
+                        <span id="msgEditarItem"></span>
+
+                        <input hidden readonly id="itemID" name="itemID"></input>
+
+                        <div class="col-6">
+                            <label for="itemEditar" class="form-label">Item*</label>
+                            <input type="text" class="form-control" id="itemEditar" name="itemEditar" required>
+                        </div>
+
+                        <div class="col-3"></div>
+
+                        <div class="col-3">
+                            <label for="activeEditarItem" class="form-label">Status*</label>
+                            <select id="activeEditarItem" name="activeEditarItem" class="form-select" required>
+                                <option selected disabled value="">Selecione</option>
+                                <option value='1'> Ativo</option>
+                                <option value='0'> Inativo</option>
+                            </select>
+                        </div>
+
+                        <div class="col-3">
+                            <label for="codIntEditar" class="form-label">Código Integração</label>
+                            <input type="number" class="form-control" id="codIntEditar" name="codIntEditar" required>
+                        </div>
+
+                        <div class="col-9">
+                            <label for="descricaoItemEdit" class="form-label">Descrição*</label>
+                            <textarea id="descricaoItemEdit" name="descricaoItemEdit" class="form-control" maxlength="100" required></textarea>
+                        </div>
+
+                        <hr class="sidebar-divider">
+
+                        <div class="col-4"></div>
+
+                        <div class="col-4" style="text-align: center;">
+                            <input id="btnEditarItem" name="btnEditarItem" type="button" value="Editar" class="btn btn-danger"></input>
+
+                        </div>
+
+                        <div class="col-4"></div>
+                    </form><!-- End Horizontal Form -->
+                </div>
+            </div>
         </div>
     </div>
 </div>

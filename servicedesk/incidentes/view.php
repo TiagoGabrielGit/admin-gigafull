@@ -17,64 +17,55 @@ u.id = $usuarioID
 $r_sql_parceiro = mysqli_query($mysqli, $sql_parceiro);
 $campo_parceiro = $r_sql_parceiro->fetch_array();
 
-if ($campo_parceiro['parceiro'] == NULL) {
-    $parceidoID = "%";
-} else {
-    $parceidoID = $campo_parceiro['parceiro'];
-}
+if ($campo_parceiro['parceiro'] == NULL) { 
 
-$id_incidente = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
-$sql_incidente =
+    $id_incidente = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+
+    $sql_incidente =
     "SELECT
-count(rni.id) as contagem,
-rni.id as idIncidente,
-rni.zabbix_event_id as zabbixID,
-rni.active as statusID,
-rni.autor_id as autor_id,
-eqpop.hostname as equipamento,
-rni.classificacao as idClassificacao,
-ic.classificacao as classificacao,
-rni.descricaoIncidente as descricaoIncidente,
-CASE
-WHEN rni.active = 1 THEN 'Incidente aberto'
-WHEN rni.active = 0 THEN 'Normalizado'
-END active,
-rni.active as activeID,
-date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
-date_format(rni.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
-date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
-IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
-FROM
-redeneutra_incidentes as rni
-LEFT JOIN
-equipamentospop as eqpop
-ON
-eqpop.id = rni.equipamento_id
-LEFT JOIN
-redeneutra_olts as rno
-ON
-rno.equipamento_id = rni.equipamento_id
-LEFT JOIN
-redeneutra_parceiro_olt as rnpo
-ON
-rnpo.olt_id = rno.id
-LEFT JOIN
-incidentes_classificacao as ic
-ON
-ic.id = rni.classificacao
-WHERE
-rnpo.active = 1
-and
-rni.id = $id_incidente
-and
-rnpo.parceiro_id LIKE ('$parceidoID')
-";
+    count(rni.id) as contagem,
+    rni.id as idIncidente,
+    rni.zabbix_event_id as zabbixID,
+    rni.active as statusID,
+    rni.autor_id as autor_id,
+    eqpop.hostname as equipamento,
+    rni.classificacao as idClassificacao,
+    ic.classificacao as classificacao,
+    rni.descricaoIncidente as descricaoIncidente,
+    CASE
+    WHEN rni.active = 1 THEN 'Incidente aberto'
+    WHEN rni.active = 0 THEN 'Normalizado'
+    END active,
+    rni.active as activeID,
+    date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
+    date_format(rni.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
+    date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
+    IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
+    FROM
+    incidentes as rni
+    LEFT JOIN
+    equipamentospop as eqpop
+    ON
+    eqpop.id = rni.equipamento_id
+    LEFT JOIN
+    redeneutra_olts as rno
+    ON
+    rno.equipamento_id = rni.equipamento_id
+    LEFT JOIN
+    redeneutra_parceiro_olt as rnpo
+    ON
+    rnpo.olt_id = rno.id
+    LEFT JOIN
+    incidentes_classificacao as ic
+    ON
+    ic.id = rni.classificacao
+    WHERE
+    rni.id = $id_incidente
+    ";
 
-$r_sql_incidente = mysqli_query($mysqli, $sql_incidente);
-$campos = mysqli_fetch_assoc($r_sql_incidente);
-
-if ($campos['contagem'] >= 1) { ?>
+    $r_sql_incidente = mysqli_query($mysqli, $sql_incidente);
+    $campos = mysqli_fetch_assoc($r_sql_incidente); ?>
 
     <main id="main" class="main">
         <div class="pagetitle">
@@ -184,9 +175,9 @@ if ($campos['contagem'] >= 1) { ?>
                                     rni.zabbix_event_id as zabbixID,
                                     date_format(rnir.horarioRelato,'%H:%i:%s %d/%m/%Y') as horarioRelato
                                 FROM
-                                    redeneutra_incidentes_relatos as rnir
+                                    incidentes_relatos as rnir
                                 LEFT JOIN
-                                    redeneutra_incidentes as rni
+                                    incidentes as rni
                                 ON
                                     rni.id = rnir.incidente_id
                                 WHERE
@@ -269,15 +260,14 @@ if ($campos['contagem'] >= 1) { ?>
                                             <?php
                                             $sql_classificacao =
                                                 "SELECT
-ic.id as idClassificacao,
-ic.classificacao as classificacao
-FROM
-incidentes_classificacao as ic
-WHERE
-ic.active = 1
-ORDER BY
-ic.classificacao ASC
-";
+                                                    ic.id as idClassificacao,
+                                                    ic.classificacao as classificacao
+                                                FROM
+                                                    incidentes_classificacao as ic
+                                                WHERE
+                                                    ic.active = 1
+                                                ORDER BY
+                                                    ic.classificacao ASC";
 
                                             $r_classificacao = mysqli_query($mysqli, $sql_classificacao);
                                             while ($c_classificacao = mysqli_fetch_object($r_classificacao)) :
@@ -332,16 +322,14 @@ ic.classificacao ASC
         </div>
     </div>
 
-
-
 <?php } else { ?>
     <main id="main" class="main">
         <div class="pagetitle">
             <h1>Operação não permitida!</h1>
         </div>
     </main>
-<?php
-}
+<?php }
+
 require "../../scripts/update_incidente.php";
 require "../../includes/footer.php";
 ?>

@@ -54,68 +54,9 @@
                     <td><?= $campos_servico['item']; ?></td>
                     <td><?= $campos_servico['active']; ?></td>
                     <td>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEditar<?= $campos_servico['idServico']; ?>">Editar</button>
-
-                        <div class="modal fade" id="modalEditar<?= $campos_servico['idServico']; ?>" tabindex="-1">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Editar Serviço</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-
-                                    <div class="modal-body">
-                                        <div class="card-body">
-                                            <form id="editarService" method="POST" class="row g-3">
-
-                                                <span id="msgEditar"></span>
-
-                                                <input hidden id="serviceID" name="serviceID" value="<?= $campos_servico['idServico']; ?>"></input>
-
-                                                <div class="col-6">
-                                                    <label for="servicoEditar" class="form-label">Serviço</label>
-                                                    <input type="text" class="form-control" id="servicoEditar" name="servicoEditar" value="<?= $campos_servico['service']; ?>" required>
-                                                </div>
-
-
-                                                <div class="col-3">
-                                                    <label for="itemEdit" class="form-label">Permite Item</label>
-                                                    <select class="form-select" id="itemEdit" name="itemEdit" required>
-                                                        <option value="1" <?= $campos_servico['item_service'] == '1' ? 'selected' : ''; ?>>Sim</option>
-                                                        <option value="0" <?= $campos_servico['item_service'] == '0' ? 'selected' : ''; ?>>Não</option>
-                                                    </select>
-                                                </div>
-
-                                                <div class="col-3">
-                                                    <label for="activeEditar" class="form-label">Status</label>
-                                                    <select class="form-select" id="activeEditar" name="activeEditar" required>
-                                                        <option value="1" <?= $campos_servico['active'] == 'Ativo' ? 'selected' : ''; ?>>Ativo</option>
-                                                        <option value="0" <?= $campos_servico['active'] == 'Inativo' ? 'selected' : ''; ?>>Inativo</option>
-                                                    </select>
-                                                </div>
-
-
-                                                <div class="col-12">
-                                                    <label for="descricaoEditar" class="form-label">Descrição</label>
-                                                    <textarea id="descricaoEditar" name="descricaoEditar" class="form-control" maxlength="100" required><?= $campos_servico['descricao']; ?></textarea>
-                                                </div>
-
-                                                <hr class="sidebar-divider">
-
-                                                <div class="col-4"></div>
-
-                                                <div class="col-4" style="text-align: center;">
-                                                    <input id="btnEditarServico" name="btnEditarServico" type="button" value="Salvar" class="btn btn-danger"></input>
-
-                                                </div>
-
-                                                <div class="col-4"></div>
-                                            </form><!-- End Horizontal Form -->
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <button type="button" class="btn btn-danger btn-editar" data-bs-toggle="modal" data-bs-target="#modalEditar" data-id="<?= $idServico ?>" data-service="<?= $campos_servico['service']; ?>" data-descricao="<?= $campos_servico['descricao']; ?>" data-item-service="<?= $campos_servico['item_service']; ?>" data-active="<?= $campos_servico['active']; ?>">
+                            Editar
+                        </button>
                     </td>
 
                 </tr>
@@ -124,6 +65,65 @@
         </tbody>
     </table>
     <!-- End Table with stripped rows -->
+</div>
+
+
+<div class="modal fade" id="modalEditar" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Serviço</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="card-body">
+                    <form id="editarService" method="POST" class="row g-3">
+
+                        <span id="msgEditar"></span>
+
+                        <input readonly hidden id="serviceID" name="serviceID" value=""></input>
+
+                        <div class="col-6">
+                            <label for="servicoEditar" class="form-label">Serviço</label>
+                            <input type="text" class="form-control" id="servicoEditar" name="servicoEditar" value="" required>
+                        </div>
+
+                        <div class="col-3">
+                            <label for="itemEdit" class="form-label">Permite Item</label>
+                            <select class="form-select" id="itemEdit" name="itemEdit" required>
+                                <option value="1">Sim</option>
+                                <option value="0">Não</option>
+                            </select>
+                        </div>
+
+                        <div class="col-3">
+                            <label for="activeEditar" class="form-label">Status</label>
+                            <select class="form-select" id="activeEditar" name="activeEditar" required>
+                                <option value="1">Ativo</option>
+                                <option value="0">Inativo</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="descricaoEditar" class="form-label">Descrição</label>
+                            <textarea id="descricaoEditar" name="descricaoEditar" class="form-control" maxlength="100" required></textarea>
+                        </div>
+
+                        <hr class="sidebar-divider">
+
+                        <div class="col-4"></div>
+
+                        <div class="col-4" style="text-align: center;">
+                            <input id="btnEditarServico" name="btnEditarServico" type="button" value="Salvar" class="btn btn-danger"></input>
+                        </div>
+
+                        <div class="col-4"></div>
+                    </form><!-- End Horizontal Form -->
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="modal fade" id="modalNovoServico" tabindex="-1">

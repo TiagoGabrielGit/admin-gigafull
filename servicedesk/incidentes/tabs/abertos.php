@@ -96,7 +96,7 @@
         date_format(rni.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
         IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
         FROM
-        redeneutra_incidentes as rni
+        incidentes as rni
         LEFT JOIN
         equipamentospop as eqpop
         ON
@@ -139,7 +139,7 @@
         ON
         rno.id = rnpo.olt_id
         LEFT JOIN
-        redeneutra_incidentes as rni
+        incidentes as rni
         ON
         rni.equipamento_id = rno.equipamento_id
         LEFT JOIN
@@ -215,17 +215,20 @@
                             <b>Hora Normalização: </b><?= $campos['horafinal']; ?><br><br>
                             <b>Tempo total incidente: </b><?= $campos['tempoIncidente']; ?>
                         </div>
-                        <div class="col-2">
-                            <a href="/servicedesk/incidentes/view.php?id=<?= $id_incidente ?>&status=open" title="Visualizar">
-                                <button type="button" class="btn btn-danger">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                    </svg>
-                                    Ver incidente
-                                </button>
-                            </a>
-                        </div>
+
+                        <?php if ($parceiroID == NULL) { ?>
+                            <div class="col-2">
+                                <a href="/servicedesk/incidentes/view.php?id=<?= $id_incidente ?>&status=open" title="Visualizar">
+                                    <button type="button" class="btn btn-danger">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                                        </svg>
+                                        Ver incidente
+                                    </button>
+                                </a>
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -254,7 +257,7 @@
         date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
         IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
         FROM
-        redeneutra_incidentes as rni
+        incidentes as rni
         LEFT JOIN
         equipamentospop as eqpop
         ON
@@ -285,7 +288,7 @@
         ON
         rno.id = rnpo.olt_id
         LEFT JOIN
-        redeneutra_incidentes as rni
+        incidentes as rni
         ON
         rni.equipamento_id = rno.equipamento_id
         LEFT JOIN

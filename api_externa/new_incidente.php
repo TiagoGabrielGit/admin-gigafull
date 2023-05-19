@@ -25,7 +25,7 @@ $idEquipamento = $result['idEquipamento'];
 if ($idEquipamento == "") {
     $idEquipamento = "0";
     $sql_new_incidente =
-        "INSERT INTO redeneutra_incidentes (zabbix_event_id, equipamento_id, descricaoIncidente, classificacao, inicioIncidente, active)
+        "INSERT INTO incidentes (zabbix_event_id, equipamento_id, descricaoIncidente, classificacao, inicioIncidente, active)
     VALUES (:zabbix_event_id, :equipamento_id, :descricaoIncidente, :classificacao, NOW(), '1')";
     $stmt = $pdo->prepare($sql_new_incidente);
     $stmt->bindParam(':equipamento_id', $idEquipamento);
@@ -40,7 +40,7 @@ if ($idEquipamento == "") {
     }
 } else {
     $sql_new_incidente =
-        "INSERT INTO redeneutra_incidentes (zabbix_event_id, equipamento_id, descricaoIncidente, classificacao, inicioIncidente, active)
+        "INSERT INTO incidentes (zabbix_event_id, equipamento_id, descricaoIncidente, classificacao, inicioIncidente, active)
     VALUES (:zabbix_event_id, :equipamento_id, :descricaoIncidente,:classificacao, NOW(), '1')";
     $stmt = $pdo->prepare($sql_new_incidente);
     $stmt->bindParam(':equipamento_id', $idEquipamento);

@@ -11,7 +11,7 @@ $horaAtual = date('Y-m-d H:i:s');
 
 
 if ($classIncidente != null || $statusIncidente != null || $previsaoConclusao != null) {
-    $sql = "UPDATE redeneutra_incidentes SET ";
+    $sql = "UPDATE incidentes SET ";
     $params = array();
 
     if ($classIncidente != null) {
@@ -53,7 +53,7 @@ if ($classIncidente != null || $statusIncidente != null || $previsaoConclusao !=
 
 if ($relatoIncidente != null) {
 
-    $sql2 = "INSERT INTO redeneutra_incidentes_relatos (incidente_id, relato_autor, relato, horarioRelato) VALUES (:valor1, :valor4, :valor2, :valor3)";
+    $sql2 = "INSERT INTO incidentes_relatos (incidente_id, relato_autor, relato, horarioRelato) VALUES (:valor1, :valor4, :valor2, :valor3)";
     $stmt2 = $pdo->prepare($sql2);
 
     $stmt2->bindValue(':valor1', $incidenteID);

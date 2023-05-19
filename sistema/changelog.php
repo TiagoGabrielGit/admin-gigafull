@@ -16,6 +16,65 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
 
+              <!-- Versão 6.0 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading6-0">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6-0" aria-expanded="false" aria-controls="collapse6-0">
+                    Versão 6.0 - XX/05/2023
+                  </button>
+                </h2>
+                <div id="collapse6-0" class="accordion-collapse collapse" aria-labelledby="heading6-0" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Abertura manual de incidentes;<br>
+                    # BUG só edita primeiro serviço "/cadastros/produtos/servicos/index.php";<br>
+                    # Ajustado o editar Item de Serviço;<br>
+                    # Aumento de caracteres para 10000 em relato de chamados; <br>
+                    # Salvar temporariamente o relato;<br>
+                    # BUG onde permite executar 2 chamados ao mesmo tempo;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Excluido tabela "bairros";<br>
+                    # Excluido tabela "cidades";<br>
+                    # Excluido tabela "empresas_endereco";<br>
+                    # Excluido tabela "estado";<br>
+                    # Excluido tabela "pais";<br>
+                    # Excluido tabela "pessoas_endereco";<br>
+                    # Alterado nome de tabela "redeneutra_incidentes`" para "inicidentes";<br>
+                    # Alterado nome de tabela "redeneutra_incidentes_relatos" para "incidentes_relatos";<br>
+                    # Excluido coluna "redeneutra_incidentescol" da tabela "incidentes";<br>
+                    # Definida colula "equipamento_id" para não obigatório na tabela "incidentes";<br>
+                    # Aumentado para 10000 caracteres a coluna relatos na tabela "chamados_relatos";<br>
+                    # Criado a tabela "chamados_relatos_rascunho";<br>
+
+                    <br><strong>Previsto para próximas atualizaçõs</strong><br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Notificaçãoes de novos incidentes e relatos;<br>
+                    # Busca automatica de info-summary ao identificar incidente;<br>
+                    # Abertura de Chamados por Clientes ISP e Setores;<br>
+                    # Vinculo de chamado a incidente;<br>
+                    # Cadastro competencias;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Cadastro de PONs;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Componentes de equipamentos;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                    # Segurança individual;<br>
+
+                    <br><strong>Backlog --- Rede Neutra</strong><br>
+                    # BUG retorna código em resultado do provisionamento;<br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas;<br>
+                    # Botão troca ONU;<br>
+                    # Armazenar LOG sinal do cliente após provisionamento;<br>
+                    # Validação sinal antes de adicionar serviços;<br>
+                    # Autofind no provisionamento;<br><br>
+                  </div>
+                </div>
+              </div>
+
               <!-- Versão 5.9 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading5-9">
@@ -36,8 +95,8 @@ require "../includes/menu.php";
                     # Criada a tabela "company_address";<br>
                     # Criada a tabela "people_address";<br>
                     # Criada a tabela "pop_address";<br>
-                    # Alterado tamanho do varchar das colunas "telefone" e "celular" na tabela "empresas";
-                    # Alterado tamanho do varchar das colunas "telefone" e "celular" na tabela "pessoas";
+                    # Alterado tamanho do varchar das colunas "telefone" e "celular" na tabela "empresas";<br>
+                    # Alterado tamanho do varchar das colunas "telefone" e "celular" na tabela "pessoas";<br>
                     # Excluido colunas "logradouro_id, numero e complemento" da tabela "pop";<br>
                     # Removida a linha de localidade da tabela de menu;<br>
                     # Removida as linhas de localidade da tabela de submenu;<br>
@@ -70,7 +129,6 @@ require "../includes/menu.php";
                   </div>
                 </div>
               </div>
-
 
               <!-- Versão 5.8 -->
               <div class="accordion-item">

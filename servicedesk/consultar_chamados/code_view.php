@@ -71,10 +71,11 @@ if ($chamado['in_execution'] == 1) {
                                                     <?php } else if ($id_usuario == $chamado['id_atendente'] && $chamado['in_execution'] == '1' && $chamado['in_execution_atd_id'] == $pessoaID['pessoaID']) { ?>
                                                         <button style="margin-top: 15px" type="button" class="btn btn-danger row col-12" data-bs-toggle="modal" data-bs-target="#basicModal">
                                                             Inserir um relato
-                                                        </button>
-                                                    <?php } else if ($id_usuario == $chamado['id_atendente'] && $chamado['in_execution'] == '0' && $chamado['status'] != "Fechado") { ?>
+                                                        </button> 
+                                                    <?php } else if ($c_usuario_ocupado['qtde'] == '0' && $id_usuario == $chamado['id_atendente'] && $chamado['in_execution'] == '0' && $chamado['status'] != "Fechado") { ?>
                                                         <a href="processa/executar.php?id=<?= $id_chamado ?>&pessoa=<?= $pessoaID['pessoaID'] ?> "><button style="margin-top: 15px" class="btn btn-success row col-12">Executar</button></a>
                                                     <?php } ?>
+
                                                 </div>
                                                 <div class="col-12">
                                                     <?php
@@ -106,7 +107,7 @@ if ($chamado['in_execution'] == 1) {
                                 </div>
 
                                 <div class="modal fade" id="basicModal" tabindex="-1">
-                                    <div class="modal-dialog modal-lg">
+                                    <div class="modal-dialog modal-xl">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title">Novo relato</h5>
@@ -115,8 +116,10 @@ if ($chamado['in_execution'] == 1) {
 
                                             <div class="modal-body">
                                                 <div class="card-body">
-                                                    <form method="POST" action="processa/newRelato.php" class="row g-3 needs-validation">
-
+                                                    <!--<form method="POST" action="processa/newRelato.php" class="row g-3 needs-validation">-->
+                                                    <form method="POST" id="relatarChamado" class="row g-3">
+                                                        <span id="msgSalvaRascunhoRelato"></span>
+                                                        <span id="msgRelatar"></span>
                                                         <input hidden id="chamadoID" name="chamadoID" value="<?= $id_chamado ?>"></input>
                                                         <input hidden id="tipoUsuario" name="tipoUsuario" value="<?= $tipoUsuario ?>"></input>
                                                         <input hidden id="relatorID" name="relatorID" value="<?= $id_usuario ?>"></input>
@@ -127,8 +130,8 @@ if ($chamado['in_execution'] == 1) {
                                                         if ($tipoUsuario == 1) { ?>
 
                                                             <div class="col-4">
-                                                                <label for="statusChamado" class="form-label">Status</label>
-                                                                <select class="form-select" id="statusChamado" name="statusChamado" required>
+                                                                <label for="statusChamado" class="form-label">Status*</label>
+                                                                <select class="form-select" id="statusChamado" name="statusChamado">
                                                                     <option selected value="2">Andamento</option>
                                                                     <?php
                                                                     $resultado = mysqli_query($mysqli, $sql_status_chamados);
@@ -140,26 +143,32 @@ if ($chamado['in_execution'] == 1) {
                                                             </div>
                                                             <div class="col-4"></div>
                                                             <div class="col-4">
-                                                                <label for="privateChamado" class="form-label">Privacidade</label>
-                                                                <select class="form-select" id="privateChamado" name="privateChamado" required>
+                                                                <label for="privateChamado" class="form-label">Privacidade*</label>
+                                                                <select class="form-select" id="privateChamado" name="privateChamado">
                                                                     <option selected value="">Selecione</option>
                                                                     <option value='1'> Público</option>
-                                                                    <option value='0'> Privado</option>
+                                                                    <option value='2'> Privado</option>
                                                                 </select>
                                                             </div>
                                                         <?php } ?>
 
                                                         <div class="col-12">
-                                                            <label for="novoRelato" class="form-label">Relato</label>
-                                                            <textarea id="novoRelato" name="novoRelato" class="form-control" maxlength="1000" rows="8" required></textarea>
+                                                            <label for="novoRelato" class="form-label">Relato*</label>
+                                                            <textarea id="novoRelato" name="novoRelato" class="form-control" maxlength="10000" rows="8"></textarea>
                                                         </div>
 
                                                         <hr class="sidebar-divider">
+                                                        <div class="row">
 
-                                                        <div class="text-center">
-                                                            <button name="salvar" type="submit" class="btn btn-danger">Salvar</button>
+                                                            <div class="col-5">
+                                                                <?php if ($tipoUsuario == 1) { ?>
+                                                                    <input id="btnSalvarRascunho" name="btnSalvarRascunho" type="button" value="Salvar Rascunho" class="btn btn-secondary"></input>
 
-                                                            <a href="/servicedesk/consultar_chamados/view.php?id=<?= $id_chamado ?>"> <input type="button" value="Voltar" class="btn btn-secondary"></input></a>
+                                                                <?php } ?>
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <input id="btnRelatar" name="btnRelatar" type="button" value="Relatar" class="btn btn-danger"></input>
+                                                            </div>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -285,5 +294,6 @@ if ($chamado['in_execution'] == 1) {
 </div>
 
 <?php
+require "scripts/js.php";
 require "../../includes/footer.php";
 ?>

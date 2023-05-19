@@ -24,6 +24,7 @@ $result_cap_pessoa = mysqli_query($mysqli, $sql_captura_id_pessoa);
 $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
 $tipoUsuario = $pessoaID['tipoUsuario'];
 $idEmpresa = $pessoaID['idEmpresa'];
+$pess_id = $pessoaID['pessoaID'];
 
 $resut_chamado1 = mysqli_query($mysqli, $sql_chamado1);
 $chamado = mysqli_fetch_assoc($resut_chamado1);
@@ -35,6 +36,19 @@ $solicitante = mysqli_fetch_assoc($resut_solicitante);
 
 $resut_atendente = mysqli_query($mysqli, $sql_atendente);
 $atendente = mysqli_fetch_assoc($resut_atendente);
+
+$usuario_ocupado =
+    "SELECT
+count(*) as qtde
+FROM
+chamados as c
+WHERE
+c.in_execution = 1
+and
+c.in_execution_atd_id = $pess_id";
+
+$r_usuario_ocupado = mysqli_query($mysqli, $usuario_ocupado);
+$c_usuario_ocupado = mysqli_fetch_assoc($r_usuario_ocupado);
 
 if (empty($atendente['atendente'])) {
     $atendente = "Sem atendente";

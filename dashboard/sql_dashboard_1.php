@@ -145,7 +145,7 @@ $r_onu_parceiro = mysqli_query($mysqli, $sql_onu_parceiro);
 $incidentes = "SELECT
 count(*) as qtde
 FROM
-redeneutra_incidentes as ri
+incidentes as ri
 WHERE
 ri.active = 1";
 
