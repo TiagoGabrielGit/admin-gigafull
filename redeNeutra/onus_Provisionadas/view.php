@@ -18,7 +18,7 @@ rnp.empresa_id = u.empresa_id
 WHERE
 u.active = 1
 and
-u.id = $id_usuario";
+u.id = $usuarioID";
 
 $r_dados_usuario = mysqli_query($mysqli, $sql_captura_dados_usuario);
 $c_dados_usuario = mysqli_fetch_assoc($r_dados_usuario);
