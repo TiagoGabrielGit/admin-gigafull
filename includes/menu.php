@@ -18,7 +18,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao.php');
 
 $sql_pessoa =
   "SELECT
-p.id as id_pessoa
+p.id as id_pessoa,
+u.tipo_usuario as usuarioTipo
 FROM
 usuarios as u
 LEFT JOIN
@@ -32,6 +33,7 @@ u.id = '$id'
 $result_pessoa = mysqli_query($mysqli, $sql_pessoa);
 $pessoa = mysqli_fetch_assoc($result_pessoa);
 $pessoa_id = $pessoa['id_pessoa'];
+$userType = $pessoa['usuarioTipo'];
 
 $sql_chamado =
   "SELECT
@@ -309,7 +311,7 @@ if (empty($chamado['execucao'])) {
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="/gerenciamento/usuarios/profile.php?id=<?=$id?>">
+              <a class="dropdown-item d-flex align-items-center" href="/gerenciamento/usuarios/profile.php?id=<?= $id ?>">
                 <i class="bi bi-person"></i>
                 <span>Meu perfil</span>
               </a>
@@ -334,5 +336,14 @@ if (empty($chamado['execucao'])) {
   </header><!-- End Header -->
 
   <?php
-  require "navbar.php";
+  if ($userType == "1") {
+    require "navbar_type_1.php";
+  } else if ($userType == "2") {
+    require "navbar_type_2.php";
+  } else if ($userType == "3") {
+    require "navbar_type_3.php";
+  }
+
+
+
   ?>

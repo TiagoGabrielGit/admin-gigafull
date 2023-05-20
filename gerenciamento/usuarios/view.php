@@ -9,10 +9,11 @@ $sql_usuario =
     "SELECT 
 user.id as id,
 pess.nome as nome,
+user.tipo_usuario as tipoUsuario,
 CASE
-    WHEN user.tipo_usuario = 1 THEN 'Gigafull Admin'
-    WHEN user.tipo_usuario = 2 THEN 'Gigafull Portal'
-    WHEN user.tipo_usuario = 3 THEN 'Gigafull RN'
+    WHEN user.tipo_usuario = 1 THEN 'Smart'
+    WHEN user.tipo_usuario = 2 THEN 'Cliente'
+    WHEN user.tipo_usuario = 3 THEN 'Tenant'
 END as tipo,
 pess.email as email,
 user.senha as senha,
@@ -127,15 +128,15 @@ p.active = 1"; ?>
                                                                 </div>
 
                                                                 <?php
-                                                                if ($campos['tipo'] == "Gigafull Admin") {
+                                                                if ($campos['tipoUsuario'] == "1") {
                                                                     $checkTipo1 = "checked";
                                                                     $checkTipo2 = "";
                                                                     $checkTipo3 = "";
-                                                                } else if ($campos['tipo'] == "Gigafull Portal") {
+                                                                } else if ($campos['tipoUsuario'] == "2") {
                                                                     $checkTipo1 = "";
                                                                     $checkTipo2 = "checked";
                                                                     $checkTipo3 = "";
-                                                                } else if ($campos['tipo'] == "Gigafull RN") {
+                                                                } else if ($campos['tipoUsuario'] == "3") {
                                                                     $checkTipo1 = "";
                                                                     $checkTipo2 = "";
                                                                     $checkTipo3 = "checked";
@@ -145,26 +146,27 @@ p.active = 1"; ?>
                                                                 <div class="col-6">
                                                                     <label for="tipoAcesso" class="form-label">Tipo de Acesso</label>
                                                                     <div class="form-check">
-                                                                        <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoAdmin" value="1" <?= $checkTipo1 ?>>
+                                                                        
+                                                                        <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoAdmin" value="1" <?= $checkTipo1 ?> onchange="mostrarOcultarSelect()">
                                                                         <label class="form-check-label" for="tipoAcessoAdmin">
                                                                             Smart
                                                                         </label>
                                                                     </div>
                                                                     <div class="form-check">
-                                                                        <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoPortal" value="2" <?= $checkTipo2 ?>>
+                                                                        <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoPortal" value="2" <?= $checkTipo2 ?> onchange="mostrarOcultarSelect()">
                                                                         <label class="form-check-label" for="tipoAcessoPortal">
                                                                             Cliente
                                                                         </label>
                                                                     </div>
                                                                     <div class="form-check disabled">
-                                                                        <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoPortalRN" value="3" <?= $checkTipo3 ?>>
+                                                                        <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoPortalRN" value="3" <?= $checkTipo3 ?> onchange="mostrarOcultarSelect()">
                                                                         <label class="form-check-label" for="tipoAcessoPortalRN">
                                                                             Tenant
                                                                         </label>
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="col-6">
+                                                                <div id="controlaPerfil" class="col-6">
                                                                     <label for="inputPerfil" class="form-label">Perfil</label>
                                                                     <select name="perfil" id="perfil" class="form-select" required>
                                                                         <option selected value="<?= $campos['idPerfil'] ?>"><?= $campos['nome_perfil'] ?></option>

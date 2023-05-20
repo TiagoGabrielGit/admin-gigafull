@@ -61,36 +61,8 @@ if ($chamado['in_execution'] == 1) {
                                             </div>
                                         </div>
                                         <div class="col-lg-2">
-
                                             <?php
-                                            if ($tipoUsuario == 1) { ?>
-                                                <div class="col-12">
-                                                    <?php
-                                                    if ($id_usuario != $chamado['id_atendente'] && $chamado['status'] != "Fechado") { ?>
-                                                        <a href="processa/apropriar.php?id=<?= $id_chamado  ?>&pessoa=<?= $id_usuario ?> "><button style="margin-top: 15px" class="btn btn-danger row col-12">Apropriar</button></a>
-                                                    <?php } else if ($id_usuario == $chamado['id_atendente'] && $chamado['in_execution'] == '1' && $chamado['in_execution_atd_id'] == $idPessoa) { ?>
-                                                        <button style="margin-top: 15px" type="button" class="btn btn-danger row col-12" data-bs-toggle="modal" data-bs-target="#basicModal">
-                                                            Inserir um relato
-                                                        </button>
-                                                    <?php } else if ($c_usuario_ocupado['qtde'] == '0' && $id_usuario == $chamado['id_atendente'] && $chamado['in_execution'] == '0' && $chamado['status'] != "Fechado") { ?>
-                                                        <a href="processa/executar.php?id=<?= $id_chamado ?>&pessoa=<?= $idPessoa ?> "><button style="margin-top: 15px" class="btn btn-success row col-12">Executar</button></a>
-                                                    <?php } ?>
-
-                                                </div>
-                                                <div class="col-12">
-                                                    <?php
-                                                    if ($chamado['status'] != "Fechado") { ?>
-                                                        <div class="row col-12" style="margin-top: 3px;">
-                                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEncaminhar">Encaminhar</button>
-                                                        </div>
-                                                    <?php } ?>
-                                                </div>
-                                            <?php }
-                                            ?>
-
-
-                                            <?php
-                                            if ($tipoUsuario == 3 && $chamado['status'] != "Fechado") { ?>
+                                            if ($chamado['status'] != "Fechado") { ?>
                                                 <div class="col-12">
                                                     <button style="margin-top: 15px" type="button" class="btn btn-danger row col-12" data-bs-toggle="modal" data-bs-target="#basicModal">
                                                         Inserir um relato
@@ -126,31 +98,6 @@ if ($chamado['in_execution'] == 1) {
 
                                                         <input hidden id="startTime" name="startTime" value="<?= $chamado['in_execution_start']; ?>"></input>
 
-                                                        <?php
-                                                        if ($tipoUsuario == 1) { ?>
-
-                                                            <div class="col-4">
-                                                                <label for="statusChamado" class="form-label">Status*</label>
-                                                                <select class="form-select" id="statusChamado" name="statusChamado">
-                                                                    <option selected value="2">Andamento</option>
-                                                                    <?php
-                                                                    $resultado = mysqli_query($mysqli, $sql_status_chamados);
-                                                                    while ($status = mysqli_fetch_object($resultado)) :
-                                                                        echo "<option value='$status->id_status'> $status->status_chamado</option>";
-                                                                    endwhile;
-                                                                    ?>
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-4"></div>
-                                                            <div class="col-4">
-                                                                <label for="privateChamado" class="form-label">Privacidade*</label>
-                                                                <select class="form-select" id="privateChamado" name="privateChamado">
-                                                                    <option selected value="">Selecione</option>
-                                                                    <option value='1'> Público</option>
-                                                                    <option value='2'> Privado</option>
-                                                                </select>
-                                                            </div>
-                                                        <?php } ?>
 
                                                         <div class="col-12">
                                                             <label for="novoRelato" class="form-label">Relato*</label>
@@ -177,8 +124,6 @@ if ($chamado['in_execution'] == 1) {
                             </div>
                         </div>
 
-
-
                         <hr class="sidebar-divider">
 
                         <div class="accordion" id="accordionFlushExample">
@@ -189,29 +134,8 @@ if ($chamado['in_execution'] == 1) {
                                 $id_relato = $campos['id_relato'];
                                 $tempoAtendimento = gmdate("H:i:s", $campos['seconds_worked']);
                                 $private = $campos['privacidade'];
-                                if ($tipoUsuario == 1) { ?>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="flush-heading<?= $cont ?>"> <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<?= $cont ?>" aria-expanded="false" aria-controls="flush-collapse<?= $cont ?>">Relato #<?= $id_relato ?> - <?= $campos['relatante']; ?></button></h2>
-                                        <div id="flush-collapse<?= $cont ?>" class="accordion-collapse collapse" aria-labelledby="flush-heading<?= $cont ?>" data-bs-parent="#accordionFlushExample">
-                                            <div class="accordion-body">
-                                                <b>Relatante: </b> <?= $campos['relatante']; ?> <br>
-                                                <b>Período: </b> <?= $campos['inicio']; ?> à <?= $campos['final']; ?><br>
-                                                <b>Tempo de atendimento: </b> <?= $tempoAtendimento ?><br>
-                                                <b>Privacidade: </b> <?php
-                                                                        if ($private == 1) {
-                                                                            echo "Público";
-                                                                        } else {
-                                                                            echo "Privado";
-                                                                        };
 
-                                                                        ?><br>
-                                                <hr class="sidebar-divider">
-
-                                                <b>Descrição: </b> <br><?= nl2br($campos['relato']); ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php } else if ($tipoUsuario == 3 && $private == 1) { ?>
+                                if ($private == 1) { ?>
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-heading<?= $cont ?>"> <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<?= $cont ?>" aria-expanded="false" aria-controls="flush-collapse<?= $cont ?>">Relato #<?= $id_relato ?> - <?= $campos['relatante']; ?></button></h2>
                                         <div id="flush-collapse<?= $cont ?>" class="accordion-collapse collapse" aria-labelledby="flush-heading<?= $cont ?>" data-bs-parent="#accordionFlushExample">
@@ -247,50 +171,7 @@ if ($chamado['in_execution'] == 1) {
     </section>
 </main>
 
-
-<div class="modal fade" id="modalEncaminhar" tabindex="-1" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Encaminhar Chamado</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="text-align: center;">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Usuário</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-
-                                        $r_lista_atendentes = mysqli_query($mysqli, $lista_atendentes);
-                                        while ($c_lista_atendentes = $r_lista_atendentes->fetch_array()) { ?>
-                                            <tr>
-                                                <td><?= $c_lista_atendentes['atendente']; ?></td>
-                                                <td style="text-align: left;">
-                                                    <a href="processa/encaminha.php?user=<?= $c_lista_atendentes['idUsuario'] ?>&chamado=<?= $id_chamado ?>" onclick="return confirm('Deseja encaminhar o chamado para este usuário?')" class="bi bi-arrow-left-right"></a>
-                                                </td>
-                                            </tr>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <?php
-require "scripts/js.php";
+require "scripts/js_cliente.php";
 require "../../includes/footer.php";
 ?>

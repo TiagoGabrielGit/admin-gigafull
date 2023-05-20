@@ -31,6 +31,8 @@ require "../includes/menu.php";
                     # Removido o submenu "incidentes" de dentro do menu "Rede Neutra";<br>
                     # Ajustes para salvar rascunho;<br>
                     # Ajustado adicionar e editar senhas de VMs;<br>
+                    # Ajustado consultas sql que dependiam da coluna "parceiroRN_id";<br>
+                    # Ajustado cadastro de usuarios;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado coluna "empresa_id" na tabela "usuarios";<br>
@@ -40,10 +42,9 @@ require "../includes/menu.php";
                     # Integração para abrir chamado no Voalle;<br>
                     # Notificaçãoes de novos incidentes e relatos;<br>
                     # Busca automatica de info-summary ao identificar incidente;<br>
-                    # Abertura de Chamados por Clientes ISP e Setores;<br>
+                    # Construção dashboard, chamados e incidentes para usuario type2;<br>
                     # Vinculo de chamado a incidente;<br>
                     # Cadastro competencias;<br>
-                    # Não aparece endereço pessoa;<br>
 
                     <br><strong>Backlog</strong><br>
                     # Cadastro de PONs;<br>

@@ -64,9 +64,11 @@ if (empty($atendente['atendente'])) {
 }
 
 if ($tipoUsuario == "1") {
-    require "code_view.php";
+    require "code_view_smart.php";
+} else if ($tipoUsuario == "2" && $idEmpresa == $idEmpresaChamado) {
+    require "code_view_cliente.php";
 } else if ($tipoUsuario == "3" && $idEmpresa == $idEmpresaChamado) {
-    require "code_view.php";
+    require "code_view_tenant.php";
 } else { ?>
     <main id="main" class="main">
         <div class="pagetitle">

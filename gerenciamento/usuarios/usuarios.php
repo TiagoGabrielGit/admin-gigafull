@@ -41,65 +41,73 @@ require "sql.php";
                                             </div>
                                             <div class="modal-body">
                                                 <div class="card-body">
-                                                    <form method="POST" action="processa/add.php" class="row g-3 needs-validation" novalidate>
+                                                    <form method="POST" id="formNovoUsuario" class="row g-3">
 
-                                                        <div class="col-6">
-                                                            <label for="inputNome" class="form-label">Nome</label>
-                                                            <select id="inputNome" name="inputNome" class="form-select" required>
-                                                                <option require selected disabled>Selecione a pessoa</option>
-                                                                <?php
-                                                                $resultado = mysqli_query($mysqli, $lista_pessoas);
-                                                                while ($pessoa = mysqli_fetch_object($resultado)) :
-                                                                    echo "<option value='$pessoa->pessoa_id'> $pessoa->pessoa_nome</option>";
-                                                                endwhile;
-                                                                ?>
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="col-6">
-                                                            <label for="inputPerfil" class="form-label">Perfil</label>
-                                                            <select name="perfil" id="perfil" class="form-select" required>
-                                                                <option selected disabled>Selecione o perfil</option>
-                                                                <?php
-                                                                $resultado = mysqli_query($mysqli, $sql_perfil) or die("Erro ao retornar dados");
-                                                                while ($p = $resultado->fetch_assoc()) : ?>
-                                                                    <option value="<?= $p['idPerfil']; ?>"><?= $p['perfil']; ?></option>
-                                                                <?php endwhile; ?>
-                                                            </select>
-                                                        </div>
-
-                                                        <div class="col-4">
-                                                            <label for="tipoAcesso" class="form-label">Tipo de Acesso</label>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoAdmin" value="1">
-                                                                <label class="form-check-label" for="tipoAcessoAdmin">
-                                                                    Smart
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoPortal" value="2">
-                                                                <label class="form-check-label" for="tipoAcessoPortal">
-                                                                    Cliente
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check disabled">
-                                                                <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoPortalRN" value="3">
-                                                                <label class="form-check-label" for="tipoAcessoPortalRN">
-                                                                    Tenant
-                                                                </label>
+                                                        <span id="msgSalvarUsuario1"></span>
+                                                        <div class="row">
+                                                            <div class="col-8">
+                                                                <label for="nomeUsuario" class="form-label">Nome</label>
+                                                                <select id="nomeUsuario" name="nomeUsuario" class="form-select">
+                                                                    <option require selected disabled>Selecione a pessoa</option>
+                                                                    <?php
+                                                                    $resultado = mysqli_query($mysqli, $lista_pessoas);
+                                                                    while ($pessoa = mysqli_fetch_object($resultado)) :
+                                                                        echo "<option value='$pessoa->pessoa_id'> $pessoa->pessoa_nome</option>";
+                                                                    endwhile;
+                                                                    ?>
+                                                                </select>
                                                             </div>
                                                         </div>
-
-                                                        <div class="col-4">
-                                                            <label for="empresaSelect" class="form-label">Empresa</label>
-                                                            <select name="empresaSelect" id="empresaSelect" class="form-select" required>
-                                                                <option selected disabled>Selecione a empresa</option>
-                                                                <?php
-                                                                $resultado = mysqli_query($mysqli, $sql_empresas) or die("Erro ao retornar dados");
-                                                                while ($p = $resultado->fetch_assoc()) : ?>
-                                                                    <option value="<?= $p['empresaID']; ?>"><?= $p['fantasia']; ?></option>
-                                                                <?php endwhile; ?>
-                                                            </select>
+                                                        <div class="col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-12">
+                                                                    <label for="tipoAcesso" class="form-label">Tipo de Acesso</label>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoAdmin" value="1" onchange="mostrarOcultarSelect()">
+                                                                        <label class="form-check-label" for="tipoAcessoAdmin">
+                                                                            Smart
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoPortal" value="2" onchange="mostrarOcultarSelect()">
+                                                                        <label class="form-check-label" for="tipoAcessoPortal">
+                                                                            Cliente
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="form-check disabled">
+                                                                        <input class="form-check-input" type="radio" name="tipoAcesso" id="tipoAcessoPortalRN" value="3" onchange="mostrarOcultarSelect()">
+                                                                        <label class="form-check-label" for="tipoAcessoPortalRN">
+                                                                            Tenant
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-8">
+                                                            <div class="row">
+                                                                <div class="col-6">
+                                                                    <label for="empresaSelect" class="form-label">Empresa</label>
+                                                                    <select name="empresaSelect" id="empresaSelect" class="form-select">
+                                                                        <option selected disabled>Selecione a empresa</option>
+                                                                        <?php
+                                                                        $resultado = mysqli_query($mysqli, $sql_empresas) or die("Erro ao retornar dados");
+                                                                        while ($p = $resultado->fetch_assoc()) : ?>
+                                                                            <option value="<?= $p['empresaID']; ?>"><?= $p['fantasia']; ?></option>
+                                                                        <?php endwhile; ?>
+                                                                    </select>
+                                                                </div>
+                                                                <div id="controlaPerfil" class="col-6">
+                                                                    <label for="inputPerfil" class="form-label">Perfil</label>
+                                                                    <select name="perfil" id="perfil" class="form-select">
+                                                                        <option selected disabled>Selecione o perfil</option>
+                                                                        <?php
+                                                                        $resultado = mysqli_query($mysqli, $sql_perfil) or die("Erro ao retornar dados");
+                                                                        while ($p = $resultado->fetch_assoc()) : ?>
+                                                                            <option value="<?= $p['idPerfil']; ?>"><?= $p['perfil']; ?></option>
+                                                                        <?php endwhile; ?>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
                                                         </div>
 
                                                         <div class="col-6">
@@ -108,13 +116,15 @@ require "sql.php";
                                                         </div>
 
                                                         <div class="col-6">
-                                                            <label for="yourPassword" class="form-label">Senha</label>
-                                                            <input type="password" name="senha" class="form-control" id="yourPassword" required>
+                                                            <label for="password" class="form-label">Senha</label>
+                                                            <input type="password" name="password" class="form-control" id="password">
                                                             <div class="invalid-feedback">Digite uma senha.</div>
                                                         </div>
 
                                                         <div class="col-12" style="text-align: center;">
-                                                            <button class="btn btn-danger" type="submit">Cadastrar usuário</button>
+                                                            <span id="msgSalvarUsuario2"></span>
+                                                            <input id="btnSalvarUsuario" name="btnSalvarUsuario" type="button" value="Cadastrar usuário" class="btn btn-danger"></input>
+                                                            
                                                         </div>
                                                     </form>
                                                 </div>

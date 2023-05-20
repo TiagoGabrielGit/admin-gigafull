@@ -1,84 +1,54 @@
 <?php
 require "../../../conexoes/conexao.php";
-?>
+require "../../../conexoes/conexao_pdo.php";
 
+// Verifica se a requisição é do tipo POST
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-<!DOCTYPE html>
-<html lang="pt-br">
+    // Verifica se todos os campos obrigatórios foram preenchidos
+    if (empty($_POST['nomeUsuario']) || empty($_POST['tipoAcesso']) || empty($_POST["empresaSelect"]) || empty($_POST["password"])) {
+        // Mensagem de erro
+        echo "<p style='color:red;'>Error 1: Por favor, preencha todos os campos obrigatórios.</p>";
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Gigafull Admin</title>
-    <link href="/alerts/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="/alerts/js/bootstrap.min.js"></script>
-</head>
-
-<body>
-    <div class="container theme-showcase" role="main">
-        <?php
-        $nome = $_POST['inputNome'];
-        $tipo_usuario = $_POST['tipoAcesso'];
-        $nome = $_POST['inputNome'];
-        $perfil = $_POST['perfil'];
-        $senha = md5($_POST['senha']);
-        if ($tipo_usuario == 3) {
-            $parceiroRN = $_POST['empresaSelect'];
+    } else {
+        $tipoAcesso = $_POST['tipoAcesso'];
+        if ($tipoAcesso == "1" && empty($_POST["perfil"])) {
+            echo "<p style='color:red;'>Error 2: Por favor, preencha todos os campos obrigatórios.</p>";
         } else {
-            $parceiroRN = "";
+
+
+            // Obtém os dados enviados pelo formulário
+            $pessoaID = $_POST['nomeUsuario'];
+
+            $empresaID = $_POST["empresaSelect"];
+            $perfil = isset($_POST["perfil"]) ? $_POST["perfil"] : 0;
+            $password = md5($_POST["password"]);
+
+
+            // Todos os campos estão preenchidos, continue com a lógica de salvamento no banco de dados
+            $insert_usuario =
+                "INSERT INTO usuarios (pessoa_id, senha, criado, tipo_usuario, empresa_id, perfil_id, active)
+        VALUES (:pessoa_id, :senha, NOW(), :tipo_usuario, :empresa_id, :perfil_id, '1')";
+
+            $stmt1 = $pdo->prepare($insert_usuario);
+
+            $stmt1->bindParam(':pessoa_id', $pessoaID);
+            $stmt1->bindParam(':senha', $password);
+            $stmt1->bindParam(':tipo_usuario', $tipoAcesso);
+            $stmt1->bindParam(':empresa_id', $empresaID);
+            $stmt1->bindParam(':perfil_id', $perfil);
+
+            // Executa a consulta
+            if ($stmt1->execute()) {
+                echo "<p style='color:green;'>Usuário salvo com sucesso.</p>";
+            } else {
+                // Ocorreu um erro ao salvar a empresa
+                echo "<p style='color:red;'>Error: . $stmt->error</p>";
+            }
         }
-
-        $result_usuario = "INSERT INTO usuarios (pessoa_id, tipo_usuario, empresa_id, parceiroRN_id, senha, perfil_id, active, criado)
-         VALUES ('$nome', '$tipo_usuario', '$parceiroRN', NULLIF('$parceiroRN', ''), '$senha', '$perfil', '1', NOW())";
-        $resultado_usuario = mysqli_query($mysqli, $result_usuario);
-
-        if (mysqli_affected_rows($mysqli) > 0) { ?>
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Usuário cadastrado com Sucesso!</h4>
-                        </div>
-                        <div class="modal-body">
-                        </div>
-                        <div class="modal-footer">
-                            <a href="/gerenciamento/usuarios/usuarios.php"><button type="button" class="btn btn-success">Ok</button></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <script>
-                $(document).ready(function() {
-                    $('#myModal').modal('show');
-                });
-            </script>
-
-        <?php } else { ?>
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Erro ao cadastrar novo usuário!</h4>
-                        </div>
-                        <div class="modal-body">
-                        </div>
-                        <div class="modal-footer">
-                            <a href="/gerenciamento/usuarios/usuarios.php"><button type="button" class="btn btn-danger">Ok</button></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <script>
-                $(document).ready(function() {
-                    $('#myModal').modal('show');
-                });
-            </script>
-        <?php } ?>
-    </div>
-</body>
-
-</html>
+    }
+} else {
+    // A requisição não é do tipo POST, redireciona para a página do formulário
+    header("Location: /gerenciamento/usuarios/usuarios.php");
+    exit();
+}
