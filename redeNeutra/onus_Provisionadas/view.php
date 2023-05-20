@@ -2,22 +2,36 @@
 require "../../includes/menu.php";
 
 $usuarioID = $_SESSION['id'];
-$sql_parceiro =
+$sql_captura_dados_usuario =
     "SELECT
-parceiroRN_id as parceiro
+u.id as idUsuario,
+u.pessoa_id as idPessoa,
+u.empresa_id as idEmpresa,
+u.tipo_usuario as tipoUsuario,
+rnp.id as idParceiro
 FROM
 usuarios as u
+LEFT JOIN
+redeneutra_parceiro as rnp
+ON
+rnp.empresa_id = u.empresa_id
 WHERE
-u.id = $usuarioID
-";
+u.active = 1
+and
+u.id = $id_usuario";
 
-$r_sql_parceiro = mysqli_query($mysqli, $sql_parceiro);
-$campo_parceiro = $r_sql_parceiro->fetch_array();
+$r_dados_usuario = mysqli_query($mysqli, $sql_captura_dados_usuario);
+$c_dados_usuario = mysqli_fetch_assoc($r_dados_usuario);
+$idUsuario = $c_dados_usuario['idUsuario'];
+$idPessoa = $c_dados_usuario['idPessoa'];
+$tipoUsuario = $c_dados_usuario['tipoUsuario'];
+$idEmpresa = $c_dados_usuario['idEmpresa'];
+$idParceiro = $c_dados_usuario['idParceiro'];
 
-if ($campo_parceiro['parceiro'] == NULL) {
-    $parceidoID = "%";
-} else {
-    $parceidoID = $campo_parceiro['parceiro'];
+if ($tipoUsuario == "1") {
+    $parceiroID = "%";
+} else if ($tipoUsuario == "3") {
+    $parceiroID = $idParceiro;
 }
 
 $idProvisionamento = $_GET['idProvisionamento'];
@@ -60,7 +74,7 @@ p.id = u.pessoa_id
 WHERE
 rnop.id = $idProvisionamento
 and
-rnop.parceiro_id LIKE ('$parceidoID')
+rnop.parceiro_id LIKE ('$parceiroID')
 ";
 
 $r_provisionamento = mysqli_query($mysqli, $sql_provisionamento);
