@@ -134,12 +134,15 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
                                 $sql_parceiroID =
                                     "SELECT
-                                    u.parceiroRN_id as parceiro
+                                    rnp.id as parceiro
                                 FROM
                                     usuarios as u
+                                    LEFT JOIN
+                                    redeneutra_parceiro as rnp
+                                    ON
+                                    rnp.empresa_id = u.empresa_id
                                 WHERE
-                                    u.id = $usuarioID
-                                ";
+                                    u.id = $usuarioID";
 
                                 $r_sql_parceiroID = mysqli_query($mysqli, $sql_parceiroID);
                                 $camposParceiro = $r_sql_parceiroID->fetch_array();
