@@ -130,27 +130,38 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                             <tbody>
 
                                 <?php
-                                $usuarioID = $_SESSION['id'];
+                                $id_usuario = $_SESSION['id'];
 
-                                $sql_parceiroID =
+                                $sql_captura_dados_usuario =
                                     "SELECT
-                                    rnp.id as parceiro
-                                FROM
+                                    u.id as idUsuario,
+                                    u.pessoa_id as idPessoa,
+                                    u.empresa_id as idEmpresa,
+                                    u.tipo_usuario as tipoUsuario,
+                                    rnp.id as idParceiro
+                                    FROM
                                     usuarios as u
                                     LEFT JOIN
                                     redeneutra_parceiro as rnp
                                     ON
                                     rnp.empresa_id = u.empresa_id
-                                WHERE
-                                    u.id = $usuarioID";
+                                    WHERE
+                                    u.active = 1
+                                    and
+                                    u.id = $id_usuario";
 
-                                $r_sql_parceiroID = mysqli_query($mysqli, $sql_parceiroID);
-                                $camposParceiro = $r_sql_parceiroID->fetch_array();
+                                $r_dados_usuario = mysqli_query($mysqli, $sql_captura_dados_usuario);
+                                $c_dados_usuario = mysqli_fetch_assoc($r_dados_usuario);
+                                $idUsuario = $c_dados_usuario['idUsuario'];
+                                $idPessoa = $c_dados_usuario['idPessoa'];
+                                $tipoUsuario = $c_dados_usuario['tipoUsuario'];
+                                $idEmpresa = $c_dados_usuario['idEmpresa'];
+                                $idParceiro = $c_dados_usuario['idParceiro'];
 
-                                if ($camposParceiro['parceiro'] != "") {
-                                    $parceiroID = $camposParceiro['parceiro'];
-                                } else {
-                                    $parceiroID = $empresa_id;
+                                if ($tipoUsuario == "1") {
+                                    $parceiroID = "%";
+                                } else if ($tipoUsuario == "3") {
+                                    $parceiroID = $idParceiro;
                                 }
 
                                 require "sql.php";
@@ -159,11 +170,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
                                 while ($campos = $r_onus_provisionadas->fetch_array()) { ?>
                                     <tr>
 
-
                                         <td style="text-align: center;">
                                             <a style="color: red;" href="view.php?idProvisionamento=<?= $campos['id']; ?>"><?= $campos['id']; ?></a>
                                         </td>
-
                                         <td><?= $campos['parceiro'] ?></td>
                                         <td><?= $campos['olt']; ?></td>
                                         <td><?= $campos['slot_olt']; ?></td>
