@@ -21,7 +21,7 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading6-1">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6-1" aria-expanded="false" aria-controls="collapse6-1">
-                    Versão 6.1 - XX/05/2023
+                    Versão 6.1 - 20/05/2023
                   </button>
                 </h2>
                 <div id="collapse6-1" class="accordion-collapse collapse" aria-labelledby="heading6-1" data-bs-parent="#accordionExample">
@@ -43,6 +43,8 @@ require "../includes/menu.php";
                     # Notificaçãoes de novos incidentes e relatos;<br>
                     # Busca automatica de info-summary ao identificar incidente;<br>
                     # Construção dashboard, chamados e incidentes para usuario type2;<br>
+                    # Separar incidentes smart, cliente e tenant;<br>
+                    # Testar chamados e incidentes atraves dos acessos cliente e tenant;<br>
                     # Vinculo de chamado a incidente;<br>
                     # Cadastro competencias;<br>
 
