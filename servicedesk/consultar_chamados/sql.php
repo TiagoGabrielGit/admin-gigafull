@@ -156,7 +156,7 @@ p.id = u.pessoa_id
 WHERE
 u.active = 1
 AND
-u.parceiroRN_id IS NULL
+u.tipo_usuario = 1
 ORDER BY
 p.nome ASC
 ";
