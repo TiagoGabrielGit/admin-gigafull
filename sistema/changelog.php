@@ -20,7 +20,7 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading6-3">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6-3" aria-expanded="false" aria-controls="collapse6-3">
-                    Versão 6.3 - XX/05/2023
+                    Versão 6.3 - 22/05/2023
                   </button>
                 </h2>
                 <div id="collapse6-3" class="accordion-collapse collapse" aria-labelledby="heading6-3" data-bs-parent="#accordionExample">
@@ -39,7 +39,7 @@ require "../includes/menu.php";
                     # Excluido os id's da tabela menu (5, 7, 8);<br>
                     # Criado tabela "chamados_autorizados_by_company";<br>
                     # Criado a coluna "reset_password" na tabela "usuarios";<br>
-                    
+
                     <br><strong>Previsto para próximas atualizaçõs</strong><br>
                     # Integração para abrir chamado no Voalle;<br>
                     # Notificaçãoes de novos incidentes e relatos;<br>
