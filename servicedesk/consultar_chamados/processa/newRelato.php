@@ -96,10 +96,53 @@ if ($tipoUsuario == 1) {
     }
 }
 
+if ($tipoUsuario == 2) {
+
+    if (empty($_POST['chamadoID']) || empty($_POST['relatorID']) || empty($_POST['tipoUsuario']) || empty($_POST['novoRelato'])) {
+        echo "<p style='color:red;'>Error: Dados obrigatórios não preenchidos.</p>";
+    } else {
+        #Recebe os parametros do relato
+        $chamadoID = $_POST['chamadoID'];
+        $relatorID = $_POST['relatorID'];
+        $tipoUsuario = $_POST['tipoUsuario'];
+        $novoRelato = $_POST['novoRelato'];
+        $statusChamado = $_POST['statusChamado'];
+        $private = "1";
+        $horaInicial = date("Y-m-d H:i:s");
+        $relato_hora_final = date("Y-m-d H:i:s");
+        $seconds_worked = "0";
+
+
+        #Calcula o tempo total de execucao do chamado
+        $calcula_segudos =
+            "SELECT SUM(seconds_worked) as second from chamado_relato where chamado_id = $chamadoID";
+        $calc_sec = mysqli_query($mysqli, $calcula_segudos);
+        $res_sec = $calc_sec->fetch_array();
+        $seconds = $res_sec['second'];
+        $total_seconds_worked = ($seconds_worked + $seconds);
+
+        #Prepara a a insercao do relato no chamado
+        $sql1 = "INSERT INTO chamado_relato (chamado_id, relator_id, relato, relato_hora_inicial, relato_hora_final, seconds_worked, private)
+            VALUES (:chamado_id, :relator_id, :relato, :relato_hora_inicial, :relato_hora_final, :seconds_worked, :private)";
+        $stmt1 = $pdo->prepare($sql1);
+        $stmt1->bindParam(':chamado_id', $chamadoID);
+        $stmt1->bindParam(':private', $private);
+        $stmt1->bindParam(':relator_id', $relatorID);
+        $stmt1->bindParam(':relato_hora_inicial', $horaInicial);
+        $stmt1->bindParam(':relato_hora_final', $relato_hora_final);
+        $stmt1->bindParam(':relato', $novoRelato);
+        $stmt1->bindParam(':seconds_worked', $seconds_worked);
+
+        #Executa o insert
+        if ($stmt1->execute()) {
+            echo "<p style='color:green;'>Relato salvo como rascunho.</p>";
+        } else {
+            echo "<p style='color:red;'>Error: Dados obrigatórios não preenchidos.</p>";
+        }
+    }
+}
+
 if ($tipoUsuario == 3) {
-
-
-
 
     if (empty($_POST['chamadoID']) || empty($_POST['relatorID']) || empty($_POST['tipoUsuario']) || empty($_POST['novoRelato'])) {
         echo "<p style='color:red;'>Error: Dados obrigatórios não preenchidos.</p>";

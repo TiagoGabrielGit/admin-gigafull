@@ -5,19 +5,22 @@ require "../../conexoes/conexao.php";
 $usuarioID = $_SESSION['id'];
 
 
-$sql_parceiro =
-    "SELECT 
-parceiroRN_id as parceiro
-FROM
-usuarios as u
-WHERE
-u.id = $usuarioID
+$dados_usuario =
+    "SELECT
+    u.empresa_id as empresaID,
+    u.tipo_usuario as tipoUsuario
+    FROM
+    usuarios as u
+    WHERE
+    u.id =   $usuarioID
 ";
 
-$r_sql_parceiro = mysqli_query($mysqli, $sql_parceiro);
-$campo_parceiro = $r_sql_parceiro->fetch_array();
+$r_dados_usuario = mysqli_query($mysqli, $dados_usuario);
+$c_dados_usuario = $r_dados_usuario->fetch_array();
+$empresaID = $c_dados_usuario['empresaID'];
+$tipoUsuario = $c_dados_usuario['tipoUsuario'];
 
-if ($campo_parceiro['parceiro'] == NULL) { 
+if ($tipoUsuario == 1) { 
 
 
     $id_incidente = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
@@ -149,7 +152,7 @@ if ($campo_parceiro['parceiro'] == NULL) {
                                         <div class="col-4" style="text-align: center;">
                                             <br>
                                             <?php
-                                            if ($campo_parceiro['parceiro'] == NULL && $campos['statusID'] == "1") { ?>
+                                            if ($campos['statusID'] == "1") { ?>
                                                 <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalUpdate">
                                                     Update
                                                 </button>

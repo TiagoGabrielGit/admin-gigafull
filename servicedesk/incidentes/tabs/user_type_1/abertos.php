@@ -1,3 +1,64 @@
+<hr class="sidebar-divider">
+<hr class="sidebar-divider">
+<form method="POST" action="#" class="row g-3">
+    <div class="row">
+        <input type="hidden" id="tabAbertos" name="tabAbertos">
+        <div class="col-lg-9">
+            <div class="row">
+                <div class="col-4">
+                    <label for="pesquisaIncidenteAberto" class="form-label">Incidente</label>
+                    <input name="pesquisaIncidenteAberto" type="text" class="form-control" id="pesquisaIncidenteAberto">
+                    <?php
+                    if ($_SERVER["REQUEST_METHOD"] == 'POST') :
+                    ?>
+                        <script>
+                            let pesquisaIncidenteAberto = '<?= $_POST['pesquisaIncidenteAberto']; ?>'
+                            if (pesquisaIncidenteAberto == '%') {} else {
+                                document.querySelector("#pesquisaIncidenteAberto").value = pesquisaIncidenteAberto
+                            }
+                        </script>
+                    <?php
+                    endif;
+                    ?>
+                </div>
+
+                <div class="col-5">
+                    <label for="pesquisaIncidenteAbertoClassificacao" class="form-label">Classificação</label>
+                    <select id="pesquisaIncidenteAbertoClassificacao" name="pesquisaIncidenteAbertoClassificacao" class="form-select">
+                        <option value="%" selected>Todos</option>
+                        <?php
+                        $r_lista_classificacoes = mysqli_query($mysqli, $sql_lista_classificacoes);
+                        while ($c_lista_classificacoes = mysqli_fetch_object($r_lista_classificacoes)) :
+                            echo "<option value='$c_lista_classificacoes->idClassificacao'> $c_lista_classificacoes->classificacao</option>";
+                        endwhile;
+
+                        if ($_SERVER["REQUEST_METHOD"] == 'POST') :
+
+                        ?>
+                            <script>
+                                let pesquisaIncidenteAbertoClassificacao = '<?= $_POST['pesquisaIncidenteAbertoClassificacao']; ?>'
+                                if (pesquisaIncidenteAbertoClassificacao == '%') {} else {
+                                    document.querySelector("#pesquisaIncidenteAbertoClassificacao").value = pesquisaIncidenteAbertoClassificacao
+                                }
+                            </script>
+                        <?php
+                        endif;
+                        ?>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3">
+            <div class="col-12">
+                <button style="margin-top: 20px; " type="submit" class="btn btn-danger">Filtrar</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<hr class="sidebar-divider">
+
 <div class="accordion" id="accordionFlushExample">
 
     <?php
@@ -15,89 +76,40 @@
     // (página atual * quantidade por página) - quantidade por página
     $inicio = ($p * $qnt) - $qnt;
 
-
-    if ($campo_parceiro['parceiro'] == NULL) {
-        $sql_incidentes =
-            "SELECT
-        rni.id as idIncidente,
-        rni.zabbix_event_id as zabbixID,
-        eqpop.hostname as equipamento,
-        rni.descricaoIncidente as descricaoIncidente,
+    $sql_incidentes =
+        "SELECT
+        i.id as idIncidente,
+        i.zabbix_event_id as zabbixID,
+        i.active as activeID,
+        p.nome as criador,
+        eqp.hostname as equipamento,
         ic.classificacao as classificacao,
-        rni.descricaoIncidente as descricaoIncidente,
-        CASE
-        WHEN rni.active = 1 THEN 'Incidente aberto'
-        WHEN rni.active = 0 THEN 'Normalizado'
-        END active,
-        rni.active as activeID,
-        date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
-        date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
-        date_format(rni.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
-        IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
+        i.descricaoIncidente as descricaoIncidente,
+        date_format(i.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
+        date_format(i.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
+        date_format(i.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
+        IF (i.fimIncidente IS NULL, TIMEDIFF(NOW(), i.inicioIncidente), TIMEDIFF(i.fimIncidente, i.inicioIncidente)) as tempoIncidente
         FROM
-        incidentes as rni
+        incidentes as i
         LEFT JOIN
-        equipamentospop as eqpop
+        equipamentospop as eqp
         ON
-        eqpop.id = rni.equipamento_id
+        eqp.id = i.equipamento_id
         LEFT JOIN
-        incidentes_classificacao as ic
+		incidentes_classificacao as ic
         ON
-        ic.id = rni.classificacao
+        ic.id = i.classificacao
+        LEFT JOIN
+        usuarios as u
+        ON
+        i.autor_id = u.id
+        LEFT JOIN
+        pessoas as p
+        ON
+        p.id = u.pessoa_id
         WHERE
-        rni.previsaoNormalizacao < NOW()
-        and
-        rni.active = 1
-        ORDER BY
-        rni.inicioIncidente DESC
+        i.active = 1
         LIMIT $inicio, $qnt";
-    } else {
-        $sql_incidentes =
-            "SELECT
-        rni.id as idIncidente,
-        rni.zabbix_event_id as zabbixID,
-        eqpop.hostname as equipamento,
-        rni.descricaoIncidente as descricaoIncidente,
-        ic.classificacao as classificacao,
-        rni.descricaoIncidente as descricaoIncidente,
-        CASE
-        WHEN rni.active = 1 THEN 'Incidente aberto'
-        WHEN rni.active = 0 THEN 'Normalizado'
-        END active,
-        rni.active as activeID,
-        date_format(rni.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
-        date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
-        date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
-        IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
-        FROM
-        redeneutra_parceiro_olt as rnpo
-        LEFT JOIN
-        redeneutra_olts as rno
-        ON
-        rno.id = rnpo.olt_id
-        LEFT JOIN
-        incidentes as rni
-        ON
-        rni.equipamento_id = rno.equipamento_id
-        LEFT JOIN
-        equipamentospop as eqpop
-        ON
-        eqpop.id = rni.equipamento_id
-        LEFT JOIN
-        incidentes_classificacao as ic
-        ON
-        ic.id = rni.classificacao
-        WHERE
-        rni.previsaoNormalizacao < NOW()
-        and
-        rnpo.parceiro_id = $parceiroID
-        and
-        rnpo.active = 1
-        and rni.active = 1
-        ORDER BY
-        rni.inicioIncidente DESC
-        LIMIT $inicio, $qnt";
-    }
 
     $r_sql_incidentes = mysqli_query($mysqli, $sql_incidentes);
 
@@ -113,6 +125,7 @@
         }
     ?>
 
+
         <div class="accordion-item">
             <h2 class="accordion-header" id="flush-heading<?= $cont ?>">
                 <button class="accordion-button collapsed" id="<?= $estiloTable ?>" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<?= $cont ?>" aria-expanded="false" aria-controls="flush-collapse<?= $cont ?>">
@@ -126,11 +139,11 @@
                     <div class="row justify-content-between">
                         <div class="col-5">
                             <b>Equipamento: </b><?= $campos['equipamento'] ?><br>
-                            <b>Autor: </b> <?php if ($campos['zabbixID'] <> null) {
-                                                echo "Integração Zabbix";
-                                            } ?><br>
-
-
+                            <b>Criador: </b> <?php if ($campos['criador'] <> null) {
+                                                    echo $campos['criador'];
+                                                } else {
+                                                    echo "Integração Zabbix";
+                                                } ?><br>
 
                             <b>Classificação: </b>
                             <?php
@@ -155,19 +168,18 @@
                             <b>Hora Normalização: </b><?= $campos['horafinal']; ?><br><br>
                             <b>Tempo total incidente: </b><?= $campos['tempoIncidente']; ?>
                         </div>
-                        <?php if ($parceiroID == NULL) { ?>
-                            <div class="col-2">
-                                <a href="/servicedesk/incidentes/view.php?id=<?= $id_incidente ?>&status=open" title="Visualizar">
-                                    <button type="button" class="btn btn-danger">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                        </svg>
-                                        Ver incidente
-                                    </button>
-                                </a>
-                            </div>
-                        <?php } ?>
+
+                        <div class="col-2">
+                            <a href="/servicedesk/incidentes/view.php?id=<?= $id_incidente ?>&status=open" title="Visualizar">
+                                <button type="button" class="btn btn-danger">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                                    </svg>
+                                    Ver incidente
+                                </button>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -178,77 +190,39 @@
     // Depois que selecionou todos os nome, pula uma linha para exibir os links(próxima, última...)
     echo "<br />";
 
-    // Faz uma nova seleção no banco de dados, desta vez sem LIMIT,
-    // para pegarmos o número total de registros
-    if ($campo_parceiro['parceiro'] == NULL) {
-        $sql_select_all =
-            "SELECT
-        rni.id as idIncidente,
-        rni.zabbix_event_id as zabbixID,
-        eqpop.hostname as equipamento,
-        rni.descricaoIncidente as descricaoIncidente,
-        CASE
-        WHEN rni.active = 1 THEN 'Incidente aberto'
-        WHEN rni.active = 0 THEN 'Normalizado'
-        END active,
-        rni.active as activeID,
-        date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
-        date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
-        IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
+    $sql_select_all =
+        "SELECT
+        i.id as idIncidente,
+        i.zabbix_event_id as zabbixID,
+        i.active as activeID,
+        p.nome as criador,
+        eqp.hostname as equipamento,
+        ic.classificacao as classificacao,
+        i.descricaoIncidente as descricaoIncidente,
+        date_format(i.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
+        date_format(i.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
+        date_format(i.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
+        IF (i.fimIncidente IS NULL, TIMEDIFF(NOW(), i.inicioIncidente), TIMEDIFF(i.fimIncidente, i.inicioIncidente)) as tempoIncidente
         FROM
-        incidentes as rni
+        incidentes as i
         LEFT JOIN
-        equipamentospop as eqpop
+        equipamentospop as eqp
         ON
-        eqpop.id = rni.equipamento_id
-
-        where
-        rni.previsaoNormalizacao < NOW()
-        and
-         rni.active = 1
-        
-        ORDER BY
-        rni.inicioIncidente DESC";
-    } else {
-        $sql_select_all =
-            "SELECT
-        rni.id as idIncidente,
-        rni.zabbix_event_id as zabbixID,
-        eqpop.hostname as equipamento,
-        rni.descricaoIncidente as descricaoIncidente,
-        CASE
-        WHEN rni.active = 1 THEN 'Incidente aberto'
-        WHEN rni.active = 0 THEN 'Normalizado'
-        END active,
-        rni.active as activeID,
-        date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
-        date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
-        IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
-        FROM
-        redeneutra_parceiro_olt as rnpo
+        eqp.id = i.equipamento_id
         LEFT JOIN
-        redeneutra_olts as rno
+		incidentes_classificacao as ic
         ON
-        rno.id = rnpo.olt_id
+        ic.id = i.classificacao
         LEFT JOIN
-        incidentes as rni
+        usuarios as u
         ON
-        rni.equipamento_id = rno.equipamento_id
+        i.autor_id = u.id
         LEFT JOIN
-        equipamentospop as eqpop
+        pessoas as p
         ON
-        eqpop.id = rni.equipamento_id
+        p.id = u.pessoa_id
         WHERE
-        rni.previsaoNormalizacao < NOW()
-        and
-        rnpo.parceiro_id = $parceiroID
-        and
-        rnpo.active = 1
-        and rni.active = 1
-        ORDER BY
-        rni.inicioIncidente DESC";
-    }
-
+        i.active = 1";
 
     // Executa o query da seleção acimas
     $sql_query_all = mysqli_query($mysqli, $sql_select_all);

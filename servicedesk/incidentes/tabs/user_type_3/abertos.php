@@ -76,89 +76,50 @@
     // (página atual * quantidade por página) - quantidade por página
     $inicio = ($p * $qnt) - $qnt;
 
-
-    if ($campo_parceiro['parceiro'] == NULL) {
-        $sql_incidentes =
-            "SELECT
-        rni.id as idIncidente,
-        rni.zabbix_event_id as zabbixID,
-        eqpop.hostname as equipamento,
-        rni.descricaoIncidente as descricaoIncidente,
-        ic.classificacao as classificacao,
-        rni.descricaoIncidente as descricaoIncidente,
-        CASE
-        WHEN rni.active = 1 THEN 'Incidente aberto'
-        WHEN rni.active = 0 THEN 'Normalizado'
-        END active,
-        rni.active as activeID,
-        date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
-        date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
-        date_format(rni.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
-        IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
-        FROM
-        incidentes as rni
-        LEFT JOIN
-        equipamentospop as eqpop
-        ON
-        eqpop.id = rni.equipamento_id
-        LEFT JOIN
-        incidentes_classificacao as ic
-        ON
-        ic.id = rni.classificacao
-        WHERE
-        rni.descricaoIncidente LIKE '%$pesquisaIncidenteAberto%'
-      and
-      rni.classificacao LIKE '$pesquisaIncidenteAbertoClassificacao'
-        and
-        rni.active = 1
-        ORDER BY
-        rni.inicioIncidente DESC
-        LIMIT $inicio, $qnt";
-    } else {
-        $sql_incidentes =
-            "SELECT
-        rni.id as idIncidente,
-        rni.zabbix_event_id as zabbixID,
-        eqpop.hostname as equipamento,
-        rni.descricaoIncidente as descricaoIncidente,
-        ic.classificacao as classificacao,
-        rni.descricaoIncidente as descricaoIncidente,
-        CASE
-        WHEN rni.active = 1 THEN 'Incidente aberto'
-        WHEN rni.active = 0 THEN 'Normalizado'
-        END active,
-        rni.active as activeID,
-        date_format(rni.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
-        date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
-        date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
-        IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
-        FROM
-        redeneutra_parceiro_olt as rnpo
-        LEFT JOIN
-        redeneutra_olts as rno
-        ON
-        rno.id = rnpo.olt_id
-        LEFT JOIN
-        incidentes as rni
-        ON
-        rni.equipamento_id = rno.equipamento_id
-        LEFT JOIN
-        equipamentospop as eqpop
-        ON
-        eqpop.id = rni.equipamento_id
-        LEFT JOIN
-        incidentes_classificacao as ic
-        ON
-        ic.id = rni.classificacao
-        WHERE
-        rnpo.parceiro_id = $parceiroID
-        and
-        rnpo.active = 1
-        and rni.active = 1
-        ORDER BY
-        rni.inicioIncidente DESC
-        LIMIT $inicio, $qnt";
-    }
+    $sql_incidentes =
+        "SELECT
+rni.id as idIncidente,
+rni.zabbix_event_id as zabbixID,
+eqpop.hostname as equipamento,
+rni.descricaoIncidente as descricaoIncidente,
+ic.classificacao as classificacao,
+rni.descricaoIncidente as descricaoIncidente,
+CASE
+WHEN rni.active = 1 THEN 'Incidente aberto'
+WHEN rni.active = 0 THEN 'Normalizado'
+END active,
+rni.active as activeID,
+date_format(rni.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
+date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
+date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
+IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
+FROM
+redeneutra_parceiro_olt as rnpo
+LEFT JOIN
+redeneutra_olts as rno
+ON
+rno.id = rnpo.olt_id
+LEFT JOIN
+incidentes as rni
+ON
+rni.equipamento_id = rno.equipamento_id
+LEFT JOIN
+equipamentospop as eqpop
+ON
+eqpop.id = rni.equipamento_id
+LEFT JOIN
+incidentes_classificacao as ic
+ON
+ic.id = rni.classificacao
+WHERE
+rnpo.parceiro_id = $parceiroID
+and
+rnpo.active = 1
+and 
+rni.active = 1
+ORDER BY
+rni.inicioIncidente DESC
+LIMIT $inicio, $qnt";
 
     $r_sql_incidentes = mysqli_query($mysqli, $sql_incidentes);
 
@@ -216,19 +177,6 @@
                             <b>Tempo total incidente: </b><?= $campos['tempoIncidente']; ?>
                         </div>
 
-                        <?php if ($parceiroID == NULL) { ?>
-                            <div class="col-2">
-                                <a href="/servicedesk/incidentes/view.php?id=<?= $id_incidente ?>&status=open" title="Visualizar">
-                                    <button type="button" class="btn btn-danger">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                        </svg>
-                                        Ver incidente
-                                    </button>
-                                </a>
-                            </div>
-                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -239,71 +187,41 @@
     // Depois que selecionou todos os nome, pula uma linha para exibir os links(próxima, última...)
     echo "<br />";
 
-    // Faz uma nova seleção no banco de dados, desta vez sem LIMIT,
-    // para pegarmos o número total de registros
-    if ($campo_parceiro['parceiro'] == NULL) {
-        $sql_select_all =
-            "SELECT
-        rni.id as idIncidente,
-        rni.zabbix_event_id as zabbixID,
-        eqpop.hostname as equipamento,
-        rni.descricaoIncidente as descricaoIncidente,
-        CASE
-        WHEN rni.active = 1 THEN 'Incidente aberto'
-        WHEN rni.active = 0 THEN 'Normalizado'
-        END active,
-        rni.active as activeID,
-        date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
-        date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
-        IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
-        FROM
-        incidentes as rni
-        LEFT JOIN
-        equipamentospop as eqpop
-        ON
-        eqpop.id = rni.equipamento_id
-
-        where rni.active = 1
-        ORDER BY
-        rni.inicioIncidente DESC";
-    } else {
-        $sql_select_all =
-            "SELECT
-        rni.id as idIncidente,
-        rni.zabbix_event_id as zabbixID,
-        eqpop.hostname as equipamento,
-        rni.descricaoIncidente as descricaoIncidente,
-        CASE
-        WHEN rni.active = 1 THEN 'Incidente aberto'
-        WHEN rni.active = 0 THEN 'Normalizado'
-        END active,
-        rni.active as activeID,
-        date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
-        date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
-        IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
-        FROM
-        redeneutra_parceiro_olt as rnpo
-        LEFT JOIN
-        redeneutra_olts as rno
-        ON
-        rno.id = rnpo.olt_id
-        LEFT JOIN
-        incidentes as rni
-        ON
-        rni.equipamento_id = rno.equipamento_id
-        LEFT JOIN
-        equipamentospop as eqpop
-        ON
-        eqpop.id = rni.equipamento_id
-        WHERE
-        rnpo.parceiro_id = $parceiroID
-        and
-        rnpo.active = 1
-        and rni.active = 1
-        ORDER BY
-        rni.inicioIncidente DESC";
-    }
-
+    $sql_select_all =
+    "SELECT
+rni.id as idIncidente,
+rni.zabbix_event_id as zabbixID,
+eqpop.hostname as equipamento,
+rni.descricaoIncidente as descricaoIncidente,
+CASE
+WHEN rni.active = 1 THEN 'Incidente aberto'
+WHEN rni.active = 0 THEN 'Normalizado'
+END active,
+rni.active as activeID,
+date_format(rni.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
+date_format(rni.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
+IF (rni.fimIncidente IS NULL, TIMEDIFF(NOW(), rni.inicioIncidente), TIMEDIFF(rni.fimIncidente, rni.inicioIncidente)) as tempoIncidente
+FROM
+redeneutra_parceiro_olt as rnpo
+LEFT JOIN
+redeneutra_olts as rno
+ON
+rno.id = rnpo.olt_id
+LEFT JOIN
+incidentes as rni
+ON
+rni.equipamento_id = rno.equipamento_id
+LEFT JOIN
+equipamentospop as eqpop
+ON
+eqpop.id = rni.equipamento_id
+WHERE
+rnpo.parceiro_id = $parceiroID
+and
+rnpo.active = 1
+and rni.active = 1
+ORDER BY
+rni.inicioIncidente DESC";
 
     // Executa o query da seleção acimas
     $sql_query_all = mysqli_query($mysqli, $sql_select_all);

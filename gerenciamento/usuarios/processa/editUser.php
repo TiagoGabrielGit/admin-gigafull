@@ -24,6 +24,12 @@ require "../../../conexoes/conexao.php";
         $perfil = $_POST['perfil'];
         $active = $_POST['situacao'];
         $tipoUser = $_POST['tipoAcesso'];
+        if ($tipoUser == "1") {
+            $perfil = $_POST['perfil'];
+        } else if ($tipoUser == "2" || $tipoUser == "3") {
+            $perfil = "0";
+        }
+
         $empresaID = $_POST['empresaSelect'];
 
         $resultEditUser = "UPDATE usuarios SET empresa_id='$empresaID', tipo_usuario='$tipoUser', perfil_id='$perfil', active='$active', modificado=NOW() WHERE id='$id'"
