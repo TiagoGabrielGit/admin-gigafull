@@ -160,18 +160,20 @@
                                 </div>
                             </div><br>
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <label for="buscaLimpezaVistoria" class="form-label">Limpeza</label>
-                                    <textarea id="buscaLimpezaVistoria" name="buscaLimpezaVistoria" class="form-control" disabled class="form-control" style="height: 100px"></textarea>
+                                    <textarea rows="8" id="buscaLimpezaVistoria" name="buscaLimpezaVistoria" class="form-control" disabled class="form-control"></textarea>
                                 </div>
-                                <div class="col-md-6">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
                                     <label for="buscaOrganizacaoVistoria" class="form-label">Organização</label>
-                                    <textarea id="buscaOrganizacaoVistoria" name="buscaOrganizacaoVistoria" class="form-control" disabled class="form-control" style="height: 100px"></textarea>
+                                    <textarea rows="8" id="buscaOrganizacaoVistoria" name="buscaOrganizacaoVistoria" class="form-control" disabled class="form-control"></textarea>
                                 </div>
 
                                 <div class="col-md-12">
                                     <label for="buscaObsGeralVistoria" class="form-label">Observações Gerais do POP</label>
-                                    <textarea id="buscaObsGeralVistoria" name="buscaObsGeralVistoria" class="form-control" disabled class="form-control" style="height: 100px"></textarea>
+                                    <textarea rows="8" id="buscaObsGeralVistoria" name="buscaObsGeralVistoria" class="form-control" disabled class="form-control"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -191,24 +193,25 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-12">
                                     <label class="form-label">Energia</label>
-                                    <input id="resultEnergia" name="resultEnergia" type="text" class="form-control" readonly>
+                                    <textarea rows="5" id="resultEnergia" name="resultEnergia" readonly class="form-control"></textarea>
                                 </div>
-
-                                <div class="col-md-6">
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
                                     <label class="form-label">Limpeza Adequada</label>
-                                    <input id="resultLimpeza" name="resultLimpeza" type="text" class="form-control" readonly>
+                                    <textarea rows="5" id="resultLimpeza" name="resultLimpeza" readonly class="form-control"></textarea>
                                 </div>
                             </div>
 
                             <div class="col-md-12">
                                 <label class="form-label">Detalhamento Fonte</label>
-                                <textarea id="resultFonte" name="resultFonte" readonly class="form-control" style="height: 50px"></textarea>
+                                <textarea rows="5" id="resultFonte" name="resultFonte" readonly class="form-control"></textarea>
                             </div>
                             <div class="col-md-12">
                                 <label class="form-label">Observação</label>
-                                <textarea id="resultObs" name="resultObs" readonly class="form-control" style="height: 100px"></textarea>
+                                <textarea rows="5" id="resultObs" name="resultObs" readonly class="form-control"></textarea>
                             </div>
                         </div>
                     </div>

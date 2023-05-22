@@ -1,75 +1,3 @@
-<?php
-include('conexoes/conexao.php');
-
-if (isset($_POST['email']) || isset($_POST['senha'])) {
-
-  if (strlen($_POST['email']) == 0) {
-    echo "Preencha seu e-mail";
-  } else if (strlen($_POST['senha']) == 0) {
-    echo "Preencha sua senha";
-  } else {
-
-    $email = $mysqli->real_escape_string($_POST['email']);
-    $senha = $mysqli->real_escape_string(md5($_POST['senha']));
-
-    $sql_code =
-      "SELECT
-        u.id as id,
-        p.nome as nome,
-        p.email as email,
-        u.senha as senha,
-		u.tipo_usuario as tipo_usuario,
-        u.perfil_id as perfil,
-        pe.perfil as nome_perfil
-      FROM
-	      usuarios as u
-      LEFT JOIN
-        pessoas as p
-      ON
-        p.id = u.pessoa_id
-      LEFT JOIN
-        perfil as pe
-      ON
-        u.perfil_id = pe.id
-      WHERE
-        p.email = '$email' 
-	    AND 
-	      u.senha = '$senha'
-	    AND
-	      u.active = 1";
-
-    $sql_query = $mysqli->query($sql_code) or die("Falha na execução do código SQL: " . $mysqli->error);
-
-    $quantidade = $sql_query->num_rows;
-
-    if ($quantidade == 1) {
-
-      $usuario = $sql_query->fetch_assoc();
-
-      if (!isset($_SESSION)) {
-        session_start();
-      }
-
-      $_SESSION['id'] = $usuario['id'];
-      $_SESSION['nome'] = $usuario['nome'];
-      $_SESSION['perfil'] = $usuario['perfil'];
-      $_SESSION['nome_perfil'] = $usuario['nome_perfil'];
-      $_SESSION['dashboard'] = $usuario['tipo_usuario'];
-      $_SESSION['ip_address'] = $_SERVER['REMOTE_ADDR'];
-      
-      $usuario_id = $_SESSION['id'];
-      $ip_address = $_SESSION['ip_address'];
-
-      $insert_log = "INSERT INTO log_acesso (usuario_id, ip_address, horario) VALUES ('$usuario_id', '$ip_address', NOW())";
-      mysqli_query($mysqli, $insert_log);
-
-      header("Location: index.php");
-    } else {
-      echo "Falha ao logar! E-mail ou senha incorretos";
-    }
-  }
-}
-?>
 <!DOCTYPE html>
 <html lang="PT-BR">
 
@@ -135,8 +63,7 @@ if (isset($_POST['email']) || isset($_POST['senha'])) {
                     <p class="text-center small"> Digite seu usuário e senha para entrar</p>
                   </div>
 
-                  <form action="" method="POST" class="row g-3 needs-validation" novalidate>
-
+                  <form id="formLogin" method="POST" class="row g-3">
                     <div class="col-12">
                       <label for="yourUsername" class="form-label">Usuário</label>
                       <div class="input-group has-validation">
@@ -151,11 +78,20 @@ if (isset($_POST['email']) || isset($_POST['senha'])) {
                       <input type="password" name="senha" class="form-control" id="yourPassword" required>
                       <div class="invalid-feedback">Digite sua senha.</div>
                     </div>
-                    <div class="col-4"></div>
-                    <div class="col-4">
-                      <button class="btn btn-danger w-100" type="submit">Login</button>
+
+
+                    <div class="text-center">
+                      <div id="carregandoLogin" class="spinner-border text-success" role="status" hidden>
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+
+                      <span id="msgLogin" style="text-align: center;"></span>
                     </div>
-                    <div class="col-4"></div>
+
+                    <div class="text-center">
+                      <input id="btnLogin" name="btnLogin" type="button" value="Login" class="btn btn-danger w-50"></input>
+                    </div>
+
                   </form>
 
                 </div>
@@ -179,6 +115,11 @@ if (isset($_POST['email']) || isset($_POST['senha'])) {
   </main><!-- End #main -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <?php
+  require "login_js.php";
+  ?>
+
 
   <!-- Vendor JS Files -->
   <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>

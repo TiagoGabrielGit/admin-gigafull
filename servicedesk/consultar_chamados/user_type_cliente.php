@@ -152,23 +152,23 @@ $idParceiro = $c_dados_usuario['idParceiro'];
                                                                 while ($tipos_chamados = mysqli_fetch_object($r_lista_tipos_chamados)) {
                                                                     $idTipoChamado = $tipos_chamados->idTipo;
 
-                                                                    $valida_permissao_equipe =
+                                                                    $valida_permissao_empresa =
                                                                         "SELECT
-                                                                        *
-                                                                        FROM
-                                                                        chamados_autorizados as ca
-                                                                        WHERE
-                                                                        ca.tipo_id = $idTipoChamado
-                                                                        AND 
-                                                                        ca.equipe_id IN ((SELECT
-                                                                        ei.equipe_id as idEquipe
-                                                                        FROM
-                                                                        equipes_integrantes as ei
-                                                                        WHERE
-                                                                        ei.integrante_id = $id_usuario))";
-                                                                    $r_valida_permissao_equipe = mysqli_query($mysqli, $valida_permissao_equipe);
-                                                                    $c_valida_permissao_equipe = $r_valida_permissao_equipe->fetch_array();
-                                                                    if (empty($c_valida_permissao_equipe)) {
+                                                                    *
+                                                                    FROM
+                                                                    chamados_autorizados_by_company as ca
+                                                                    WHERE
+                                                                    ca.tipo_id = $idTipoChamado
+                                                                    AND 
+                                                                    ca.company_id IN ((SELECT
+                                                                    u.empresa_id as idEmpresa
+                                                                    FROM
+                                                                    usuarios as u
+                                                                    WHERE
+                                                                    u.id = $id_usuario))";
+                                                                    $r_valida_permissao_empresa = mysqli_query($mysqli, $valida_permissao_empresa);
+                                                                    $c_valida_permissao_empresa = $r_valida_permissao_empresa->fetch_array();
+                                                                    if (empty($c_valida_permissao_empresa)) {
                                                                     } else {
                                                                         echo "<option value='$tipos_chamados->idTipo'> $tipos_chamados->tipoChamado</option>";
                                                                     }

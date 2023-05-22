@@ -9,9 +9,13 @@
         $.post("/servicedesk/consultar_chamados/processa/add.php", dados, function(retorna) {
             $("#msg").slideDown('slow').html(retorna);
 
-            //Limpar os campos
-            $('#abrirChamado')[0].reset();
 
+            if (retorna.includes("Error")) {
+                // Lógica para tratar o erro, se necessário
+            } else {
+                //Limpar os campos
+                $('#abrirChamado')[0].reset();
+            }
             //Apresentar a mensagem leve
             retirarMsg();
         });

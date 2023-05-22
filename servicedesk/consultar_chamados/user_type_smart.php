@@ -109,7 +109,7 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                 </div>
 
                                 <div class="modal fade" id="basicModal" tabindex="-1">
-                                    <div class="modal-dialog modal-lg">
+                                    <div class="modal-dialog modal-xl">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title">Novo chamado</h5>
@@ -206,7 +206,7 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
 
                                                         <div class="col-12">
                                                             <label for="relatoChamado" class="form-label">Descreva a situação*</label>
-                                                            <textarea id="relatoChamado" name="relatoChamado" class="form-control" maxlength="1000" required></textarea>
+                                                            <textarea rows="8" id="relatoChamado" name="relatoChamado" class="form-control" maxlength="1000" required></textarea>
 
                                                         </div>
 

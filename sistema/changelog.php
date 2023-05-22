@@ -16,6 +16,63 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
 
+              <!-- Versão 6.3 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading6-3">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6-3" aria-expanded="false" aria-controls="collapse6-3">
+                    Versão 6.3 - XX/05/2023
+                  </button>
+                </h2>
+                <div id="collapse6-3" class="accordion-collapse collapse" aria-labelledby="heading6-3" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Alertas de erro de login;<br>
+                    # Incidentes Normalizados Tenant;<br>
+                    # Selecão de tipos de chamados para Tenant;<br>
+                    # Selecão de tipos de chamados para Cliente;<br>
+                    # Tipos de Chamados vinculados a empresa;<br>
+                    # Não limpar dados form em novo chamado caso o usuario esqueceu de preencher algum campo;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Excluido os id da tabela sub-menu (12); <br>
+                    # Excluido os id's da tabela menu (5, 7, 8);<br>
+                    # Criado tabela "chamados_autorizados_by_company";<br>
+                    # Criado a coluna "reset_password" na tabela "usuarios";<br>
+                    
+                    <br><strong>Previsto para próximas atualizaçõs</strong><br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Notificaçãoes de novos incidentes e relatos;<br>
+                    # Busca automatica de info-summary ao identificar incidente;<br>
+                    # Separar incidentes smart, cliente e tenant. Smart esta pronto;<br>
+                    # Vinculo de chamado a incidente;<br>
+                    # Cadastro de competencia;<br>
+                    # Competencia por usuários;<br>
+                    # Competencia por protocolo;<br>
+                    # Anexo arquivos em chamados;<br>
+                    # Anexo arquivos em vistorias;<br>
+                    # Alterar senha após primeiro login;<br>
+                    
+                    <br><strong>Backlog</strong><br>
+                    # Cadastro de PONs;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Componentes de equipamentos;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                    # Segurança individual;<br>
+                    # Pautas e ATAs de Reunião;<br>
+
+                    <br><strong>Backlog --- Rede Neutra</strong><br>
+                    # BUG retorna código em resultado do provisionamento;<br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas;<br>
+                    # Botão troca ONU;<br>
+                    # Armazenar LOG sinal do cliente após provisionamento;<br>
+                    # Validação sinal antes de adicionar serviços;<br>
+                    # Autofind no provisionamento;<br><br>
+                  </div>
+                </div>
+              </div>
+
               <!-- Versão 6.2 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading6-2">
@@ -40,7 +97,7 @@ require "../includes/menu.php";
                     <br><strong>Previsto para próximas atualizaçõs</strong><br>
                     # Integração para abrir chamado no Voalle;<br>
                     # Notificaçãoes de novos incidentes e relatos;<br>
-                    # Busca automatica de info-summary ao identificar incidente;<br>                    
+                    # Busca automatica de info-summary ao identificar incidente;<br>
                     # Separar incidentes smart, cliente e tenant. Smart esta pronto;<br>
                     # Vinculo de chamado a incidente;<br>
                     # Cadastro competencias;<br>
@@ -63,7 +120,6 @@ require "../includes/menu.php";
                   </div>
                 </div>
               </div>
-
 
               <!-- Versão 6.1 -->
               <div class="accordion-item">

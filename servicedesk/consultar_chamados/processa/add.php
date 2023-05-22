@@ -3,7 +3,7 @@ require "../../../conexoes/conexao.php";
 require "../../../conexoes/conexao_pdo.php";
 
 if (empty($_POST['selectService'])) {
-    echo "<p style='color:red;'>Code 001: Dados obrigatórios não preenchidos.</p>";
+    echo "<p style='color:red;'>Error: Dados obrigatórios não preenchidos.</p>";
 } else {
     $idServico = $_POST['selectService'];
     $sql_qtde_itens =
@@ -32,7 +32,7 @@ if (empty($_POST['selectService'])) {
 
     if ($row_itens['qtde'] > 0) {
         if (empty($_POST['assuntoChamado']) || empty($_POST['tipoChamado']) || empty($_POST['solicitante']) || empty($_POST['solicitante']) || empty($_POST['empresaChamado']) || empty($_POST['relatoChamado']) || empty($_POST['selectService']) || empty($_POST['selectIten'])) {
-            echo "<p style='color:red;'>Code 002: Dados obrigatórios não preenchidos.</p>";
+            echo "<p style='color:red;'>Error: Dados obrigatórios não preenchidos.</p>";
         } else {
 
             $assuntoChamado = $_POST['assuntoChamado'];
@@ -69,12 +69,12 @@ if (empty($_POST['selectService'])) {
             if ($cont_insert) {
                 echo "<p style='color:green;'>Code 006: Chamado aberto com sucesso. Chamado $id_chamado</p>";
             } else {
-                echo "<p style='color:red;'>Code 007: Erro ao abrir chamado.</p>";
+                echo "<p style='color:red;'>Error: Erro ao abrir chamado.</p>";
             }
         }
     } else {
         if (empty($_POST['assuntoChamado']) || empty($_POST['tipoChamado']) || empty($_POST['solicitante']) || empty($_POST['solicitante']) || empty($_POST['empresaChamado']) || empty($_POST['relatoChamado']) || empty($_POST['selectService'])) {
-            echo "<p style='color:red;'>Code 003: Dados obrigatórios não preenchidos.</p>";
+            echo "<p style='color:red;'>Error: Dados obrigatórios não preenchidos.</p>";
         } else {
             $assuntoChamado = $_POST['assuntoChamado'];
             $tipochamado_id = $_POST['tipoChamado'];
@@ -106,7 +106,7 @@ if (empty($_POST['selectService'])) {
             if ($cont_insert) {
                 echo "<p style='color:green;'>Code 004: Chamado aberto com sucesso. Chamado $id_chamado</p>";
             } else {
-                echo "<p style='color:red;'>Code 005: Erro ao abrir chamado.</p>";
+                echo "<p style='color:red;'>Error: Erro ao abrir chamado.</p>";
             }
         }
     }
