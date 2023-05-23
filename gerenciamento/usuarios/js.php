@@ -39,31 +39,99 @@
     mostrarOcultarSelect();
 </script>
 
+
+
+
+
+
+
+
+
 <script>
     $("#btnSalvarUsuario").click(function() {
+        var senhaProvisoria = gerarSenhaProvisoria();
         var dadosCadastrarUsuario = $("#formNovoUsuario").serialize();
 
-        $.post("processa/add.php", dadosCadastrarUsuario, function(retornaCadastrarUsuario) {
-            $("#msgSalvarUsuario1").slideDown('slow').html(retornaCadastrarUsuario);
-            $("#msgSalvarUsuario2").slideDown('slow').html(retornaCadastrarUsuario);
+        // Enviar dados via AJAX
+        $.ajax({
+            url: "processa/add.php", // Substitua pelo caminho correto para o arquivo que salvará no banco de dados
+            type: "POST",
+            data: dadosCadastrarUsuario + "&senha=" + senhaProvisoria,
+            success: function(responseSalvarUsuario) {
 
-            if (retornaCadastrarUsuario.includes("Error")) {
-                // Lógica para tratar o erro, se necessário
-            } else {
-                // Limpar os campos
-                $('#formNovoUsuario')[0].reset();
+                if (responseSalvarUsuario.includes("Error")) {
+                    $("#msgSalvarUsuario1").slideDown('slow').html(responseSalvarUsuario);
+                    $("#msgSalvarUsuario2").slideDown('slow').html(responseSalvarUsuario);
+                    retirarMsgSalvarUsuario();
+                } else {
+                    document.querySelector("#btnSalvarUsuario").hidden = true;
+                    $("#msgSalvarUsuario2").slideDown('slow').html(responseSalvarUsuario);
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $("#msgSalvarUsuario1").slideDown('slow').html(responseSalvarUsuario);
+                $("#msgSalvarUsuario2").slideDown('slow').html(responseSalvarUsuario);
+                retirarMsgSalvarUsuario();
             }
-
-            //Apresentar a mensagem leve
-            retirarMsgCadastrarUsuario();
         });
     });
 
     //Retirar a mensagem após 1700 milissegundos
-    function retirarMsgCadastrarUsuario() {
+    function retirarMsgSalvarUsuario() {
         setTimeout(function() {
             $("#msgSalvarUsuario1").slideUp('slow', function() {});
             $("#msgSalvarUsuario2").slideUp('slow', function() {});
         }, 1700);
     }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    $("#btnReset").click(function() {
+        var senhaProvisoria = gerarSenhaProvisoria();
+        var dadosFormulario = $("#resetarSenha").serialize();
+
+        // Enviar dados via AJAX
+        $.ajax({
+            url: "processa/alterarSenha.php", // Substitua pelo caminho correto para o arquivo que salvará no banco de dados
+            type: "POST",
+            data: dadosFormulario + "&senha=" + senhaProvisoria,
+            success: function(response) {
+                document.querySelector("#msgConfirmacao").hidden = true;
+                document.querySelector("#btnReset").hidden = true;
+                $("#msgSenhaGerada").slideDown('slow').html(response);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $("#msgSenhaGerada").slideDown('slow').html(response);
+            }
+        });
+    });
+</script>
+
+<script>
+    function gerarSenhaProvisoria() {
+        var caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+        var senha = "";
+        var comprimentoSenha = 15; // Define o comprimento da senha (pode ser ajustado conforme necessário)
+
+        for (var i = 0; i < comprimentoSenha; i++) {
+            var indiceAleatorio = Math.floor(Math.random() * caracteres.length);
+            senha += caracteres.charAt(indiceAleatorio);
+        }
+
+        return senha;
+    };
 </script>

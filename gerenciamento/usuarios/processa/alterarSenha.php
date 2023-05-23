@@ -1,112 +1,29 @@
 <?php
-require "../../../conexoes/conexao.php";
-?>
+if (empty($_POST['id']) || empty($_POST['senha'])) {
+    echo "<p style='color:red;'>Erro ao gerar nova senha.</p>";
+} else {
+    $idUsuario = $_POST['id'];
+    $senha = $_POST['senha'];
+    $senhaMD5 = md5($_POST['senha']);
 
+    require "../../../conexoes/conexao_pdo.php"; // Inclui o arquivo com as credenciais de acesso ao banco
 
-<!DOCTYPE html>
-<html lang="pt-br">
+    $sql = "UPDATE usuarios AS u
+            SET u.reset_password = '1', u.senha = :senha, u.modificado = NOW()
+            WHERE u.id = :idUsuario";
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Gigafull Admin</title>
-    <link href="/alerts/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="/alerts/js/bootstrap.min.js"></script>
-</head>
+    // Preparação da declaração
+    $stmt = $pdo->prepare($sql);
 
-<body>
-    <div class="container theme-showcase" role="main">
-        <?php
-        $id = $_POST['id'];
-        $usuario = $_POST['usuario'];
-        $senha = md5($_POST['senha']);
-        $senhaRepeat = md5($_POST['senhaRepeat']);
+    // Atribuição dos valores aos parâmetros
+    $stmt->bindParam(":senha", $senhaMD5);
+    $stmt->bindParam(":idUsuario", $idUsuario);
 
-        $resultAlteraSenha = "UPDATE usuarios SET senha='$senha', modificado=NOW() WHERE id='$id'";
-        ?>
-
-        <?php
-        if ($senha == $senhaRepeat && $id != "") {
-            $resultado = mysqli_query($mysqli, $resultAlteraSenha); ?>
-
-            <?php
-            if (mysqli_affected_rows($mysqli) > 0) { ?>
-
-                <div class="modal fade" id="myModalSenhaOk" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Alterado com Sucesso!</h4>
-                            </div>
-
-                            <div class="modal-body">
-                                <?php echo $usuario; ?>
-                            </div>
-                            <div class="modal-footer">
-                                <a href="/index.php"><button type="button" class="btn btn-success">Ok</button></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <script>
-                    $(document).ready(function() {
-                        $('#myModalSenhaOk').modal('show');
-                    });
-                </script>
-            <?php } else { ?>
-
-                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title" id="myModalLabel">Erro ao alterar!</h4>
-                            </div>
-                            <div class="modal-body">
-                                <?php echo $usuario; ?>
-                            </div>
-                            <div class="modal-footer">
-                                <a href="/index.php"><button type="button" class="btn btn-danger">Ok</button></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <script>
-                    $(document).ready(function() {
-                        $('#myModal').modal('show');
-                    });
-                </script>
-
-            <?php } ?>
-
-        <?php } else { ?>
-
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Senhas não coincidem!
-                            </h4>
-                        </div>
-                        <div class="modal-footer">
-                            <a href="/index.php"><button type="button" class="btn btn-danger">Ok</button></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <script>
-                $(document).ready(function() {
-                    $('#myModal').modal('show');
-                });
-            </script>
-
-
-        <?php } ?>
-
-    </div>
-</body>
-
-</html>
+    if ($stmt->execute()) {
+        echo "<p style='color:green;'>Utilize a senha gerada abaixo para realizar acesso. Ao realizar o acesso, a senha deve ser alterada.
+    <br><br>
+    <b>Senha: $senha</b></p>";
+    } else {
+        echo "<p style='color:red;'>Erro ao gerar nova senha.</p>";
+    }
+}

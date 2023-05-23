@@ -115,16 +115,10 @@ require "sql.php";
                                                             <input name="inputEmail" type="text" class="form-control" id="inputEmail" disabled>
                                                         </div>
 
-                                                        <div class="col-6">
-                                                            <label for="password" class="form-label">Senha</label>
-                                                            <input type="password" name="password" class="form-control" id="password">
-                                                            <div class="invalid-feedback">Digite uma senha.</div>
-                                                        </div>
-
                                                         <div class="col-12" style="text-align: center;">
                                                             <span id="msgSalvarUsuario2"></span>
                                                             <input id="btnSalvarUsuario" name="btnSalvarUsuario" type="button" value="Cadastrar usuário" class="btn btn-danger"></input>
-                                                            
+
                                                         </div>
                                                     </form>
                                                 </div>
@@ -212,7 +206,7 @@ require "sql.php";
                                             ?>
                                         </td>
                                         <td style="text-align: center;">
-                                            <a onclick="capturaDadosLogin(<?php echo $campos['id'] ?>,'<?php echo $campos['email'] ?>','<?php echo $campos['nome'] ?>')" class="bi bi-key-fill" role="button" data-bs-toggle="modal" data-bs-target="#basicModalSenha"></a>
+                                            <a onclick="capturaDadosLogin(<?= $campos['id'] ?>,'<?= $campos['email'] ?>','<?= $campos['nome'] ?>')" class="bi bi-key-fill" role="button" data-bs-toggle="modal" data-bs-target="#basicModalSenha"></a>
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -237,7 +231,7 @@ require "sql.php";
         document.querySelector("#id_disable").value = id;
         document.querySelector("#usuario").value = usuario;
         document.querySelector("#usuario_disable").value = usuario;
-        document.querySelector("#nomeUsuario").value = nome;
+        document.querySelector("#nomeUsuarioSenha").value = nome;
     }
 </script>
 
@@ -251,13 +245,7 @@ require "sql.php";
             <div class="modal-body">
                 <div class="card-body">
                     <!-- Vertical Form -->
-                    <form method="POST" action="/gerenciamento/usuarios/processa/alterarSenha.php" class="row g-3 needs-validation" novalidate>
-
-                        <div class="col-12">
-                            <label for="nomeUsuario" class="form-label">Nome </label>
-                            <input type="Text" name="nomeUsuario" class="form-control" id="nomeUsuario" disabled>
-
-                        </div>
+                    <form id="resetarSenha" method="POST" class="row g-3">
 
                         <div class="col-3">
                             <label for="id" class="form-label">ID</label>
@@ -272,21 +260,26 @@ require "sql.php";
                         </div>
 
                         <div class="col-12">
-                            <label for="senha" class="form-label">Digite a senha nova</label>
-                            <input type="password" name="senha" class="form-control" id="senha" required>
-                            <div class="invalid-feedback">Digite seu e-mail.</div>
+                            <label for="nomeUsuarioSenha" class="form-label">Nome </label>
+                            <input type="Text" name="nomeUsuarioSenha" class="form-control" id="nomeUsuarioSenha" disabled>
+
                         </div>
 
-                        <div class="col-12">
-                            <label for="senhaRepeat" class="form-label">Repita a senha</label>
-                            <input type="password" name="senhaRepeat" class="form-control" id="senhaRepeat" required>
-                            <div class="invalid-feedback">Digite seu e-mail.</div>
-                        </div>
+                        <div class="col-12" style="text-align: center;">
+                            <span id="msgConfirmacao">
+                                <b>
+                                    <p style='color:red;'>Tem certeza que deseja gerar a senha? <br><br>
+                                        Esta ação irá gerar uma senha provisória onde o usuário tera que alterá-la no primeiro acesso!</p>
+                                </b>
+                            </span>
 
-                        <div class="col-12">
-                            <button class="btn btn-danger w-100" type="submit">Alterar Senha</button>
                         </div>
-
+                        <div class="col-12" style="text-align: center;">
+                            <span id="msgSenhaGerada"></span>
+                        </div>
+                        <div class="text-center">
+                            <input id="btnReset" name="btnReset" type="button" value="Gerar Senha" class="btn btn-danger w-50"></input>
+                        </div>
                     </form>
                 </div>
             </div>

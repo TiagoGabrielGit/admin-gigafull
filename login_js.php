@@ -12,11 +12,24 @@
                 // Mostrar o elemento carregandoLogin
                 document.querySelector("#carregandoLogin").hidden = false;
                 document.querySelector("#btnLogin").hidden = true;
-                // Aguardar 2 segundos e redirecionar para index.php
+                // Aguardar 2 segundos e redirecionar para reset_password.php
                 setTimeout(function() {
-                    window.location.href = "reset_password.php";
+                    // Criar um formulário dinamicamente
+                    var form = document.createElement("form");
+                    form.method = "POST";
+                    form.action = "reset_password.php";
+                    
+                    // Criar um input oculto com os dados do formulário
+                    var inputDadosLogin = document.createElement("input");
+                    inputDadosLogin.type = "hidden";
+                    inputDadosLogin.name = "dadosLogin";
+                    inputDadosLogin.value = dadosLogin;
+                    form.appendChild(inputDadosLogin);
 
-                }, 1000);
+                    // Adicionar o formulário à página e submetê-lo
+                    document.body.appendChild(form);
+                    form.submit();
+                }, 2000);
             } else {
                 // Mostrar o elemento carregandoLogin
                 document.querySelector("#carregandoLogin").hidden = false;
@@ -24,14 +37,14 @@
                 // Aguardar 2 segundos e redirecionar para index.php
                 setTimeout(function() {
                     window.location.href = "index.php";
-
-                }, 1000);
+                }, 2000);
             }
-            //Apresentar a mensagem leve
+            // Apresentar a mensagem leve
             retirarMsgLogin();
         });
     });
-    //Retirar a mensagem após 1700 milissegundos
+
+    // Retirar a mensagem após 1700 milissegundos
     function retirarMsgLogin() {
         setTimeout(function() {
             $("#msgLogin").slideUp('slow', function() {});

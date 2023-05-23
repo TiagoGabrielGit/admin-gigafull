@@ -6,10 +6,9 @@ require "../../../conexoes/conexao_pdo.php";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Verifica se todos os campos obrigatórios foram preenchidos
-    if (empty($_POST['nomeUsuario']) || empty($_POST['tipoAcesso']) || empty($_POST["empresaSelect"]) || empty($_POST["password"])) {
+    if (empty($_POST['nomeUsuario']) || empty($_POST['tipoAcesso']) || empty($_POST["empresaSelect"])) {
         // Mensagem de erro
         echo "<p style='color:red;'>Error 1: Por favor, preencha todos os campos obrigatórios.</p>";
-
     } else {
         $tipoAcesso = $_POST['tipoAcesso'];
         if ($tipoAcesso == "1" && empty($_POST["perfil"])) {
@@ -22,13 +21,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $empresaID = $_POST["empresaSelect"];
             $perfil = isset($_POST["perfil"]) ? $_POST["perfil"] : 0;
-            $password = md5($_POST["password"]);
+            $password = md5($_POST["senha"]);
+            $senha = $_POST["senha"];
 
 
             // Todos os campos estão preenchidos, continue com a lógica de salvamento no banco de dados
             $insert_usuario =
-                "INSERT INTO usuarios (pessoa_id, senha, criado, tipo_usuario, empresa_id, perfil_id, active)
-        VALUES (:pessoa_id, :senha, NOW(), :tipo_usuario, :empresa_id, :perfil_id, '1')";
+                "INSERT INTO usuarios (pessoa_id, senha, criado, tipo_usuario, empresa_id, perfil_id, reset_password, active)
+        VALUES (:pessoa_id, :senha, NOW(), :tipo_usuario, :empresa_id, :perfil_id, '1', '1')";
 
             $stmt1 = $pdo->prepare($insert_usuario);
 
@@ -40,7 +40,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Executa a consulta
             if ($stmt1->execute()) {
-                echo "<p style='color:green;'>Usuário salvo com sucesso.</p>";
+                echo "<p style='color:green;'>Utilize a senha gerada abaixo para realizar acesso. <br> Ao realizar o acesso, a senha deve ser alterada.
+                <br><br>
+                <b>Senha: $senha</b></p>";
             } else {
                 // Ocorreu um erro ao salvar a empresa
                 echo "<p style='color:red;'>Error: . $stmt->error</p>";

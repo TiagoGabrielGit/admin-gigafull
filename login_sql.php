@@ -40,25 +40,25 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
   if ($quantidade_linhas == 1) {
     $usuario = $resultado->fetch_array();
 
-    if (!isset($_SESSION)) {
-      session_start();
-    }
-
-    $_SESSION['id'] = $usuario['id'];
-    $_SESSION['nome'] = $usuario['nome'];
-    $_SESSION['perfil'] = $usuario['perfil'];
-    $_SESSION['nome_perfil'] = $usuario['nome_perfil'];
-    $_SESSION['dashboard'] = $usuario['tipo_usuario'];
-    $_SESSION['ip_address'] = $_SERVER['REMOTE_ADDR'];
-
-    $usuario_id = $_SESSION['id'];
-    $ip_address = $_SESSION['ip_address'];
-
-    $insert_log = "INSERT INTO log_acesso (usuario_id, ip_address, horario) VALUES ('$usuario_id', '$ip_address', NOW())";
-    mysqli_query($mysqli, $insert_log);
-
-
     if ($usuario['active'] == "1" && $usuario['reset_password'] == "0") {
+
+      if (!isset($_SESSION)) {
+        session_start();
+      }
+
+      $_SESSION['id'] = $usuario['id'];
+      $_SESSION['nome'] = $usuario['nome'];
+      $_SESSION['perfil'] = $usuario['perfil'];
+      $_SESSION['nome_perfil'] = $usuario['nome_perfil'];
+      $_SESSION['dashboard'] = $usuario['tipo_usuario'];
+      $_SESSION['ip_address'] = $_SERVER['REMOTE_ADDR'];
+
+      $usuario_id = $_SESSION['id'];
+      $ip_address = $_SESSION['ip_address'];
+
+      $insert_log = "INSERT INTO log_acesso (usuario_id, ip_address, horario) VALUES ('$usuario_id', '$ip_address', NOW())";
+      mysqli_query($mysqli, $insert_log);
+
       echo "<p style='color:green;'>Code001: Acesso permitido.</p>";
     } else if ($usuario['active'] == "1" && $usuario['reset_password'] == "1") {
       echo "<p style='color:green;'>Code002: Reset Password.</p>";
