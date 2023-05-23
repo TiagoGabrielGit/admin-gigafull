@@ -1,52 +1,35 @@
 <?php
-require "../../includes/menu.php"
+require "../../includes/menu.php";
 ?>
 
 <?php
-$idUsuario = $_GET['id'];
+$id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
-$sql_usuario =
-    "SELECT 
-user.id as id,
-pess.nome as nome,
-user.tipo_usuario as tipoUsuario,
-CASE
-    WHEN user.tipo_usuario = 1 THEN 'Smart'
-    WHEN user.tipo_usuario = 2 THEN 'Cliente'
-    WHEN user.tipo_usuario = 3 THEN 'Tenant'
-END as tipo,
-pess.email as email,
-user.senha as senha,
-user.perfil_id as idPerfil,
-p.perfil as nome_perfil,
-CASE
-    WHEN user.active = 1 THEN 'Ativado'
-    WHEN user.active = 0 THEN 'Inativado'
-END AS active
-FROM 
-usuarios as user
-LEFT JOIN                            
-pessoas as pess
-ON
-pess.id = user.pessoa_id
-LEFT JOIN
-perfil as p
-ON
-p.id = user.perfil_id
-WHERE
-user.id = $idUsuario";
-
-$r_sql_usuario = mysqli_query($mysqli, $sql_usuario) or die("Erro ao retornar dados");
-$campos = $r_sql_usuario->fetch_array();
-
-$sql_perfil =
+$sql_tipo_chamado =
     "SELECT
-p.id as idPerfil,
-p.perfil as perfil
+tc.id as id_tipo,
+tc.tipo as nome_tipo,
+CASE
+    WHEN tc.active = 1 THEN 'Ativado'
+    WHEN tc.active = 0 THEN 'Inativado'
+END as ativo_tipo
 FROM
-perfil as p
+tipos_chamados as tc
 WHERE
-p.active = 1"; ?>
+tc.id = '$id'
+";
+
+$r_tipo_chamado = mysqli_query($mysqli, $sql_tipo_chamado) or die("Erro ao retornar dados");
+$c_tipo_chamado = $r_tipo_chamado->fetch_array();
+
+if ($c_tipo_chamado['ativo_tipo'] == "Ativado") {
+    $checkSituacao1 = "checked";
+    $checkSituacao0 = "";
+} else if ($c_tipo_chamado['ativo_tipo'] == "Inativado") {
+    $checkSituacao0 = "checked";
+    $checkSituacao1 = "";
+}
+?>
 
 <main id="main" class="main">
     <section class="section">
@@ -65,10 +48,6 @@ p.active = 1"; ?>
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="competencia-tab" data-bs-toggle="tab" data-bs-target="#competencia" type="button" role="tab" aria-controls="competencia" aria-selected="true">Competência</button>
                                         </li>
-                                        <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="log-tab" data-bs-toggle="tab" data-bs-target="#log" type="button" role="tab" aria-controls="log" aria-selected="true">LOGs</button>
-                                        </li>
-
                                     </ul>
 
                                     <div class="tab-content pt-2" id="myTabContent">
@@ -78,10 +57,6 @@ p.active = 1"; ?>
 
                                         <div class="tab-pane fade" id="competencia" role="tabpanel" aria-labelledby="competencia-tab">
                                             <?php require "tabs/competencias.php" ?>
-                                        </div>
-
-                                        <div class="tab-pane fade" id="log" role="tabpanel" aria-labelledby="log-tab">
-                                            <?php require "tabs/log.php" ?>
                                         </div>
                                     </div><!-- End Default Tabs -->
                                 </div>
@@ -93,6 +68,8 @@ p.active = 1"; ?>
         </div>
     </section>
 </main><!-- End #main -->
+
+
 
 <?php
 require "js.php";

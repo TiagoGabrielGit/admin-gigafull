@@ -39,14 +39,6 @@
     mostrarOcultarSelect();
 </script>
 
-
-
-
-
-
-
-
-
 <script>
     $("#btnSalvarUsuario").click(function() {
         var senhaProvisoria = gerarSenhaProvisoria();
@@ -85,7 +77,50 @@
     }
 </script>
 
+<script>
+    function incluirCompetencia(idCompetencia, idUsuario, nomeUsuario, competencia) {
+        document.querySelector("#idIncluirCompetencia").value = idCompetencia;
+        document.querySelector("#idUsuarioCompetencia").value = idUsuario;
 
+        let mensagemConfirmCompetencia = ` 
+                     
+        Deseja atribuir a competência <b> ${competencia} </b> ao usuário  <b> ${nomeUsuario} </b>?`
+        document.querySelector("#msgConfirmCompetencia").innerHTML = mensagemConfirmCompetencia
+    }
+</script>
+
+<script>
+    function retirarCompetencia(idUC, nomeUsuario2, competencia2) {
+        document.querySelector("#idUC").value = idUC;
+
+        let mensagemRetirarCompetencia = ` 
+                     
+        Deseja retirar a competência <b> ${competencia2} </b> do usuário  <b> ${nomeUsuario2} </b>?`
+        document.querySelector("#msgRetirarCompetencia").innerHTML = mensagemRetirarCompetencia
+    }
+</script>
+
+<script>
+    $("#btnConfirmCompetencia").click(function() {
+        var dadosIncluiCompetencia = $("#formIncluiCompetencia").serialize();
+
+        $.post("processa/incluiCompetencia.php", dadosIncluiCompetencia, function(retornaIncluiCompetencia) {
+            location.reload();
+
+        });
+    });
+</script>
+
+<script>
+    $("#btnRetirarCompetencia").click(function() {
+        var dadosRetirarCompetencia = $("#formRetirarCompetencia").serialize();
+
+        $.post("processa/retiraCompetencia.php", dadosRetirarCompetencia, function(retornaRetirarCompetencia) {
+            location.reload();
+
+        });
+    });
+</script>
 
 
 

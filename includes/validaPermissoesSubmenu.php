@@ -414,3 +414,19 @@ $r_nav_sub_configuracoes_incidentes = mysqli_query($mysqli, $nav_sub_configuraco
 $c_nav_sub_configuracoes_incidentes = mysqli_fetch_assoc($r_nav_sub_configuracoes_incidentes);
 /////////////////////////////////////////
 
+$nav_sub_competencias = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '25'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_competencias = mysqli_query($mysqli, $nav_sub_competencias);
+$c_nav_sub_competencias = mysqli_fetch_assoc($r_nav_sub_competencias);
+/////////////////////////////////////////

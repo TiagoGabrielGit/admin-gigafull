@@ -153,7 +153,7 @@ require "validaRotina.php";
 
         <?php if ($c_nav_tiposChamados['c'] == 1) { ?>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="/portal/tipos_chamados/index.php">
+                <a class="nav-link collapsed" href="/servicedesk/tipos_chamados/index.php">
                     <i class="bi bi-clipboard-plus"></i>
                     <span>Tipos de Chamados</span>
                 </a>
@@ -169,15 +169,6 @@ require "validaRotina.php";
                 <a class="nav-link collapsed" href="/telecom/credentials/index.php">
                     <i class="bi bi-key"></i>
                     <span>Credenciais</span>
-                </a>
-            </li>
-        <?php } ?>
-
-        <?php if ($c_nav_guardpass['c'] == 1) { ?>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="/telecom/credenciais/index.php">
-                    <i class="bi bi-key"></i>
-                    <span>Guardpass</span>
                 </a>
             </li>
         <?php } ?>
@@ -269,6 +260,15 @@ require "validaRotina.php";
                     <i class="bi bi-gear"></i><span>Gerenciamento</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="gerenciamento-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                    <?php if ($c_nav_sub_competencias['c'] == 1) { ?>
+                        <li>
+                            <a href="/gerenciamento/competencias/index.php">
+                                <i class="bi bi-circle"></i><span>Competências</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
                     <?php if ($c_nav_sub_equipes['c'] == 1) { ?>
                         <li>
                             <a href="/gerenciamento/equipes/index.php">

@@ -1,7 +1,7 @@
 <div class="accordion-item">
     <h2 class="accordion-header" id="heading<?= $cont ?>">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $cont ?>" aria-expanded="false" aria-controls="collapse<?= $cont ?>">
-            <?= $campos['descricao'] ?> <?= $idSessao ?>
+            <?= $campos['descricao'] ?>
         </button>
     </h2>
     <div id="collapse<?= $cont ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $cont ?>" data-bs-parent="#accordionExample" style="">

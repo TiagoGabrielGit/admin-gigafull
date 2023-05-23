@@ -8,7 +8,7 @@ if (empty($_POST['email']) || empty($_POST['confirmEmail']) || empty($_POST['sen
         echo "Error: E-mail não conincide.";
     } else {
         if ($_POST['senha'] != $_POST['confirmPassword']) {
-            echo "Error: Senhas não conincide.";
+            echo "Error: Senhas não coincidem.";
         } else {
             //Código para login
             $email = $_POST['email'];
