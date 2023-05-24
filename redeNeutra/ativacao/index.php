@@ -17,7 +17,7 @@ require "../../includes/remove_setas_number.php";
                         <div class="col-lg-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Execução</h5> 
+                                    <h5 class="card-title">Execução</h5>
                                     <form id="formExecutaScript" method="POST">
                                         <div class="row">
                                             <div class="col-6">
@@ -27,32 +27,44 @@ require "../../includes/remove_setas_number.php";
                                                     <?php
                                                     $usuarioID = $_SESSION['id'];
 
-                                                    $sql_parceiroID = 
-                                                        "SELECT
-                                                        rnp.id as parceiro
+                                                    if ($userType == "1") {
+                                                        $sql_parceiroID =
+                                                            "SELECT
+                                                            rnp.id as idParceiro,
+                                                            e.fantasia as parceiro
+                                                            FROM
+                                                            redeneutra_parceiro as rnp
+                                                            LEFT JOIN
+                                                            empresas as e
+                                                            ON
+                                                            e.id = rnp.empresa_id
+                                                            WHERE
+                                                            rnp.active = 1
+                                                            ORDER BY
+                                                            e.fantasia ASC";
+                                                    } else if ($userType == "3") {
+                                                        $sql_parceiroID =
+                                                            "SELECT
+                                                        rnp.id as idParceiro,
+                                                        e.fantasia as parceiro
                                                         FROM
                                                         usuarios as u
                                                         LEFT JOIN
                                                         redeneutra_parceiro as rnp
                                                         ON
                                                         u.empresa_id = rnp.empresa_id
+                                                        LEFT JOIN
+                                                        empresas as e
+                                                        ON
+                                                        e.id = u.empresa_id
                                                         WHERE
                                                         u.id =   $usuarioID";
+                                                    };
 
                                                     $r_sql_parceiroID = mysqli_query($mysqli, $sql_parceiroID);
-                                                    $camposParceiro = $r_sql_parceiroID->fetch_array();
 
-                                                    if ($camposParceiro['parceiro'] != "") {
-                                                        $parceiroID = $camposParceiro['parceiro'];
-                                                    } else {
-                                                        $parceiroID = "%";
-                                                    }
-
-                                                    require "sql.php";
-
-                                                    $resultado = mysqli_query($mysqli, $redeneutra_parceiro);
-                                                    while ($parceiro = mysqli_fetch_object($resultado)) :
-                                                        echo "<option value='$parceiro->idparceiro'> $parceiro->parceiro</option>";
+                                                    while ($camposParceiro = mysqli_fetch_object($r_sql_parceiroID)) :
+                                                        echo "<option value='$camposParceiro->idParceiro'> $camposParceiro->parceiro</option>";
                                                     endwhile;
                                                     ?>
                                                 </select>
@@ -102,7 +114,7 @@ require "../../includes/remove_setas_number.php";
                                             </div>
                                         </div>
 
-                                        <input name="usuarioID" type="text" class="form-control" id="usuarioID" value="<?=$usuarioID?>" hidden>
+                                        <input name="usuarioID" type="text" class="form-control" id="usuarioID" value="<?= $usuarioID ?>" hidden>
 
                                         <hr class="sidebar-divider">
 

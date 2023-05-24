@@ -29,6 +29,7 @@ require "../includes/menu.php";
                     <br><strong>Melhorias</strong><br>
                     # Cadastro de competencia;<br>
                     # Competencia por usuários;<br>
+                    # Corrigido listagem de parceiros em ativação de Rede Neutra;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado o submenu competencias na tabela "url_submenu";<br>
@@ -39,7 +40,8 @@ require "../includes/menu.php";
                     # Integração para abrir chamado no Voalle;<br>
                     # Notificaçãoes de novos incidentes e relatos;<br>
                     # Busca automatica de info-summary ao identificar incidente;<br>
-                    # Separar incidentes smart, cliente e tenant. Smart esta pronto;<br>
+                    # Adequação incidentes cliente.;<br> 
+                    # Adequação incidentes tenant;<br>
                     # Vinculo de chamado a incidente;<br>
                     # Competencia default de chamados;<br>
                     # Competencia na abertura de chamado;<br>
