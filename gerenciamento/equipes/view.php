@@ -229,7 +229,7 @@ if ($statusEquipe  == 'Ativo') {
                                                             count(*) as validaCheck,
                                                             ca.id as idPermissao
                                                         FROM
-                                                                chamados_autorizados as ca
+                                                                chamados_autorizados_by_equipe as ca
                                                         WHERE
                                                                 ca.tipo_id = $idTipoChamado
                                                                 and

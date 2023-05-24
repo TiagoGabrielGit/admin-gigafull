@@ -8,6 +8,7 @@ $idCompetencia = $_GET['id'];
 $sql = "SELECT
             c.id AS idCompetencia,
             c.competencia AS competencia,
+            c.descricao as descricao,
             c.active AS activeID,
             CASE
                 WHEN c.active = '1' THEN 'Ativado'
@@ -48,10 +49,16 @@ if ($campos['active'] == "Ativado") {
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="competencia-tab" data-bs-toggle="tab" data-bs-target="#competencia" type="button" role="tab" aria-controls="competencia" aria-selected="true">Competência</button>
                             </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="avaliacao-tab" data-bs-toggle="tab" data-bs-target="#avaliacao" type="button" role="tab" aria-controls="avaliacao" aria-selected="true">Avaliações</button>
+                            </li>
                         </ul>
                         <div class="tab-content pt-2" id="myTabContent">
                             <div class="tab-pane fade show active" id="competencia" role="tabpanel" aria-labelledby="competencia-tab">
                                 <?php require "tabs/competencia.php" ?>
+                            </div>
+                            <div class="tab-pane fade" id="avaliacao" role="tabpanel" aria-labelledby="avaliacao-tab">
+                                <?php require "tabs/avaliacao.php" ?>
                             </div>
                         </div><!-- End Default Tabs -->
 

@@ -1,7 +1,6 @@
 <?php
 
 require "../../conexoes/conexao.php";
-require "../../conexoes/conexao_pdo.php";
 require "sql1.php";
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
@@ -142,43 +141,44 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                                             <select class="form-select" id="tipoChamado" name="tipoChamado" required>
                                                                 <option disabled selected value="">Selecione o tipo de chamado</option>
                                                                 <?php
-                                                                $sql_lista_tipos_chamados_permitidos =
+                                                                $lista_tipos_chamados =
                                                                     "SELECT
-                                                                tipo.id as idTipo,
-                                                                tipo.tipo as tipoChamado
-                                                                FROM
-                                                                tipos_chamados as tipo
-                                                                WHERE
-                                                                tipo.active = 1
-                                                                ORDER BY
-                                                                tipo.tipo ASC";
-                                                                $r_lista_tipos_chamados = mysqli_query($mysqli, $sql_lista_tipos_chamados_permitidos);
+                                                                    tc.id as idTipo,
+                                                                    tc.tipo as tipoChamado
+                                                                    FROM
+                                                                    tipos_chamados as tc
+                                                                    LEFT JOIN
+                                                                    chamados_autorizados_by_equipe as cae
+                                                                    ON
+                                                                    tc.id = cae.tipo_id
+                                                                    LEFT JOIN
+                                                                    chamados_autorizados_by_company as cac
+                                                                    ON
+                                                                    tc.id = cac.tipo_id
+                                                                    WHERE
+                                                                    tc.active = 1
+                                                                    and
+                                                                    cae.equipe_id IN (SELECT 
+                                                                    ei.equipe_id as idEquipe
+                                                                    FROM 
+                                                                    equipes_integrantes as ei
+                                                                    WHERE 
+                                                                    ei.integrante_id = $id_usuario)
+                                                                    OR
+                                                                    tc.active = 1
+                                                                    and
+                                                                    cac.company_id = $s_empresaID
+                                                                    GROUP BY
+                                                                    tc.id
+                                                                    ORDER BY
+                                                                    tc.tipo ASC";
+                                                                $r_lista_tipos_chamados = mysqli_query($mysqli, $lista_tipos_chamados);
 
                                                                 while ($tipos_chamados = mysqli_fetch_object($r_lista_tipos_chamados)) {
-                                                                    $idTipoChamado = $tipos_chamados->idTipo;
 
-                                                                    $valida_permissao_equipe =
-                                                                        "SELECT
-                                                            *
-                                                        FROM
-                                                            chamados_autorizados as ca
-                                                        WHERE
-                                                            ca.tipo_id = $idTipoChamado
-                                                        AND 
-                                                            ca.equipe_id IN ((SELECT
-                                                            ei.equipe_id as idEquipe
-                                                        FROM
-                                                            equipes_integrantes as ei
-                                                        WHERE
-                                                            ei.integrante_id = $id_usuario))";
-                                                                    $r_valida_permissao_equipe = mysqli_query($mysqli, $valida_permissao_equipe);
-                                                                    $c_valida_permissao_equipe = $r_valida_permissao_equipe->fetch_array();
-                                                                    if (empty($c_valida_permissao_equipe)) {
-                                                                    } else {
-                                                                        echo "<option value='$tipos_chamados->idTipo'> $tipos_chamados->tipoChamado</option>";
-                                                                    }
+
+                                                                    echo "<option value='$tipos_chamados->idTipo'> $tipos_chamados->tipoChamado</option>";
                                                                 }
-
                                                                 ?>
                                                             </select>
                                                         </div>
@@ -197,6 +197,41 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                                         </div>
 
                                                         <br><br><br>
+
+                                                        <h5 class="card-title">Competências necessárias para atendimento do chamado</h5>
+                                                        <div class="row mb-4">
+                                                            <?php
+                                                            $competencias =
+                                                                "SELECT
+                                                                c.id as idCompetencia,
+                                                                c.competencia as competencia
+                                                                FROM
+                                                                competencias as c
+                                                                WHERE
+                                                                c.active = 1
+                                                                ORDER BY 
+                                                                c.competencia ASC";
+                                                            $r_competencias = mysqli_query($mysqli, $competencias);
+                                                            while ($c_competencias = mysqli_fetch_assoc($r_competencias)) {
+                                                                $idCompetencia = $c_competencias['idCompetencia'];
+                                                                $competencia = $c_competencias['competencia'];
+                                                            ?>
+
+
+
+                                                                <div class="col-3">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox" name="competencia<?= $idCompetencia ?>" id="competencia<?= $idCompetencia ?>">
+                                                                        <label class="form-check-label" for="competencia<?= $idCompetencia ?>">
+                                                                            <?= $competencia ?>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+                                                            <?php } ?>
+                                                        </div>
+
+
                                                         <hr class="sidebar-divider">
 
                                                         <div class="col-6">

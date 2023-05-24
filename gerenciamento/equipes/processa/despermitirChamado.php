@@ -7,7 +7,7 @@ $dados = [
     'idCadastro' => $idCadastro,
 ];
 
-$sql_delete = "DELETE FROM chamados_autorizados WHERE id = :idCadastro";
+$sql_delete = "DELETE FROM chamados_autorizados_by_equipe WHERE id = :idCadastro";
 
 $stmt= $pdo->prepare($sql_delete);
 $stmt->execute($dados);

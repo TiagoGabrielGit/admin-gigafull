@@ -1,10 +1,12 @@
 <?php
 require "../../includes/menu.php";
 require "../../conexoes/conexao.php";
+require "../../conexoes/conexao_pdo.php";
 $id_chamado = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 require "sql.php";
 
 $id_usuario = $_SESSION['id'];
+$s_empresaID = $_SESSION['empresa_id'];
 $sql_captura_dados_usuario =
     "SELECT
 u.id as idUsuario,

@@ -122,18 +122,6 @@
     });
 </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
 <script>
     $("#btnReset").click(function() {
         var senhaProvisoria = gerarSenhaProvisoria();

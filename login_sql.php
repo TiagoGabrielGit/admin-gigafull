@@ -14,6 +14,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       p.nome as nome,
       p.email as email,
       u.senha as senha,
+      u.empresa_id as empresa_id,
       u.reset_password as reset_password,
       u.tipo_usuario as tipo_usuario,
       u.perfil_id as perfil,
@@ -48,6 +49,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
 
       $_SESSION['id'] = $usuario['id'];
       $_SESSION['nome'] = $usuario['nome'];
+      $_SESSION['empresa_id'] = $usuario['empresa_id'];
       $_SESSION['perfil'] = $usuario['perfil'];
       $_SESSION['nome_perfil'] = $usuario['nome_perfil'];
       $_SESSION['dashboard'] = $usuario['tipo_usuario'];

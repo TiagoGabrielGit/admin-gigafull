@@ -24,3 +24,70 @@
         }, 1700);
     }
 </script>
+
+<script>
+    $("#btnEditar").click(function() {
+        var dadosEditarTipo = $("#editarTipoChamado").serialize();
+
+        $.post("processa/edit.php", dadosEditarTipo, function(retornaEditarTipo) {
+            $("#msgEditarTipoChamado1").slideDown('slow').html(retornaEditarTipo);
+            $("#msgEditarTipoChamado2").slideDown('slow').html(retornaEditarTipo);
+
+            //Apresentar a mensagem leve
+            retirarMsgEditarTipo();
+        });
+    });
+
+    //Retirar a mensagem após 1700 milissegundos
+    function retirarMsgEditarTipo() {
+        setTimeout(function() {
+            $("#msgEditarTipoChamado1").slideUp('slow', function() {});
+            $("#msgEditarTipoChamado2").slideUp('slow', function() {});
+        }, 1700);
+    }
+</script>
+
+<script>
+    function incluirCompetencia(idCompetencia, idTipoChamado, tipoChamado, competencia) {
+        document.querySelector("#idIncluirCompetencia").value = idCompetencia;
+        document.querySelector("#idTipoChamadoCompetencia").value = idTipoChamado;
+
+        let mensagemConfirmCompetencia = ` 
+                     
+        Deseja atribuir a competência <b> ${competencia} </b> ao tipo de chamado  <b> ${tipoChamado} </b>?`
+        document.querySelector("#msgConfirmCompetencia").innerHTML = mensagemConfirmCompetencia
+    }
+</script>
+
+<script>
+    function retirarCompetencia(idTCC, tipoChamado2, competencia2) {
+        document.querySelector("#idTCC").value = idTCC;
+
+        let mensagemRetirarCompetencia = ` 
+                     
+        Deseja retirar a competência <b> ${competencia2} </b> do tipo de chamado  <b> ${tipoChamado2} </b>?`
+        document.querySelector("#msgRetirarCompetencia").innerHTML = mensagemRetirarCompetencia
+    }
+</script>
+
+<script>
+    $("#btnConfirmCompetencia").click(function() {
+        var dadosIncluiCompetencia = $("#formIncluiCompetencia").serialize();
+
+        $.post("processa/incluiCompetencia.php", dadosIncluiCompetencia, function(retornaIncluiCompetencia) {
+            location.reload();
+
+        });
+    });
+</script>
+
+<script>
+    $("#btnRetirarCompetencia").click(function() {
+        var dadosRetirarCompetencia = $("#formRetirarCompetencia").serialize();
+
+        $.post("processa/retiraCompetencia.php", dadosRetirarCompetencia, function(retornaRetirarCompetencia) {
+            location.reload();
+
+        });
+    });
+</script>

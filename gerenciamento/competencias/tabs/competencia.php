@@ -20,8 +20,15 @@
             <br>
             <div class="row">
                 <div class="col-8">
-                    <label for="competencia" class="form-label">Competência</label>
+                    <label for="competencia" class="form-label">Competência*</label>
                     <input name="competencia" type="text" class="form-control" id="competencia" value="<?= $campos['competencia']; ?>">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <label for="descricao" class="form-label">Descrição*</label>
+                    <textarea rows="8" id="descricao" name="descricao" class="form-control" maxlength="500"><?= $campos['descricao']; ?></textarea>
+
                 </div>
             </div>
         </div>

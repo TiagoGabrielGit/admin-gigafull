@@ -24,27 +24,27 @@
                             $valida_check =
                                 "SELECT
                                 count(*) as validaCheck,
-                                uc.id as idUC
+                                tcc.id as idTCC
                                 FROM
-                                usuario_competencia as uc
+                                tipo_chamado_competencia as tcc
                                 WHERE
-                                uc.id_competencia = $idCompetencia
+                                tcc.id_competencia = $idCompetencia
                                 and
-                                uc.id_usuario = $idUsuario";
+                                tcc.id_tipo_chamado = $id";
                             $r_valida_check = mysqli_query($mysqli, $valida_check);
                             $c_valida_check = mysqli_fetch_assoc($r_valida_check);
 
                             if ($c_valida_check['validaCheck'] <> "0") { ?>
                                 <div class="col-3">
                                     <div class="form-check">
-                                        <input onclick="retirarCompetencia(<?= $c_valida_check['idUC'] ?>, '<?= $campos['nome']; ?>', '<?= $competencia ?>')" class="form-check-input" type="checkbox" id="competencia<?= $idCompetencia ?>" checked data-bs-toggle="modal" data-bs-target="#modalRetirarCompetencia">
+                                        <input onclick="retirarCompetencia(<?= $c_valida_check['idTCC'] ?>, '<?= $c_tipo_chamado['nome_tipo']; ?>', '<?= $competencia ?>')" class="form-check-input" type="checkbox" id="competencia<?= $idCompetencia ?>" checked data-bs-toggle="modal" data-bs-target="#modalRetirarCompetencia">
                                         <label class="form-check-label" for="competencia<?= $idCompetencia ?>"><?= $competencia ?></label>
                                     </div>
                                 </div>
                             <?php } else { ?>
                                 <div class="col-3">
                                     <div class="form-check">
-                                        <input onclick="incluirCompetencia(<?= $idCompetencia ?>, '<?= $idUsuario ?>', '<?= $campos['nome']; ?>', '<?= $competencia ?>')" class="form-check-input" type="checkbox" id="competencia<?= $idCompetencia ?>" data-bs-toggle="modal" data-bs-target="#modalIncluirCompetencia">
+                                        <input onclick="incluirCompetencia(<?= $idCompetencia ?>, '<?= $id ?>', '<?= $c_tipo_chamado['nome_tipo']; ?>', '<?= $competencia ?>')" class="form-check-input" type="checkbox" id="competencia<?= $idCompetencia ?>" data-bs-toggle="modal" data-bs-target="#modalIncluirCompetencia">
                                         <label class="form-check-label" for="competencia<?= $idCompetencia ?>"><?= $competencia ?></label>
                                     </div>
                                 </div>
@@ -72,13 +72,13 @@
                             <div class="row">
                                 <form id="formIncluiCompetencia" method="POST" class="row g-3">
                                     <input type="Text" name="idIncluirCompetencia" class="form-control" id="idIncluirCompetencia" hidden>
-                                    <input type="Text" name="idUsuarioCompetencia" class="form-control" id="idUsuarioCompetencia" hidden>
+                                    <input type="Text" name="idTipoChamadoCompetencia" class="form-control" id="idTipoChamadoCompetencia" hidden>
                                     <div class="text-center">
                                         <span id="msgConfirmCompetencia"></span>
                                     </div>
                                     <div class="text-center">
                                         <input id="btnConfirmCompetencia" name="btnConfirmCompetencia" type="button" value="Confirmar" class="btn btn-danger"></input>
-                                        <a href="/gerenciamento/usuarios/view.php?id=<? $idUsuario ?>"> <input type="button" value="Cancelar" class="btn btn-secondary"></input></a>
+                                        <a href="/servicedesk/tipos_chamados/view.php?id=<?= $id ?>"> <input type="button" value="Cancelar" class="btn btn-secondary"></input></a>
                                     </div>
                                 </form>
                             </div>
@@ -86,10 +86,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
     </div>
 </div>
-
 
 <div class="modal fade" id="modalRetirarCompetencia" tabindex="-1">
     <div class="modal-dialog">
@@ -105,14 +104,14 @@
                         <div class="card-body">
                             <div class="row">
                                 <form id="formRetirarCompetencia" method="POST" class="row g-3">
-                                    <input type="Text" name="idUC" class="form-control" id="idUC" hidden readonly>
+                                    <input type="Text" name="idTCC" class="form-control" id="idTCC" hidden readonly>
 
                                     <div class="text-center">
                                         <span id="msgRetirarCompetencia"></span>
                                     </div>
                                     <div class="text-center">
                                         <input id="btnRetirarCompetencia" name="btnRetirarCompetencia" type="button" value="Confirmar" class="btn btn-danger"></input>
-                                        <a href="/gerenciamento/usuarios/view.php?id=<? $idUsuario ?>"> <input type="button" value="Cancelar" class="btn btn-secondary"></input></a>
+                                        <a href="/servicedesk/tipos_chamados/view.php?id=<?= $id ?>"> <input type="button" value="Cancelar" class="btn btn-secondary"></input></a>
                                     </div>
                                 </form>
                             </div>

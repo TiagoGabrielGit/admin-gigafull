@@ -42,9 +42,15 @@ require "../../conexoes/conexao_pdo.php";
 
                                                         <span id="msgCadastrarCompetencia"></span>
 
-                                                        <div class="col-12">
-                                                            <label for="competencia" class="form-label">Competência</label>
+                                                        <div class="col-8">
+                                                            <label for="competencia" class="form-label">Competência*</label>
                                                             <input id="competencia" name="competencia" class="form-control"></input>
+                                                        </div>
+
+                                                        <div class="col-12">
+                                                            <label for="descricao" class="form-label">Descrição*</label>
+                                                            <textarea rows="12" id="descricao" name="descricao" class="form-control" maxlength="500"></textarea>
+
                                                         </div>
 
                                                         <hr class="sidebar-divider">
@@ -98,7 +104,7 @@ require "../../conexoes/conexao_pdo.php";
                                             <a style="color: red;" href="view.php?id=<?= $id ?>"><?= $campos['competencia']; ?></a>
                                         </td>
 
-                                        
+
                                         <td style="text-align: center;"><?= $campos['active']; ?></td>
                                     <?php } ?>
                                     </tr>

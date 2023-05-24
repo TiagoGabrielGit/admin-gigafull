@@ -60,3 +60,49 @@
         });
     });
 </script>
+
+<script>
+    document.getElementById('tipoChamado').addEventListener('change', function() {
+        var tipoChamadoId = this.value; // Obtém o ID do tipo de chamado selecionado
+
+        // Fazer a requisição AJAX para buscar as competências necessárias
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/servicedesk/consultar_chamados/processa/buscar_competencias.php?tipoChamadoId=' + tipoChamadoId, true);
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                var competencias = JSON.parse(xhr.responseText); // Obter as competências retornadas pela requisição
+
+                // Armazenar os IDs das competências selecionadas automaticamente
+                var competenciasAutomaticas = competencias;
+
+                // Desmarcar todos os checkboxes
+                var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.checked = false;
+                });
+
+                // Marcar os checkboxes correspondentes às competências
+                competencias.forEach(function(competenciaId) {
+                    var checkbox = document.getElementById('competencia' + competenciaId);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                    }
+                });
+
+                // Adicionar event listener para impedir desmarcar as competências selecionadas automaticamente
+                checkboxes.forEach(function(checkbox) {
+                    checkbox.addEventListener('click', function(event) {
+                        var checkboxId = checkbox.getAttribute('id');
+                        var competenciaId = checkboxId.replace('competencia', '');
+
+                        if (competenciasAutomaticas.includes(competenciaId)) {
+                            event.preventDefault(); // Impede que a ação padrão de clique seja executada
+                            checkbox.checked = true; // Mantém o checkbox marcado
+                        }
+                    });
+                });
+            }
+        };
+        xhr.send();
+    });
+</script>

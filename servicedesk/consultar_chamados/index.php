@@ -2,6 +2,7 @@
 require "../../includes/menu.php";
 
 $id_usuario = $_SESSION['id'];
+$s_empresaID = $_SESSION['empresa_id'];
 $sql_captura_id_pessoa =
     "SELECT
 u.pessoa_id as pessoaID,

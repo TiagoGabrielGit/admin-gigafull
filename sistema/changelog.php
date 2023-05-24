@@ -20,7 +20,7 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading6-5">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6-5" aria-expanded="false" aria-controls="collapse6-5">
-                    Versão 6.5 - XX/05/2023
+                    Versão 6.5 - 24/05/2023
                   </button>
                 </h2>
                 <div id="collapse6-5" class="accordion-collapse collapse" aria-labelledby="heading6-5" data-bs-parent="#accordionExample">
@@ -30,23 +30,27 @@ require "../includes/menu.php";
                     # Cadastro de competencia;<br>
                     # Competencia por usuários;<br>
                     # Corrigido listagem de parceiros em ativação de Rede Neutra;<br>
+                    # Competencia default de chamados;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado o submenu competencias na tabela "url_submenu";<br>
                     # Criado tabela "competencias";<br>
                     # Criado tabela "usuario_competencia";<br>
+                    # Criado tabela "tipo_chamado_competencia";<br>
+                    # Alterado o nome da tabela "chamados_autorizados" para "chamados_autorizados_by_equipe";<br>
 
                     <br><strong>Previsto para próximas atualizaçõs</strong><br>
                     # Integração para abrir chamado no Voalle;<br>
                     # Notificaçãoes de novos incidentes e relatos;<br>
                     # Busca automatica de info-summary ao identificar incidente;<br>
-                    # Adequação incidentes cliente.;<br> 
+                    # Adequação incidentes cliente.;<br>
                     # Adequação incidentes tenant;<br>
                     # Vinculo de chamado a incidente;<br>
-                    # Competencia default de chamados;<br>
                     # Competencia na abertura de chamado;<br>
                     # Anexo arquivos em chamados;<br>
                     # Anexo arquivos em vistorias;<br>
+                    # Menu documentações;<br>
+                    # Cruzamento competencia de chamado com competencia de usuario;<br>
 
                     <br><strong>Backlog</strong><br>
                     # Cadastro de PONs;<br>
@@ -56,6 +60,9 @@ require "../includes/menu.php";
                     # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
                     # Segurança individual;<br>
                     # Pautas e ATAs de Reunião;<br>
+                    # Info Funcionário (Horário de trabalho, disponibilidade férias, gestor, disponibilidade banco de horas, plantão);<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                    # Solicitação de hora extra, férias, atestado, folga, ausencia atraves do acesso colaborador;<br>
 
                     <br><strong>Backlog --- Rede Neutra</strong><br>
                     # BUG retorna código em resultado do provisionamento;<br>
@@ -67,8 +74,6 @@ require "../includes/menu.php";
                   </div>
                 </div>
               </div>
-
-
 
               <!-- Versão 6.4 -->
               <div class="accordion-item">

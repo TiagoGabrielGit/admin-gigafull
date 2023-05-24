@@ -228,6 +228,7 @@ $idParceiro = $c_dados_usuario['idParceiro'];
                                                         </div>
 
                                                         <br><br><br>
+
                                                         <hr class="sidebar-divider">
 
                                                         <div class="col-6">
