@@ -216,11 +216,10 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                                                 $idCompetencia = $c_competencias['idCompetencia'];
                                                                 $competencia = $c_competencias['competencia'];
                                                             ?>
-
-
-
                                                                 <div class="col-3">
                                                                     <div class="form-check">
+                                                                        <input type="hidden" name="competencia_ids[]" value="<?= $idCompetencia ?>">
+
                                                                         <input class="form-check-input" type="checkbox" name="competencia<?= $idCompetencia ?>" id="competencia<?= $idCompetencia ?>">
                                                                         <label class="form-check-label" for="competencia<?= $idCompetencia ?>">
                                                                             <?= $competencia ?>
@@ -230,7 +229,6 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
 
                                                             <?php } ?>
                                                         </div>
-
 
                                                         <hr class="sidebar-divider">
 
