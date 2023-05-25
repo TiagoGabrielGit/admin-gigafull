@@ -26,21 +26,21 @@ require "../includes/menu.php";
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
+                    # Competencia na abertura de chamado;<br>
+                    # Cruzamento competencia de chamado com competencia de usuario;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado a tabela "chamados_competencias";
-                    
+
                     <br><strong>Previsto para próximas atualizaçõs</strong><br>
                     # Integração para abrir chamado no Voalle;<br>
                     # Notificaçãoes de novos incidentes e relatos;<br>
                     # Busca automatica de info-summary ao identificar incidente;<br>
                     # Adequação incidentes cliente;<br>
                     # Vinculo de chamado a incidente;<br>
-                    # Competencia na abertura de chamado;<br>
                     # Anexo arquivos em chamados;<br>
                     # Anexo arquivos em vistorias;<br>
                     # Menu documentações;<br>
-                    # Cruzamento competencia de chamado com competencia de usuario;<br>
 
                     <br><strong>Backlog</strong><br>
                     # Cadastro de PONs;<br>

@@ -39,6 +39,9 @@ u.id = '$id_usuario'
 
 $result_cap_pessoa = mysqli_query($mysqli, $sql_captura_id_pessoa);
 $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
+
+
+
 ?>
 
 <style>
@@ -497,45 +500,90 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                 $res_second = $seconds_total->fetch_array();
 
                             ?>
+
                                 <div class="accordion-item">
                                     <h2 class="accordion-header" id="flush-heading<?= $cont ?>">
                                         <button class="accordion-button collapsed <?= $Color ?>" id="<?= $Color ?>" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<?= $cont ?>" aria-expanded="false" aria-controls="flush-collapse<?= $cont ?>">
-                                            Chamado #<?= $id_chamado ?> - <?= $campos['tipoChamado']; ?> - <?= $campos['assunto']; ?> - <?= $atendente ?>
+                                            <div class="d-flex justify-content-between align-items-center w-100">
+
+                                                <span class="text-left">
+                                                    Chamado #<?= $id_chamado ?> - <?= $campos['tipoChamado']; ?> - <?= $campos['assunto']; ?> - <?= $atendente ?>
+                                                </span>
+                                                <?php
+                                                $valida_competencia =
+                                                "SELECT cc.competencia_id as competencia_id
+                                                FROM chamados_competencias as cc
+                                                WHERE cc.chamado_id = $id_chamado
+                                                AND NOT EXISTS (
+                                                  SELECT id_competencia
+                                                  FROM usuario_competencia as uc
+                                                  WHERE uc.id_usuario = $id_usuario
+                                                  AND uc.id_competencia = cc.competencia_id
+                                                )";
+                                                $r_valida_competencia = mysqli_query($mysqli, $valida_competencia);
+                                                $c_valida_competencia = $r_valida_competencia->fetch_assoc();
+
+                                                // Verificar se o usuário tem todas as competências necessárias
+                                                if ($c_valida_competencia) {
+                                                    // O usuário tem todas as competências necessárias
+                                                    echo '<span class="text-end">
+                                                                <span class="btn btn-secondary rounded-pill">Qualificado</span>
+                                                            </span>';
+                                                } else  {
+                                                    // O usuário não tem todas as competências necessárias
+                                                    echo '<span class="text-end">
+                                                            <span class="btn btn-success rounded-pill">Qualificado</span>
+                                                        </span>';
+                                                }
+                                                ?>
+                                            </div>
                                         </button>
                                     </h2>
                                     <div id="flush-collapse<?= $cont ?>" class="accordion-collapse collapse" aria-labelledby="flush-heading<?= $cont ?>" data-bs-parent="#accordionFlushExample">
                                         <div class="accordion-body colorAccordion">
-                                            <div class="row justify-content-between">
-                                                <div class="col-5">
-                                                    <b>Chamado: </b><?= $id_chamado ?><br>
-                                                    <b>Tipo de chamado: </b><?= $campos['tipoChamado']; ?><br>
-                                                    <b>Cliente: </b><?= $campos['fantasia']; ?><br>
-                                                    <b>Atendente: </b><?= $atendente ?><br><br>
-                                                    <b>Descrição: </b><br><?= nl2br($campos['relato_inicial']); ?>
+                                            <div class="row">
+                                                <div class="col-lg-5">
+                                                    <div class="col-12">
+                                                        <b>Chamado: </b><?= $id_chamado ?><br>
+                                                        <b>Tipo de chamado: </b><?= $campos['tipoChamado']; ?><br>
+                                                        <b>Cliente: </b><?= $campos['fantasia']; ?><br>
+                                                        <b>Atendente: </b><?= $atendente ?><br><br>
+                                                    </div>
                                                 </div>
-                                                <div class="col-5">
-                                                    <b>Serviço: </b><?= $campos['service']; ?><br>
-                                                    <b>Item de Serviço: </b><?= $campos['itemService']; ?><br>
-                                                    <b>Data abertura: </b><?= $campos['dataAbertura']; ?><br>
-                                                    <b>Status: </b><?= $campos['statusChamado']; ?><br><br>
-                                                    <b>Tempo total atendimento: </b> <?= gmdate("H:i:s", $res_second['secondsTotal']); ?>
+                                                <div class="col-lg-5">
+                                                    <div class="col-12">
+                                                        <b>Serviço: </b><?= $campos['service']; ?><br>
+                                                        <b>Item de Serviço: </b><?= $campos['itemService']; ?><br>
+                                                        <b>Data abertura: </b><?= $campos['dataAbertura']; ?><br>
+                                                        <b>Status: </b><?= $campos['statusChamado']; ?><br><br>
+                                                        <b>Tempo total atendimento: </b> <?= gmdate("H:i:s", $res_second['secondsTotal']); ?>
+                                                    </div>
                                                 </div>
-                                                <div class="col-2">
-                                                    <a href="/servicedesk/consultar_chamados/view.php?id=<?= $id_chamado ?>" title="Visualizar">
-                                                        <button type="button" class="btn btn-danger">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                                            </svg>
-                                                            Ver chamado
-                                                        </button>
-                                                    </a>
+                                                <div class="col-lg-2">
+                                                    <div class="col-12">
+                                                        <a href="/servicedesk/consultar_chamados/view.php?id=<?= $id_chamado ?>" title="Visualizar">
+                                                            <button type="button" class="btn btn-danger">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                                                    <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                                                                </svg>
+                                                                Ver chamado
+                                                            </button>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr class="sidebar-divider">
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <div class="col-12">
+                                                        <b>Descrição: </b><br><?= nl2br($campos['relato_inicial']); ?>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
 
                             <?php $cont++;
                             }

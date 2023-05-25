@@ -143,20 +143,3 @@ ORDER BY
 cs.status_chamado ASC
 ";
 
-$lista_atendentes =
-    "SELECT
-p.nome as atendente,
-u.id as idUsuario
-FROM
-usuarios as u
-LEFT JOIN
-pessoas as p
-ON
-p.id = u.pessoa_id
-WHERE
-u.active = 1
-AND
-u.tipo_usuario = 1
-ORDER BY
-p.nome ASC
-";
