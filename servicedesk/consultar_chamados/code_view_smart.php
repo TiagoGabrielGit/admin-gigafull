@@ -106,9 +106,9 @@ if ($chamado['in_execution'] == 1) {
                                 <div class="row col-12" style="margin-top: 3px;">
                                     <?php
                                     if ($c_valida_competencia == null) { ?>
-                                        <button type="button" class="btn btn-success rounded-pill" data-bs-toggle="modal" data-bs-target="#modalQualificacao">Qualificado</button>
+                                        <button type="button" class="btn btn-success rounded-pill" data-bs-toggle="modal" data-bs-target="#modalQualificacao">Qualificaçães</button>
                                     <?php } else { ?>
-                                        <button type="button" class="btn btn-secondary rounded-pill" data-bs-toggle="modal" data-bs-target="#modalQualificacao">Qualificado</button>
+                                        <button type="button" class="btn btn-secondary rounded-pill" data-bs-toggle="modal" data-bs-target="#modalQualificacao">Qualificaçães</button>
                                     <?php  }
                                     ?>
 
@@ -258,6 +258,11 @@ $r_competencias_necessarias2 = mysqli_query($mysqli, $competencias_necessarias);
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Competências Necessárias</h5>
+                <div class="ml-auto">
+                    <button type="button" class="btn btn-info rounded-circle position-absolute top-0 end-0 mt-3 me-5" data-bs-toggle="modal" data-bs-target="#modalAdicionarQualificacao">
+                        <i class="bi bi-plus"></i>
+                    </button>
+                </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -331,6 +336,58 @@ $r_competencias_necessarias2 = mysqli_query($mysqli, $competencias_necessarias);
 
 <?php } ?>
 
+
+<div class="modal fade" id="modalAdicionarQualificacao" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Adicionar Compentência</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Competência</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $adicionar_competencia =
+                            "SELECT 
+                            c.competencia as competencia,
+                            c.id as idCompetencia
+                            FROM competencias AS c
+                            WHERE c.id NOT IN (
+                            SELECT cc.competencia_id
+                            FROM chamados_competencias AS cc
+                            WHERE cc.chamado_id = 71
+                            )
+                            and c.active = 1
+                            ORDER BY
+                            c.competencia ASC
+                            ";
+                        $r_adicionar_competencia = mysqli_query($mysqli, $adicionar_competencia);
+                        while ($c_adicionar_competencia = $r_adicionar_competencia->fetch_array()) { ?>
+                            <tr>
+                                <td><?= $c_adicionar_competencia['competencia']; ?></td>
+                                <td style="text-align: left;">
+                                    <a href="processa/addCompetencia.php?competencia=<?= $c_adicionar_competencia['idCompetencia'] ?>&chamado=<?= $id_chamado ?>" onclick="return confirm('Deseja atribuir esta competência ao chamado?')" class="bi bi-arrow-left-right"></a>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modalEncaminhar" tabindex="-1" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -353,30 +410,30 @@ $r_competencias_necessarias2 = mysqli_query($mysqli, $competencias_necessarias);
                                     <tbody>
                                         <?php
                                         $lista_atendentes =
-                                            "SELECT uc.id_usuario as idUsuario,
+                                            "SELECT u.id as idUsuario,
                                             p.nome as atendente
-                                            FROM usuario_competencia AS uc
-                                            LEFT JOIN
-                                            usuarios as u
-                                            ON
-                                            u.id = uc.id_usuario
-                                            LEFT JOIN
-                                            pessoas as p
-                                            ON
-                                            p.id = u.pessoa_id
-                                            WHERE uc.id_competencia IN (
-                                              SELECT cc.competencia_id
-                                              FROM chamados_competencias AS cc
-                                              WHERE cc.chamado_id = $id_chamado
-                                            )
-                                            GROUP BY uc.id_usuario
-                                            HAVING COUNT(DISTINCT uc.id_competencia) = (
-                                              SELECT COUNT(DISTINCT cc.competencia_id)
-                                              FROM chamados_competencias AS cc
-                                              WHERE cc.chamado_id = $id_chamado
-                                            )
-                                            ORDER BY
-                                            p.nome ASC";
+                                     FROM usuarios AS u
+                                     LEFT JOIN pessoas AS p ON p.id = u.pessoa_id
+                                     LEFT JOIN (
+                                       SELECT cc.chamado_id, COUNT(cc.competencia_id) AS total_competencias
+                                       FROM chamados_competencias AS cc
+                                       GROUP BY cc.chamado_id
+                                     ) AS comp_total ON comp_total.chamado_id = $id_chamado
+                                     LEFT JOIN (
+                                       SELECT cc.chamado_id, uc.id_usuario, COUNT(uc.id_competencia) AS total_competencias_usuario
+                                       FROM chamados_competencias AS cc
+                                       LEFT JOIN usuario_competencia AS uc ON cc.competencia_id = uc.id_competencia
+                                       WHERE cc.chamado_id = $id_chamado
+                                       GROUP BY cc.chamado_id, uc.id_usuario
+                                     ) AS comp_usuario ON comp_usuario.chamado_id = $id_chamado AND comp_usuario.id_usuario = u.id
+                                     WHERE (
+                                       comp_total.chamado_id IS NULL
+                                       OR comp_total.total_competencias = comp_usuario.total_competencias_usuario
+                                     )
+                                     and
+                                     u.tipo_usuario = 1
+                                     ORDER BY p.nome ASC;
+                                     ";
 
                                         $r_lista_atendentes = mysqli_query($mysqli, $lista_atendentes);
                                         while ($c_lista_atendentes = $r_lista_atendentes->fetch_array()) { ?>

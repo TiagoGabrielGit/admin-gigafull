@@ -109,6 +109,8 @@
         p.id = u.pessoa_id
         WHERE
         i.active = 0
+        ORDER BY
+        i.inicioIncidente DESC
         LIMIT $inicio, $qnt";
 
     $r_sql_incidentes = mysqli_query($mysqli, $sql_incidentes);
@@ -222,7 +224,9 @@
         ON
         p.id = u.pessoa_id
         WHERE
-        i.active = 0";
+        i.active = 0
+        ORDER BY
+        i.inicioIncidente DESC";
 
     // Executa o query da seleção acimas
     $sql_query_all = mysqli_query($mysqli, $sql_select_all);
