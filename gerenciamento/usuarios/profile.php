@@ -5,7 +5,12 @@ $usuarioID = $_GET['id'];
 
 $sql_usuario =
     "SELECT
-u.id as idUsuario,    
+u.id as idUsuario,
+CASE
+    WHEN u.notify_email = 1 THEN 'Ativado'
+    WHEN u.notify_email = 0 THEN 'Inativado'
+END AS notify_email,
+u.tipo_usuario as tipoUsuario,
 p.nome as nome,
 p.email as email,
 pf.perfil as perfil,
@@ -45,12 +50,22 @@ horario DESC
 LIMIT 10";
 
 $r_log = mysqli_query($mysqli, $log_acesso);
+
+
+
+if ($campos['notify_email'] == "Ativado") {
+    $checkNotifEmail1 = "checked";
+    $checkNotifEmail0 = "";
+} else if ($campos['notify_email'] == "Inativado") {
+    $checkNotifEmail0 = "checked";
+    $checkNotifEmail1 = "";
+}
 ?>
 
 <main id="main" class="main">
     <section class="section">
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
 
@@ -72,6 +87,9 @@ $r_log = mysqli_query($mysqli, $log_acesso);
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="colaborador-tab" data-bs-toggle="tab" data-bs-target="#colaborador" type="button" role="tab" aria-controls="colaborador" aria-selected="false" tabindex="-1">Colaborador</button>
                                 </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="log-tab" data-bs-toggle="tab" data-bs-target="#log" type="button" role="tab" aria-controls="log" aria-selected="false" tabindex="-1">LOGs Acesso</button>
+                                </li>
                             </ul>
                             <div class="tab-content pt-2" id="myTabContent">
                                 <div class="tab-pane fade show active" id="infos" role="tabpanel" aria-labelledby="infos-tab">
@@ -83,51 +101,12 @@ $r_log = mysqli_query($mysqli, $log_acesso);
                                 <div class="tab-pane fade" id="colaborador" role="tabpanel" aria-labelledby="colaborador-tab">
                                     <?php require "profile_tabs/colaborador.php" ?>
                                 </div>
+                                <div class="tab-pane fade" id="log" role="tabpanel" aria-labelledby="log-tab">
+                                    <?php require "profile_tabs/logs.php" ?>
+                                </div>
                             </div><!-- End Default Tabs -->
 
 
-
-                            <hr class="sidebar-divider">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-body">
-
-                        <hr class="sidebar-divider">
-
-                        <div class="row g-3">
-                            <div class="col-lg-12">
-                                <span><b>Últimos 10 Acessos</b></span>
-                            </div>
-
-                            <div class="col-lg-12">
-                                <div class="row">
-
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Sessão</th>
-                                                <th scope="col">IP</th>
-                                                <th scope="col">Horário</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            while ($campos_log = $r_log->fetch_array()) { ?>
-                                                <tr>
-                                                    <td><?= $campos_log['id'] ?></td>
-                                                    <td><?= $campos_log['ip_address'] ?></td>
-                                                    <td><?= $campos_log['horario'] ?></td>
-                                                </tr>
-                                            <?php } ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
 
                             <hr class="sidebar-divider">
                         </div>

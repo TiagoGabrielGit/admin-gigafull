@@ -22,7 +22,11 @@ p.perfil as nome_perfil,
 CASE
     WHEN user.active = 1 THEN 'Ativado'
     WHEN user.active = 0 THEN 'Inativado'
-END AS active
+END AS active,
+CASE
+    WHEN user.notify_email = 1 THEN 'Ativado'
+    WHEN user.notify_email = 0 THEN 'Inativado'
+END AS notify_email
 FROM 
 usuarios as user
 LEFT JOIN                            

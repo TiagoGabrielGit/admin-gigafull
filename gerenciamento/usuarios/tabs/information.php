@@ -31,13 +31,22 @@
                         $checkSituacao0 = "checked";
                         $checkSituacao1 = "";
                     }
+
+
+                    if ($campos['notify_email'] == "Ativado") {
+                        $checkNotifEmail1 = "checked";
+                        $checkNotifEmail0 = "";
+                    } else if ($campos['notify_email'] == "Inativado") {
+                        $checkNotifEmail0 = "checked";
+                        $checkNotifEmail1 = "";
+                    }
+
                     ?>
                 </div>
             </div>
 
 
             <div class="col-lg-6">
-
 
                 <div class="row">
                     <div class="col-4">
@@ -72,7 +81,7 @@
                     }
                     ?>
 
-                    <div class="col-6">
+                    <div class="col-4">
                         <label for="tipoAcesso" class="form-label">Tipo de Acesso</label>
                         <div class="form-check">
 
@@ -94,7 +103,24 @@
                             </label>
                         </div>
                     </div>
-
+                    <?php
+                    if ($campos['tipoUsuario'] == "1") { ?>
+                        <div class="col-4">
+                            <label for="notificaEmail" class="form-label">Notificação E-mail</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="notificaEmail" id="notificaEmailAtivo" value="1" <?= $checkNotifEmail1 ?>>
+                                <label class="form-check-label" for="notificaEmailAtivo">
+                                    Ativo
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="notificaEmail" id="notificaEmailInativo" value="0" <?= $checkNotifEmail0 ?>>
+                                <label class="form-check-label" for="notificaEmailInativo">
+                                    Inativo
+                                </label>
+                            </div>
+                        </div>
+                    <?php } ?>
                     <div id="controlaPerfil" class="col-6">
                         <label for="inputPerfil" class="form-label">Perfil</label>
                         <select name="perfil" id="perfil" class="form-select" required>

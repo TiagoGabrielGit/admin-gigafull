@@ -89,6 +89,19 @@ if (empty($_POST['selectService'])) {
 
             if ($cont_insert) {
                 echo "<p style='color:green;'>Code 006: Chamado aberto com sucesso. Chamado $id_chamado</p>";
+
+                echo "<script>
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.onreadystatechange = function() {
+                        if (this.readyState === 4 && this.status === 200) {
+                            // Tratar a resposta da requisição, se necessário
+                            console.log(this.responseText);
+                        }
+                    };
+                    xmlhttp.open('POST', 'notify/abertura_mail.php', true);
+                    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                    xmlhttp.send('id_chamado=' + encodeURIComponent($id_chamado));
+                </script>";
             } else {
                 echo "<p style='color:red;'>Error: Erro ao abrir chamado.</p>";
             }
@@ -147,6 +160,19 @@ if (empty($_POST['selectService'])) {
 
             if ($cont_insert) {
                 echo "<p style='color:green;'>Code 004: Chamado aberto com sucesso. Chamado $id_chamado</p>";
+
+                echo "<script>
+                    var xmlhttp = new XMLHttpRequest();
+                    xmlhttp.onreadystatechange = function() {
+                        if (this.readyState === 4 && this.status === 200) {
+                            // Tratar a resposta da requisição, se necessário
+                            console.log(this.responseText);
+                        }
+                    };
+                    xmlhttp.open('POST', 'notify/abertura_mail.php', true);
+                    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                    xmlhttp.send('id_chamado=' + encodeURIComponent($id_chamado));
+                </script>";
             } else {
                 echo "<p style='color:red;'>Error: Erro ao abrir chamado.</p>";
             }

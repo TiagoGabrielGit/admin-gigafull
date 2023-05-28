@@ -261,6 +261,14 @@ require "validaRotina.php";
                 </a>
                 <ul id="gerenciamento-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
+                    <?php if ($c_nav_sub_configuracoes['c'] == 1) { ?>
+                        <li>
+                            <a href="/gerenciamento/configuracao/index.php">
+                                <i class="bi bi-circle"></i><span>Configurações</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
                     <?php if ($c_nav_sub_competencias['c'] == 1) { ?>
                         <li>
                             <a href="/gerenciamento/competencias/index.php">

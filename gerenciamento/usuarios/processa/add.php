@@ -27,8 +27,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Todos os campos estão preenchidos, continue com a lógica de salvamento no banco de dados
             $insert_usuario =
-                "INSERT INTO usuarios (pessoa_id, senha, criado, tipo_usuario, empresa_id, perfil_id, reset_password, active)
-        VALUES (:pessoa_id, :senha, NOW(), :tipo_usuario, :empresa_id, :perfil_id, '1', '1')";
+                "INSERT INTO usuarios (pessoa_id, senha, criado, tipo_usuario, empresa_id, perfil_id, reset_password, active, notify_email)
+        VALUES (:pessoa_id, :senha, NOW(), :tipo_usuario, :empresa_id, :perfil_id, '1', '1', '1')";
 
             $stmt1 = $pdo->prepare($insert_usuario);
 

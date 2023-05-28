@@ -23,6 +23,7 @@ require "../../../conexoes/conexao.php";
 
         $perfil = $_POST['perfil'];
         $active = $_POST['situacao'];
+        $notEmail = $_POST['notificaEmail'];
         $tipoUser = $_POST['tipoAcesso'];
         if ($tipoUser == "1") {
             $perfil = $_POST['perfil'];
@@ -32,7 +33,7 @@ require "../../../conexoes/conexao.php";
 
         $empresaID = $_POST['empresaSelect'];
 
-        $resultEditUser = "UPDATE usuarios SET empresa_id='$empresaID', tipo_usuario='$tipoUser', perfil_id='$perfil', active='$active', modificado=NOW() WHERE id='$id'"
+        $resultEditUser = "UPDATE usuarios SET notify_email='$notEmail', empresa_id='$empresaID', tipo_usuario='$tipoUser', perfil_id='$perfil', active='$active', modificado=NOW() WHERE id='$id'"
 
         ?>
 

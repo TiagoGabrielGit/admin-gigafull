@@ -16,6 +16,63 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
 
+              <!-- Versão 6.8 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading6-8">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6-8" aria-expanded="false" aria-controls="collapse6-8">
+                    Versão 6.8 - 28/05/2023
+                  </button>
+                </h2>
+                <div id="collapse6-8" class="accordion-collapse collapse" aria-labelledby="heading6-8" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Adicionado o submenu "configurações" na tabela submenu;<br>
+                    # Envio de e-mail na abertura de protocolo p/ usuarios com competencia de eecução;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criado a tabela "servermail";<br>
+                    # Criado a tabela "notificacao_email";<br>
+                    # Adicionado coluna "notify_email" na tabela "usuarios";<br>
+
+                    <br><strong>Previsto para próximas atualizaçõs</strong><br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Notificaçãoes de novos incidentes e relatos;<br>
+                    # Busca automatica de info-summary ao identificar incidente;<br>
+                    # Adequação incidentes cliente;<br>
+                    # Vinculo de chamado a incidente;<br>
+                    # Anexo arquivos em chamados;<br>
+                    # Anexo arquivos em vistorias;<br>
+                    # Menu documentações;<br>
+                    # Ativar/Desativar notificação E-mail pelo acesso do usuário:<br>
+                    # Resetar senha pelo acesso usuário;<br>
+                    # Envio de e-mail no encaminhamento de chamado;<br>
+                    # Envio de e-mail na apropriação de chamado;<br>
+                    # Envio de e-mail no relato de chamado;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Cadastro de PONs;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Componentes de equipamentos;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+                    # Segurança individual;<br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Info Funcionário (Horário de trabalho, disponibilidade férias, gestor, disponibilidade banco de horas, plantão);<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                    # Solicitação de hora extra, férias, atestado, folga, ausencia atraves do acesso colaborador;<br>
+
+                    <br><strong>Backlog --- Rede Neutra</strong><br>
+                    # BUG retorna código em resultado do provisionamento;<br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas;<br>
+                    # Botão troca ONU;<br>
+                    # Armazenar LOG sinal do cliente após provisionamento;<br>
+                    # Validação sinal antes de adicionar serviços;<br>
+                    # Autofind no provisionamento;<br><br>
+                  </div>
+                </div>
+              </div>
+
               <!-- Versão 6.7 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading6-6">

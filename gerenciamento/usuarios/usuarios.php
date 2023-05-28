@@ -83,7 +83,13 @@ require "sql.php";
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-8">
+
+
+
+
+
+                                                        
+                                                        <div class="col-lg-4">
                                                             <div class="row">
                                                                 <div class="col-6">
                                                                     <label for="empresaSelect" class="form-label">Empresa</label>
