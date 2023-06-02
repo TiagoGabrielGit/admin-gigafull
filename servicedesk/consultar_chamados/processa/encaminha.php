@@ -32,7 +32,7 @@ if ($cont_insert) { ?>
                 // Lógica após o envio da requisição
                 setTimeout(function() {
                     window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamado ?>";
-                }, 2000); // Atraso de 2 segundos (2000 milissegundos)
+                }, 500); 
             }).catch(function(error) {
                 console.error('Erro na requisição:', error);
             });
