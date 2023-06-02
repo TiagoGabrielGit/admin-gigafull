@@ -69,27 +69,19 @@ if ($tipoUsuario == 1) {
 
         #Executa o insert
         if ($stmt1->execute() && $stmt2->execute($data)) {
-            echo "<p style='color:green;'>Relato salvo como rascunho.</p>";
-            /* try {
-                // Montar a consulta preparada
-                $sql_deleta_rascunho = "DELETE FROM chamados_relatos_rascunho WHERE id_chamado = :chamadoID";
-
-                // Preparar a consulta
-                $stmt_delete = $pdo->prepare($sql_deleta_rascunho);
-                $stmt_delete->bindParam(':chamadoID', $chamadoID);
-
-
-                if ($stmt_delete->execute()) {
-                    // A exclusão foi realizada com sucesso
-                    echo "<p style='color:green;'>Relato salvo como rascunho.</p>";
-                } else {
-                    // Nenhum registro foi afetado pela exclusão
-
-                    echo "<p style='color:red;'>Error: Erro ao salvar.</p>";
+            echo "<p style='color:green;'>Relato salvo com sucesso.</p>";
+            echo "<script>
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    // Tratar a resposta da requisição, se necessário
+                    console.log(this.responseText);
                 }
-            } catch (PDOException $e) {
-                echo "Erro na exclusão no banco de dados: " . $e->getMessage();
-            } */
+            };
+            xmlhttp.open('POST', 'notify/relato_mail.php', true);
+            xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xmlhttp.send('id_chamado=' + encodeURIComponent($chamadoID));
+        </script>";
         } else {
             echo "<p style='color:red;'>Error: Erro ao salvar.</p>";
         }
@@ -135,7 +127,19 @@ if ($tipoUsuario == 2) {
 
         #Executa o insert
         if ($stmt1->execute()) {
-            echo "<p style='color:green;'>Relato salvo como rascunho.</p>";
+            echo "<p style='color:green;'>Relato salvo com sucesso.</p>";
+            echo "<script>
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    // Tratar a resposta da requisição, se necessário
+                    console.log(this.responseText);
+                }
+            };
+            xmlhttp.open('POST', 'notify/relato_mail.php', true);
+            xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xmlhttp.send('id_chamado=' + encodeURIComponent($chamadoID));
+        </script>";
         } else {
             echo "<p style='color:red;'>Error: Dados obrigatórios não preenchidos.</p>";
         }
@@ -181,7 +185,19 @@ if ($tipoUsuario == 3) {
 
         #Executa o insert
         if ($stmt1->execute()) {
-            echo "<p style='color:green;'>Relato salvo como rascunho.</p>";
+            echo "<p style='color:green;'>Relato salvo com sucesso.</p>";
+            echo "<script>
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    // Tratar a resposta da requisição, se necessário
+                    console.log(this.responseText);
+                }
+            };
+            xmlhttp.open('POST', 'notify/relato_mail.php', true);
+            xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xmlhttp.send('id_chamado=' + encodeURIComponent($chamadoID));
+        </script>";
         } else {
             echo "<p style='color:red;'>Error: Dados obrigatórios não preenchidos.</p>";
         }

@@ -114,12 +114,18 @@
         var checkbox2 = document.getElementById('flexSwitchCheckChecked2');
         var select2 = document.querySelector('#notificacao2_servidor');
 
+        // Obtenha o valor do checkbox e do select para a notificação 3
+        var checkbox3 = document.getElementById('flexSwitchCheckChecked3');
+        var select3 = document.querySelector('#notificacao3_servidor');
+
         // Crie um objeto FormData para enviar os dados para o PHP
         var formData = new FormData();
         formData.append('notificacao1_ativo', checkbox1.checked);
         formData.append('notificacao1_servidor', select1.value);
         formData.append('notificacao2_ativo', checkbox2.checked);
         formData.append('notificacao2_servidor', select2.value);
+        formData.append('notificacao3_ativo', checkbox3.checked);
+        formData.append('notificacao3_servidor', select3.value);
 
         // Envie os dados para o PHP usando XMLHttpRequest
         var xhr = new XMLHttpRequest();
@@ -141,7 +147,7 @@
         function retirarMsgConfigNotificacao() {
             setTimeout(function() {
                 $("#msgConfigNotEmail").slideUp('slow', function() {
-                    
+
                 });
             }, 1700);
         }

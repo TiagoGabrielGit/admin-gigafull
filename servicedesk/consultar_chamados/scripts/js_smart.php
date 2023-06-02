@@ -13,6 +13,7 @@
                 salvaRascunho();
                 retirarMsgRelatar();
             } else {
+                $("#msgRelatar").slideDown('slow').html(retornaRelatar); //Isso faz o email ser enviado
                 excluiRascunho();
                 $('#relatarChamado')[0].reset();
                 $("#basicModal").modal('hide');
