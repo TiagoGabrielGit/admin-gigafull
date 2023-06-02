@@ -18,11 +18,22 @@ if ($stmt->execute()) {
 }
 
 
-if ($cont_insert) {
-?>
+if ($cont_insert) { ?>
     <script>
         setTimeout(function() {
-            window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamado ?>";
+            var chamadoId = <?= $chamado ?>;
+            fetch('../notify/encaminha_mail.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'id_chamado=' + chamadoId
+            }).then(function(response) {
+                // Lógica após o envio da requisição
+                window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamado ?>";
+            }).catch(function(error) {
+                console.error('Erro na requisição:', error);
+            });
         });
     </script>
 <?php

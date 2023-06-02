@@ -1,7 +1,6 @@
 <?php
 require "../includes/menu.php";
 ?>
-
 <main id="main" class="main">
   <div class="pagetitle">
     <h1>Changelog</h1>
@@ -16,6 +15,8 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
 
+
+
               <!-- Versão 6.9 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading6-9">
@@ -28,10 +29,11 @@ require "../includes/menu.php";
 
                     <br><strong>Melhorias</strong><br>
                     # Envio de e-mail no relato de chamado;<br>
+                    # Envio de e-mail no encaminhamento de chamado;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
                     # Adicionado id "3" na tabela "notificacao_email";<br>
-                    
+
                     <br><strong>Previsto para próximas atualizaçõs</strong><br>
                     # Integração para abrir chamado no Voalle;<br>
                     # Notificaçãoes de novos incidentes e relatos;<br>
@@ -43,7 +45,6 @@ require "../includes/menu.php";
                     # Menu documentações;<br>
                     # Ativar/Desativar notificação E-mail pelo acesso do usuário:<br>
                     # Resetar senha pelo acesso usuário;<br>
-                    # Envio de e-mail no encaminhamento de chamado;<br>
                     # Envio de e-mail na apropriação de chamado;<br>
 
                     <br><strong>Backlog</strong><br>
