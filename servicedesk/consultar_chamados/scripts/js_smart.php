@@ -17,7 +17,11 @@
                 excluiRascunho();
                 $('#relatarChamado')[0].reset();
                 $("#basicModal").modal('hide');
-                recarregarPagina();
+                setTimeout(function() {
+                    recarregarPagina();
+                }, 2500); // Delay de 2.5 segundos (2500 milissegundos) antes de chamar recarregarPagina()
+
+
             }
         });
     });
