@@ -30,7 +30,9 @@ if ($cont_insert) { ?>
                 body: 'id_chamado=' + chamadoId
             }).then(function(response) {
                 // Lógica após o envio da requisição
-                window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamado ?>";
+                setTimeout(function() {
+                    window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamado ?>";
+                }, 2000); // Atraso de 2 segundos (2000 milissegundos)
             }).catch(function(error) {
                 console.error('Erro na requisição:', error);
             });
