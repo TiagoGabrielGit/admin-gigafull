@@ -130,6 +130,47 @@
                                     <?php endforeach; ?>
                                 </select>
                             </div>
+
+                            <div class="form-check form-switch">
+
+                                <?php
+                                $sql_consulta_4 = "SELECT
+                                ne.notificacao_id as notificacao_id,
+                                ne.active as active,
+                                se.server as servidor,
+                                se.id as servidorID
+                                FROM
+                                notificacao_email as ne
+                                LEFT JOIN
+                                servermail as se
+                                ON
+                                se.id = ne.server_id
+                                WHERE
+                                ne.notificacao_id = 4";
+                                $stmt_consulta4 = $pdo->query($sql_consulta_4);
+                                $resultado_c4 = $stmt_consulta4->fetch(PDO::FETCH_ASSOC);
+
+                                // Verifica se está ativo e define o valor para a propriedade 'checked'
+                                $checked4 = ($resultado_c4['active'] == "1") ? 'checked' : '';
+                                if (empty($resultado_c4['servidor'])) {
+                                    $server_not4 = "<option selected disabled>Selecione um servidor de e-mail</option>";
+                                } else {
+                                    $c4_serverID = $resultado_c4['servidorID'];
+                                    $c4_servidor = $resultado_c4['servidor'];
+                                    $server_not4 = "<option value='$c4_serverID' selected>$c4_servidor</option>";
+                                }
+                                ?>
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked4" <?= $checked4; ?>>
+                                <label class="form-check-label" for="flexSwitchCheckChecked4">(4) Envio de e-mail quando um chamado é apropriado.</label>
+                                <select id="notificacao4_servidor" name="notificacao4_servidor" class="form-select form-select-sm" aria-label="Selecionar opção">
+                                    <?php
+                                    echo $server_not4;
+                                    foreach ($resultados as $row) : ?>
+                                        <option value="<?= $row['id']; ?>"><?= $row['server']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+
                         </div>
                     </div>
 

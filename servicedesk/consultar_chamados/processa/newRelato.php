@@ -68,21 +68,29 @@ if ($tipoUsuario == 1) {
         }
 
         #Executa o insert
-        if ($stmt1->execute() && $stmt2->execute($data)) {
-            echo "<p style='color:green;'>Relato salvo com sucesso.</p>";
-            echo "<script>
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState === 4 && this.status === 200) {
-                    // Tratar a resposta da requisição, se necessário
-                    console.log(this.responseText);
-                }
-            };
-            xmlhttp.open('POST', 'notify/relato_mail.php', true);
-            xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xmlhttp.send('id_chamado=' + encodeURIComponent($chamadoID));
-        </script>";
-        } else {
+        if ($stmt1->execute() && $stmt2->execute($data)) { ?>
+            <script>
+                setTimeout(function() {
+                    var chamadoId = <?= $chamadoID ?>;
+                    fetch('notify/relato_mail.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'id_chamado=' + chamadoId
+                    }).then(function(response) {
+                        if (response.ok) {
+                            // Lógica após o envio bem-sucedido da requisição
+                            window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamadoID ?>";
+                        } else {
+                            console.error('Erro na requisição. Status:', response.status);
+                        }
+                    }).catch(function(error) {
+                        console.error('Erro na requisição:', error);
+                    });
+                });
+            </script>
+        <?php } else {
             echo "<p style='color:red;'>Error: Erro ao salvar.</p>";
         }
     }
@@ -126,21 +134,31 @@ if ($tipoUsuario == 2) {
         $stmt1->bindParam(':seconds_worked', $seconds_worked);
 
         #Executa o insert
-        if ($stmt1->execute()) {
-            echo "<p style='color:green;'>Relato salvo com sucesso.</p>";
-            echo "<script>
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState === 4 && this.status === 200) {
-                    // Tratar a resposta da requisição, se necessário
-                    console.log(this.responseText);
-                }
-            };
-            xmlhttp.open('POST', 'notify/relato_mail.php', true);
-            xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xmlhttp.send('id_chamado=' + encodeURIComponent($chamadoID));
-        </script>";
-        } else {
+        if ($stmt1->execute()) { ?>
+
+            <script>
+                setTimeout(function() {
+                    var chamadoId = <?= $chamadoID ?>;
+                    fetch('notify/relato_mail.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'id_chamado=' + chamadoId
+                    }).then(function(response) {
+                        if (response.ok) {
+                            // Lógica após o envio bem-sucedido da requisição
+                            window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamadoID ?>";
+                        } else {
+                            console.error('Erro na requisição. Status:', response.status);
+                        }
+                    }).catch(function(error) {
+                        console.error('Erro na requisição:', error);
+                    });
+                });
+            </script>
+
+        <?php } else {
             echo "<p style='color:red;'>Error: Dados obrigatórios não preenchidos.</p>";
         }
     }
@@ -184,21 +202,29 @@ if ($tipoUsuario == 3) {
         $stmt1->bindParam(':seconds_worked', $seconds_worked);
 
         #Executa o insert
-        if ($stmt1->execute()) {
-            echo "<p style='color:green;'>Relato salvo com sucesso.</p>";
-            echo "<script>
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.onreadystatechange = function() {
-                if (this.readyState === 4 && this.status === 200) {
-                    // Tratar a resposta da requisição, se necessário
-                    console.log(this.responseText);
-                }
-            };
-            xmlhttp.open('POST', 'notify/relato_mail.php', true);
-            xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-            xmlhttp.send('id_chamado=' + encodeURIComponent($chamadoID));
-        </script>";
-        } else {
+        if ($stmt1->execute()) { ?>
+            <script>
+                setTimeout(function() {
+                    var chamadoId = <?= $chamadoID ?>;
+                    fetch('notify/relato_mail.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'id_chamado=' + chamadoId
+                    }).then(function(response) {
+                        if (response.ok) {
+                            // Lógica após o envio bem-sucedido da requisição
+                            window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamadoID ?>";
+                        } else {
+                            console.error('Erro na requisição. Status:', response.status);
+                        }
+                    }).catch(function(error) {
+                        console.error('Erro na requisição:', error);
+                    });
+                });
+            </script>
+<?php } else {
             echo "<p style='color:red;'>Error: Dados obrigatórios não preenchidos.</p>";
         }
     }

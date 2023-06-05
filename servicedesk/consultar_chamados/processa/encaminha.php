@@ -29,10 +29,12 @@ if ($cont_insert) { ?>
                 },
                 body: 'id_chamado=' + chamadoId
             }).then(function(response) {
-                // Lógica após o envio da requisição
-                setTimeout(function() {
+                if (response.ok) {
+                    // Lógica após o envio bem-sucedido da requisição
                     window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamado ?>";
-                }, 500); 
+                } else {
+                    console.error('Erro na requisição. Status:', response.status);
+                }
             }).catch(function(error) {
                 console.error('Erro na requisição:', error);
             });

@@ -42,7 +42,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt_update3->bindParam(':server_id', $notificacao3_servidor, PDO::PARAM_INT);
 
 
-    if ($stmt_update1->execute() && $stmt_update2->execute() && $stmt_update3->execute()) {
+    //NOTIFICACAO 4
+    if ($_POST['notificacao4_ativo'] == "true") {
+        $active4 = "1";
+    } else if ($_POST['notificacao4_ativo'] == "false") {
+        $active4 = "0";
+    }
+
+    $notificacao4_servidor = isset($_POST['notificacao4_servidor']) ? $_POST['notificacao4_servidor'] : null;
+    $sql_update4 = "UPDATE notificacao_email SET active = :active, server_id = :server_id WHERE notificacao_id = '4'";
+    $stmt_update4 = $pdo->prepare($sql_update4);
+    $stmt_update4->bindParam(':active', $active4, PDO::PARAM_INT);
+    $stmt_update4->bindParam(':server_id', $notificacao4_servidor, PDO::PARAM_INT);
+
+    if ($stmt_update1->execute() && $stmt_update2->execute() && $stmt_update3->execute() && $stmt_update4->execute()) {
         echo "<p style='color:green;'>Salvo com sucesso</p>";
     } else {
         echo "<p style='color:red;'>Erro ao salvar</p>";

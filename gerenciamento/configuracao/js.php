@@ -118,6 +118,10 @@
         var checkbox3 = document.getElementById('flexSwitchCheckChecked3');
         var select3 = document.querySelector('#notificacao3_servidor');
 
+        // Obtenha o valor do checkbox e do select para a notificação 4
+        var checkbox4 = document.getElementById('flexSwitchCheckChecked4');
+        var select4 = document.querySelector('#notificacao4_servidor');
+
         // Crie um objeto FormData para enviar os dados para o PHP
         var formData = new FormData();
         formData.append('notificacao1_ativo', checkbox1.checked);
@@ -126,6 +130,8 @@
         formData.append('notificacao2_servidor', select2.value);
         formData.append('notificacao3_ativo', checkbox3.checked);
         formData.append('notificacao3_servidor', select3.value);
+        formData.append('notificacao4_ativo', checkbox4.checked);
+        formData.append('notificacao4_servidor', select4.value);
 
         // Envie os dados para o PHP usando XMLHttpRequest
         var xhr = new XMLHttpRequest();

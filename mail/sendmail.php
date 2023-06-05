@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
         $destinatario = $_GET['destinatario'];
         $assunto = $_GET['assunto'];
-        $mensagem = $_GET['mensagem'];
+        $mensagem = nl2br($_GET['mensagem']);
         $servidorSTMP = $_GET['servidorID'];
 
         require 'mailer/src/Exception.php';
