@@ -81,7 +81,7 @@ if ($tipoUsuario == 1) {
                     }).then(function(response) {
                         if (response.ok) {
                             // Lógica após o envio bem-sucedido da requisição
-                            window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamadoID ?>";
+                            //window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamadoID ?>";
                         } else {
                             console.error('Erro na requisição. Status:', response.status);
                         }
