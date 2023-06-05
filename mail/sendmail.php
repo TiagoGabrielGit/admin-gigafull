@@ -43,6 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
                 // Instanciar objeto PHPMailer
                 $mail = new PHPMailer(true);
+                $mail->Encoding = 'base64';
 
                 try {
                     $mail->CharSet = 'UTF-8';
