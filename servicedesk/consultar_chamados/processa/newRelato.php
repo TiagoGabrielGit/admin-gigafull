@@ -67,7 +67,6 @@ if ($tipoUsuario == 1) {
             $stmt2 = $pdo->prepare($sql2);
         }
 
-        #Executa o insert
         if ($stmt1->execute() && $stmt2->execute($data)) { ?>
             <script>
                 setTimeout(function() {
@@ -81,14 +80,14 @@ if ($tipoUsuario == 1) {
                     }).then(function(response) {
                         if (response.ok) {
                             // Lógica após o envio bem-sucedido da requisição
-                            //window.location.href = "/servicedesk/consultar_chamados/view.php?id=XX";
+                            window.location.href = "/servicedesk/consultar_chamados/view.php?id=XX";
                         } else {
                             console.error('Erro na requisição. Status:', response.status);
                         }
                     }).catch(function(error) {
                         console.error('Erro na requisição:', error);
                     });
-                });
+                }, 5000); // Atraso de 5000 milissegundos = 5 segundos
             </script>
         <?php } else {
             echo "<p style='color:red;'>Error: Erro ao salvar.</p>";
