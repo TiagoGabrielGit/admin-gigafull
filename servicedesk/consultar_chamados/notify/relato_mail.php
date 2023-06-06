@@ -246,6 +246,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             curl_setopt($curl, CURLOPT_POST, true);
             curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true); // Permitir redirecionamento
 
             // Executar a requisição e obter a resposta
             $response = curl_exec($curl);
