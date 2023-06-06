@@ -74,7 +74,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $mail->send();
 
 
+                    echo $destinatario;
+                    echo $assunto;
                     echo $mensagem;
+                    echo $servidorSTMP;
 
                     //echo "Success: E-mail enviado com sucesso.<br><br>" . $_POST['mensagem'];
                 } catch (Exception $e) {

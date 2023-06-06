@@ -238,26 +238,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 'servidorID' => $server_id
             );
 
-            // Configuração da requisição POST
-            $options = array(
-                'http' => array(
-                    'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                    'method' => 'POST',
-                    'content' => http_build_query($data)
-                )
+            // Inicializar a sessão cURL
+            $curl = curl_init();
 
-            );
+            // Configurar a requisição POST
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-            // Faz a solicitação POST
-            $context = stream_context_create($options);
-            $response = file_get_contents($url, false, $context);
+            // Executar a requisição e obter a resposta
+            $response = curl_exec($curl);
 
-            // Verifica a resposta
+            // Verificar a resposta
             if ($response === false) {
                 echo "Error: Erro ao enviar o e-mail.";
-            } else { 
-                echo nl2br($response);
+            } else {
+                echo "Response:" . $response;
             }
+
+            // Fechar a sessão cURL
+            curl_close($curl);
         } else {
             echo "Nenhum resultado encontrado.";
         }
