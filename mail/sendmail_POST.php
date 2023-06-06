@@ -74,6 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $mail->send();
 
 
+                    echo "Retorno sendmail:";
                     echo $destinatario;
                     echo $assunto;
                     echo $mensagem;

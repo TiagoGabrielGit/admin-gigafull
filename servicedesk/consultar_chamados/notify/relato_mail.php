@@ -228,7 +228,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Formar a URL completa com base no Document Root
             $documentRoot = $_SERVER['DOCUMENT_ROOT'];
             $relativePath = '/mail/sendmail_POST.php';
-            $url = 'http://' . $_SERVER['HTTP_HOST'] . $relativePath;
+            $url = 'https://' . $_SERVER['HTTP_HOST'] . $relativePath;
 
             // Dados a serem enviados
             $data = array(
