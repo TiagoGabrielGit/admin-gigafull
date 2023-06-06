@@ -23,7 +23,7 @@
                         excluiRascunho();
                         $('#relatarChamado')[0].reset();
                         $("#basicModal").modal('hide');
-                        //recarregarPagina();
+                        recarregarPagina();
                     }
                 });
             }
