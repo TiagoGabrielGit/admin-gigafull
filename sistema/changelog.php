@@ -19,7 +19,7 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading7-0">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7-0" aria-expanded="false" aria-controls="collapse7-0">
-                    Versão 7.0 - XX/06/2023
+                    Versão 7.0 - 06/06/2023
                   </button>
                 </h2>
                 <div id="collapse7-0" class="accordion-collapse collapse" aria-labelledby="heading7-0" data-bs-parent="#accordionExample">
@@ -27,6 +27,7 @@ require "../includes/menu.php";
 
                     <br><strong>Melhorias</strong><br>
                     # Envio de e-mail na apropriação de chamado;<br>
+                    # Ajuste no envio de email de ralato, alterado de GET para POST;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado notificação ID "4";<br>
