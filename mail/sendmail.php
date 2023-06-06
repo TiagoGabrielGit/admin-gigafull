@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                     $mail->send();
 
 
-                    echo "Success: E-mail enviado com sucesso.<br><br>$mensagem";
+                    echo "Success: E-mail enviado com sucesso.<br><br>" . $_GET['mensagem'];
                 } catch (Exception $e) {
                     echo "Error: Erro ao enviar o email:" . $mail->ErrorInfo;
                 }
