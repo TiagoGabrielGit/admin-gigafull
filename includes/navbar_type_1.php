@@ -310,6 +310,13 @@ require "validaRotina.php";
                     <i class="bi bi-info-circle"></i><span>Sistema</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="sistema-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <?php if ($c_nav_sub_docAPI['c'] == 1) { ?>
+                        <li>
+                            <a href="/sistema/api/doc_api.php">
+                                <i class="bi bi-circle"></i><span>APIs</span>
+                            </a>
+                        </li>
+                    <?php } ?>
 
                     <?php if ($c_nav_sub_changelog['c'] == 1) { ?>
                         <li>
