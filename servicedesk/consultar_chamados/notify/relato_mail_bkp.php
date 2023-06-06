@@ -19,6 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $active = $c_habilitado['active'];
     $server_id = $c_habilitado['server_id'];
 
+
     // Se habilitado, coleta informações do chamado.
     if ($active == 1) {
         $id_chamado = $_POST['id_chamado'];
@@ -62,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tipo_chamado = $c_infos_chamado['tipo_chamado'];
         $empresa = $c_infos_chamado['empresa'];
 
-        // Último relato
+        //ULTIMO RELATO
         $ultimo_relato = "SELECT
         p.nome as 'relatante',
         cr.relato as 'relato',
@@ -79,7 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         p.id = u.pessoa_id
         WHERE
         cr.chamado_id = $id_chamado
-        ORDER BY
+        order by
         cr.id DESC
         LIMIT 1 ";
 
@@ -90,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $privacidade = $c_ultimo_relato['privacidade'];
 
         if ($privacidade == 1) {
-            // SQL para receber lista de destinatários
+            //SQL para receber lista de destinatários
             $lista_destinatarios_internos =
                 "SELECT
             p.email as 'email'
@@ -135,7 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             WHERE
             c.id = $id_chamado";
         } else if ($privacidade == 2) {
-            // SQL para receber lista de destinatários
+            //SQL para receber lista de destinatários
             $lista_destinatarios_internos =
                 "SELECT
             p.email as 'email'
@@ -181,9 +182,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             p.id = u.pessoa_id
             WHERE
             c.id = $id_chamado
-            AND
+            and
             u.tipo_usuario = 1";
         }
+
 
         // Executa a consulta no banco de dados
         $result = $pdo->query($lista_destinatarios_internos);
@@ -200,10 +202,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $destinatarios[] = $email;
             }
 
-            // Assunto do e-mail
+            //Assunto do email
             $assunto = "SmartControl - Novo relato no chamado $id_chamado.";
 
-            // Mensagem do e-mail
+            // Mensagem do email
             $mensagem = "<b>Um novo relato foi adicionado no chamado $id_chamado por $relatante.</b><br>";
             $mensagem .= "Chamado ID: $id_chamado
                         Empresa: $empresa
@@ -220,43 +222,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <b>Lista de destinatários que foi enviado notificação:</b><br>";
 
             // Adicionar a lista de destinatários à mensagem
-            $destinatarios_str = implode(', ', $destinatarios);
             foreach ($destinatarios as $destinatario) {
                 $mensagem .= $destinatario . "<br>";
             }
 
             // Formar a URL completa com base no Document Root
             $documentRoot = $_SERVER['DOCUMENT_ROOT'];
-            $relativePath = '/mail/sendmail_POST.php';
-            $url = 'http://' . $_SERVER['HTTP_HOST'] . $relativePath;
+            $relativePath = '/mail/sendmail.php';
+            $url = 'http://' . $_SERVER['HTTP_HOST'] . $relativePath . '?destinatario=' . urlencode(implode(',', $destinatarios)) . '&servidorID=' . urlencode($server_id) . '&assunto=' . urlencode($assunto) . '&mensagem=' . urlencode($mensagem);
 
-            // Dados a serem enviados
-            $data = array(
-                'destinatario' => $destinatarios_str,
-                'assunto' => $assunto,
-                'mensagem' => $mensagem,
-                'servidorID' => $server_id
-            );
+            $response = file_get_contents($url);
 
-            // Configuração da requisição POST
-            $options = array(
-                'http' => array(
-                    'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                    'method' => 'POST',
-                    'content' => http_build_query($data)
-                )
-
-            );
-
-            // Faz a solicitação POST
-            $context = stream_context_create($options);
-            $response = file_get_contents($url, false, $context);
-
-            // Verifica a resposta
             if ($response === false) {
                 echo "Error: Erro ao enviar o e-mail.";
             } else {
-                echo nl2br($response);
+                echo nl2br($url); 
             }
         } else {
             echo "Nenhum resultado encontrado.";
