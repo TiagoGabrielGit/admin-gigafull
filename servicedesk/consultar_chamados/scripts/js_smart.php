@@ -12,11 +12,20 @@
                 $("#msgRelatar").slideDown('slow').html(retornaRelatar);
                 salvaRascunho();
                 retirarMsgRelatar();
-            } else {
-                $("#msgRelatar").slideDown('slow').html(retornaRelatar); //Isso faz o email ser enviado
-                excluiRascunho();
-                $('#relatarChamado')[0].reset();
-                $("#basicModal").modal('hide');
+            } else if (retornaRelatar.includes("Success")) {
+                var dadosEnviarEmail = document.querySelector("#chamadoID").value;
+
+                // Enviar o comando POST para notify_mail.php
+                $.post("/servicedesk/consultar_chamados/notify/relato_mail.php", {
+                    id_chamado: dadosEnviarEmail
+                }, function(responseNotifyMail) {
+                    if (retornaRelatar.includes("Success")) {
+                        excluiRascunho();
+                        $('#relatarChamado')[0].reset();
+                        $("#basicModal").modal('hide');
+                        //recarregarPagina();
+                    }
+                });
             }
         });
     });

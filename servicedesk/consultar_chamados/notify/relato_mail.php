@@ -234,12 +234,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $response = file_get_contents($url);
 
-            // Verificar a resposta
             if ($response === false) {
-                echo "Erro ao enviar o e-mail.";
+                echo "Error: Erro ao enviar o e-mail.";
             } else {
-                echo $url;
-                echo "E-mail enviado com sucesso.";
+                echo nl2br($response); 
             }
         } else {
             echo "Nenhum resultado encontrado.";

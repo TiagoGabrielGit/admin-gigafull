@@ -74,7 +74,7 @@
             var formTestarEnvio = $('#formTestarEnvio').serialize(); // Serializar os dados do formulário
 
             $.ajax({
-                type: 'POST',
+                type: 'GET',
                 url: '/mail/sendmail.php',
                 data: formTestarEnvio,
                 success: function(responseTesteEnvio) {
@@ -103,6 +103,7 @@
 
     });
 </script>
+
 
 <script>
     document.getElementById('btnConfigSend').addEventListener('click', function() {

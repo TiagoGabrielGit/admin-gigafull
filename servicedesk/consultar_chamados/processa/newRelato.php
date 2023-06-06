@@ -67,29 +67,9 @@ if ($tipoUsuario == 1) {
             $stmt2 = $pdo->prepare($sql2);
         }
 
-        if ($stmt1->execute() && $stmt2->execute($data)) { ?>
-            <script>
-                setTimeout(function() {
-                    var chamadoId = <?= $chamadoID ?>;
-                    fetch('notify/relato_mail.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: 'id_chamado=' + chamadoId
-                    }).then(function(response) {
-                        if (response.ok) {
-                            // Lógica após o envio bem-sucedido da requisição
-                            window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamadoID ?>";
-                        } else {
-                            console.error('Erro na requisição. Status:', response.status);
-                        }
-                    }).catch(function(error) {
-                        console.error('Erro na requisição:', error);
-                    });
-                }, 5000); // Atraso de 5000 milissegundos = 5 segundos
-            </script>
-        <?php } else {
+        if ($stmt1->execute() && $stmt2->execute($data)) {
+            echo "<p style='color:green;'>Success: Relato salvo com sucesso.</p>";
+        } else {
             echo "<p style='color:red;'>Error: Erro ao salvar.</p>";
         }
     }

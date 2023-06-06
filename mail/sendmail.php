@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     require "../conexoes/conexao_pdo.php";
 
     if (empty($_GET['destinatario']) || empty($_GET['assunto']) || empty($_GET['mensagem']) || empty($_GET['servidorID'])) {
-        echo "<p style='color:red;'>Error: Dados obrigatórios não preenchidos.</p>";
+        echo "Error: Dados obrigatórios não preenchidos.";
     } else {
 
         $destinatario = $_GET['destinatario'];
@@ -72,12 +72,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
                     // Enviar o email
                     $mail->send();
-                    echo "<p style='color:green;'>Email enviado com sucesso.</p>";
+
+
+                    echo "Success: E-mail enviado com sucesso.<br><br>$mensagem";
                 } catch (Exception $e) {
-                    echo "<p style='color:red;'>Error: Erro ao enviar o email:</p>" . $mail->ErrorInfo;
+                    echo "Error: Erro ao enviar o email:" . $mail->ErrorInfo;
                 }
             } else {
-                echo "<p style='color:red;'>Error: Servidor de e-mail inativado.</p>";
+                echo "Error: Servidor de e-mail inativado.";
             }
         }
     }
