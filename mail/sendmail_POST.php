@@ -79,6 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     //echo "Success: E-mail enviado com sucesso.<br><br>" . $_POST['mensagem'];
                 } catch (Exception $e) {
                     echo "Error: Erro ao enviar o email:" . $mail->ErrorInfo;
+                    
                 }
             } else {
                 echo "Error: Servidor de e-mail inativado.";

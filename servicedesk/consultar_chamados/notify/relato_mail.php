@@ -255,7 +255,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Verifica a resposta
             if ($response === false) {
                 echo "Error: Erro ao enviar o e-mail.";
-            } else {
+            } else { 
                 echo nl2br($response);
             }
         } else {
