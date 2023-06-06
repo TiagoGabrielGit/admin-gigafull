@@ -237,7 +237,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($response === false) {
                 echo "Error: Erro ao enviar o e-mail.";
             } else {
-                echo nl2br($mensagem); 
+                echo nl2br($url); 
             }
         } else {
             echo "Nenhum resultado encontrado.";
