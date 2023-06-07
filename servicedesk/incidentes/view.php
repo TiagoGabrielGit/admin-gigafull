@@ -20,13 +20,13 @@ $c_dados_usuario = $r_dados_usuario->fetch_array();
 $empresaID = $c_dados_usuario['empresaID'];
 $tipoUsuario = $c_dados_usuario['tipoUsuario'];
 
-if ($tipoUsuario == 1) { 
+if ($tipoUsuario == 1) {
 
 
     $id_incidente = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
     $sql_incidente =
-    "SELECT
+        "SELECT
     count(rni.id) as contagem,
     rni.id as idIncidente,
     rni.zabbix_event_id as zabbixID,
@@ -68,8 +68,9 @@ if ($tipoUsuario == 1) {
     ";
 
     $r_sql_incidente = mysqli_query($mysqli, $sql_incidente);
-    $campos = mysqli_fetch_assoc($r_sql_incidente); ?>
-
+    $campos = mysqli_fetch_assoc($r_sql_incidente);
+    $descIncidente = $campos['descricaoIncidente'];
+?>
     <main id="main" class="main">
         <div class="pagetitle">
             <h1>Incidente #<?= $campos['idIncidente'] ?></h1>
@@ -140,26 +141,39 @@ if ($tipoUsuario == 1) {
                                         } ?> <br>
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     <div class="row">
-                                        <div class="col-8" style="text-align: left;">
+                                        <div class="col-12" style="text-align: left;">
                                             <br>
                                             <b>Hora Inicial: </b><?= $campos['horainicial']; ?><br>
                                             <b>Hora Normalização: </b><?= $campos['horafinal']; ?><br><br>
                                             <b>Tempo total incidente: </b><?= $campos['tempoIncidente']; ?>
                                         </div>
-
-                                        <div class="col-4" style="text-align: center;">
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="row">
+                                        <div class="col-12" style="text-align: center;">
                                             <br>
                                             <?php
                                             if ($campos['statusID'] == "1") { ?>
                                                 <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalUpdate">
-                                                    Update
+                                                    Atualizar
                                                 </button>
                                             <?php
                                             }
                                             ?>
-
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12" style="text-align: center;">
+                                            <br>
+                                            <?php
+                                            if ($campos['statusID'] == "1") { ?>
+                                                <button data-bs-toggle="modal" data-bs-target="#modalAnalisarGPON" id="buttonAnalisarGPON" class="btn btn-danger" type="button">Analisar GPON</button>
+                                            <?php
+                                            }
+                                            ?>
                                         </div>
                                     </div>
                                 </div>
@@ -235,6 +249,27 @@ if ($tipoUsuario == 1) {
         </section>
     </main>
 
+    <div class="modal fade" id="modalAnalisarGPON" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Analise GPON</h5>
+                </div>
+
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div class="col-12">
+                            <h3 style="text-align: center;">Analisando</h3>
+                        </div>
+                        <div class="col-12 text-center">
+                            <div class="spinner-border text-success " role="status">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="modal fade" id="modalUpdate" tabindex="-1">
         <div class="modal-dialog modal-lg">
@@ -333,6 +368,7 @@ if ($tipoUsuario == 1) {
     </main>
 <?php }
 
+require "js_analise_incidente.php";
 require "../../scripts/update_incidente.php";
 require "../../includes/footer.php";
 ?>

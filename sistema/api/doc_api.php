@@ -39,6 +39,10 @@ require "../../includes/menu.php";
                                                 <b>service:</b>ID do serviço vinculado ao contrato da empresa<br>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <b>Exemplo de uso com zabbix:</b>
+                                            wget --spider -r https://smartcontrol.dominio.com.br/api_externa/abertura_chamado.php?assunto='{EVENT.NAME}'\&tipo=26\&solicitante=9999\&empresa=2\&relato='{TRIGGER.DESCRIPTION}'\&service=10 -P /tmp/
+                                        </div>
                                     </div>
                                 </div>
                             </div>

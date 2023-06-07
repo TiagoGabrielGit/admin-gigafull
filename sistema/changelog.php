@@ -26,6 +26,7 @@ require "../includes/menu.php";
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
+                    # Integração com Zabbix para abertura de chamados;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
 
@@ -40,6 +41,7 @@ require "../includes/menu.php";
                     # Menu documentações;<br>
                     # Ativar/Desativar notificação E-mail pelo acesso do usuário:<br>
                     # Resetar senha pelo acesso usuário;<br>
+                    # Relatar em chamado já existente ao invés de abrir outro via integração Zabbix;<br>
 
                     <br><strong>Backlog</strong><br>
                     # Cadastro de PONs;<br>

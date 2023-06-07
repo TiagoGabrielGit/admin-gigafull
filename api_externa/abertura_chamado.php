@@ -52,8 +52,7 @@
                 $context  = stream_context_create($options);
                 $result = file_get_contents($url, false, $context);
 
-                //echo "<script>var idChamado = " . $id_chamado . ";</script>";
-                //echo "<script src='abertura_chamado.js'></script>";
+          
             } else {
                 echo "Falha ao abrir chamado";
             }
