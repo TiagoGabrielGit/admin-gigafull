@@ -2,7 +2,7 @@
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require "../conexoes/conexao_pdo.php";
 
-    $id_chamado = $_POST['codigoIncidente'];
+    $id_incidente = $_POST['codigoIncidente'];
     $incidente = $_POST['incidente'];
     $idUsuario = $_POST['idUsuario'];
 
@@ -18,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         ON
         ro.equipamento_id = i.equipamento_id
         WHERE
-        i.id = $id_chamado";
+        i.id = $id_incidente";
 
     // Executa a consulta no banco de dados
     $r_dados_olt = $pdo->query($dados_olt);
@@ -53,15 +53,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mensagemRetorno = implode(PHP_EOL, array_slice($retorno1, $linhaInicial, $linhaFinal - $linhaInicial + 1));
 
         // Preparar a consulta SQL para inserir os dados no banco de dados
-        $sql = "INSERT INTO chamado_relato (chamado_id, relator_id, relato, relato_hora_inicial, relato_hora_final, seconds_worked, private) 
-                VALUES (:chamado_id, :relator_id, :relato, NOW(), NOW(), '0', '2')";
+        $sql = "INSERT INTO incidentes_relatos (relato_autor, incidente_id, relato, horarioRelato) 
+                VALUES (:relato_autor, :incidente_id, :relato, NOW()";
 
         // Preparar o statement PDO
         $stmt = $pdo->prepare($sql);
 
         // Bind dos parâmetros
-        $stmt->bindParam(':chamado_id', $id_chamado);
-        $stmt->bindParam(':relator_id', $idUsuario);
+        $stmt->bindParam(':incidente_id', $id_incidente);
+        $stmt->bindParam(':relato_autor', $idUsuario);
         $stmt->bindParam(':relato', $mensagemRetorno);
 
         // Executar a consulta
