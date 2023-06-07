@@ -4,6 +4,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $id_chamado = $_POST['codigoIncidente'];
     $incidente = $_POST['incidente'];
+    $idUsuario = $_POST['idUsuario'];
 
     $dados_olt =
         "SELECT
@@ -32,16 +33,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $slot = $matches[2];   // Valor "4"
         $pon = $matches[3];    // Valor "11"
 
-        // Exibir os valores
-        //echo "IP: $ip<br>";
-        //echo "Usuario: $usuario<br>";
-        //echo "Password: $password<br>";
-        //echo "Frame: $frame<br>";
-        //echo "SLOT: $slot<br>";
-        //echo "PON: $pon<br>";
-
         exec("bash ../bash/olt/huawei/summary_info.bash $ip $usuario $password $frame $slot $pon", $retorno1);
-        echo $retorno1;
+        $array_result = [];
+        foreach ($retorno1 as $key => $value) {
+
+            $pos1 = strpos($value, 'Command');
+            if ($pos1 !== false) {
+                $array_result1[] = $key;
+            }
+
+            $pos2 = strpos($value, 'quit');
+            if ($pos2 !== false) {
+                $array_result2[] = $key;
+            }
+        }
+
+        $linhaInicial = $array_result1[0];
+        $linhaFinal = $array_result2[0];
+        $mensagemRetorno = implode(PHP_EOL, array_slice($retorno1, $linhaInicial, $linhaFinal - $linhaInicial + 1));
+
+        // Preparar a consulta SQL para inserir os dados no banco de dados
+        $sql = "INSERT INTO chamado_relato (chamado_id, relator_id, relato, relato_hora_inicial, relato_hora_final, seconds_worked, private) 
+                VALUES (:chamado_id, :relator_id, :relato, NOW(), NOW(), '0', '2')";
+
+        // Preparar o statement PDO
+        $stmt = $pdo->prepare($sql);
+
+        // Bind dos parâmetros
+        $stmt->bindParam(':chamado_id', $id_chamado);
+        $stmt->bindParam(':relator_id', $idUsuario);
+        $stmt->bindParam(':relato', $mensagemRetorno);
+
+        // Executar a consulta
+        $stmt->execute();
+
+        // Verificar se a consulta foi executada com sucesso
+        if ($stmt->rowCount() > 0) {
+            echo "Mensagem do retorno armazenada no banco de dados com sucesso.";
+        } else {
+            echo "Erro ao armazenar a mensagem do retorno no banco de dados.";
+        }
     } else {
         echo "Não foi possível obter slot e pon.";
     }

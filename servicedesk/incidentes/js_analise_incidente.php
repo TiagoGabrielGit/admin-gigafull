@@ -4,6 +4,7 @@
   $(document).on('click', '#buttonAnalisarGPON', function() {
     // Código do incidente
     var codigoIncidente = <?= json_encode($id_incidente) ?>;
+    var idUsuario = <?= json_encode($usuarioID) ?>;
     var incidente = <?= json_encode($descIncidente) ?>;
 
     // Referência ao modal
@@ -16,6 +17,7 @@
       data: {
         codigoIncidente: codigoIncidente,
         incidente: incidente,
+        idUsuario: idUsuario,
       },
       success: function(response) {
         // Tratar a resposta, se necessário
