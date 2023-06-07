@@ -1,6 +1,6 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    require "../../../conexoes/conexao_pdo.php";
+    require "../../conexoes/conexao_pdo.php";
 
     // Consulta se o envio de e-mail está habilitado
     $consulta_habilitado = "
@@ -10,15 +10,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         FROM
             notificacao_email as ne
         WHERE
-            ne.notificacao_id = 3
-    ";
+            ne.notificacao_id = 4";
 
     // Executa a consulta no banco de dados
     $result_habilitado = $pdo->query($consulta_habilitado);
     $c_habilitado = $result_habilitado->fetch(PDO::FETCH_ASSOC);
     $active = $c_habilitado['active'];
     $server_id = $c_habilitado['server_id'];
-
 
     // Se habilitado, coleta informações do chamado.
     if ($active == 1) {
@@ -58,42 +56,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $c_infos_chamado = $r_infos_chamado->fetch(PDO::FETCH_ASSOC);
         $titulo = $c_infos_chamado['assunto'];
         $relato = $c_infos_chamado['relato'];
-        $relato = $relato;
         $data_abertura = $c_infos_chamado['data_abertura'];
         $tipo_chamado = $c_infos_chamado['tipo_chamado'];
         $empresa = $c_infos_chamado['empresa'];
+        $atendente = $c_infos_chamado['atendente'];
 
-        //ULTIMO RELATO
-        $ultimo_relato = "SELECT
-        p.nome as 'relatante',
-        cr.relato as 'relato',
-        cr.private as 'privacidade'
-        FROM
-        chamado_relato as cr
-        LEFT JOIN
-        usuarios as u
-        ON
-        u.id = cr.relator_id
-        LEFT JOIN
-        pessoas as p
-        ON
-        p.id = u.pessoa_id
-        WHERE
-        cr.chamado_id = $id_chamado
-        order by
-        cr.id DESC
-        LIMIT 1 ";
-
-        $r_ultimo_relato = $pdo->query($ultimo_relato);
-        $c_ultimo_relato = $r_ultimo_relato->fetch(PDO::FETCH_ASSOC);
-        $ultimo_relato = $c_ultimo_relato['relato'];
-        $relatante = $c_ultimo_relato['relatante'];
-        $privacidade = $c_ultimo_relato['privacidade'];
-
-        if ($privacidade == 1) {
-            //SQL para receber lista de destinatários
-            $lista_destinatarios_internos =
-                "SELECT
+        //SQL para receber lista de destinatários
+        $lista_destinatarios =
+            "SELECT
             p.email as 'email'
             FROM
             usuarios as u
@@ -120,7 +90,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             p.id = u.pessoa_id
             WHERE
             c.id = $id_chamado
+           
             UNION
+           
             SELECT
             p.email as 'email'
             FROM
@@ -135,60 +107,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             p.id = u.pessoa_id
             WHERE
             c.id = $id_chamado";
-        } else if ($privacidade == 2) {
-            //SQL para receber lista de destinatários
-            $lista_destinatarios_internos =
-                "SELECT
-            p.email as 'email'
-            FROM
-            usuarios as u
-            LEFT JOIN
-            pessoas as p
-            ON
-            p.id = u.pessoa_id
-            WHERE
-            u.perfil_id = 1
-
-            UNION
-
-            SELECT
-            p.email as 'email'
-            FROM
-            chamados as c
-            LEFT JOIN
-            usuarios as u
-            ON
-            u.id = c.atendente_id
-            LEFT JOIN
-            pessoas as p
-            ON
-            p.id = u.pessoa_id
-            WHERE
-            c.id = $id_chamado
-
-            UNION
-
-            SELECT
-            p.email as 'email'
-            FROM
-            chamados as c
-            LEFT JOIN
-            usuarios as u
-            ON
-            u.id = c.solicitante_id
-            LEFT JOIN
-            pessoas as p
-            ON
-            p.id = u.pessoa_id
-            WHERE
-            c.id = $id_chamado
-            and
-            u.tipo_usuario = 1";
-        }
-
 
         // Executa a consulta no banco de dados
-        $result = $pdo->query($lista_destinatarios_internos);
+        $result = $pdo->query($lista_destinatarios);
 
         // Verifica se a consulta retornou algum resultado
         if ($result->rowCount() > 0) {
@@ -203,10 +124,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
 
             //Assunto do email
-            $assunto = "SmartControl - Novo relato no chamado $id_chamado.";
+            $assunto = "SmartControl - Chamado $id_chamado apropriado por $atendente.";
 
             // Mensagem do email
-            $mensagem = "<b>Um novo relato foi adicionado no chamado $id_chamado por $relatante.</b><br>";
+            $mensagem = "<b>O chamado $id_chamado foi apropriado pelo atendente $atendente.</b><br>";
             $mensagem .= "Chamado ID: $id_chamado
                         Empresa: $empresa
                         Tipo Chamdo: $tipo_chamado
@@ -216,50 +137,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <b>Relato da Abertura:</b>
                         $relato
 
-                        <b>Relato Adicionado:</b>
-                        $ultimo_relato
-
             <b>Lista de destinatários que foi enviado notificação:</b><br>";
-
+            $destinatarios_str = implode(', ', $destinatarios);
             // Adicionar a lista de destinatários à mensagem
             foreach ($destinatarios as $destinatario) {
                 $mensagem .= $destinatario . "<br>";
             }
 
+            // Verificar se a solicitação foi feita via HTTPS
+            if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+                $protocol = 'https';
+            } else {
+                $protocol = 'http';
+            }
 
             // Formar a URL completa com base no Document Root
             $documentRoot = $_SERVER['DOCUMENT_ROOT'];
             $relativePath = '/mail/sendmail_POST.php';
-            //$url = 'http://' . $_SERVER['HTTP_HOST'] . $relativePath . '?destinatario=' . urlencode(implode(',', $destinatarios)) . '&servidorID=' . urlencode($server_id) . '&assunto=' . urlencode($assunto) . '&mensagem=' . urlencode($mensagem);
-            $url = 'http://' . $_SERVER['HTTP_HOST'] . $relativePath;
+
+            $url = $protocol . '://' . $_SERVER['HTTP_HOST'] . $relativePath;
 
             // Dados a serem enviados
             $data = array(
-                'destinatario' => $destinatario,
+                'destinatario' => $destinatarios_str,
                 'assunto' => $assunto,
                 'mensagem' => $mensagem,
                 'servidorID' => $server_id
             );
 
-            // Configuração da requisição POST
-            $options = array(
-                'http' => array(
-                    'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                    'method' => 'POST',
-                    'content' => http_build_query($data)
-                )
-            );
+            // Inicializar a sessão cURL
+            $curl = curl_init();
 
-            // Faz a solicitação POST
-            $context = stream_context_create($options);
-            $response = file_get_contents($url, false, $context);
+            // Configurar a requisição POST
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true); // Permitir redirecionamento
 
-            // Verifica a resposta
+            // Executar a requisição e obter a resposta
+            $response = curl_exec($curl);
+
+            // Verificar a resposta
             if ($response === false) {
                 echo "Error: Erro ao enviar o e-mail.";
             } else {
-                echo nl2br($mensagem);
+                echo "Response:" . $response;
             }
+
+            // Fechar a sessão cURL
+            curl_close($curl);
         } else {
             echo "Nenhum resultado encontrado.";
         }

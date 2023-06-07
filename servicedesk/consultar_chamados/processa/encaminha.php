@@ -21,8 +21,8 @@ if ($stmt->execute()) {
 if ($cont_insert) { ?>
     <script>
         setTimeout(function() {
-            var chamadoId = <?= $chamado ?>;
-            fetch('../notify/encaminha_mail.php', {
+            var chamadoId = $id_chamado;
+            fetch('/notificacao/mail/encaminha_chamado.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -30,8 +30,7 @@ if ($cont_insert) { ?>
                 body: 'id_chamado=' + chamadoId
             }).then(function(response) {
                 if (response.ok) {
-                    // Lógica após o envio bem-sucedido da requisição
-                    window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamado ?>";
+                    //Tratamento para ok
                 } else {
                     console.error('Erro na requisição. Status:', response.status);
                 }

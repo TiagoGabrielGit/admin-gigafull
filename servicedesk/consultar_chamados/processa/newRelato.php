@@ -112,33 +112,10 @@ if ($tipoUsuario == 2) {
         $stmt1->bindParam(':relato', $novoRelato);
         $stmt1->bindParam(':seconds_worked', $seconds_worked);
 
-        #Executa o insert
-        if ($stmt1->execute()) { ?>
-
-            <script>
-                setTimeout(function() {
-                    var chamadoId = <?= $chamadoID ?>;
-                    fetch('notify/relato_mail.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: 'id_chamado=' + chamadoId
-                    }).then(function(response) {
-                        if (response.ok) {
-                            // Lógica após o envio bem-sucedido da requisição
-                            window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamadoID ?>";
-                        } else {
-                            console.error('Erro na requisição. Status:', response.status);
-                        }
-                    }).catch(function(error) {
-                        console.error('Erro na requisição:', error);
-                    });
-                });
-            </script>
-
-        <?php } else {
-            echo "<p style='color:red;'>Error: Dados obrigatórios não preenchidos.</p>";
+        if ($stmt1->execute()) {
+            echo "<p style='color:green;'>Success: Relato salvo com sucesso.</p>";
+        } else {
+            echo "<p style='color:red;'>Error: Erro ao salvar.</p>";
         }
     }
 }
@@ -180,31 +157,10 @@ if ($tipoUsuario == 3) {
         $stmt1->bindParam(':relato', $novoRelato);
         $stmt1->bindParam(':seconds_worked', $seconds_worked);
 
-        #Executa o insert
-        if ($stmt1->execute()) { ?>
-            <script>
-                setTimeout(function() {
-                    var chamadoId = <?= $chamadoID ?>;
-                    fetch('notify/relato_mail.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: 'id_chamado=' + chamadoId
-                    }).then(function(response) {
-                        if (response.ok) {
-                            // Lógica após o envio bem-sucedido da requisição
-                            window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamadoID ?>";
-                        } else {
-                            console.error('Erro na requisição. Status:', response.status);
-                        }
-                    }).catch(function(error) {
-                        console.error('Erro na requisição:', error);
-                    });
-                });
-            </script>
-<?php } else {
-            echo "<p style='color:red;'>Error: Dados obrigatórios não preenchidos.</p>";
+        if ($stmt1->execute()) {
+            echo "<p style='color:green;'>Success: Relato salvo com sucesso.</p>";
+        } else {
+            echo "<p style='color:red;'>Error: Erro ao salvar.</p>";
         }
     }
 }

@@ -11,7 +11,7 @@ if ($res = mysqli_query($mysqli, $sql)) {
 	<script>
 		setTimeout(function() {
 			var chamadoId = <?= $chamado_id ?>;
-			fetch('../notify/apropriar_mail.php', {
+			fetch('/notificacao/mail/apropriar_chamado.php', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded',
@@ -19,7 +19,7 @@ if ($res = mysqli_query($mysqli, $sql)) {
 				body: 'id_chamado=' + chamadoId
 			}).then(function(response) {
 				if (response.ok) {
-					// Lógica após o envio bem-sucedido da requisição
+					//Tratamento para ok
 					window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamado_id ?>";
 				} else {
 					console.error('Erro na requisição. Status:', response.status);

@@ -91,17 +91,25 @@ if (empty($_POST['selectService'])) {
                 echo "<p style='color:green;'>Code 006: Chamado aberto com sucesso. Chamado $id_chamado</p>";
 
                 echo "<script>
-                    var xmlhttp = new XMLHttpRequest();
-                    xmlhttp.onreadystatechange = function() {
-                        if (this.readyState === 4 && this.status === 200) {
-                            // Tratar a resposta da requisição, se necessário
-                            console.log(this.responseText);
+                setTimeout(function() {
+                    var chamadoId = $id_chamado;
+                    fetch('/notificacao/mail/abertura_chamado.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'id_chamado=' + chamadoId
+                    }).then(function(response) {
+                        if (response.ok) {
+                           //Tratamento para ok
+                        } else {
+                            console.error('Erro na requisição. Status:', response.status);
                         }
-                    };
-                    xmlhttp.open('POST', 'notify/abertura_mail.php', true);
-                    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                    xmlhttp.send('id_chamado=' + encodeURIComponent($id_chamado));
-                </script>";
+                    }).catch(function(error) {
+                        console.error('Erro na requisição:', error);
+                    });
+                });
+            </script>";
             } else {
                 echo "<p style='color:red;'>Error: Erro ao abrir chamado.</p>";
             }
@@ -162,17 +170,25 @@ if (empty($_POST['selectService'])) {
                 echo "<p style='color:green;'>Code 004: Chamado aberto com sucesso. Chamado $id_chamado</p>";
 
                 echo "<script>
-                    var xmlhttp = new XMLHttpRequest();
-                    xmlhttp.onreadystatechange = function() {
-                        if (this.readyState === 4 && this.status === 200) {
-                            // Tratar a resposta da requisição, se necessário
-                            console.log(this.responseText);
+                setTimeout(function() {
+                    var chamadoId = $id_chamado;
+                    fetch('/notificacao/mail/abertura_chamado.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'id_chamado=' + chamadoId
+                    }).then(function(response) {
+                        if (response.ok) {
+                           //Tratamento para ok
+                        } else {
+                            console.error('Erro na requisição. Status:', response.status);
                         }
-                    };
-                    xmlhttp.open('POST', 'notify/abertura_mail.php', true);
-                    xmlhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                    xmlhttp.send('id_chamado=' + encodeURIComponent($id_chamado));
-                </script>";
+                    }).catch(function(error) {
+                        console.error('Erro na requisição:', error);
+                    });
+                });
+            </script>";
             } else {
                 echo "<p style='color:red;'>Error: Erro ao abrir chamado.</p>";
             }

@@ -17,12 +17,28 @@ require "../../includes/menu.php";
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="headingThree">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                        Abertura Protocolo
+                                        Chamado
                                     </button>
                                 </h2>
                                 <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                                     <div class="accordion-body">
-                                        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <b>Funcionalidade: Abertura de Chamado</b><br>
+                                                <b>Método:</b> GET <br>
+                                                <b>Caminho:</b> /api_externa/abertura_chamado.php<br>
+                                                <b>Corpo:</b> 'assunto' ; 'tipo' ; 'solicitante' ; 'empresa' ; 'relato' ; 'service'<br>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <b> Descrição do corpo</b><br>
+                                                <b>assunto:</b> Assunto do chamado<br>
+                                                <b>tipo:</b> ID do tipo de chamado<br>
+                                                <b>solicitante:</b> ID do usuário solicitante<br>
+                                                <b>empresa:</b> ID da empresa<br>
+                                                <b>relato:</b> Relato do chamado<br>
+                                                <b>service:</b>ID do serviço vinculado ao contrato da empresa<br>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -19,7 +19,7 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading7-1">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7-1" aria-expanded="false" aria-controls="collapse7-1">
-                    Versão 7.1 - XX/06/2023
+                    Versão 7.1 - 07/06/2023
                   </button>
                 </h2>
                 <div id="collapse7-1" class="accordion-collapse collapse" aria-labelledby="heading7-1" data-bs-parent="#accordionExample">
@@ -27,6 +27,7 @@ require "../includes/menu.php";
 
                     <br><strong>Melhorias</strong><br>
                     # Criado documentação de API;<br>
+                    # Adequado script's de envio de e-mail para POST;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado o submenu API com o id 27 na tabela submenu;<br>

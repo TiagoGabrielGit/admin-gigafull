@@ -16,7 +16,7 @@
                 var dadosEnviarEmail = document.querySelector("#chamadoID").value;
 
                 // Enviar o comando POST para notify_mail.php
-                $.post("/servicedesk/consultar_chamados/notify/relato_mail.php", {
+                $.post("/notificacao/mail/relato_chamado.php", {
                     id_chamado: dadosEnviarEmail
                 }, function(responseNotifyMail) {
                     if (retornaRelatar.includes("Success")) {
@@ -56,7 +56,6 @@
             salvaRascunho();
         }
     });
-
 
     function salvaRascunho() {
         var dadosRascunhoRelato = $("#relatarChamado").serialize();

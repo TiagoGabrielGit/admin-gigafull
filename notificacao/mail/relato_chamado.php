@@ -1,6 +1,6 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    require "../../../conexoes/conexao_pdo.php";
+    require "../../conexoes/conexao_pdo.php";
 
     // Consulta se o envio de e-mail está habilitado
     $consulta_habilitado = "
@@ -213,7 +213,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                         <b>Relato da Abertura:</b>
                         $relato
-
                         <b>Relato Adicionado:</b>
                         $ultimo_relato
 
