@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Preparar a consulta SQL para inserir os dados no banco de dados
         $sql = "INSERT INTO incidentes_relatos (relato_autor, incidente_id, relato, horarioRelato) 
-                VALUES (:relato_autor, :incidente_id, :relato, NOW()";
+                VALUES (:relato_autor, :incidente_id, :relato, NOW())";
 
         // Preparar o statement PDO
         $stmt = $pdo->prepare($sql);
