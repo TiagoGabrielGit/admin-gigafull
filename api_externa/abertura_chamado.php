@@ -26,8 +26,34 @@
             $stmt1->bindParam(':service', $service);
             if ($stmt1->execute()) {
                 $id_chamado = $pdo->lastInsertId();
-                echo "<script>var idChamado = " . $id_chamado . ";</script>";
-                echo "<script src='abertura_chamado.js'></script>";
+
+                // Verificar se a solicitação foi feita via HTTPS
+                if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+                    $protocol = 'https';
+                } else {
+                    $protocol = 'http';
+                }
+
+                // Formar a URL completa com base no Document Root
+                $documentRoot = $_SERVER['DOCUMENT_ROOT'];
+                $relativePath = '/notificacao/mail/abertura_chamado.php';
+
+                $url = $protocol . '://' . $_SERVER['HTTP_HOST'] . $relativePath;
+                $data = array('id_chamado' => $id_chamado);
+
+                $options = array(
+                    'http' => array(
+                        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                        'method'  => 'POST',
+                        'content' => http_build_query($data)
+                    )
+                );
+
+                $context  = stream_context_create($options);
+                $result = file_get_contents($url, false, $context);
+
+                //echo "<script>var idChamado = " . $id_chamado . ";</script>";
+                //echo "<script src='abertura_chamado.js'></script>";
             } else {
                 echo "Falha ao abrir chamado";
             }
