@@ -22,9 +22,9 @@ sleep 0.5
 echo "interface gpon $4/$5"
 sleep 0.5
 echo "display ont info summary $6"
-sleep 2
+sleep 3
 echo ""
-sleep 2
+sleep 3
 echo "quit"
 sleep 0.3
 echo "quit"
