@@ -14,17 +14,17 @@ sleep 1
 echo "$3"
 sleep 0.5
 echo "enable"
-sleep 0.2
+sleep 0.5
 echo "scroll 512"
-sleep 0.2
+sleep 0.5
 echo "config"
-sleep 0.2
+sleep 0.5
 echo "interface gpon $4/$5"
-sleep 0.3
+sleep 0.5
 echo "display ont info summary $6"
 sleep 2
 echo ""
-sleep 0.3
+sleep 2
 echo "quit"
 sleep 0.3
 echo "quit"

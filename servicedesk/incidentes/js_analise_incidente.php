@@ -47,8 +47,8 @@
 
         // Fechar o modal
         setTimeout(function() {
-          //modal.modal('hide');
-          //window.location.reload(); // Atualizar a página atual
+          modal.modal('hide');
+          window.location.reload(); // Atualizar a página atual
 
         }, 2000);
       }
