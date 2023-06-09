@@ -259,7 +259,7 @@ if ($tipoUsuario == 1) {
                 <div class="modal-body">
                     <div class="card-body">
                         <div class="col-12">
-                            <h3 style="text-align: center;">Analisando</h3>
+                            <h3 id="statusMessage" style="text-align: center;">Analisando</h3>
                         </div>
                         <div class="col-12 text-center">
                             <div class="spinner-border text-success " role="status">
