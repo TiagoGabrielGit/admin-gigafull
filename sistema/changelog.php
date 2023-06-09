@@ -19,7 +19,7 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading7-2">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7-2" aria-expanded="false" aria-controls="collapse7-2">
-                    Versão 7.2 - XX/06/2023
+                    Versão 7.2 - 09/06/2023
                   </button>
                 </h2>
                 <div id="collapse7-2" class="accordion-collapse collapse" aria-labelledby="heading7-2" data-bs-parent="#accordionExample">
@@ -27,13 +27,13 @@ require "../includes/menu.php";
 
                     <br><strong>Melhorias</strong><br>
                     # Integração com Zabbix para abertura de chamados;<br>
+                    # Botão para capturar summary-info de um incidente;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
 
                     <br><strong>Previsto para próximas atualizaçõs</strong><br>
                     # Integração para abrir chamado no Voalle;<br>
                     # Notificaçãoes de novos incidentes e relatos;<br>
-                    # Busca automatica de info-summary ao identificar incidente;<br>
                     # Adequação incidentes cliente;<br>
                     # Vinculo de chamado a incidente;<br>
                     # Anexo arquivos em chamados;<br>

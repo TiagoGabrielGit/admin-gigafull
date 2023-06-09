@@ -21,7 +21,7 @@ if ($stmt->execute()) {
 if ($cont_insert) { ?>
     <script>
         setTimeout(function() {
-            var chamadoId = $id_chamado;
+            var chamadoId = <?= $chamado ?>;
             fetch('/notificacao/mail/encaminha_chamado.php', {
                 method: 'POST',
                 headers: {
@@ -30,9 +30,9 @@ if ($cont_insert) { ?>
                 body: 'id_chamado=' + chamadoId
             }).then(function(response) {
                 if (response.ok) {
-                    //Tratamento para ok
+                    window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamado ?>";
                 } else {
-                    console.error('Erro na requisição. Status:', response.status);
+                    window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamado ?>";
                 }
             }).catch(function(error) {
                 console.error('Erro na requisição:', error);
@@ -42,12 +42,5 @@ if ($cont_insert) { ?>
 <?php
 } else {
 ?>
-    <script>
-        alert("Erro do excluir!");
-
-        setTimeout(function() {
-            window.location.href = "/servicedesk/consultar_chamados/view.php?id=<?= $chamado ?>";
-        });
-    </script>
 <?php
 }

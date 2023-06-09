@@ -108,7 +108,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ON
             p.id = u.pessoa_id
             WHERE
-            c.id = $id_chamado";
+            c.id = $id_chamado
+            and
+            u.id != 9999";
 
         // Executa a consulta no banco de dados
         $result = $pdo->query($lista_destinatarios);
