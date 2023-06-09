@@ -27,6 +27,21 @@
         console.log(response);
 
         // Alterar mensagem e remover o spinner
+        $('#statusMessage').text('Analise Realizada');
+        spinner.remove();
+
+        // Fechar o modal
+        setTimeout(function() {
+          modal.modal('hide');
+          window.location.reload(); // Atualizar a página atual
+
+        }, 2000);
+      },
+      error: function(xhr, status, error) {
+        // Tratar erros, se necessário
+        console.log(error);
+
+        // Alterar mensagem e remover o spinner
         $('#statusMessage').text('Falha ao analisar');
         spinner.remove();
 
@@ -35,17 +50,7 @@
           //modal.modal('hide');
           //window.location.reload(); // Atualizar a página atual
 
-        }, 3000);
-      },
-      error: function(xhr, status, error) {
-        // Tratar erros, se necessário
-        console.log(error);
-        // Fechar o modal
-        setTimeout(function() {
-          modal.modal('hide');
-          window.location.reload(); // Atualizar a página atual
-
-        }, 1000);
+        }, 2000);
       }
     });
   });
