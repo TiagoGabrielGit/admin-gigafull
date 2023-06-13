@@ -25,8 +25,6 @@
         }, 1700);
     };
 
-
-
     $(document).ready(function() {
         $('#selectService').change(function() {
             var serviceID = $(this).val();

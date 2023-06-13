@@ -52,21 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $linhaFinal = $array_result2[0];
         $mensagemRetorno = implode(PHP_EOL, array_slice($retorno1, $linhaInicial, $linhaFinal - $linhaInicial + 1));
 
-        // Processar o texto de retorno para obter as informações desejadas
-        $total_onus = obter_total_onus($mensagemRetorno);
-        $status_onus = obter_status_onus($mensagemRetorno);
-
-        // Incluir as informações no $mensagemRetorno
-        $mensagemRetorno .= "\nTotal de ONUs: " . $total_onus . "\n";
-        $mensagemRetorno .= "Status das ONUs:\n";
-        foreach ($status_onus as $onu => $status) {
-            $mensagemRetorno .= $onu . ": " . $status . "\n";
-        }
-
-        // Armazenar o $mensagemRetorno em um arquivo temporário
-        $tempFile = tempnam(sys_get_temp_dir(), 'output');
-        file_put_contents($tempFile, $mensagemRetorno);
-
         // Preparar a consulta SQL para inserir os dados no banco de dados
         $sql = "INSERT INTO incidentes_relatos (relato_autor, incidente_id, relato, horarioRelato) 
                 VALUES (:relato_autor, :incidente_id, :relato, NOW())";
@@ -84,8 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Verificar se a consulta foi executada com sucesso
         if ($stmt->rowCount() > 0) {
-            echo $mensagemRetorno;
-            //echo "Mensagem do retorno armazenada no banco de dados com sucesso.";
+            echo "Mensagem do retorno armazenada no banco de dados com sucesso.";
         } else {
             echo "Erro ao armazenar a mensagem do retorno no banco de dados.";
         }
@@ -94,42 +78,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 } else {
     echo "Método não autorizado.";
-}
-
-
-// Função para obter o número total de ONUs
-function obter_total_onus($texto)
-{
-    $linhas = explode("\n", $texto);
-    foreach ($linhas as $linha) {
-        if (strpos($linha, 'Total de ONUs:') !== false) {
-            $total_onus = (int) trim(explode(':', $linha)[1]);
-            return $total_onus;
-        }
-    }
-    return 0;
-}
-
-// Função para obter o status das ONUs
-function obter_status_onus($texto)
-{
-    $status_onus = array();
-    $linhas = explode("\n", $texto);
-    $in_status_section = false;
-    foreach ($linhas as $linha) {
-        if ($in_status_section) {
-            if (empty(trim($linha))) {
-                $in_status_section = false;
-                break;
-            }
-            $linha = trim($linha);
-            $onu_info = explode(':', $linha);
-            $onu_nome = trim($onu_info[0]);
-            $onu_status = trim($onu_info[1]);
-            $status_onus[$onu_nome] = $onu_status;
-        } elseif (strpos($linha, 'Status das ONUs:') !== false) {
-            $in_status_section = true;
-        }
-    }
-    return $status_onus;
 }

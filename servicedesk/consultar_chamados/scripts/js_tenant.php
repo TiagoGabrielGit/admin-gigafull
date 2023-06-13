@@ -10,17 +10,25 @@
 
             if (retornaRelatar.includes("Error")) {
                 $("#msgRelatar").slideDown('slow').html(retornaRelatar);
-             
+
                 retirarMsgRelatar();
             } else {
-             
-             
-                $("#basicModal").modal('hide');
-                recarregarPagina();
+                var dadosEnviarEmail = document.querySelector("#chamadoID").value;
+
+                // Enviar o comando POST para notify_mail.php
+                $.post("/notificacao/mail/relato_chamado.php", {
+                    id_chamado: dadosEnviarEmail
+                }, function(responseNotifyMail) {
+                    if (retornaRelatar.includes("Success")) {
+                        $('#relatarChamado')[0].reset();
+                        $("#basicModal").modal('hide');
+                        recarregarPagina();
+                    }
+                });
             }
         });
     });
-
+ 
     function retirarMsgRelatar() {
         setTimeout(function() {
             $("#msgRelatar").slideUp('slow', function() {});

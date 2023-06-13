@@ -61,24 +61,25 @@ if (empty($_POST['selectService'])) {
 
             if ($stmt1->execute()) {
                 $id_chamado = $pdo->lastInsertId();
-
+                $cont_insert = true;
 
                 // Verifica se o formulário foi enviado via POST
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    // Recupera os IDs das competências marcadas
-                    $competenciaIds = $_POST['competencia_ids'];
+                    if (isset($_POST['competencia_ids'])) {
+                        // Recupera os IDs das competências marcadas
+                        $competenciaIds = $_POST['competencia_ids'];
 
-                    // Percorre os IDs das competências marcadas
-                    foreach ($competenciaIds as $competenciaId) {
-                        // Verifica se o checkbox correspondente à competência está marcado
-                        if (isset($_POST['competencia' . $competenciaId])) {
-                            $insert_competencias = "INSERT INTO chamados_competencias (chamado_id, competencia_id) VALUES (:chamado_id, :competencia_id)";
-                            $stmtCompetencia = $pdo->prepare($insert_competencias);
-                            $stmtCompetencia->bindParam(':chamado_id', $id_chamado);
-                            $stmtCompetencia->bindParam(':competencia_id', $competenciaId);
+                        // Percorre os IDs das competências marcadas
+                        foreach ($competenciaIds as $competenciaId) {
+                            // Verifica se o checkbox correspondente à competência está marcado
+                            if (isset($_POST['competencia' . $competenciaId])) {
+                                $insert_competencias = "INSERT INTO chamados_competencias (chamado_id, competencia_id) VALUES (:chamado_id, :competencia_id)";
+                                $stmtCompetencia = $pdo->prepare($insert_competencias);
+                                $stmtCompetencia->bindParam(':chamado_id', $id_chamado);
+                                $stmtCompetencia->bindParam(':competencia_id', $competenciaId);
 
-                            if ($stmtCompetencia->execute()) {
-                                $cont_insert = true;
+                                if ($stmtCompetencia->execute()) {
+                                }
                             }
                         }
                     }
@@ -140,24 +141,25 @@ if (empty($_POST['selectService'])) {
 
             if ($stmt1->execute()) {
                 $id_chamado = $pdo->lastInsertId();
-
+                $cont_insert = true;
 
                 // Verifica se o formulário foi enviado via POST
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    // Recupera os IDs das competências marcadas
-                    $competenciaIds = $_POST['competencia_ids'];
+                    if (isset($_POST['competencia_ids'])) {
+                        // Recupera os IDs das competências marcadas
+                        $competenciaIds = $_POST['competencia_ids'];
 
-                    // Percorre os IDs das competências marcadas
-                    foreach ($competenciaIds as $competenciaId) {
-                        // Verifica se o checkbox correspondente à competência está marcado
-                        if (isset($_POST['competencia' . $competenciaId])) {
-                            $insert_competencias = "INSERT INTO chamados_competencias (chamado_id, competencia_id) VALUES (:chamado_id, :competencia_id)";
-                            $stmtCompetencia = $pdo->prepare($insert_competencias);
-                            $stmtCompetencia->bindParam(':chamado_id', $id_chamado);
-                            $stmtCompetencia->bindParam(':competencia_id', $competenciaId);
+                        // Percorre os IDs das competências marcadas
+                        foreach ($competenciaIds as $competenciaId) {
+                            // Verifica se o checkbox correspondente à competência está marcado
+                            if (isset($_POST['competencia' . $competenciaId])) {
+                                $insert_competencias = "INSERT INTO chamados_competencias (chamado_id, competencia_id) VALUES (:chamado_id, :competencia_id)";
+                                $stmtCompetencia = $pdo->prepare($insert_competencias);
+                                $stmtCompetencia->bindParam(':chamado_id', $id_chamado);
+                                $stmtCompetencia->bindParam(':competencia_id', $competenciaId);
 
-                            if ($stmtCompetencia->execute()) {
-                                $cont_insert = true;
+                                if ($stmtCompetencia->execute()) {
+                                }
                             }
                         }
                     }

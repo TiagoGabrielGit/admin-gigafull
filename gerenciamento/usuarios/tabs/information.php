@@ -103,24 +103,21 @@
                             </label>
                         </div>
                     </div>
-                    <?php
-                    if ($campos['tipoUsuario'] == "1") { ?>
-                        <div class="col-4">
-                            <label for="notificaEmail" class="form-label">Notificação E-mail</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="notificaEmail" id="notificaEmailAtivo" value="1" <?= $checkNotifEmail1 ?>>
-                                <label class="form-check-label" for="notificaEmailAtivo">
-                                    Ativo
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="notificaEmail" id="notificaEmailInativo" value="0" <?= $checkNotifEmail0 ?>>
-                                <label class="form-check-label" for="notificaEmailInativo">
-                                    Inativo
-                                </label>
-                            </div>
+                    <div class="col-4">
+                        <label for="notificaEmail" class="form-label">Notificação E-mail</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="notificaEmail" id="notificaEmailAtivo" value="1" <?= $checkNotifEmail1 ?>>
+                            <label class="form-check-label" for="notificaEmailAtivo">
+                                Ativo
+                            </label>
                         </div>
-                    <?php } ?>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="notificaEmail" id="notificaEmailInativo" value="0" <?= $checkNotifEmail0 ?>>
+                            <label class="form-check-label" for="notificaEmailInativo">
+                                Inativo
+                            </label>
+                        </div>
+                    </div>
                     <div id="controlaPerfil" class="col-6">
                         <label for="inputPerfil" class="form-label">Perfil</label>
                         <select name="perfil" id="perfil" class="form-select" required>

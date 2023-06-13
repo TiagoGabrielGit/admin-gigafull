@@ -10,7 +10,7 @@ if ($chamado['in_execution'] == 1) {
     $classeColor = "playColor";
 } else {
     $classeColor = "";
-}
+} 
 ?>
 
 <main id="main" class="main">
@@ -171,49 +171,6 @@ if ($chamado['in_execution'] == 1) {
         </div>
     </section>
 </main>
-
-
-<div class="modal fade" id="modalEncaminhar" tabindex="-1" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Encaminhar Chamado</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" style="text-align: center;">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Usuário</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-
-                                        $r_lista_atendentes = mysqli_query($mysqli, $lista_atendentes);
-                                        while ($c_lista_atendentes = $r_lista_atendentes->fetch_array()) { ?>
-                                            <tr>
-                                                <td><?= $c_lista_atendentes['atendente']; ?></td>
-                                                <td style="text-align: left;">
-                                                    <a href="processa/encaminha.php?user=<?= $c_lista_atendentes['idUsuario'] ?>&chamado=<?= $id_chamado ?>" onclick="return confirm('Deseja encaminhar o chamado para este usuário?')" class="bi bi-arrow-left-right"></a>
-                                                </td>
-                                            </tr>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <?php
 require "scripts/js_tenant.php";

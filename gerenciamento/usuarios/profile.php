@@ -51,14 +51,51 @@ LIMIT 10";
 
 $r_log = mysqli_query($mysqli, $log_acesso);
 
-
-
 if ($campos['notify_email'] == "Ativado") {
     $checkNotifEmail1 = "checked";
     $checkNotifEmail0 = "";
 } else if ($campos['notify_email'] == "Inativado") {
     $checkNotifEmail0 = "checked";
     $checkNotifEmail1 = "";
+}
+
+$request_colaborador =
+    "SELECT
+    'Plantão' as requisicao,
+    CASE
+    WHEN crp.status = 1 THEN 'Em análise'
+    WHEN crp.status = 2 THEN 'Recusado'
+    WHEN crp.status = 3 THEN 'Aprovado'
+    END as status
+    FROM
+    colaborador_request_plantao as crp
+    WHERE
+    crp.user_id = $usuarioID
+    ORDER BY
+    crp.id DESC";
+
+$r_request_colaborador = mysqli_query($mysqli, $request_colaborador);
+
+$horarioTrabalho = "SELECT * FROM colaborador_horario WHERE user_id = $usuarioID";
+$r_horarioTrabalho = mysqli_query($mysqli, $horarioTrabalho);
+$c_horarioTrabalho = $r_horarioTrabalho->fetch_array();
+
+$sql_gerente = "SELECT p.nome as 'gerente' FROM colaborador_gerencia as cg LEFT JOIN usuarios as u ON cg.gerente_id = u.id LEFT JOIN pessoas as p ON u.pessoa_id = p.id WHERE cg.user_id = $usuarioID";
+$r_gerente = mysqli_query($mysqli, $sql_gerente);
+$c_gerente = $r_gerente->fetch_array();
+if (empty($c_gerente['gerente'])) {
+    $gerente = "";
+} else {
+    $gerente = $c_gerente['gerente'];
+}
+
+$sql_coordenador = "SELECT p.nome as 'coordenador' FROM colaborador_gerencia as cg LEFT JOIN usuarios as u ON cg.coordenador_id = u.id LEFT JOIN pessoas as p ON u.pessoa_id = p.id WHERE cg.user_id = $usuarioID";
+$r_coordenador = mysqli_query($mysqli, $sql_coordenador);
+$c_coordenador = $r_coordenador->fetch_array();
+if (empty($c_coordenador['coordenador'])) {
+    $coordenador = "";
+} else {
+    $coordenador = $c_coordenador['coordenador'];
 }
 ?>
 
@@ -81,12 +118,16 @@ if ($campos['notify_email'] == "Ativado") {
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link active" id="infos-tab" data-bs-toggle="tab" data-bs-target="#infos" type="button" role="tab" aria-controls="infos" aria-selected="true">Informações</button>
                                 </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="competencia-tab" data-bs-toggle="tab" data-bs-target="#competencia" type="button" role="tab" aria-controls="competencia" aria-selected="false" tabindex="-1">Competências</button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="colaborador-tab" data-bs-toggle="tab" data-bs-target="#colaborador" type="button" role="tab" aria-controls="colaborador" aria-selected="false" tabindex="-1">Colaborador</button>
-                                </li>
+                                <?php if ($campos['tipoUsuario'] == 1) { ?>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="competencia-tab" data-bs-toggle="tab" data-bs-target="#competencia" type="button" role="tab" aria-controls="competencia" aria-selected="false" tabindex="-1">Competências</button>
+                                    </li>
+
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="colaborador-tab" data-bs-toggle="tab" data-bs-target="#colaborador" type="button" role="tab" aria-controls="colaborador" aria-selected="false" tabindex="-1">Colaborador</button>
+                                    </li>
+                                <?php } ?>
+
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="log-tab" data-bs-toggle="tab" data-bs-target="#log" type="button" role="tab" aria-controls="log" aria-selected="false" tabindex="-1">LOGs Acesso</button>
                                 </li>
@@ -95,12 +136,16 @@ if ($campos['notify_email'] == "Ativado") {
                                 <div class="tab-pane fade show active" id="infos" role="tabpanel" aria-labelledby="infos-tab">
                                     <?php require "profile_tabs/infos.php" ?>
                                 </div>
-                                <div class="tab-pane fade" id="competencia" role="tabpanel" aria-labelledby="competencia-tab">
-                                    <?php require "profile_tabs/competencia.php" ?>
-                                </div>
-                                <div class="tab-pane fade" id="colaborador" role="tabpanel" aria-labelledby="colaborador-tab">
-                                    <?php require "profile_tabs/colaborador.php" ?>
-                                </div>
+                                <?php if ($campos['tipoUsuario'] == 1) { ?>
+                                    <div class="tab-pane fade" id="competencia" role="tabpanel" aria-labelledby="competencia-tab">
+                                        <?php require "profile_tabs/competencia.php" ?>
+                                    </div>
+                                    <div class="tab-pane fade" id="colaborador" role="tabpanel" aria-labelledby="colaborador-tab">
+                                        <?php require "profile_tabs/colaborador.php" ?>
+                                    </div>
+
+                                <?php } ?>
+
                                 <div class="tab-pane fade" id="log" role="tabpanel" aria-labelledby="log-tab">
                                     <?php require "profile_tabs/logs.php" ?>
                                 </div>
@@ -118,5 +163,6 @@ if ($campos['notify_email'] == "Ativado") {
 </main><!-- End #main -->
 
 <?php
+require "js_profile.php";
 require "../../includes/footer.php";
 ?>

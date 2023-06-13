@@ -83,22 +83,12 @@ if ($tipoUsuario == 2) {
         #Recebe os parametros do relato
         $chamadoID = $_POST['chamadoID'];
         $relatorID = $_POST['relatorID'];
-        $tipoUsuario = $_POST['tipoUsuario'];
         $novoRelato = $_POST['novoRelato'];
-        $statusChamado = $_POST['statusChamado'];
-        $private = "1";
         $horaInicial = date("Y-m-d H:i:s");
         $relato_hora_final = date("Y-m-d H:i:s");
+
+        $private = "1";
         $seconds_worked = "0";
-
-
-        #Calcula o tempo total de execucao do chamado
-        $calcula_segudos =
-            "SELECT SUM(seconds_worked) as second from chamado_relato where chamado_id = $chamadoID";
-        $calc_sec = mysqli_query($mysqli, $calcula_segudos);
-        $res_sec = $calc_sec->fetch_array();
-        $seconds = $res_sec['second'];
-        $total_seconds_worked = ($seconds_worked + $seconds);
 
         #Prepara a a insercao do relato no chamado
         $sql1 = "INSERT INTO chamado_relato (chamado_id, relator_id, relato, relato_hora_inicial, relato_hora_final, seconds_worked, private)

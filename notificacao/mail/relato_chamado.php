@@ -90,8 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $privacidade = $c_ultimo_relato['privacidade'];
 
         if ($privacidade == 1) {
-            // SQL para receber lista de destinatários
-            $lista_destinatarios_internos =
+            $lista_destinatarios =
                 "SELECT
             p.email as 'email'
             FROM
@@ -119,7 +118,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             p.id = u.pessoa_id
             WHERE
             c.id = $id_chamado
+
             UNION
+
             SELECT
             p.email as 'email'
             FROM
@@ -133,10 +134,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             ON
             p.id = u.pessoa_id
             WHERE
-            c.id = $id_chamado";
+            c.id = $id_chamado
+            and
+            u.id != 9999";
         } else if ($privacidade == 2) {
-            // SQL para receber lista de destinatários
-            $lista_destinatarios_internos =
+            $lista_destinatarios =
                 "SELECT
             p.email as 'email'
             FROM
@@ -182,11 +184,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             WHERE
             c.id = $id_chamado
             AND
-            u.tipo_usuario = 1";
+            u.id != 9999";
         }
 
         // Executa a consulta no banco de dados
-        $result = $pdo->query($lista_destinatarios_internos);
+        $result = $pdo->query($lista_destinatarios);
 
         // Verifica se a consulta retornou algum resultado
         if ($result->rowCount() > 0) {
@@ -262,7 +264,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($response === false) {
                 echo "Error: Erro ao enviar o e-mail.";
             } else {
-                echo "Response:" . $response;
+                //echo "Response:" . $response;
+                echo $destinatarios_str;
             }
 
             // Fechar a sessão cURL

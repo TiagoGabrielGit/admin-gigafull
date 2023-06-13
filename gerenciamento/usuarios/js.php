@@ -158,3 +158,65 @@
         return senha;
     };
 </script>
+
+<script>
+    $("#btnHorarioTrabalho").click(function() {
+        var dadosHorarioTrabalho = $("#formHorarioTrabalho").serialize();
+
+        // Enviar dados via AJAX
+        $.ajax({
+            url: "processa_colaborador/horario_trabalho.php",
+            type: "POST",
+            data: dadosHorarioTrabalho,
+            success: function(responseHorarioTrabalho) {
+                $("#msgHorarioTrabalho").slideDown('slow').html(responseHorarioTrabalho);
+
+                // Aguardar 1 segundo e depois ocultar a mensagem
+                setTimeout(function() {
+                    $("#msgHorarioTrabalho").slideUp('slow');
+                    location.reload();
+                }, 1000);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $("#msgHorarioTrabalho").slideDown('slow').html(responseHorarioTrabalho);
+
+                // Aguardar 1 segundo e depois ocultar a mensagem
+                setTimeout(function() {
+                    $("#msgHorarioTrabalho").slideUp('slow');
+                    location.reload();
+                }, 1000);
+            }
+        });
+    });
+</script>
+
+<script>
+    $("#btnGerencia").click(function() {
+        var dadosGerencia = $("#formGerencia").serialize();
+
+        // Enviar dados via AJAX
+        $.ajax({
+            url: "processa_colaborador/gerencia.php",
+            type: "POST",
+            data: dadosGerencia,
+            success: function(responseGerencia) {
+                $("#msgGerencia").slideDown('slow').html(responseGerencia);
+
+                // Aguardar 1 segundo e depois ocultar a mensagem
+                setTimeout(function() {
+                    $("#msgGerencia").slideUp('slow');
+                    location.reload();
+                }, 1000);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $("#msgGerencia").slideDown('slow').html(responseGerencia);
+
+                // Aguardar 1 segundo e depois ocultar a mensagem
+                setTimeout(function() {
+                    $("#msgGerencia").slideUp('slow');
+                    location.reload();
+                }, 1000);
+            }
+        });
+    });
+</script>
