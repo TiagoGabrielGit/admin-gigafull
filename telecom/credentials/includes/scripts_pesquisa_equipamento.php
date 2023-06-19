@@ -1,21 +1,26 @@
 <script>
-    $("#EquipamentoEmpresaPesquisa").change(function() {
-        var empresaSelecionada = $(this).children("option:selected").val();
+    $(document).ready(function() {
+        $("#EquipamentoEmpresaPesquisa").change(function() {
+            var empresaSelecionada = $(this).val();
 
-        $.ajax({
-            url: "/api/pesquisa_pop.php",
-            method: "GET",
-            dataType: "HTML",
-            data: {
-                id: empresaSelecionada
+            if (empresaSelecionada) {
+                $.ajax({
+                    url: "/api/pesquisa_pop.php",
+                    method: "GET",
+                    dataType: "html",
+                    data: {
+                        id: empresaSelecionada
+                    }
+                }).done(function(resposta) {
+                    $("#popPesquisa").html(resposta);
+                }).fail(function(resposta) {
+                    alert(resposta);
+                });
             }
-        }).done(function(resposta) {
-            $("#popPesquisa").html(resposta);
-        }).fail(function(resposta) {
-            alert(resposta)
         });
     });
 </script>
+
 
 <script>
     //Pesquisa os equipamentos atraves do fabricante

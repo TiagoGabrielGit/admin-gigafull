@@ -15,6 +15,57 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
 
+              <!-- Versão 7.4 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading7-4">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7-4" aria-expanded="false" aria-controls="collapse7-4">
+                    Versão 7.4 - 18/06/2023
+                  </button>
+                </h2>
+                <div id="collapse7-4" class="accordion-collapse collapse" aria-labelledby="heading7-4" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Corrigido BUG para editar credenciais de portal;<br>
+                    # Criação de documentação;<br>
+                    # Redirecionar pagina para o cadastro da senha após cadastrar senha nova em equipamento e vm;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criado a tabela "documentation";<br>
+                    # Criado o id 18 na tabela "url_menu";
+
+                    <br><strong>Backlog</strong><br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Notificaçãoes de novos incidentes e relatos;<br>
+                    # Adequação incidentes cliente;<br>
+                    # Vinculo de chamado a incidente;<br>
+                    # Anexo arquivos em chamados;<br>
+                    # Anexo arquivos em vistorias;<br>
+                    # Permissões em documentações;<br>
+                    # Ativar/Desativar notificação E-mail pelo acesso do cliente/tenent:<br>
+                    # Resetar senha pelo acesso usuário;<br>
+                    # Relatar em chamado já existente ao invés de abrir outro via integração Zabbix;<br>
+                    # Cadastro de PONs;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Componentes de equipamentos;<br>
+                    # Segurança individual;<br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+
+                    <br><strong>Backlog --- Rede Neutra</strong><br>
+                    # BUG retorna código em resultado do provisionamento;<br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas;<br>
+                    # Botão troca ONU;<br>
+                    # Armazenar LOG sinal do cliente após provisionamento;<br>
+                    # Validação sinal antes de adicionar serviços;<br>
+                    # Autofind no provisionamento;<br><br>
+                  </div>
+                </div>
+              </div>
+
+
               <!-- Versão 7.3 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading7-3">

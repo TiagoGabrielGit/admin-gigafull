@@ -1,6 +1,5 @@
 <?php
-session_start();
-include_once '../../../conexoes/conexao_pdo.php';
+require "../../../../conexoes/conexao_pdo.php";
 
 //Variaveis 
 $idCadastro = $_POST['id'];
@@ -9,8 +8,6 @@ $privacidade = $_POST['editPrivacidade'];
 $descricao = $_POST['editDescricao'];
 $usuario = $_POST['editUsuario'];
 $senha = $_POST['editSenha'];
-
-
 
 $cont_insert = false;
 
@@ -29,7 +26,7 @@ if ($IDTipo == "email") {
     $stmt->bindParam(':senha', $senha);
     $stmt->bindParam(':id', $idCadastro);
     $stmt->bindParam(':anotacao', $anotacaoEmail);
-    
+
 
     if ($stmt->execute()) {
         $cont_insert = true;
@@ -116,7 +113,7 @@ if ($IDTipo == "portal") {
     $stmt->bindParam(':senha', $senha);
     $stmt->bindParam(':id', $idCadastro);
     $stmt->bindParam(':anotacao', $anotacaoPortal);
-    
+
 
     if ($stmt->execute()) {
         $cont_insert = true;

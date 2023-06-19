@@ -141,22 +141,24 @@
     });
 </script>
 
+
 <script>
     $("#btnSalvar").click(function() {
         var dados = $("#cadastraSenhaVM").serialize();
 
         $.post("processa/addNovaSenha.php", dados, function(retorna) {
-            $("#msg").slideDown('slow').html(retorna);
 
-            //Limpar os campos
-            $('#cadastraSenhaVM')[0].reset();
-
-            //Apresentar a mensagem leve
-            retirarMsg();
+            if (retorna.includes("Error")) {
+                $("#msg").slideDown('slow').html(retorna);
+                retirarMsg();
+            } else {
+                var idRegistroCriado = retorna; // O ID do registro retornado pelo servidor
+                window.location.href = '/telecom/credentials/view.php?tipo=VM&id=' + idRegistroCriado;
+            }
         });
     });
 
-    //Retirar a mensagem após 1700 milissegundos
+    // Retirar a mensagem após 1700 milissegundos
     function retirarMsg() {
         setTimeout(function() {
             $("#msg").slideUp('slow', function() {});

@@ -1,3 +1,28 @@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+
+
+<script>
+    $("#btnSalvarEdit").click(function() {
+        var dados = $("#editCredenciais").serialize();
+
+        $.post("processa/edit.php", dados, function(retorna) {
+            $("#msgEditar").slideDown('slow').html(retorna);
+
+            //Apresentar a mensagem leve
+            retirarMsgEditar();
+        });
+    });
+
+    //Retirar a mensagem após 1700 milissegundos
+    function retirarMsgEditar() {
+        setTimeout(function() {
+            $("#msgEditar").slideUp('slow', function() {});
+            location.reload();
+        }, 1700);
+    }
+</script>
+
 <script>
     function addPermissaoEquipe(idEquipe, idCredencial, tipoCredencial) {
         $.ajax({

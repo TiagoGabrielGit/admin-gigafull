@@ -260,7 +260,7 @@ LIMIT $limiteBusca
                             <select id="popPesquisa" name="popPesquisa" class="form-select">
                                 <option selected disabled>Selecione o pop</option>
                             </select>
-                        </div>
+                        </div>  
 
                         <div class="col-3">
                             <label for="ipaddressPesquisa" class="form-label">Endereço IP</label>
@@ -467,10 +467,3 @@ LIMIT $limiteBusca
         }
     });
 </script>
-
-<!-- ANTIGO -->
-<?php
-/*
-require "../../scripts/equipamentosPop.php";
-*/
-?>

@@ -44,17 +44,18 @@ $varDescricao = $_POST['pesquisaDescricao'];
                             </div>
 
                             <div class="modal fade" id="modalNovoPortal" tabindex="-1">
-                                <div class="modal-dialog modal-lg">
+                                <div class="modal-dialog modal-xl">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title">Novo cadastro</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <div class="card-body"> 
+                                            <div class="card-body">
 
                                                 <!-- Vertical Form -->
                                                 <form id="addCredenciaisPortal" method="POST" class="row g-3">
+
 
                                                     <input name="usuarioCriador" type="text" class="form-control" id="usuarioCriador" value="<?php echo $_SESSION['id']; ?>" hidden>
 
@@ -89,33 +90,35 @@ $varDescricao = $_POST['pesquisaDescricao'];
                                                             <input class="form-check-input" type="radio" name="cadastroPrivacidade" id="cadastroPrivacidade" value="3">
                                                             <label class="form-check-label" for="cadastroPrivacidade" value="3">Somente eu</label>
                                                         </div>
-
                                                     </div>
 
                                                     <hr class="sidebar-divider">
 
-                                                    <div class="col-8" style="display: inline-block;">
-                                                        <label for="portalPaginaAcesso" class="form-label">Página de Acesso</label>
-                                                        <input name="portalPaginaAcesso" type="text" class="form-control" id="portalPaginaAcesso">
+                                                    <div class="col-lg-12">
+                                                        <div class="col-6">
+                                                            <label for="portalDescricao" class="form-label">Descrição</label>
+                                                            <input name="portalDescricao" type="text" class="form-control" id="portalDescricao">
+                                                        </div>
                                                     </div>
 
-                                                    <div class="col-6" style="display: inline-block;">
-                                                        <label for="portalDescricao" class="form-label">Descrição</label>
-                                                        <input name="portalDescricao" type="text" class="form-control" id="portalDescricao">
+                                                    <div class="col-lg-12">
+                                                        <div class="row">
+                                                            <div class="col-4">
+                                                                <label for="portalPaginaAcesso" class="form-label">Página de Acesso</label>
+                                                                <input name="portalPaginaAcesso" type="text" class="form-control" id="portalPaginaAcesso">
+                                                            </div>
+
+                                                            <div class="col-4">
+                                                                <label for="portalUsuario" class="form-label">Usuário</label>
+                                                                <input name="portalUsuario" type="text" class="form-control" id="portalUsuario">
+                                                            </div>
+
+                                                            <div class="col-4">
+                                                                <label for="portalSenha" class="form-label">Senha</label>
+                                                                <input name="portalSenha" type="text" class="form-control" id="portalSenha">
+                                                            </div>
+                                                        </div>
                                                     </div>
-
-                                                    <div class="col-4" style="display: inline-block;"> </div>
-
-                                                    <div class="col-6" style="display: inline-block;">
-                                                        <label for="portalUsuario" class="form-label">Usuário</label>
-                                                        <input name="portalUsuario" type="text" class="form-control" id="portalUsuario">
-                                                    </div>
-
-                                                    <div class="col-5" style="display: inline-block;">
-                                                        <label for="portalSenha" class="form-label">Senha</label>
-                                                        <input name="portalSenha" type="text" class="form-control" id="portalSenha">
-                                                    </div>
-
                                                     <div class="col-12">
                                                         <label for="portalAnotacao" class="form-label">Anotações</label>
                                                         <textarea id="portalAnotacao" name="portalAnotacao" class="form-control" maxlength="10000" rows="4"></textarea>

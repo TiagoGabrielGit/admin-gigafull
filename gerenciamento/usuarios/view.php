@@ -131,7 +131,7 @@ if ($r_horarioColaborador->rowCount() > 0) {
     $dom_fim_p2 = "";
 }
 
-$gerenteColaborador = "SELECT p.nome as 'gerente', u.id as 'usuario'FROM colaborador_gerencia as cg LEFT JOIN usuarios as u ON u.id = cg.gerente_id LEFT JOIN pessoas as p ON P.id = u.pessoa_id WHERE user_id  = $idUsuario";
+$gerenteColaborador = "SELECT p.nome as 'gerente', u.id as 'usuario'FROM colaborador_gerencia as cg LEFT JOIN usuarios as u ON u.id = cg.gerente_id LEFT JOIN pessoas as p ON p.id = u.pessoa_id WHERE user_id  = $idUsuario";
 $r_gerenteColaborador = $pdo->query($gerenteColaborador);
 if ($r_gerenteColaborador->rowCount() > 0) {
     $rowGerente = $r_gerenteColaborador->fetch(PDO::FETCH_ASSOC);
@@ -148,7 +148,7 @@ if ($r_gerenteColaborador->rowCount() > 0) {
     $opcaoGerente = '<option value="" disabled selected="">Selecione...</option>';
 }
 
-$coordenadorColaborador = "SELECT p.nome as 'coordenador', u.id as 'usuario'FROM colaborador_gerencia as cg LEFT JOIN usuarios as u ON u.id = cg.coordenador_id LEFT JOIN pessoas as p ON P.id = u.pessoa_id WHERE user_id  = $idUsuario";
+$coordenadorColaborador = "SELECT p.nome as 'coordenador', u.id as 'usuario'FROM colaborador_gerencia as cg LEFT JOIN usuarios as u ON u.id = cg.coordenador_id LEFT JOIN pessoas as p ON p.id = u.pessoa_id WHERE user_id  = $idUsuario";
 $r_coordenadorColaborador = $pdo->query($coordenadorColaborador);
 if ($r_coordenadorColaborador->rowCount() > 0) {
     $rowCoordenador = $r_coordenadorColaborador->fetch(PDO::FETCH_ASSOC);

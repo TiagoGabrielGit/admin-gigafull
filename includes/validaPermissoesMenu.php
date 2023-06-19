@@ -307,3 +307,20 @@ ppm.perfil_id = $perfil_id";
 $r_nav_credentials = mysqli_query($mysqli, $nav_credentials);
 $c_nav_credenciais = mysqli_fetch_assoc($r_nav_credentials);
 /////////////////////////////////////////
+
+//MENU >> CREDENCIAIS
+$nav_documentation = "SELECT
+count(*) as c
+FROM
+url_menu as um
+LEFT JOIN
+perfil_permissoes_menu as ppm
+ON
+ppm.url_menu = um.id
+WHERE
+um.id = '18'
+and
+ppm.perfil_id = $perfil_id";
+
+$r_nav_documentation = mysqli_query($mysqli, $nav_documentation);
+$c_nav_documentation = mysqli_fetch_assoc($r_nav_documentation);

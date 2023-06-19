@@ -246,25 +246,24 @@
     });
 </script>
 
+
 <script>
     $("#btnSalvar").click(function() {
         var dados = $("#cadastraSenhaEquipamento").serialize();
 
         $.post("processa/addNovaSenha.php", dados, function(retorna) {
-            $("#msgAlertCad").slideDown('slow').html(retorna);
 
-            //Limpar os campos
-            document.getElementById('equipamentoDescricao').value = '';
-            document.getElementById('equipamentoUsuario').value = '';
-            document.getElementById('equipamentoSenha').value = '';
-
-
-            //Apresentar a mensagem leve
-            retirarMsg();
+            if (retorna.includes("Error")) {
+                $("#msgAlertCad").slideDown('slow').html(retorna);
+                retirarMsg();
+            } else {
+                var idRegistroCriado = retorna; // O ID do registro retornado pelo servidor
+                window.location.href = '/telecom/credentials/view.php?tipo=Equipamento&id=' + idRegistroCriado;
+            }
         });
     });
 
-    //Retirar a mensagem após 1700 milissegundos
+    // Retirar a mensagem após 1700 milissegundos
     function retirarMsg() {
         setTimeout(function() {
             $("#msgAlertCad").slideUp('slow', function() {});

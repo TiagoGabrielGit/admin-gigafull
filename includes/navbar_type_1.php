@@ -173,6 +173,16 @@ require "validaRotina.php";
             </li>
         <?php } ?>
 
+        <?php if ($c_nav_documentation['c'] == 1) { ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/telecom/documentacao/index.php">
+                    <i class="bi bi-file-text"></i>
+                    <span>Documentação</span>
+                </a>
+            </li>
+        <?php } ?>
+
+
         <?php if ($c_nav_popSite['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/telecom/sitepop/index.php">
