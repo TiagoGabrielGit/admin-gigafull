@@ -465,3 +465,37 @@ ppsm.perfil_id = $perfil_id";
 $r_nav_sub_docAPI = mysqli_query($mysqli, $nav_sub_docAPI);
 $c_nav_sub_docAPI = mysqli_fetch_assoc($r_nav_sub_docAPI);
 /////////////////////////////////////////
+
+$nav_sub_cadastroConsulta = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '29'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_cadastroConsulta = mysqli_query($mysqli, $nav_sub_cadastroConsulta);
+$c_nav_sub_cadastroConsulta = mysqli_fetch_assoc($r_nav_sub_cadastroConsulta);
+/////////////////////////////////////////
+
+$nav_sub_consultas = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '28'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_consultas = mysqli_query($mysqli, $nav_sub_consultas);
+$c_nav_sub_consultas = mysqli_fetch_assoc($r_nav_sub_consultas);
+/////////////////////////////////////////

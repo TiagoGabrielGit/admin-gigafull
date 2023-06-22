@@ -101,6 +101,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             p.id = u.pessoa_id
             WHERE
             u.perfil_id = 1
+            and
+            u.notify_email = 1
 
             UNION
 
@@ -118,6 +120,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             p.id = u.pessoa_id
             WHERE
             c.id = $id_chamado
+            and
+            u.notify_email = 1
 
             UNION
 
@@ -135,6 +139,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             p.id = u.pessoa_id
             WHERE
             c.id = $id_chamado
+            and
+            u.notify_email = 1
             and
             u.id != 9999";
         } else if ($privacidade == 2) {

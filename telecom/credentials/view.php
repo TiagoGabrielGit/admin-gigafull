@@ -127,5 +127,5 @@ if ($tipo == "VM") {
 }
 
 
-require "../../scripts/credenciais.php";
+require "js.php";
 require "../../includes/footer.php";

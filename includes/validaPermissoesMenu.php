@@ -324,3 +324,21 @@ ppm.perfil_id = $perfil_id";
 
 $r_nav_documentation = mysqli_query($mysqli, $nav_documentation);
 $c_nav_documentation = mysqli_fetch_assoc($r_nav_documentation);
+/////////////////////////////////////////
+
+//MENU >> RELATÓRIOS
+$nav_relatorio = "SELECT
+count(*) as c
+FROM
+url_menu as um
+LEFT JOIN
+perfil_permissoes_menu as ppm
+ON
+ppm.url_menu = um.id
+WHERE
+um.id = '19'
+and
+ppm.perfil_id = $perfil_id";
+
+$r_nav_relatorio = mysqli_query($mysqli, $nav_relatorio);
+$c_nav_relatorio = mysqli_fetch_assoc($r_nav_relatorio);

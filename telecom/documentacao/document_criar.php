@@ -33,8 +33,8 @@ $id_Usuario = $_SESSION['id'];
                             <input readonly hidden name="idUsuario" id="idUsuario" value="<?= $id_Usuario ?>"></input>
 
                             <div class="col-6">
-                                <label for="titleDocumentation" class="form-label">Titulo</label>
-                                <input name="titleDocumentation" type="text" class="form-control" id="titleDocumentation" required>
+                                <label for="titleDocumentation" class="form-label"><b>Titulo</b></label>
+                                <input placeholder="Ex: Empresa - Assunto (VOA - Auditoria de Backups)" name="titleDocumentation" type="text" class="form-control" id="titleDocumentation" required>
                             </div>
                             <br>
                             <div class="col-12">

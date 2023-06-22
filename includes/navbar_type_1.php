@@ -314,6 +314,31 @@ require "validaRotina.php";
             </li>
         <?php } ?>
 
+        <?php if ($c_nav_relatorio['c'] == 1) { ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#relatorio-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-info-circle"></i><span>Relatório</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="relatorio-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <?php if ($c_nav_sub_cadastroConsulta['c'] == 1) { ?>
+                        <li>
+                            <a href="/relatorios/cadastro/index.php">
+                                <i class="bi bi-circle"></i><span>Cadastro Consultas</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+                    <?php if ($c_nav_sub_consultas['c'] == 1) { ?>
+                        <li>
+                            <a href="/relatorios/consulta/index.php">
+                                <i class="bi bi-circle"></i><span>Consultas</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+                </ul>
+            </li>
+        <?php } ?>
+
         <?php if ($c_nav_sistema['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#sistema-nav" data-bs-toggle="collapse" href="#">
