@@ -116,7 +116,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             and
             u.id != 9999
             and
-            u.notify_email = 1";
+            u.notify_email = 1
+                        
+            UNION
+            
+            SELECT
+            ci.email as 'email'
+            FROM
+            chamados_interessados as ci
+            WHERE
+            ci.chamado_id = $id_chamado
+            and
+            ci.active = 1";
 
         // Executa a consulta no banco de dados
         $result = $pdo->query($lista_destinatarios);

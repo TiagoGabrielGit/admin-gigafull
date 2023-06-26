@@ -26,17 +26,25 @@ if ($chamado['in_execution'] == 1) {
     <section class="section">
         <div class="card">
             <div class="card-body">
-                <!--<div class="justify-content-between ">-->
-                <div class="col-lg-12">
-                    <div class="col-12">
-                        <h5 class="card-title <?= $classeColor ?>">
-                            <p>Chamado <?= $id_chamado ?> - <?= $chamado['tipo']; ?> - <?= $chamado['assunto']; ?></p>
-                        </h5>
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="col-12">
+                            <h5 class="card-title <?= $classeColor ?>">
+                                <p>Chamado <?= $id_chamado ?> - <?= $chamado['tipo']; ?> - <?= $chamado['assunto']; ?></p>
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <a href="index.php">
+                            <button style="margin-top: 15px" type="button" class="btn btn-danger">
+                                Listagem Chamados
+                            </button>
+                        </a>
                     </div>
                 </div>
                 <div class="col-lg-12">
                     <div class="row">
-                        <div class="col-lg-5">
+                        <div class="col-lg-4">
                             <div class="col-12">
                                 <?php
                                 $calc_tempo_total =
@@ -54,7 +62,8 @@ if ($chamado['in_execution'] == 1) {
                                 <b>Tempo total de atendimento:</b> <?= gmdate("H:i:s", $res_second['secondsTotal']); ?> <br>
                             </div>
                         </div>
-                        <div class="col-lg-5">
+
+                        <div class="col-lg-4">
                             <div class="col-12">
                                 <b>Serviço: </b><?= $chamado['service']; ?><br>
                                 <b>Item de Serviço: </b><?= $chamado['itemService']; ?><br>
@@ -63,16 +72,17 @@ if ($chamado['in_execution'] == 1) {
                                 <b>Status: </b><?= $chamado['status']; ?> <br><br>
                             </div>
                         </div>
+
                         <?php
                         $valida_competencia =
                             "SELECT cc.competencia_id as competencia_id
-                            FROM chamados_competencias as cc
-                            WHERE cc.chamado_id = $id_chamado
-                            AND NOT EXISTS (
-                              SELECT id_competencia
-                              FROM usuario_competencia as uc
-                              WHERE uc.id_usuario = $id_usuario
-                              AND uc.id_competencia = cc.competencia_id)";
+                                    FROM chamados_competencias as cc
+                                    WHERE cc.chamado_id = $id_chamado
+                                    AND NOT EXISTS (
+                                    SELECT id_competencia
+                                    FROM usuario_competencia as uc
+                                    WHERE uc.id_usuario = $id_usuario
+                                    AND uc.id_competencia = cc.competencia_id)";
 
                         $r_valida_competencia = mysqli_query($mysqli, $valida_competencia);
                         $r_valida_competencia2 = mysqli_query($mysqli, $valida_competencia);
@@ -80,38 +90,36 @@ if ($chamado['in_execution'] == 1) {
                         $c_valida_competencia2 = $r_valida_competencia2->fetch_array();
 
                         ?>
-                        <div class="col-lg-2">
-                            <div class="col-12">
-                                <?php
-                                if ($c_valida_competencia == null && $id_usuario != $chamado['id_atendente'] && $chamado['status'] != "Fechado") { ?>
-                                    <a href="processa/apropriar.php?id=<?= $id_chamado  ?>&pessoa=<?= $id_usuario ?> "><button style="margin-top: 15px" class="btn btn-danger row col-12">Apropriar</button></a>
-                                <?php } else if ($id_usuario == $chamado['id_atendente'] && $chamado['in_execution'] == '1' && $chamado['in_execution_atd_id'] == $idPessoa) { ?>
-                                    <button style="margin-top: 15px" type="button" class="btn btn-danger row col-12" data-bs-toggle="modal" data-bs-target="#basicModal">
-                                        Inserir um relato
-                                    </button>
-                                <?php } else if ($c_usuario_ocupado['qtde'] == '0' && $id_usuario == $chamado['id_atendente'] && $chamado['in_execution'] == '0' && $chamado['status'] != "Fechado") { ?>
-                                    <a href="processa/executar.php?id=<?= $id_chamado ?>&pessoa=<?= $idPessoa ?> "><button style="margin-top: 15px" class="btn btn-success row col-12">Executar</button></a>
-                                <?php } ?>
 
-                            </div>
-                            <div class="col-12">
-                                <?php
-                                if ($chamado['status'] != "Fechado" &&  $chamado['in_execution'] == '0') { ?>
-                                    <div class="row col-12" style="margin-top: 3px;">
-                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEncaminhar">Encaminhar</button>
-                                    </div>
-                                <?php } ?>
-                            </div>
-                            <div class="col-12">
-                                <div class="row col-12" style="margin-top: 3px;">
+                        <div class="col-lg-4 text-center">
+
+                            <div class="row">
+                                <div class="col-12 " style="margin-top: 5px;">
+                                    <?php
+                                    if ($c_valida_competencia == null && $id_usuario != $chamado['id_atendente'] && $chamado['status'] != "Fechado") { ?>
+
+                                        <a href="processa/apropriar.php?id=<?= $id_chamado  ?>&pessoa=<?= $id_usuario ?> "><button title="Apropriar" type="button" class="btn btn-info"><i class="bi bi-pin"></i></button></a>
+
+                                    <?php } else if ($id_usuario == $chamado['id_atendente'] && $chamado['in_execution'] == '1' && $chamado['in_execution_atd_id'] == $idPessoa) { ?>
+
+                                        <button title="Inserir um relato" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#basicModal"><i class="bi bi-pencil-square"></i></button>
+
+                                    <?php } else if ($c_usuario_ocupado['qtde'] == '0' && $id_usuario == $chamado['id_atendente'] && $chamado['in_execution'] == '0' && $chamado['status'] != "Fechado") { ?>
+                                        <a href=" processa/executar.php?id=<?= $id_chamado ?>&pessoa=<?= $idPessoa ?> "><button title=" Executar chamado" type="button" class="btn btn-success"><i class="bi bi-file-play"></i></button></a>
+                                    <?php } ?>
+
+                                    <?php
+                                    if ($chamado['status'] != "Fechado" &&  $chamado['in_execution'] == '0') { ?>
+                                        <button title="Encaminhar Chamado" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalEncaminhar"><i class="bi bi-arrow-left-right"></i></button>
+                                    <?php } ?>
+                                    <button title="Interessados no chamado" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalInteressados"><i class="bi bi-people"></i></button>
                                     <?php
                                     if ($c_valida_competencia == null) { ?>
-                                        <button type="button" class="btn btn-success rounded-pill" data-bs-toggle="modal" data-bs-target="#modalQualificacao">Qualificaçães</button>
+                                        <button title="Qualificado para atender" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalQualificacao"><i class="bi bi-award"></i></button>
                                     <?php } else { ?>
-                                        <button type="button" class="btn btn-secondary rounded-pill" data-bs-toggle="modal" data-bs-target="#modalQualificacao">Qualificaçães</button>
+                                        <button title="Não qualificado para atender" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalQualificacao"><i class="bi bi-award"></i></button>
                                     <?php  }
                                     ?>
-
                                 </div>
                             </div>
                         </div>
@@ -289,7 +297,7 @@ $r_competencias_necessarias2 = mysqli_query($mysqli, $competencias_necessarias);
                                 <div class="col-lg-4">
                                     <div class="card">
                                         <!-- Basic Modal -->
-                                        <button style="margin-top: 15px" type="button" class="btn btn-success col-12" data-bs-toggle="modal" data-bs-target="#modalDetalhesCompetencia<?= $idCompetencia ?>">
+                                        <button style="margin-top: 5px" type="button" class="btn btn-success col-12" data-bs-toggle="modal" data-bs-target="#modalDetalhesCompetencia<?= $idCompetencia ?>">
 
                                             <?= $c_competencias_necessarias['competencia'] ?>
                                         </button>
@@ -299,7 +307,7 @@ $r_competencias_necessarias2 = mysqli_query($mysqli, $competencias_necessarias);
                                 <div class="col-lg-4">
                                     <div class="card">
                                         <!-- Basic Modal -->
-                                        <button style="margin-top: 15px" type="button" class="btn btn-secondary col-12" data-bs-toggle="modal" data-bs-target="#modalDetalhesCompetencia<?= $idCompetencia ?>">
+                                        <button style="margin-top: 5px" type="button" class="btn btn-secondary col-12" data-bs-toggle="modal" data-bs-target="#modalDetalhesCompetencia<?= $idCompetencia ?>">
                                             <?= $c_competencias_necessarias['competencia'] ?>
                                         </button>
                                     </div>
@@ -388,6 +396,65 @@ $r_competencias_necessarias2 = mysqli_query($mysqli, $competencias_necessarias);
     </div>
 </div>
 
+<div class="modal fade" id="modalInteressados" tabindex="-1" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Interessados no Chamado</h5>
+                <div class="ml-auto">
+                    <button type="button" class="btn btn-info rounded-circle position-absolute top-0 end-0 mt-3 me-5" data-bs-toggle="modal" data-bs-target="#modalAdicionarInteressados">
+                        <i class="bi bi-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body" style="text-align: center;">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>E-mail</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $lista_interessados =
+                                            "SELECT
+                                        ci.id as 'id',
+                                        ci.email as 'email'
+                                        FROM
+                                        chamados_interessados as ci
+                                        WHERE
+                                        ci.active = 1
+                                        and
+                                        ci.chamado_id = $id_chamado
+                                        ORDER BY
+                                        ci.email ASC
+                                        ";
+
+                                        $r_lista_interessados = mysqli_query($mysqli, $lista_interessados);
+                                        while ($c_lista_interessados = $r_lista_interessados->fetch_array()) { ?>
+                                            <tr>
+                                                <td><?= $c_lista_interessados['email']; ?></td>
+                                                <td style="text-align: left;">
+                                                    <a href="processa/remove_interessado.php?id=<?= $c_lista_interessados['id'] ?>" onclick="return confirm('Deseja remover o interessado deste chamado?')" class="bi bi-dash-circle"></a>
+                                                </td>
+                                            </tr>
+                                        <?php } ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modalEncaminhar" tabindex="-1" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -450,6 +517,35 @@ $r_competencias_necessarias2 = mysqli_query($mysqli, $competencias_necessarias);
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalAdicionarInteressados" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Adicionar Interessado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="processa/adicionar_interessado.php">
+                    <input name="interessadosIdChamado" id="interessadosIdChamado" hidden readonly value="<?= $id_chamado ?>"></input>
+                    <div class="col-8">
+                        <label for="statusChamado" class="form-label">E-mail</label>
+                        <input type="email" required placeholder="joao@gmail.com" name="interessadosEmail" id="interessadosEmail" class="form-control"></input>
+                    </div>
+                    <br>
+                    <div class="col-12 text-center">
+                        <button class="btn btn-danger" type="submit">Salvar</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
             </div>
         </div>
     </div>

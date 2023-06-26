@@ -34,13 +34,11 @@ require "../../../conexoes/conexao.php";
 
                         <div class="container">
                             <div class="row">
-                                <div class="col-8">
-                                    <h5 class="card-title">Cadastro fabricantes</h5>
-                                </div>
-                                <div class="col-2"></div>
-                                <div class="col-2">
-                                    <div class="card">
-                                        <!-- Basic Modal -->
+                                <div class="row">
+                                    <div class="col-8">
+                                        <h5 class="card-title">Cadastro fabricantes</h5>
+                                    </div>
+                                    <div class="col-4">
                                         <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
                                             Novo fabricante
                                         </button>
@@ -81,7 +79,7 @@ require "../../../conexoes/conexao.php";
                         <p>Listagem fabricantes</p>
 
                         <!-- Table with stripped rows -->
-                        <table class="table table-striped">
+                        <table class="table datatable">
                             <thead>
                                 <tr>
                                     <th scope="col">Fabricante</th>

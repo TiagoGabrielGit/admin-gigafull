@@ -219,3 +219,30 @@
         }, 1700);
     }
 </script>
+
+
+<script>
+    // Função para adicionar os campos input
+    function adicionarCamposInput() {
+        var quantidade = document.getElementById('quantidadeBaterias').value; // Obter a quantidade selecionada
+
+        var camposInput = document.getElementById('camposInput');
+        camposInput.innerHTML = ''; // Limpar o conteúdo anterior
+
+        for (var i = 1; i <= quantidade; i++) {
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'bateria' + i;
+            input.placeholder = 'Bateria ' + i;
+
+            camposInput.appendChild(input);
+        }
+    }
+
+    // Adicionar evento para chamar a função quando a opção for alterada
+    var select = document.getElementById('quantidadeBaterias');
+    select.addEventListener('change', adicionarCamposInput);
+
+    // Chamar a função inicialmente para exibir os campos corretos de acordo com a opção padrão
+    adicionarCamposInput();
+</script>

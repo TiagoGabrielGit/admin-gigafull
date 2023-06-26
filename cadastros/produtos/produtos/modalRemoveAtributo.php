@@ -33,7 +33,7 @@
 
                                     <div class="text-center">
                                         <input id="btnRemoverAtributo" name="btnRemoverAtributo" type="button" value="Remover" class="btn btn-danger"></input>
-                                        <a href="view.php?id=<?= $id_equipamento ?>"> <input type="button" value="Cancelar" class="btn btn-secondary"></input></a>
+                                        <a href="view_equipamentos.php?id=<?= $id_equipamento ?>"> <input type="button" value="Cancelar" class="btn btn-secondary"></input></a>
                                     </div>
                                 </form>
                             </div>
@@ -50,7 +50,7 @@
         var dados = $("#formRemoverAtributo").serialize();
 
         $.post("processa/removerAtributo.php", dados, function(retorna) {
-            location.href = "view.php?id=<?= $id_equipamento ?>";
+            location.href = "view_equipamentos.php?id=<?= $id_equipamento ?>";
 
         });
     });

@@ -9,8 +9,21 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     if (isset($_POST['tabInformacoes'])) {
         $tab_informacoes = "show active";
         $nav_informacoes = "active";
+        $tab_energia = "";
+        $nav_energia = "";
         $tab_rack = "";
         $nav_rack = "";
+        $tab_equipamentos = "";
+        $nav_equipamentos = "";
+        $tab_vistoria = "";
+        $nav_vistoria = "";
+    } else if (isset($_POST['tabEnergia'])) {
+        $tab_informacoes = "";
+        $nav_informacoes = "";
+        $tab_rack = "";
+        $nav_rack = "";
+        $tab_energia = "show active";
+        $nav_energia = "active";
         $tab_equipamentos = "";
         $nav_equipamentos = "";
         $tab_vistoria = "";
@@ -18,6 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     } else if (isset($_POST['tabRack'])) {
         $tab_informacoes = "";
         $nav_informacoes = "";
+        $tab_energia = "";
+        $nav_energia = "";
         $tab_rack = "show active";
         $nav_rack = "active";
         $tab_equipamentos = "";
@@ -27,6 +42,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     } else if (isset($_POST['tabEquipamentos'])) {
         $tab_informacoes = "";
         $nav_informacoes = "";
+        $tab_energia = "";
+        $nav_energia = "";
         $tab_rack = "";
         $nav_rack = "";
         $tab_equipamentos = "show active";
@@ -36,6 +53,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     } else if (isset($_POST['tabVistoria'])) {
         $tab_informacoes = "";
         $nav_informacoes = "";
+        $tab_energia = "";
+        $nav_energia = "";
         $tab_rack = "";
         $nav_rack = "";
         $tab_equipamentos = "";
@@ -46,6 +65,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 } else {
     $tab_informacoes = "show active";
     $nav_informacoes = "active";
+    $tab_energia = "";
+    $nav_energia = "";
     $tab_rack = "";
     $nav_rack = "";
     $tab_equipamentos = "";
@@ -62,14 +83,14 @@ $sql_pop =
     endereco.city as cidade,
     emp.fantasia as empresa,
     emp.id as id_empresa,
-endereco.cep as cep,
-endereco.street as logradouro,
-endereco.neighborhood as bairro,
-endereco.city as cidade,
-endereco.state as estado,
-endereco.number as numero,
-endereco.complement as complemento,
-endereco.ibge_code as ibge_code
+    endereco.cep as cep,
+    endereco.street as logradouro,
+    endereco.neighborhood as bairro,
+    endereco.city as cidade,
+    endereco.state as estado,
+    endereco.number as numero,
+    endereco.complement as complemento,
+    endereco.ibge_code as ibge_code
     FROM
     pop as pop
     LEFT JOIN
@@ -170,7 +191,7 @@ v.date DESC";
 $r_datas_vistorias = mysqli_query($mysqli, $sql_datas_vistorias);
 ?>
 
-<main id="main" class="main">
+<main id="main" class="main"> 
 
     <section class="section">
         <div class="row">
@@ -178,12 +199,15 @@ $r_datas_vistorias = mysqli_query($mysqli, $sql_datas_vistorias);
 
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">POPs</h5>
+                        <h5 class="card-title">POP <?= $row['pop']; ?></h5>
 
                         <!-- Default Tabs -->
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link <?= $nav_informacoes ?>" id="informacoes-tab" data-bs-toggle="tab" data-bs-target="#informacoes" type="button" role="tab" aria-controls="informacoes" aria-selected="true">Informacoes</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link <?= $nav_energia ?>" id="energia-tab" data-bs-toggle="tab" data-bs-target="#energia" type="button" role="tab" aria-controls="energia" aria-selected="false">Energia</button>
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link <?= $nav_rack ?>" id="rack-tab" data-bs-toggle="tab" data-bs-target="#rack" type="button" role="tab" aria-controls="rack" aria-selected="false" tabindex="-1">Rack</button>
@@ -198,6 +222,9 @@ $r_datas_vistorias = mysqli_query($mysqli, $sql_datas_vistorias);
                         <div class="tab-content pt-2" id="myTabContent">
                             <div class="tab-pane fade <?= $tab_informacoes ?>" id="informacoes" role="tabpanel" aria-labelledby="informacoes-tab">
                                 <?php require "tabs/informacoes.php" ?>
+                            </div>
+                            <div class="tab-pane fade <?= $tab_energia ?>" id="energia" role="tabpanel" aria-labelledby="energia-tab">
+                                <?php require "tabs/energia.php" ?>
                             </div>
                             <div class="tab-pane fade <?= $tab_rack ?>" id="rack" role="tabpanel" aria-labelledby="rack-tab">
                                 <?php require "tabs/rack.php" ?>

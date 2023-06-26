@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $relatante = $c_ultimo_relato['relatante'];
         $privacidade = $c_ultimo_relato['privacidade'];
 
-        if ($privacidade == 1) {
+        if ($privacidade == 1) { //Publico
             $lista_destinatarios =
                 "SELECT
             p.email as 'email'
@@ -142,55 +142,85 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             and
             u.notify_email = 1
             and
-            u.id != 9999";
-        } else if ($privacidade == 2) {
+            u.id != 9999
+            
+            UNION
+            
+            SELECT
+            ci.email as 'email'
+            FROM
+            chamados_interessados as ci
+            WHERE
+            ci.chamado_id = $id_chamado
+            and
+            ci.active = 1";
+        } else if ($privacidade == 2) { //Privado
             $lista_destinatarios =
                 "SELECT
-            p.email as 'email'
-            FROM
-            usuarios as u
-            LEFT JOIN
-            pessoas as p
-            ON
-            p.id = u.pessoa_id
-            WHERE
-            u.perfil_id = 1
-
-            UNION
-
-            SELECT
-            p.email as 'email'
-            FROM
-            chamados as c
-            LEFT JOIN
-            usuarios as u
-            ON
-            u.id = c.atendente_id
-            LEFT JOIN
-            pessoas as p
-            ON
-            p.id = u.pessoa_id
-            WHERE
-            c.id = $id_chamado
-
-            UNION
-
-            SELECT
-            p.email as 'email'
-            FROM
-            chamados as c
-            LEFT JOIN
-            usuarios as u
-            ON
-            u.id = c.solicitante_id
-            LEFT JOIN
-            pessoas as p
-            ON
-            p.id = u.pessoa_id
-            WHERE
-            c.id = $id_chamado
-            AND
-            u.id != 9999";
+                p.email as 'email'
+                FROM
+                usuarios as u
+                LEFT JOIN
+                pessoas as p
+                ON
+                p.id = u.pessoa_id
+                WHERE
+                u.perfil_id = 1
+                and
+                u.notify_email = 1
+    
+                UNION
+    
+                SELECT
+                p.email as 'email'
+                FROM
+                chamados as c
+                LEFT JOIN
+                usuarios as u
+                ON
+                u.id = c.atendente_id
+                LEFT JOIN
+                pessoas as p
+                ON
+                p.id = u.pessoa_id
+                WHERE
+                c.id = $id_chamado
+                and
+                u.notify_email = 1
+    
+                UNION
+    
+                SELECT
+                p.email as 'email'
+                FROM
+                chamados as c
+                LEFT JOIN
+                usuarios as u
+                ON
+                u.id = c.solicitante_id
+                LEFT JOIN
+                pessoas as p
+                ON
+                p.id = u.pessoa_id
+                WHERE
+                c.id = $id_chamado
+                and
+                u.notify_email = 1
+                and
+                u.id != 9999
+                and
+                u.tipo_usuario = 1
+                
+                UNION
+                
+                SELECT
+                ci.email as 'email'
+                FROM
+                chamados_interessados as ci
+                WHERE
+                ci.chamado_id = $id_chamado
+                and
+                ci.active = 1";
         }
 
         // Executa a consulta no banco de dados

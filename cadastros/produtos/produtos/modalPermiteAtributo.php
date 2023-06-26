@@ -35,7 +35,7 @@
 
                                     <div class="text-center">
                                         <input id="btnPermiteAtributo" name="btnPermiteAtributo" type="button" value="Permitir" class="btn btn-danger"></input>
-                                        <a href="view.php?id=<?= $id_equipamento ?>"> <input type="button" value="Cancelar" class="btn btn-secondary"></input></a>
+                                        <a href="view_equipamentos.php?id=<?= $id_equipamento ?>"> <input type="button" value="Cancelar" class="btn btn-secondary"></input></a>
                                     </div>
                                 </form>
                             </div>
@@ -52,7 +52,7 @@
         var dados = $("#formPermiteAtributo").serialize();
 
         $.post("processa/permiteAtributo.php", dados, function(retorna) {
-            location.href = "view.php?id=<?= $id_equipamento ?>";
+            location.href = "view_equipamentos.php?id=<?= $id_equipamento ?>";
 
         });
     });

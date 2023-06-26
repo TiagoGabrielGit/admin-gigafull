@@ -26,7 +26,6 @@ emp.id as id_empresa,
 pop.pop as nome_pop,
 eqp.id as id_equipamento,
 eqp.equipamento as nome_equipamento,
-eqp.rack as rack,
 fab.id as id_fabricante,
 fab.fabricante as nome_fabricante,
 tipo.id as id_tipoEquipamento,
@@ -103,18 +102,6 @@ $hostnameEquipamento = $row['hostname'];
 
                                 </select>
                             </div>
-
-                            <?php
-                            if ($row['rack'] == "1") { ?>
-                                <div class="col-4">
-                                    <label for="editEquipamentoRack1" class="form-label">Rack*</label>
-                                    <select id="editEquipamentoRack1" name="editEquipamentoRack1" class="form-select" required>
-                                        <option value="<?= $row['id_rack']; ?>"><?= $row['nome_rack']; ?></option>
-                                    </select>
-                                </div>
-                            <?php } else { ?>
-                                <div class="col-4"></div>
-                            <?php } ?>
 
                             <div class="col-4">
                                 <label for="inputHostname" class="form-label">Hostname*</label>
@@ -206,7 +193,6 @@ $hostnameEquipamento = $row['hostname'];
 
                             <div class="col-4" style="text-align: left;">
                                 <a onclick="capturaDados(<?= $id ?>, '<?= $row['hostname']; ?>')" data-bs-toggle="modal" data-bs-target="#basicModalCredenciais"><input type="button" class="btn btn-info" value="Visualizar credenciais"></input></a>
-                                <a onclick="modalAnexos(<?= $id ?>)" data-bs-toggle="modal" data-bs-target="#modalAnexos"><input type="button" class="btn btn-info" value="Anexos"></input></a>
                             </div>
 
                             <div class="col-4" style="text-align: center;">
@@ -308,7 +294,7 @@ $hostnameEquipamento = $row['hostname'];
                                         $idSessao = $_SESSION['id'];
 
                                         if ($campos['idPrivacidade'] == '1') {
-                                            
+
 
                                             require "modalListaCredenciais.php";    //Apresenta se a privacidade for publico
                                         } else if ($campos['usuarioCriador'] == $idSessao) {
@@ -380,7 +366,6 @@ $hostnameEquipamento = $row['hostname'];
 
 <?php
 require "../../../includes/footer.php";
-require "modalAnexos.php";
 require "modalSenhaEquipamento.php";
 require "../../../scripts/equipamentosPop.php";
 

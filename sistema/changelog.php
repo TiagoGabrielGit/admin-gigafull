@@ -15,6 +15,73 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
 
+              <!-- Versão 7.6 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading7-6">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7-6" aria-expanded="false" aria-controls="collapse7-6">
+                    Versão 7.6 - 26/06/2023
+                  </button>
+                </h2>
+                <div id="collapse7-6" class="accordion-collapse collapse" aria-labelledby="heading7-6" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Criado cadastro de bateria;<br>
+                    # Remodelado cadastro de equipamentos;<br>
+                    # Removido uploads de equipamentos;<br>
+                    # Cadastro de Transceiver;<br>
+                    # Envio de email para interessados de chamados;<br>
+                    # Cadastro de unidades de baterias, componentes e transceiver;<br>
+                    # Cadastro de Componentes;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Excluido a coluna rack e tamanho da tabela equipamentos;<br>
+                    # Criado a tabela produtos_bateria;<br>
+                    # Criado a tabela produtos_transceiver;<br>
+                    # Criado a tabela produtos_componentes;<br>
+                    # Criado tabela chamados_interessados;<br>
+                    # Criado tabela produtos_transceiver_units;<br>
+                    # Criado tabela produtos_bateria_units;<br>
+                    # Criado tabela produtos_componente_units;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Invite para criação de usuário;<br>
+                    # Energia POP;<br>
+                    # Resetar senha pelo acesso usuário;<br>
+                    # Interessado receber email quando for adicionado a um chamado;<br>
+                    # Seleção no cadastro de usuario de tipos de chamados que pode abrir "apenas por equipe", "apenas por empresa", "todos".
+                    # Atributos de equipamentos;<br>
+                    # Cadastro de PONs;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+                    # Cadastro de rotas de rede de fibra;<br>
+                    # Solicitante especificar para quando quer pronto um chamado;<br>
+                    # Check-list chamados;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Notificaçãoes de novos incidentes e relatos;<br>
+                    # Adequação incidentes cliente;<br>
+                    # Vinculo de chamado a incidente;<br>
+                    # Anexo arquivos em chamados;<br>
+                    # Anexo arquivos em vistorias;<br>
+                    # Permissões em documentações;<br>
+                    # Ativar/Desativar notificação E-mail pelo acesso do cliente/tenent:<br>
+                    # Relatar em chamado já existente ao invés de abrir outro via integração Zabbix;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Segurança individual;<br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+
+                    <br><strong>Backlog --- Rede Neutra</strong><br>
+                    # BUG retorna código em resultado do provisionamento;<br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas;<br>
+                    # Botão troca ONU;<br>
+                    # Armazenar LOG sinal do cliente após provisionamento;<br>
+                    # Validação sinal antes de adicionar serviços;<br>
+                    # Autofind no provisionamento;<br><br>
+                  </div>
+                </div>
+              </div>
 
               <!-- Versão 7.5 -->
               <div class="accordion-item">
@@ -30,7 +97,7 @@ require "../includes/menu.php";
                     # Ajuste para não enviar e-mail para usuarios com notificação desabilitada;<br>
                     # Cadastro consultas SQL;<br>
                     # Download resultado de consultas SQL;<br>
-                    
+
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado a tabela "consultas_sql";<br>
                     # Criado o id 19 na tabela menu;<br>
