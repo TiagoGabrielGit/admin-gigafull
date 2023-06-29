@@ -40,6 +40,22 @@
 </script>
 
 <script>
+    function mostrarOcultarSelect() {
+        var tipoAcessoSmart = document.getElementById("inviteAcessoSmart");
+        var selectPerfil = document.getElementById("inviteControlaPerfil");
+
+        if (tipoAcessoSmart.checked) {
+            selectPerfil.style.display = "block"; // Mostra o select
+        } else {
+            selectPerfil.style.display = "none"; // Oculta o select
+        }
+    }
+
+    // Chamada inicial para garantir que o estado do select esteja correto ao carregar a página
+    mostrarOcultarSelect();
+</script>
+
+<script>
     $("#btnSalvarUsuario").click(function() {
         var senhaProvisoria = gerarSenhaProvisoria();
         var dadosCadastrarUsuario = $("#formNovoUsuario").serialize();
@@ -214,6 +230,43 @@
                 // Aguardar 1 segundo e depois ocultar a mensagem
                 setTimeout(function() {
                     $("#msgGerencia").slideUp('slow');
+                    location.reload();
+                }, 1000);
+            }
+        });
+    });
+</script>
+
+<script>
+    $("#btnGerarInvite").click(function() {
+        var dadosInvite = $("#formInvite").serialize();
+
+        // Enviar dados via AJAX
+        $.ajax({
+            url: "processa/invite.php",
+            type: "POST",
+            data: dadosInvite,
+            success: function(responseInvite) {
+                if (responseInvite.includes("Error")) {
+                    $("#msgInvite").slideDown('slow').html(responseInvite);
+                    setTimeout(function() {
+                        $("#msgInvite").slideUp('slow');
+                    }, 1000);
+                } else {
+                    $("#btnGerarInvite").hide(); // Esconder o botão "Gerar Invite"
+
+
+                    $("#msgInvite").slideDown('slow').html(responseInvite);
+
+
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                $("#msgInvite").slideDown('slow').html(responseInvite);
+
+                // Aguardar 1 segundo e depois ocultar a mensagem
+                setTimeout(function() {
+                    $("#msgInvite").slideUp('slow');
                     location.reload();
                 }, 1000);
             }

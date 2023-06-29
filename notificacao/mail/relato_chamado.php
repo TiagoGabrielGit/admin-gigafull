@@ -186,41 +186,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 WHERE
                 c.id = $id_chamado
                 and
-                u.notify_email = 1
-    
-                UNION
-    
-                SELECT
-                p.email as 'email'
-                FROM
-                chamados as c
-                LEFT JOIN
-                usuarios as u
-                ON
-                u.id = c.solicitante_id
-                LEFT JOIN
-                pessoas as p
-                ON
-                p.id = u.pessoa_id
-                WHERE
-                c.id = $id_chamado
-                and
-                u.notify_email = 1
-                and
-                u.id != 9999
-                and
-                u.tipo_usuario = 1
-                
-                UNION
-                
-                SELECT
-                ci.email as 'email'
-                FROM
-                chamados_interessados as ci
-                WHERE
-                ci.chamado_id = $id_chamado
-                and
-                ci.active = 1";
+                u.notify_email = 1";
         }
 
         // Executa a consulta no banco de dados
@@ -246,11 +212,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $mensagem .= "Chamado ID: $id_chamado
                         Empresa: $empresa
                         Tipo Chamdo: $tipo_chamado
-                        Assunto: $titulo
                         Data Abertura: $data_abertura
+
+                        <b>Assunto: </b>
+                        $titulo
 
                         <b>Relato da Abertura:</b>
                         $relato
+
                         <b>Relato Adicionado:</b>
                         $ultimo_relato
 

@@ -89,28 +89,37 @@ if (empty($_POST['selectService'])) {
             }
 
             if ($cont_insert) {
-                echo "<p style='color:green;'>Code 006: Chamado aberto com sucesso. Chamado $id_chamado</p>";
+                if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+                    $protocol = 'https';
+                } else {
+                    $protocol = 'http';
+                }
+                $documentRoot = $_SERVER['DOCUMENT_ROOT'];
+                $url = $protocol . '://' . $_SERVER['HTTP_HOST'] . '/notificacao/mail/abertura_chamado.php';
 
-                echo "<script>
-                setTimeout(function() {
-                    var chamadoId = $id_chamado;
-                    fetch('/notificacao/mail/abertura_chamado.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: 'id_chamado=' + chamadoId
-                    }).then(function(response) {
-                        if (response.ok) {
-                           //Tratamento para ok
-                        } else {
-                            console.error('Erro na requisição. Status:', response.status);
-                        }
-                    }).catch(function(error) {
-                        console.error('Erro na requisição:', error);
-                    });
-                });
-            </script>";
+                $data = array(
+                    'id_chamado' => $id_chamado
+                );
+
+                // Inicializa o cURL
+                $curl = curl_init($url);
+
+                // Configura as opções do cURL
+                curl_setopt($curl, CURLOPT_POST, true);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+                // Executa a requisição cURL
+                $response = curl_exec($curl);
+
+                // Verifica se ocorreu algum erro durante a requisição
+                if ($response === false) {
+                    header("Location: /servicedesk/consultar_chamados/view.php?id=$id_chamado");
+                    exit; // Encerra a execução do script após o redirecionamento
+                } else {
+                    header("Location: /servicedesk/consultar_chamados/view.php?id=$id_chamado");
+                    exit; // Encerra a execução do script após o redirecionamento
+                }
             } else {
                 echo "<p style='color:red;'>Error: Erro ao abrir chamado.</p>";
             }
@@ -130,7 +139,7 @@ if (empty($_POST['selectService'])) {
             $cont_insert = false;
 
             $sql = "INSERT INTO chamados (atendente_id, assuntoChamado, relato_inicial, tipochamado_id, solicitante_id, empresa_id, status_id, data_abertura, in_execution, in_execution_atd_id, seconds_worked, service_id)
-        VALUES ('0', :assuntoChamado, :relato_inicial, :tipochamado_id, :solicitante_id, :empresa_id, '1', NOW(), '0', '0', '0', :service_id)";
+            VALUES ('0', :assuntoChamado, :relato_inicial, :tipochamado_id, :solicitante_id, :empresa_id, '1', NOW(), '0', '0', '0', :service_id)";
             $stmt1 = $pdo->prepare($sql);
             $stmt1->bindParam(':assuntoChamado', $assuntoChamado);
             $stmt1->bindParam(':relato_inicial', $relato);
@@ -169,28 +178,38 @@ if (empty($_POST['selectService'])) {
             }
 
             if ($cont_insert) {
-                echo "<p style='color:green;'>Code 004: Chamado aberto com sucesso. Chamado $id_chamado</p>";
 
-                echo "<script>
-                setTimeout(function() {
-                    var chamadoId = $id_chamado;
-                    fetch('/notificacao/mail/abertura_chamado.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: 'id_chamado=' + chamadoId
-                    }).then(function(response) {
-                        if (response.ok) {
-                           //Tratamento para ok
-                        } else {
-                            console.error('Erro na requisição. Status:', response.status);
-                        }
-                    }).catch(function(error) {
-                        console.error('Erro na requisição:', error);
-                    });
-                });
-            </script>";
+                if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+                    $protocol = 'https';
+                } else {
+                    $protocol = 'http';
+                }
+                $documentRoot = $_SERVER['DOCUMENT_ROOT'];
+                $url = $protocol . '://' . $_SERVER['HTTP_HOST'] . '/notificacao/mail/abertura_chamado.php';
+
+                $data = array(
+                    'id_chamado' => $id_chamado
+                );
+
+                // Inicializa o cURL
+                $curl = curl_init($url);
+
+                // Configura as opções do cURL
+                curl_setopt($curl, CURLOPT_POST, true);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+                // Executa a requisição cURL
+                $response = curl_exec($curl);
+
+                // Verifica se ocorreu algum erro durante a requisição
+                if ($response === false) {
+                    header("Location: /servicedesk/consultar_chamados/view.php?id=$id_chamado");
+                    exit; // Encerra a execução do script após o redirecionamento
+                } else {
+                    header("Location: /servicedesk/consultar_chamados/view.php?id=$id_chamado");
+                    exit; // Encerra a execução do script após o redirecionamento
+                }
             } else {
                 echo "<p style='color:red;'>Error: Erro ao abrir chamado.</p>";
             }

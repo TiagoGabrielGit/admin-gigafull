@@ -53,52 +53,66 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $empresa = $c_infos_chamado['empresa'];
 
 
-        $atendentes_capacitados = "SELECT 
-            u.id as idUsuario,
-            p.nome as atendente,
-            p.email as email
+        $atendentes_capacitados =
+            "SELECT
+        pe.email as 'email'
         FROM
-            usuarios AS u
-        LEFT JOIN 
-            pessoas AS p 
-        ON 
-            p.id = u.pessoa_id
-        LEFT JOIN 
-            (SELECT 
-                cc.chamado_id, COUNT(cc.competencia_id) AS total_competencias
-            FROM 
-                chamados_competencias AS cc
-            GROUP BY 
-                cc.chamado_id) AS comp_total 
-        ON 
-            comp_total.chamado_id = $id_chamado
-        LEFT JOIN 
-            (SELECT 
-                cc.chamado_id, uc.id_usuario,
-                COUNT(uc.id_competencia) AS total_competencias_usuario
-            FROM 
-                chamados_competencias AS cc
-           LEFT JOIN
-                usuario_competencia AS uc 
-            ON 
-                cc.competencia_id = uc.id_competencia
-            WHERE 
-                cc.chamado_id = $id_chamado
-            GROUP BY 
-                cc.chamado_id, uc.id_usuario) AS comp_usuario 
-        ON 
-            comp_usuario.chamado_id = $id_chamado 
-        AND 
-            comp_usuario.id_usuario = u.id
-        WHERE (comp_total.chamado_id IS NULL
-        OR 
-            comp_total.total_competencias = comp_usuario.total_competencias_usuario)
-        AND
-        u.tipo_usuario = 1
-        AND
-        u.notify_email = 1
-        ORDER BY 
-        p.nome ASC;";
+        usuarios as u
+        LEFT JOIN
+        pessoas as pe
+        ON
+        u.pessoa_id = pe.id
+        WHERE
+        u.perfil_id = 1
+        and
+        u.active = 1
+        
+        UNION
+        
+        (SELECT 
+                    pess.email as email
+                FROM
+                    usuarios AS u
+                LEFT JOIN 
+                    pessoas AS pess
+                ON 
+                    pess.id = u.pessoa_id
+                LEFT JOIN 
+                    (SELECT 
+                        cc.chamado_id, COUNT(cc.competencia_id) AS total_competencias
+                    FROM 
+                        chamados_competencias AS cc
+                    GROUP BY 
+                        cc.chamado_id) AS comp_total 
+                ON 
+                    comp_total.chamado_id = $id_chamado
+                LEFT JOIN 
+                    (SELECT 
+                        cc.chamado_id, uc.id_usuario,
+                        COUNT(uc.id_competencia) AS total_competencias_usuario
+                    FROM 
+                        chamados_competencias AS cc
+                   LEFT JOIN
+                        usuario_competencia AS uc 
+                    ON 
+                        cc.competencia_id = uc.id_competencia
+                    WHERE 
+                        cc.chamado_id = $id_chamado
+                    GROUP BY 
+                        cc.chamado_id, uc.id_usuario) AS comp_usuario 
+                ON 
+                    comp_usuario.chamado_id = $id_chamado 
+                AND 
+                    comp_usuario.id_usuario = u.id
+                WHERE (comp_total.chamado_id IS NULL
+                OR 
+                    comp_total.total_competencias = comp_usuario.total_competencias_usuario)
+                AND
+                u.tipo_usuario = 1
+                AND
+                u.notify_email = 1
+                ORDER BY 
+                pess.nome ASC);";
 
         // Executa a consulta no banco de dados
         $result = $pdo->query($atendentes_capacitados);
@@ -119,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $assunto = "SmartControl - Chamado $id_chamado aberto";
 
             // Mensagem do email
-            $mensagem = "<b>Um novo chamado foi aberto com as suas competências para execução.</b><br>";
+            $mensagem = "<b>Um novo chamado foi aberto.</b><br>";
             $mensagem .= "Chamado ID: $id_chamado
                         Empresa: $empresa
                         Tipo Chamdo: $tipo_chamado

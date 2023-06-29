@@ -120,7 +120,8 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
 
                                             <div class="modal-body">
                                                 <div class="card-body">
-                                                    <form id="abrirChamado" method="POST" class="row g-3">
+                                                    <!--<form id="abrirChamado" method="POST" class="row g-3">-->
+                                                    <form action="/servicedesk/consultar_chamados/processa/add.php" method="POST" class="row g-3">
 
                                                         <span id="msg"></span>
 
@@ -194,7 +195,7 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                                         </div>
                                                         <div class="col-6">
                                                             <label for="selectIten" class="form-label">Item de Serviço</label>
-                                                            <select class="form-select" id="selectIten" name="selectIten" required>
+                                                            <select class="form-select" id="selectIten" name="selectIten">
                                                                 <option disabled selected value="">Selecione um serviço</option>
                                                             </select>
                                                         </div>
@@ -251,7 +252,9 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                                         <div class="col-4"></div>
 
                                                         <div class="col-4" style="text-align: center;">
-                                                            <input id="btnSalvar" name="btnSalvar" type="button" value="Salvar" class="btn btn-danger"></input>
+                                                            <!--<input id="btnSalvar" name="btnSalvar" type="button" value="Salvar" class="btn btn-danger"></input>-->
+                                                            <button class="btn btn-danger" type="submit">Abrir Chamado</button>
+
                                                             <a href="/servicedesk/consultar_chamados/index.php"> <input type="button" value="Voltar" class="btn btn-secondary"></input></a>
                                                         </div>
 
@@ -511,7 +514,7 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                                 </span>
                                                 <?php
                                                 $valida_competencia =
-                                                "SELECT cc.competencia_id as competencia_id
+                                                    "SELECT cc.competencia_id as competencia_id
                                                 FROM chamados_competencias as cc
                                                 WHERE cc.chamado_id = $id_chamado
                                                 AND NOT EXISTS (
@@ -529,7 +532,7 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                                     echo '<span class="text-end">
                                                                 <span class="btn btn-secondary rounded-pill">Qualificado</span>
                                                             </span>';
-                                                } else  {
+                                                } else {
                                                     // O usuário não tem todas as competências necessárias
                                                     echo '<span class="text-end">
                                                             <span class="btn btn-success rounded-pill">Qualificado</span>

@@ -3,30 +3,30 @@
 
 
 <script>
-    $("#btnSalvar").click(function() {
-        var dados = $("#abrirChamado").serialize();
+    //$("#btnSalvar").click(function() {
+    //var dados = $("#abrirChamado").serialize();
 
-        $.post("/servicedesk/consultar_chamados/processa/add.php", dados, function(retorna) {
-            $("#msg").slideDown('slow').html(retorna);
+    //$.post("/servicedesk/consultar_chamados/processa/add.php", dados, function(retorna) {
+    //$("#msg").slideDown('slow').html(retorna);
 
 
-            if (retorna.includes("Error")) {
-                // Lógica para tratar o erro, se necessário
-            } else {
-                //Limpar os campos
-                $('#abrirChamado')[0].reset();
-            }
-            //Apresentar a mensagem leve
-            retirarMsg();
-        });
-    });
+    //if (retorna.includes("Error")) {
+    // Lógica para tratar o erro, se necessário
+    //} else {
+    //Limpar os campos
+    //$('#abrirChamado')[0].reset();
+    //}
+    //Apresentar a mensagem leve
+    //retirarMsg();
+    //});
+    //});
 
     //Retirar a mensagem após 1700 milissegundos
-    function retirarMsg() {
-        setTimeout(function() {
-            $("#msg").slideUp('slow', function() {});
-        }, 1700);
-    };
+    //function retirarMsg() {
+    //setTimeout(function() {
+    //$("#msg").slideUp('slow', function() {});
+    //}, 1700);
+    //};
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
     $(document).ready(function() {
         $('#empresaChamado').change(function() {
