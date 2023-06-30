@@ -15,6 +15,72 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
 
+              <!-- Versão 7.8 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading7-8">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7-8" aria-expanded="false" aria-controls="collapse7-8">
+                    Versão 7.8 - 30/06/2023
+                  </button>
+                </h2>
+                <div id="collapse7-8" class="accordion-collapse collapse" aria-labelledby="heading7-8" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Ativar/Desativar notificação E-mail pelo 'Meu Profile';<br>
+                    # Não aparecer para gerenciar interessados se o chamado estiver encerrado;<br>
+                    # Aparecer "Sem Atendente" no filtro de listagem de chamados;<br>
+                    # Visualizações de chamados por empresa ou por equipe;<br>
+                    # Abertura de chamados por empresa ou por equipe;<br>
+                    # Relatar no chamado mesmo sem estar apropriado;<br>
+                    # Permissão no tipo de protocolo para selecionar atendente na abertura e colocar data de entrega;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criado a coluna 'permissao_visualiza_chamado' na tabela 'usuarios';<br>
+                    # Criado as colunas 'permite_atendente_abertura', 'permite_data_entrega' e 'horas_prazo_entrega' na tabela 'tipos_chamados';<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Perfil errado na criação de usuario via invite;<br>
+                    # Solicitante especificar para quando quer pronto um chamado;<br>
+                    # Marcar atendente na abertura de um chamado;<br>
+                    # Resetar senha pelo acesso usuário;<br>
+                    # Dashboard personalizada de acordo com permissões de chamados;<br>
+                    # Redirecionar para senha de depois de cadastrar credencial portal;<br>
+
+                    # Editar consulta sql e excluir/inativar;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Energia POP;<br>
+                    # Atributos de equipamentos;<br>
+                    # Cadastro de PONs;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+                    # Cadastro de rotas de rede de fibra;<br>
+                    # Check-list chamados;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Notificaçãoes de novos incidentes e relatos;<br>
+                    # Adequação incidentes cliente;<br>
+                    # Vinculo de chamado a incidente;<br>
+                    # Anexo arquivos em chamados;<br>
+                    # Anexo arquivos em vistorias;<br>
+                    # Permissões em documentações;<br>
+                    # Relatar em chamado já existente ao invés de abrir outro via integração Zabbix;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Segurança individual;<br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                    # Dependencia de chamados;<br>
+
+                    <br><strong>Backlog --- Rede Neutra</strong><br>
+                    # BUG retorna código em resultado do provisionamento;<br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas;<br>
+                    # Botão troca ONU;<br>
+                    # Armazenar LOG sinal do cliente após provisionamento;<br>
+                    # Validação sinal antes de adicionar serviços;<br>
+                    # Autofind no provisionamento;<br><br>
+                  </div>
+                </div>
+              </div>
+
+
               <!-- Versão 7.7 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading7-7">
@@ -68,61 +134,6 @@ require "../includes/menu.php";
                     # Pautas e ATAs de Reunião;<br>
                     # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
                     # Dependencia de chamados;<br>
-
-                    <br><strong>Backlog --- Rede Neutra</strong><br>
-                    # BUG retorna código em resultado do provisionamento;<br>
-                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas;<br>
-                    # Botão troca ONU;<br>
-                    # Armazenar LOG sinal do cliente após provisionamento;<br>
-                    # Validação sinal antes de adicionar serviços;<br>
-                    # Autofind no provisionamento;<br><br>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Versão 7.6 -->
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="heading7-6">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7-6" aria-expanded="false" aria-controls="collapse7-6">
-                    Versão 7.7 - XX/06/2023
-                  </button>
-                </h2>
-                <div id="collapse7-6" class="accordion-collapse collapse" aria-labelledby="heading7-6" data-bs-parent="#accordionExample">
-                  <div class="accordion-body">
-
-                    <br><strong>Melhorias</strong><br>
-
-                    <br><strong>Alterações banco de dados</strong><br>
-
-                    <br><strong>Backlog</strong><br>
-                    # Não obrigatoriedade de competencias na abertura de chamado;<br>
-                    # Redirecionar para chamado após abertura;<br>
-                    # Editar unidades de produtos e ver histórico de uso;<br>
-                    # Invite para criação de usuário;<br>
-                    # Energia POP;<br>
-                    # Resetar senha pelo acesso usuário;<br>
-                    # Interessado receber email quando for adicionado a um chamado;<br>
-                    # Seleção no cadastro de usuario de tipos de chamados que pode abrir "apenas por equipe", "apenas por empresa", "todos".
-                    # Atributos de equipamentos;<br>
-                    # Cadastro de PONs;<br>
-                    # Requisições de expediente atraves do acesso colaborador;<br>
-                    # Cadastro de rotas de rede de fibra;<br>
-                    # Solicitante especificar para quando quer pronto um chamado;<br>
-                    # Check-list chamados;<br>
-                    # Integração para abrir chamado no Voalle;<br>
-                    # Notificaçãoes de novos incidentes e relatos;<br>
-                    # Adequação incidentes cliente;<br>
-                    # Vinculo de chamado a incidente;<br>
-                    # Anexo arquivos em chamados;<br>
-                    # Anexo arquivos em vistorias;<br>
-                    # Permissões em documentações;<br>
-                    # Ativar/Desativar notificação E-mail pelo acesso do cliente/tenent:<br>
-                    # Relatar em chamado já existente ao invés de abrir outro via integração Zabbix;<br>
-                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
-                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
-                    # Segurança individual;<br>
-                    # Pautas e ATAs de Reunião;<br>
-                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
 
                     <br><strong>Backlog --- Rede Neutra</strong><br>
                     # BUG retorna código em resultado do provisionamento;<br>

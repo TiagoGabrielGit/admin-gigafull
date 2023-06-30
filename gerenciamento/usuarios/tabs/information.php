@@ -2,7 +2,7 @@
 <form method="POST" action="processa/editUser.php">
     <div class="col-lg-12">
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-7">
                 <div class="row">
                     <div class="row">
                         <div class="col-2">
@@ -23,30 +23,90 @@
                         <input type="Text" class="form-control" value="<?= $campos['email']; ?>" disabled>
                     </div>
 
-                    <?php
-                    if ($campos['active'] == "Ativado") {
-                        $checkSituacao1 = "checked";
-                        $checkSituacao0 = "";
-                    } else if ($campos['active'] == "Inativado") {
-                        $checkSituacao0 = "checked";
-                        $checkSituacao1 = "";
-                    }
-
-
-                    if ($campos['notify_email'] == "Ativado") {
-                        $checkNotifEmail1 = "checked";
-                        $checkNotifEmail0 = "";
-                    } else if ($campos['notify_email'] == "Inativado") {
-                        $checkNotifEmail0 = "checked";
-                        $checkNotifEmail1 = "";
-                    }
-
-                    ?>
                 </div>
+                <br>
+
+                <div class="row">
+                    <div class="col-12">
+                        <label for="permissaoAberturaChamado" class="form-label">Permissão para abertura de chamado </label>
+                        <select name="permissaoAberturaChamado" id="permissaoAberturaChamado" class="form-select" required>
+                            <?php
+                            if ($campos['permissao_abertura_chamado'] == 1) { ?>
+                                <option selected value="1">Permite abrir apenas chamados liberados para a empresa</option>
+                                <option value="2">Permite abrir apenas chamados liberados para a equipe</option>
+                                <option value="3">Permite abrir chamados liberados para empresa e para a equipe</option>
+                            <?php } else if ($campos['permissao_abertura_chamado'] == 2) { ?>
+                                <option value="1">Permite abrir apenas chamados liberados para a empresa</option>
+                                <option selected value="2">Permite abrir apenas chamados liberados para a equipe</option>
+                                <option value="3">Permite abrir chamados liberados para empresa e para a equipe</option>
+                            <?php } else if ($campos['permissao_abertura_chamado'] == 3) { ?>
+                                <option value="1">Permite abrir apenas chamados liberados para a empresa</option>
+                                <option value="2">Permite abrir apenas chamados liberados para a equipe</option>
+                                <option selected value="3">Permite abrir chamados liberados para empresa e para a equipe</option>
+                            <?php } else { ?>
+                                <option selected disabled value="">Selecione uma opção</option>
+                                <option value="1">Permite abrir apenas chamados liberados para a empresa</option>
+                                <option value="2">Permite abrir apenas chamados liberados para a equipe</option>
+                                <option value="3">Permite abrir chamados liberados para empresa e para a equipe</option>
+                            <?php }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <?php if ($campos['tipoUsuario'] == "1") { ?>
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="permissaoVisualizaChamado" class="form-label">Permissão para visualização de chamado </label>
+                            <select name="permissaoVisualizaChamado" id="permissaoVisualizaChamado" class="form-select" required>
+                                <?php
+                                if ($campos['permissao_visualiza_chamado'] == 1) { ?>
+                                    <option selected value="1">Visualiza somente da empresa do usuário</option>
+                                    <option value="2">Visualiza somente tipos de chamados permitidos por equipe do usuário</option>
+                                    <option value="3">Visualiza todos</option>
+                                <?php } else if ($campos['permissao_visualiza_chamado'] == 2) { ?>
+                                    <option value="1">Visualiza somente da empresa do usuário</option>
+                                    <option selected value="2">Visualiza somente tipos de chamados permitidos por equipe do usuário</option>
+                                    <option value="3">Visualiza todos</option>
+                                <?php } else if ($campos['permissao_visualiza_chamado'] == 3) { ?>
+                                    <option value="1">Visualiza somente da empresa do usuário</option>
+                                    <option value="2">Visualiza somente tipos de chamados permitidos por equipe do usuário</option>
+                                    <option selected value="3">Visualiza todos</option>
+                                <?php } else { ?>
+                                    <option selected disabled value="">Selecione uma opção</option>
+                                    <option value="1">Visualiza somente da empresa do usuário</option>
+                                    <option value="2">Visualiza somente tipos de chamados permitidos por equipe do usuário</option>
+                                    <option value="3">Visualiza todos</option>
+                                <?php }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                <?php } ?>
             </div>
 
 
-            <div class="col-lg-6">
+            <div class="col-lg-5">
+
+                <?php
+                if ($campos['active'] == "Ativado") {
+                    $checkSituacao1 = "checked";
+                    $checkSituacao0 = "";
+                } else if ($campos['active'] == "Inativado") {
+                    $checkSituacao0 = "checked";
+                    $checkSituacao1 = "";
+                }
+
+
+                if ($campos['notify_email'] == "Ativado") {
+                    $checkNotifEmail1 = "checked";
+                    $checkNotifEmail0 = "";
+                } else if ($campos['notify_email'] == "Inativado") {
+                    $checkNotifEmail0 = "checked";
+                    $checkNotifEmail1 = "";
+                }
+
+                ?>
 
                 <div class="row">
                     <div class="col-4">

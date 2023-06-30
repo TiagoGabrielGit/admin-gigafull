@@ -190,7 +190,7 @@ require "sql.php";
 </div><!-- End Basic Modal-->
 
 <div class="modal fade" id="modalNovoUser" tabindex="-1">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Novo Usuário</h5>
@@ -201,21 +201,36 @@ require "sql.php";
                     <form method="POST" id="formNovoUsuario" class="row g-3">
 
                         <span id="msgSalvarUsuario1"></span>
-                        <div class="row">
-                            <div class="col-8">
-                                <label for="nomeUsuario" class="form-label">Nome</label>
-                                <select id="nomeUsuario" name="nomeUsuario" class="form-select">
-                                    <option require selected disabled>Selecione a pessoa</option>
-                                    <?php
-                                    $resultado = mysqli_query($mysqli, $lista_pessoas);
-                                    while ($pessoa = mysqli_fetch_object($resultado)) :
-                                        echo "<option value='$pessoa->pessoa_id'> $pessoa->pessoa_nome</option>";
-                                    endwhile;
-                                    ?>
-                                </select>
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-8">
+                                    <label for="nomeUsuario" class="form-label">Nome</label>
+                                    <select id="nomeUsuario" name="nomeUsuario" class="form-select">
+                                        <option require selected disabled>Selecione a pessoa</option>
+                                        <?php
+                                        $resultado = mysqli_query($mysqli, $lista_pessoas);
+                                        while ($pessoa = mysqli_fetch_object($resultado)) :
+                                            echo "<option value='$pessoa->pessoa_id'> $pessoa->pessoa_nome</option>";
+                                        endwhile;
+                                        ?>
+                                    </select>
+                                </div>
+
+                                <div class="col-4">
+                                    <label for="empresaSelect" class="form-label">Empresa</label>
+                                    <select name="empresaSelect" id="empresaSelect" class="form-select">
+                                        <option selected disabled>Selecione a empresa</option>
+                                        <?php
+                                        $resultado = mysqli_query($mysqli, $sql_empresas) or die("Erro ao retornar dados");
+                                        while ($p = $resultado->fetch_assoc()) : ?>
+                                            <option value="<?= $p['empresaID']; ?>"><?= $p['fantasia']; ?></option>
+                                        <?php endwhile; ?>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        <br>
+                        <div class="col-lg-5">
                             <div class="row">
                                 <div class="col-12">
                                     <label for="tipoAcesso" class="form-label">Tipo de Acesso</label>
@@ -239,44 +254,48 @@ require "sql.php";
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="col-lg-4">
+                            <br>
                             <div class="row">
-                                <div class="col-12">
-                                    <label for="empresaSelect" class="form-label">Empresa</label>
-                                    <select name="empresaSelect" id="empresaSelect" class="form-select">
-                                        <option selected disabled>Selecione a empresa</option>
-                                        <?php
-                                        $resultado = mysqli_query($mysqli, $sql_empresas) or die("Erro ao retornar dados");
-                                        while ($p = $resultado->fetch_assoc()) : ?>
-                                            <option value="<?= $p['empresaID']; ?>"><?= $p['fantasia']; ?></option>
-                                        <?php endwhile; ?>
-                                    </select>
-                                </div>
-                                <div id="controlaPerfil" class="col-12">
-                                    <label for="inputPerfil" class="form-label">Perfil</label>
-                                    <select name="perfil" id="perfil" class="form-select">
-                                        <option selected disabled>Selecione o perfil</option>
-                                        <?php
-                                        $resultado = mysqli_query($mysqli, $sql_perfil) or die("Erro ao retornar dados");
-                                        while ($p = $resultado->fetch_assoc()) : ?>
-                                            <option value="<?= $p['idPerfil']; ?>"><?= $p['perfil']; ?></option>
-                                        <?php endwhile; ?>
-                                    </select>
+                                <div class="col-10">
+                                    <label for="inputEmail" class="form-label">E-mail/Usuário</label>
+                                    <input name="inputEmail" type="text" class="form-control" id="inputEmail" disabled>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-6">
-                            <label for="inputEmail" class="form-label">E-mail/Usuário</label>
-                            <input name="inputEmail" type="text" class="form-control" id="inputEmail" disabled>
+                        <br>
+                        <div class="col-lg-7">
+                            <div id="controlaPerfil" class="col-12">
+                                <select name="perfil" id="perfil" class="form-select">
+                                    <option selected disabled>Selecione o perfil</option>
+                                    <?php
+                                    $resultado = mysqli_query($mysqli, $sql_perfil) or die("Erro ao retornar dados");
+                                    while ($p = $resultado->fetch_assoc()) : ?>
+                                        <option value="<?= $p['idPerfil']; ?>"><?= $p['perfil']; ?></option>
+                                    <?php endwhile; ?>
+                                </select>
+                            </div>
+                            <br>
+                            <div id="controlaAberturaChamado" class="col-12">
+                                <select name="permissaoAberturaChamado" id="permissaoAberturaChamado" class="form-select" required>
+                                    <option selected disabled value="">Permissão para abertura de chamado</option>
+                                    <option value="1">Permite abrir apenas chamados liberados para a empresa</option>
+                                    <option value="2">Permite abrir apenas chamados liberados para a equipe</option>
+                                    <option value="3">Permite ambos</option>
+                                </select>
+                            </div>
+                            <br>
+                            <div id="controlaVisualizaChamado" class="col-12">
+                                <select name="permissaoVisualizaChamado" id="permissaoVisualizaChamado" class="form-select">
+                                    <option selected disabled value="">Permissão para visualização de chamado</option>
+                                    <option value="1">Visualiza somente da empresa do usuário</option>
+                                    <option value="2">Visualiza somente tipos de chamados permitidos por equipe do usuário</option>
+                                    <option value="3">Visualiza ambos</option>
+                                </select>
+                            </div>
                         </div>
-
                         <div class="col-12" style="text-align: center;">
                             <span id="msgSalvarUsuario2"></span>
                             <input id="btnSalvarUsuario" name="btnSalvarUsuario" type="button" value="Cadastrar usuário" class="btn btn-danger"></input>
-
                         </div>
                     </form>
                 </div>

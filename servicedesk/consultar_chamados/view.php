@@ -12,7 +12,10 @@ $sql_captura_dados_usuario =
 u.id as idUsuario,
 u.pessoa_id as idPessoa,
 u.empresa_id as idEmpresa,
+u.empresa_id as empresa_id,
 u.tipo_usuario as tipoUsuario,
+u.permissao_visualiza_chamado as permissao_visualiza_chamado,
+
 rnp.id as idParceiro
 FROM
 usuarios as u
@@ -33,12 +36,13 @@ $pessoaID = $c_dados_usuario['idPessoa'];
 $idEmpresa = $c_dados_usuario['idEmpresa'];
 $idParceiro = $c_dados_usuario['idParceiro'];
 $tipoUsuario = $c_dados_usuario['tipoUsuario'];
-
+$permissao_visualiza_chamado = $c_dados_usuario['permissao_visualiza_chamado'];
+$empresa_usuario = $c_dados_usuario['empresa_id'];
 
 $resut_chamado1 = mysqli_query($mysqli, $sql_chamado1);
 $chamado = mysqli_fetch_assoc($resut_chamado1);
 $idEmpresaChamado = $chamado['idEmpresa'];
-
+$tipo_chamado = $chamado['tipo_id'];
 
 $resut_solicitante = mysqli_query($mysqli, $sql_solicitante);
 $solicitante = mysqli_fetch_assoc($resut_solicitante);
@@ -66,7 +70,32 @@ if (empty($atendente['atendente'])) {
 }
 
 if ($tipoUsuario == "1") {
-    require "code_view_smart.php";
+    if ($permissao_visualiza_chamado == 1 && ($chamado['idEmpresa'] == $empresa_usuario)) { // Visualiza somente chamados da empresa
+        require "code_view_smart.php";
+    } else if ($permissao_visualiza_chamado == 2) {
+        $permissao_equipe = "SELECT DISTINCT ei.equipe_id
+        FROM equipes_integrantes ei
+        JOIN chamados_autorizados_by_equipe cae ON ei.equipe_id = cae.equipe_id
+        WHERE ei.integrante_id = $idUsuario
+        AND cae.tipo_id = $tipo_chamado";
+
+        $r_permissao_equipe = $pdo->query($permissao_equipe);
+        if ($r_permissao_equipe) {
+            if ($r_permissao_equipe->rowCount() > 0) {
+                require "code_view_smart.php";
+            } else {
+                require "../../acesso_negado.php";
+                require "../../includes/footer.php";
+            }
+        } else {
+            echo "Erro na execução da consulta: " . $pdo->errorInfo()[2];
+        }
+    } else if ($permissao_visualiza_chamado == 3) { //Visuliza todos chamados
+        require "code_view_smart.php";
+    } else {
+        require "../../acesso_negado.php";
+        require "../../includes/footer.php";
+    }
 } else if ($tipoUsuario == "2" && $idEmpresa == $idEmpresaChamado) {
     require "code_view_cliente.php";
 } else if ($tipoUsuario == "3" && $idEmpresa == $idEmpresaChamado) {

@@ -62,9 +62,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $mensagem .= "Chamado ID: $idChamado
     Empresa: $empresa
     Tipo Chamdo: $tipo_chamado
-    Assunto: $titulo
     Data Abertura: $data_abertura
     
+    <b>Assunto:</b>
+    $titulo
+
     <b>Relato da Abertura:</b>
     $relato";
 

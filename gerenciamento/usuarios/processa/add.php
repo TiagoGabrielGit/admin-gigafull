@@ -18,8 +18,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Obtém os dados enviados pelo formulário
             $pessoaID = $_POST['nomeUsuario'];
-
             $empresaID = $_POST["empresaSelect"];
+            $permissaoAberturaChamado = $_POST["permissaoAberturaChamado"];
+            $permissaoVisualizaChamado = isset($_POST["permissaoVisualizaChamado"]) ? $_POST["permissaoVisualizaChamado"] : 0;
             $perfil = isset($_POST["perfil"]) ? $_POST["perfil"] : 0;
             $password = md5($_POST["senha"]);
             $senha = $_POST["senha"];
@@ -27,8 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Todos os campos estão preenchidos, continue com a lógica de salvamento no banco de dados
             $insert_usuario =
-                "INSERT INTO usuarios (pessoa_id, senha, criado, tipo_usuario, empresa_id, perfil_id, reset_password, active, notify_email)
-        VALUES (:pessoa_id, :senha, NOW(), :tipo_usuario, :empresa_id, :perfil_id, '1', '1', '1')";
+                "INSERT INTO usuarios (permissao_chamado, permissao_visualiza_chamado, pessoa_id, senha, criado, tipo_usuario, empresa_id, perfil_id, reset_password, active, notify_email)
+        VALUES (:permissao_chamado, :permissao_visualiza_chamado, :pessoa_id, :senha, NOW(), :tipo_usuario, :empresa_id, :perfil_id, '1', '1', '1')";
 
             $stmt1 = $pdo->prepare($insert_usuario);
 
@@ -37,6 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt1->bindParam(':tipo_usuario', $tipoAcesso);
             $stmt1->bindParam(':empresa_id', $empresaID);
             $stmt1->bindParam(':perfil_id', $perfil);
+            $stmt1->bindParam(':permissao_chamado', $permissaoAberturaChamado);
+            $stmt1->bindParam(':permissao_visualiza_chamado', $permissaoVisualizaChamado);
 
             // Executa a consulta
             if ($stmt1->execute()) {

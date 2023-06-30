@@ -17,6 +17,10 @@ if ($chamado['in_execution'] == 1) {
 } else {
     $classeColor = "";
 }
+
+
+
+
 ?>
 
 <main id="main" class="main">
@@ -96,9 +100,13 @@ if ($chamado['in_execution'] == 1) {
                             <div class="row">
                                 <div class="col-12 " style="margin-top: 5px;">
                                     <?php
-                                    if ($c_valida_competencia == null && $id_usuario != $chamado['id_atendente'] && $chamado['status'] != "Fechado") { ?>
+                                    if ($c_valida_competencia == null && $id_usuario != $chamado['id_atendente'] && $chamado['status'] != "Fechado") {
+                                        if ($chamado['in_execution'] == '0') {
+                                    ?>
+                                            <a href="processa/apropriar.php?id=<?= $id_chamado  ?>&pessoa=<?= $id_usuario ?> "><button title="Apropriar" type="button" class="btn btn-info"><i class="bi bi-pin"></i></button></a>
+                                        <?php } ?>
 
-                                        <a href="processa/apropriar.php?id=<?= $id_chamado  ?>&pessoa=<?= $id_usuario ?> "><button title="Apropriar" type="button" class="btn btn-info"><i class="bi bi-pin"></i></button></a>
+                                        <button title="Inserir um relato" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#relatoAvulso"><i class="bi bi-pencil-square"></i></button>
 
                                     <?php } else if ($id_usuario == $chamado['id_atendente'] && $chamado['in_execution'] == '1' && $chamado['in_execution_atd_id'] == $idPessoa) { ?>
 
@@ -111,9 +119,12 @@ if ($chamado['in_execution'] == 1) {
                                     <?php
                                     if ($chamado['status'] != "Fechado" &&  $chamado['in_execution'] == '0') { ?>
                                         <button title="Encaminhar Chamado" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalEncaminhar"><i class="bi bi-arrow-left-right"></i></button>
-                                    <?php } ?>
-                                    <button title="Interessados no chamado" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalInteressados"><i class="bi bi-people"></i></button>
-                                    <?php
+                                    <?php }
+
+                                    if ($chamado['status'] != "Fechado") { ?>
+                                        <button title="Interessados no chamado" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalInteressados"><i class="bi bi-people"></i></button>
+                                    <?php }
+
                                     if ($c_valida_competencia == null) { ?>
                                         <button title="Qualificado para atender" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalQualificacao"><i class="bi bi-award"></i></button>
                                     <?php } else { ?>
@@ -133,6 +144,42 @@ if ($chamado['in_execution'] == 1) {
                         </div>
                     </div>
                 </div>
+
+                <div class="modal fade" id="relatoAvulso" tabindex="-1">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Novo relato avulso</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="card-body">
+                                    <!--<form method="POST" action="processa/newRelato.php" class="row g-3 needs-validation">-->
+                                    <form method="POST" action="processa/relatoAvulso.php">
+                                        <input readonly hidden id="relatoRelator" name="relatoRelator" value="<?= $id_usuario ?>">
+                                        <input readonly hidden id="relatoAvulsoChamado" name="relatoAvulsoChamado" value="<?= $id_chamado ?>"></input>
+                                        <div class="col-12">
+                                            <label for="relatoAvulso" class="form-label">Relato*</label>
+                                            <textarea id="relatoAvulso" name="relatoAvulso" class="form-control" maxlength="10000" rows="8" required></textarea>
+                                        </div>
+                                        <hr class="sidebar-divider">
+                                        <div class="row">
+                                            <div class="col-5">
+                                            </div>
+                                            <div class="col-4">
+
+                                                <button type="submit" class="btn btn-danger">Relatar</button>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
                 <div class="modal fade" id="basicModal" tabindex="-1">
                     <div class="modal-dialog modal-xl">
@@ -197,7 +244,6 @@ if ($chamado['in_execution'] == 1) {
                         </div>
                     </div>
                 </div>
-                <!--</div>-->
 
                 <hr class="sidebar-divider">
 

@@ -19,6 +19,8 @@ END as tipo,
 pess.email as email,
 user.senha as senha,
 user.perfil_id as idPerfil,
+user.permissao_chamado as 'permissao_abertura_chamado',
+user.permissao_visualiza_chamado as 'permissao_visualiza_chamado',
 p.perfil as nome_perfil,
 CASE
     WHEN user.active = 1 THEN 'Ativado'

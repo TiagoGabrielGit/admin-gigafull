@@ -1,6 +1,6 @@
 <?php
 
-$sql_chamado1 =
+$sql_chamado1 = 
     "SELECT
 c.id as id_chamado,
 c.assuntoChamado as assunto,
@@ -12,6 +12,7 @@ c.in_execution as in_execution,
 c.in_execution_atd_id as in_execution_atd_id,
 c.in_execution_start as in_execution_start,
 tc.tipo as tipo,
+tc.id as tipo_id,
 cs.status_chamado as status,
 e.fantasia as empresa,
 e.id as idEmpresa,

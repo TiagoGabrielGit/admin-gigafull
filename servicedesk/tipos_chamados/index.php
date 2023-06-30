@@ -63,7 +63,7 @@ require "../../conexoes/conexao.php";
 
                         <hr class="sidebar-divider">
 
-                        <table class="table table-striped">
+                        <table class="table datatable">
                             <thead>
                                 <tr>
                                     <th style="text-align: center;" scope="col">Tipo de chamado</th>

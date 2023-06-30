@@ -13,7 +13,7 @@
             statusForm.submit();
         }
     });
-</script>
+</script> 
 
 <script>
     document.getElementById("copiarURL").addEventListener("click", function(event) {

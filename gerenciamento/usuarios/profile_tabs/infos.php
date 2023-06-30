@@ -28,21 +28,26 @@
             <?php
             if ($campos['tipoUsuario'] == "1") { ?>
                 <div class="col-12">
-                    <label for="notificaEmail" class="form-label">Notificação E-mail</label>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="notificaEmail" id="notificaEmailAtivo" value="1" <?= $checkNotifEmail1 ?>>
-                        <label class="form-check-label" for="notificaEmailAtivo">
-                            Ativo
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="notificaEmail" id="notificaEmailInativo" value="0" <?= $checkNotifEmail0 ?>>
-                        <label class="form-check-label" for="notificaEmailInativo">
-                            Inativo
-                        </label>
-                    </div>
+                    <form id="checkNotify" action="processa/profile_notificacao.php" method="POST">
+                        <input id="idUsuario" name="idUsuario" readonly value="<?= $usuarioID ?>" hidden></input>
+
+                        <label for="notificaEmail" class="form-label">Notificação E-mail</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="notificaEmail" id="notificaEmailAtivo" value="1" <?= $checkNotifEmail1 ?>>
+                            <label class="form-check-label" for="notificaEmailAtivo">
+                                Ativo
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="notificaEmail" id="notificaEmailInativo" value="0" <?= $checkNotifEmail0 ?>>
+                            <label class="form-check-label" for="notificaEmailInativo">
+                                Inativo
+                            </label>
+                        </div>
+                    </form>
                 </div>
             <?php } ?>
+
 
         </div>
     </div>

@@ -27,28 +27,8 @@ tipo.tipo ASC
 
 $sql_lista_atendentes = 
 "SELECT
-u.id as 'id',
-p.nome AS 'nome'
-FROM
-chamados as ch
-LEFT JOIN
-usuarios as u
-ON
-ch.atendente_id = u.id
-LEFT JOIN
-pessoas as p
-ON
-p.id = u.pessoa_id
-GROUP BY
-ch.atendente_id
-order by
-p.nome ASC
-";
-
-$sql_lista_atendentes = 
-"SELECT
-u.id as 'id',
-p.nome AS 'nome'
+CASE WHEN p.nome IS NULL THEN '0' ELSE u.id END AS 'id',
+CASE WHEN p.nome IS NULL THEN 'Sem Atendente' ELSE p.nome END AS 'nome'
 FROM
 chamados as ch
 LEFT JOIN

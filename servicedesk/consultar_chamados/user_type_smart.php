@@ -29,18 +29,22 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 $id_usuario = $_SESSION['id'];
 $sql_captura_id_pessoa =
     "SELECT
-u.pessoa_id as pessoaID,
-u.tipo_usuario as tipoUsuario
-FROM
-usuarios as u
-WHERE
-u.id = '$id_usuario'
-";
+    u.pessoa_id as pessoaID,
+    u.tipo_usuario as tipoUsuario,
+    u.empresa_id as empresa_id,
+    u.permissao_chamado as permissao_abrir_chamado,
+    u.permissao_visualiza_chamado as permissao_visualiza_chamado
+    FROM
+    usuarios as u
+    WHERE
+    u.id = '$id_usuario'
+    ";
 
 $result_cap_pessoa = mysqli_query($mysqli, $sql_captura_id_pessoa);
 $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
-
-
+$permissao_abrir_chamado = $pessoaID['permissao_abrir_chamado'];
+$permissao_visualiza_chamado = $pessoaID['permissao_visualiza_chamado'];
+$empresa_usuario = $pessoaID['empresa_id'];
 
 ?>
 
@@ -145,8 +149,34 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                                             <select class="form-select" id="tipoChamado" name="tipoChamado" required>
                                                                 <option disabled selected value="">Selecione o tipo de chamado</option>
                                                                 <?php
-                                                                $lista_tipos_chamados =
-                                                                    "SELECT
+
+                                                                if ($permissao_abrir_chamado == 1) {
+
+                                                                    $lista_tipos_chamados =
+                                                                        "SELECT
+                                                                            tc.id as idTipo,
+                                                                            tc.tipo as tipoChamado
+                                                                            FROM
+                                                                            tipos_chamados as tc
+                                                                            LEFT JOIN
+                                                                            chamados_autorizados_by_equipe as cae
+                                                                            ON
+                                                                            tc.id = cae.tipo_id
+                                                                            LEFT JOIN
+                                                                            chamados_autorizados_by_company as cac
+                                                                            ON
+                                                                            tc.id = cac.tipo_id
+                                                                            WHERE
+                                                                            tc.active = 1
+                                                                            and
+                                                                            cac.company_id = $s_empresaID
+                                                                            GROUP BY
+                                                                            tc.id
+                                                                            ORDER BY
+                                                                            tc.tipo ASC";
+                                                                } else if ($permissao_abrir_chamado == 2) { {
+
+                                                                        $lista_tipos_chamados = "SELECT
                                                                     tc.id as idTipo,
                                                                     tc.tipo as tipoChamado
                                                                     FROM
@@ -168,14 +198,43 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                                                                     equipes_integrantes as ei
                                                                     WHERE 
                                                                     ei.integrante_id = $id_usuario)
-                                                                    OR
-                                                                    tc.active = 1
-                                                                    and
-                                                                    cac.company_id = $s_empresaID
                                                                     GROUP BY
                                                                     tc.id
                                                                     ORDER BY
                                                                     tc.tipo ASC";
+                                                                    }
+                                                                } else if ($permissao_abrir_chamado == 3) {
+                                                                    $lista_tipos_chamados = "SELECT
+                                                                            tc.id as idTipo,
+                                                                            tc.tipo as tipoChamado
+                                                                            FROM
+                                                                            tipos_chamados as tc
+                                                                            LEFT JOIN
+                                                                            chamados_autorizados_by_equipe as cae
+                                                                            ON
+                                                                            tc.id = cae.tipo_id
+                                                                            LEFT JOIN
+                                                                            chamados_autorizados_by_company as cac
+                                                                            ON
+                                                                            tc.id = cac.tipo_id
+                                                                            WHERE
+                                                                            tc.active = 1
+                                                                            and
+                                                                            cae.equipe_id IN (SELECT 
+                                                                            ei.equipe_id as idEquipe
+                                                                            FROM 
+                                                                            equipes_integrantes as ei
+                                                                            WHERE 
+                                                                            ei.integrante_id = $id_usuario)
+                                                                            OR
+                                                                            tc.active = 1
+                                                                            and
+                                                                            cac.company_id = $s_empresaID
+                                                                            GROUP BY
+                                                                            tc.id
+                                                                            ORDER BY
+                                                                            tc.tipo ASC";
+                                                                }
                                                                 $r_lista_tipos_chamados = mysqli_query($mysqli, $lista_tipos_chamados);
 
                                                                 while ($tipos_chamados = mysqli_fetch_object($r_lista_tipos_chamados)) {
@@ -405,75 +464,226 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                             // (página atual * quantidade por página) - quantidade por página
                             $inicio = ($p * $qnt) - $qnt;
 
-                            $sql_select =
-                                "SELECT
-                            ch.id as id_chamado,
-                            ch.assuntoChamado as assunto,
-                            ch.relato_inicial as relato_inicial,
-                            ch.atendente_id as id_atendente,
-                            date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
-                            ch.in_execution as inExecution,
-                            ch.status_id as id_status,
-                            cs.status_chamado as statusChamado,
-                            tc.tipo as tipoChamado,
-                            emp.fantasia as fantasia,
-                            p.nome as atendente,
-                            s.service as service,
-                            ise.item as itemService
-                            
-                            FROM
-                            chamados as ch
-                            LEFT JOIN
-                            empresas as emp
-                            ON
-                            ch.empresa_id = emp.id
-                            LEFT JOIN
-                            tipos_chamados as tc
-                            ON
-                            ch.tipochamado_id  = tc.id
-                            LEFT JOIN
-                            chamados_status as cs
-                            ON
-                            cs.id = ch.status_id
-                            LEFT JOIN
-                            usuarios as u
-                            ON
-                            u.id = ch.atendente_id
-                            LEFT JOIN
-                            pessoas as p
-                            ON
-                            p.id = u.pessoa_id
-                            LEFT JOIN
-                            contract_service as cser
-                            ON 
-                            cser.id = ch.service_id
-                            LEFT JOIN
-                            service as s
-                            ON
-                            s.id = cser.service_id
-                            LEFT JOIN
-                            contract_iten_service as cis
-                            ON
-                            cis.id = ch.iten_service_id
-                            LEFT JOIN
-                            iten_service as ise
-                            ON
-                            ise.id = cis.iten_service
-                            WHERE
-                            ch.empresa_id LIKE '$empresa_id'
-                            and
-                            ch.atendente_id LIKE '$atendentePesquisa'
-                            and
-                            ch.status_id $statusChamado
-                            and
-                            ch.id LIKE '$idChamado'
-                            and
-                            ch.assuntoChamado LIKE '$assuntoChamado'
-                            ORDER BY
-                            ch.data_abertura DESC
-                            LIMIT $inicio, $qnt
-                            ";
+                            if ($permissao_visualiza_chamado == 1) {
+                                $sql_select =
+                                    "SELECT
+                                ch.id as id_chamado,
+                                ch.assuntoChamado as assunto,
+                                ch.relato_inicial as relato_inicial,
+                                ch.atendente_id as id_atendente,
+                                date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
+                                ch.in_execution as inExecution,
+                                ch.status_id as id_status,
+                                cs.status_chamado as statusChamado,
+                                tc.tipo as tipoChamado,
+                                emp.fantasia as fantasia,
+                                p.nome as atendente,
+                                s.service as service,
+                                ise.item as itemService
+                                
+                                FROM
+                                chamados as ch
+                                LEFT JOIN
+                                empresas as emp
+                                ON
+                                ch.empresa_id = emp.id
+                                LEFT JOIN
+                                tipos_chamados as tc
+                                ON
+                                ch.tipochamado_id  = tc.id
+                                LEFT JOIN
+                                chamados_status as cs
+                                ON
+                                cs.id = ch.status_id
+                                LEFT JOIN
+                                usuarios as u
+                                ON
+                                u.id = ch.atendente_id
+                                LEFT JOIN
+                                pessoas as p
+                                ON
+                                p.id = u.pessoa_id
+                                LEFT JOIN
+                                contract_service as cser
+                                ON 
+                                cser.id = ch.service_id
+                                LEFT JOIN
+                                service as s
+                                ON
+                                s.id = cser.service_id
+                                LEFT JOIN
+                                contract_iten_service as cis
+                                ON
+                                cis.id = ch.iten_service_id
+                                LEFT JOIN
+                                iten_service as ise
+                                ON
+                                ise.id = cis.iten_service
+                                WHERE
+                                ch.empresa_id LIKE '$empresa_usuario'
+                                and                                
+                                ch.empresa_id LIKE '$empresa_id'
+                                and
+                                ch.atendente_id LIKE '$atendentePesquisa'
+                                and
+                                ch.status_id $statusChamado
+                                and
+                                ch.id LIKE '$idChamado'
+                                and
+                                ch.assuntoChamado LIKE '$assuntoChamado'
+                                ORDER BY
+                                ch.data_abertura DESC
+                                LIMIT $inicio, $qnt
+                                ";
+                            }
 
+                            if ($permissao_visualiza_chamado == 2) {
+                                $sql_select =
+                                    "SELECT
+                                ch.id as id_chamado,
+                                ch.assuntoChamado as assunto,
+                                ch.relato_inicial as relato_inicial,
+                                ch.atendente_id as id_atendente,
+                                date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
+                                ch.in_execution as inExecution,
+                                ch.status_id as id_status,
+                                cs.status_chamado as statusChamado,
+                                tc.tipo as tipoChamado,
+                                emp.fantasia as fantasia,
+                                p.nome as atendente,
+                                s.service as service,
+                                ise.item as itemService
+                                FROM
+                                chamados as ch
+                                LEFT JOIN
+                                empresas as emp
+                                ON
+                                ch.empresa_id = emp.id
+                                LEFT JOIN
+                                tipos_chamados as tc
+                                ON
+                                ch.tipochamado_id  = tc.id
+                                LEFT JOIN
+                                chamados_status as cs
+                                ON
+                                cs.id = ch.status_id
+                                LEFT JOIN
+                                usuarios as u
+                                ON
+                                u.id = ch.atendente_id
+                                LEFT JOIN
+                                pessoas as p
+                                ON
+                                p.id = u.pessoa_id
+                                LEFT JOIN
+                                contract_service as cser
+                                ON 
+                                cser.id = ch.service_id
+                                LEFT JOIN
+                                service as s
+                                ON
+                                s.id = cser.service_id
+                                LEFT JOIN
+                                contract_iten_service as cis
+                                ON
+                                cis.id = ch.iten_service_id
+                                LEFT JOIN
+                                iten_service as ise
+                                ON
+                                ise.id = cis.iten_service
+                                WHERE
+                                tc.id IN (
+                                    SELECT DISTINCT cae.tipo_id
+                                    FROM equipes_integrantes ei
+                                    JOIN chamados_autorizados_by_equipe cae ON ei.equipe_id = cae.equipe_id
+                                    WHERE ei.integrante_id = $id_usuario
+                                ) 
+                                and                                
+                                ch.empresa_id LIKE '$empresa_id'
+                                and
+                                ch.atendente_id LIKE '$atendentePesquisa'
+                                and
+                                ch.status_id $statusChamado
+                                and
+                                ch.id LIKE '$idChamado'
+                                and
+                                ch.assuntoChamado LIKE '$assuntoChamado'
+                                ORDER BY
+                                ch.data_abertura DESC
+                                LIMIT $inicio, $qnt
+                                ";
+                            }
+
+                            if ($permissao_visualiza_chamado == 3) {
+                                $sql_select =
+                                    "SELECT
+                                ch.id as id_chamado,
+                                ch.assuntoChamado as assunto,
+                                ch.relato_inicial as relato_inicial,
+                                ch.atendente_id as id_atendente,
+                                date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
+                                ch.in_execution as inExecution,
+                                ch.status_id as id_status,
+                                cs.status_chamado as statusChamado,
+                                tc.tipo as tipoChamado,
+                                emp.fantasia as fantasia,
+                                p.nome as atendente,
+                                s.service as service,
+                                ise.item as itemService
+                                
+                                FROM
+                                chamados as ch
+                                LEFT JOIN
+                                empresas as emp
+                                ON
+                                ch.empresa_id = emp.id
+                                LEFT JOIN
+                                tipos_chamados as tc
+                                ON
+                                ch.tipochamado_id  = tc.id
+                                LEFT JOIN
+                                chamados_status as cs
+                                ON
+                                cs.id = ch.status_id
+                                LEFT JOIN
+                                usuarios as u
+                                ON
+                                u.id = ch.atendente_id
+                                LEFT JOIN
+                                pessoas as p
+                                ON
+                                p.id = u.pessoa_id
+                                LEFT JOIN
+                                contract_service as cser
+                                ON 
+                                cser.id = ch.service_id
+                                LEFT JOIN
+                                service as s
+                                ON
+                                s.id = cser.service_id
+                                LEFT JOIN
+                                contract_iten_service as cis
+                                ON
+                                cis.id = ch.iten_service_id
+                                LEFT JOIN
+                                iten_service as ise
+                                ON
+                                ise.id = cis.iten_service
+                                WHERE                    
+                                ch.empresa_id LIKE '$empresa_id'
+                                and
+                                ch.atendente_id LIKE '$atendentePesquisa'
+                                and
+                                ch.status_id $statusChamado
+                                and
+                                ch.id LIKE '$idChamado'
+                                and
+                                ch.assuntoChamado LIKE '$assuntoChamado'
+                                ORDER BY
+                                ch.data_abertura DESC
+                                LIMIT $inicio, $qnt
+                                ";
+                            }
                             // Executa o Query
                             $sql_query = mysqli_query($mysqli, $sql_select);
                             $cont = 1;
@@ -594,9 +804,107 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                             // Depois que selecionou todos os nome, pula uma linha para exibir os links(próxima, última...)
                             echo "<br />";
 
-                            // Faz uma nova seleção no banco de dados, desta vez sem LIMIT,
-                            // para pegarmos o número total de registros
-                            $sql_select_all = "SELECT
+
+                            if ($permissao_visualiza_chamado == 1) {
+                                $sql_select_all = "SELECT
+                                ch.id as id_chamado,
+                                ch.assuntoChamado as assunto,
+                                ch.relato_inicial as relato_inicial,
+                                ch.atendente_id as id_atendente,
+                                date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
+                                ch.in_execution as inExecution,
+                                ch.status_id as id_status,
+                                cs.status_chamado as statusChamado,
+                                tc.tipo as tipoChamado,
+                                emp.fantasia as fantasia,
+                                p.nome as atendente
+                                FROM
+                                chamados as ch
+                                LEFT JOIN
+                                empresas as emp
+                                ON
+                                ch.empresa_id = emp.id
+                                LEFT JOIN
+                                tipos_chamados as tc
+                                ON
+                                ch.tipochamado_id = tc.id
+                                LEFT JOIN
+                                chamados_status as cs
+                                ON
+                                cs.id = ch.status_id
+                                LEFT JOIN
+                                pessoas as p
+                                ON
+                                p.id = ch.atendente_id
+                                WHERE
+                                ch.empresa_id LIKE '$empresa_usuario'
+                                and     
+                                ch.empresa_id LIKE '$empresa_id'
+                                and
+                                ch.atendente_id LIKE '$atendentePesquisa'
+                                and
+                                ch.status_id $statusChamado
+                                and
+                                ch.id LIKE '$idChamado'
+                                and
+                                ch.assuntoChamado LIKE '$assuntoChamado'
+                                ORDER BY
+                                ch.data_abertura DESC";
+                            }
+
+                            if ($permissao_visualiza_chamado == 2) {
+                                $sql_select_all = "SELECT
+                                ch.id as id_chamado,
+                                ch.assuntoChamado as assunto,
+                                ch.relato_inicial as relato_inicial,
+                                ch.atendente_id as id_atendente,
+                                date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
+                                ch.in_execution as inExecution,
+                                ch.status_id as id_status,
+                                cs.status_chamado as statusChamado,
+                                tc.tipo as tipoChamado,
+                                emp.fantasia as fantasia,
+                                p.nome as atendente
+                                FROM
+                                chamados as ch
+                                LEFT JOIN
+                                empresas as emp
+                                ON
+                                ch.empresa_id = emp.id
+                                LEFT JOIN
+                                tipos_chamados as tc
+                                ON
+                                ch.tipochamado_id = tc.id
+                                LEFT JOIN
+                                chamados_status as cs
+                                ON
+                                cs.id = ch.status_id
+                                LEFT JOIN
+                                pessoas as p
+                                ON
+                                p.id = ch.atendente_id
+                                WHERE
+                                tc.id IN (
+                SELECT DISTINCT cae.tipo_id
+                FROM equipes_integrantes ei
+                JOIN chamados_autorizados_by_equipe cae ON ei.equipe_id = cae.equipe_id
+                WHERE ei.integrante_id = $id_usuario
+            ) and   
+                                ch.empresa_id LIKE '$empresa_id'
+                                and
+                                ch.atendente_id LIKE '$atendentePesquisa'
+                                and
+                                ch.status_id $statusChamado
+                                and
+                                ch.id LIKE '$idChamado'
+                                and
+                                ch.assuntoChamado LIKE '$assuntoChamado'
+                                ORDER BY
+                                ch.data_abertura DESC";
+                            }
+
+                            if ($permissao_visualiza_chamado == 3) {
+                                $sql_select_all = "SELECT
                             ch.id as id_chamado,
                             ch.assuntoChamado as assunto,
                             ch.relato_inicial as relato_inicial,
@@ -638,7 +946,7 @@ $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
                             ch.assuntoChamado LIKE '$assuntoChamado'
                             ORDER BY
                             ch.data_abertura DESC";
-
+                            }
                             // Executa o query da seleção acimas
                             $sql_query_all = mysqli_query($mysqli, $sql_select_all);
 

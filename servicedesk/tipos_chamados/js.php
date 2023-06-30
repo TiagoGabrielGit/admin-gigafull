@@ -7,10 +7,13 @@
         var dados = $("#cadastraTipoChamado").serialize();
 
         $.post("processa/add.php", dados, function(retorna) {
-            $("#msg").slideDown('slow').html(retorna);
 
-            //Limpar os campos
-            $('#cadastraTipoChamado')[0].reset();
+            if (retorna.includes("Error")) {
+                $("#msg").slideDown('slow').html(retorna);
+            } else {
+                var id = retorna;
+                window.location.href = "/servicedesk/tipos_chamados/view.php?id=" + id;
+            }
 
             //Apresentar a mensagem leve
             retirarMsg();
@@ -90,4 +93,29 @@
 
         });
     });
+</script>
+
+<script>
+    function mostrarOcultarCampoEntrega() {
+        // Obtém o valor selecionado no select
+        var selectEntrega = document.getElementById("selectEntrega").value;
+
+        // Obtém o campo de tempo mínimo de entrega
+        var campoEntrega = document.getElementById("campoEntrega");
+
+        // Verifica se a opção selecionada é "Sim"
+        if (selectEntrega === "1") {
+            // Mostra o campo de tempo mínimo de entrega
+            campoEntrega.style.display = "block";
+        } else {
+            // Oculta o campo de tempo mínimo de entrega
+            campoEntrega.style.display = "none";
+        }
+    }
+
+    // Chama a função para mostrar ou ocultar o campo durante a inicialização
+    mostrarOcultarCampoEntrega();
+
+    // Define um evento de mudança para o select
+    document.getElementById("selectEntrega").addEventListener("change", mostrarOcultarCampoEntrega);
 </script>

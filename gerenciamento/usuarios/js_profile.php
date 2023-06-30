@@ -18,7 +18,7 @@
     }
 </script>
 
-<script>
+<script> 
     $(document).ready(function() {
         $("#btnSolicitarPlantao").click(function() {
             var dadosPlantao = $("#formPlantao").serialize();
@@ -50,5 +50,19 @@
                 }
             });
         });
+    });
+</script>
+
+<script>
+    // Obtém uma referência ao formulário
+    const checkNotify = document.getElementById('checkNotify');
+
+    // Adiciona um ouvinte de eventos ao formulário
+    checkNotify.addEventListener('change', function(event) {
+        // Verifica se o elemento clicado é um radio button
+        if (event.target.type === 'radio' && event.target.name === 'notificaEmail') {
+            // Envia o formulário
+            checkNotify.submit();
+        }
     });
 </script>
