@@ -43,11 +43,14 @@ if (empty($_POST['selectService'])) {
             $relato = $_POST['relatoChamado'];
             $service_id = $_POST['selectService'];
             $iten_id = $_POST['selectIten'];
+            $atendente = isset($_POST['selectAtendente']) ? $_POST['selectAtendente'] : 0;
+            $dataConclusao = isset($_POST['dataConclusao']) ? $_POST['dataConclusao'] : null;
+
 
             $cont_insert = false;
 
-            $sql = "INSERT INTO chamados (atendente_id, assuntoChamado, relato_inicial, tipochamado_id, solicitante_id, empresa_id, status_id, data_abertura, in_execution, in_execution_atd_id, seconds_worked, service_id, iten_service_id)
-        VALUES ('0', :assuntoChamado, :relato_inicial, :tipochamado_id, :solicitante_id, :empresa_id, '1', NOW(), '0', '0', '0', :service_id, :iten_service_id)";
+            $sql = "INSERT INTO chamados (atendente_id, data_prevista_conclusao, assuntoChamado, relato_inicial, tipochamado_id, solicitante_id, empresa_id, status_id, data_abertura, in_execution, in_execution_atd_id, seconds_worked, service_id, iten_service_id)
+        VALUES (:atendente_id, :dataConclusao, :assuntoChamado, :relato_inicial, :tipochamado_id, :solicitante_id, :empresa_id, '1', NOW(), '0', '0', '0', :service_id, :iten_service_id)";
             $stmt1 = $pdo->prepare($sql);
 
             $stmt1 = $pdo->prepare($sql);
@@ -58,6 +61,8 @@ if (empty($_POST['selectService'])) {
             $stmt1->bindParam(':empresa_id', $empresa_id);
             $stmt1->bindParam(':service_id', $service_id);
             $stmt1->bindParam(':iten_service_id', $iten_id);
+            $stmt1->bindParam(':atendente_id', $atendente);
+            $stmt1->bindParam(':dataConclusao', $dataConclusao, PDO::PARAM_NULL);
 
             if ($stmt1->execute()) {
                 $id_chamado = $pdo->lastInsertId();
@@ -135,11 +140,13 @@ if (empty($_POST['selectService'])) {
             $empresa_id = $_POST['empresaChamado'];
             $relato = $_POST['relatoChamado'];
             $service_id = $_POST['selectService'];
+            $atendente = isset($_POST['selectAtendente']) ? $_POST['selectAtendente'] : 0;
+            $dataConclusao = isset($_POST['dataConclusao']) ? $_POST['dataConclusao'] : null;
 
             $cont_insert = false;
 
-            $sql = "INSERT INTO chamados (atendente_id, assuntoChamado, relato_inicial, tipochamado_id, solicitante_id, empresa_id, status_id, data_abertura, in_execution, in_execution_atd_id, seconds_worked, service_id)
-            VALUES ('0', :assuntoChamado, :relato_inicial, :tipochamado_id, :solicitante_id, :empresa_id, '1', NOW(), '0', '0', '0', :service_id)";
+            $sql = "INSERT INTO chamados (atendente_id, data_prevista_conclusao, assuntoChamado, relato_inicial, tipochamado_id, solicitante_id, empresa_id, status_id, data_abertura, in_execution, in_execution_atd_id, seconds_worked, service_id)
+            VALUES (:atendente_id, :dataConclusao, :assuntoChamado, :relato_inicial, :tipochamado_id, :solicitante_id, :empresa_id, '1', NOW(), '0', '0', '0', :service_id)";
             $stmt1 = $pdo->prepare($sql);
             $stmt1->bindParam(':assuntoChamado', $assuntoChamado);
             $stmt1->bindParam(':relato_inicial', $relato);
@@ -147,6 +154,9 @@ if (empty($_POST['selectService'])) {
             $stmt1->bindParam(':solicitante_id', $solicitante_id);
             $stmt1->bindParam(':empresa_id', $empresa_id);
             $stmt1->bindParam(':service_id', $service_id);
+            $stmt1->bindParam(':atendente_id', $atendente);
+            $stmt1->bindParam(':dataConclusao', $dataConclusao);
+
 
             if ($stmt1->execute()) {
                 $id_chamado = $pdo->lastInsertId();

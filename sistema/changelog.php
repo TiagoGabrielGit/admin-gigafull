@@ -15,6 +15,67 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
 
+              <!-- Versão 7.9 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading7-9">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse7-9" aria-expanded="false" aria-controls="collapse7-9">
+                    Versão 7.9 - 03/07/2023
+                  </button>
+                </h2>
+                <div id="collapse7-9" class="accordion-collapse collapse" aria-labelledby="heading7-9" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Solicitante Smart especificar para quando quer pronto um chamado;<br>
+                    # Usuário smart pode marcar atendente na abertura de um chamado;<br>
+                    # Dashboard personalizada de acordo com permissões de chamados;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criada a coluna data_prevista_conclusao na tabela chamados;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Perfil errado na criação de usuario via invite;<br>
+                    # Solicitante Cliente especificar para quando quer pronto um chamado;<br>
+                    # Solicitante Tenant especificar para quando quer pronto um chamado;<br>
+                    # Resetar senha pelo acesso usuário;<br>
+                    # Redirecionar para senha de depois de cadastrar credencial portal;<br>
+                    # Não aparecer para selecionar perfil se usuario não é do tipo smart;<br>
+                    # Selecionar publico ou privado no relato avulso;<br>
+                    # Editar consulta sql e excluir/inativar;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Energia POP;<br>
+                    # Atributos de equipamentos;<br>
+                    # Cadastro de PONs;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+                    # Cadastro de rotas de rede de fibra;<br>
+                    # Check-list chamados;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Notificaçãoes de novos incidentes e relatos;<br>
+                    # Adequação incidentes cliente;<br>
+                    # Vinculo de chamado a incidente;<br>
+                    # Anexo arquivos em chamados;<br>
+                    # Anexo arquivos em vistorias;<br>
+                    # Permissões em documentações;<br>
+                    # Relatar em chamado já existente ao invés de abrir outro via integração Zabbix;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Segurança individual;<br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                    # Dependencia de chamados;<br>
+
+                    <br><strong>Backlog --- Rede Neutra</strong><br>
+                    # BUG retorna código em resultado do provisionamento;<br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas;<br>
+                    # Botão troca ONU;<br>
+                    # Armazenar LOG sinal do cliente após provisionamento;<br>
+                    # Validação sinal antes de adicionar serviços;<br>
+                    # Autofind no provisionamento;<br><br>
+                  </div>
+                </div>
+              </div>
+
+
               <!-- Versão 7.8 -->
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading7-8">

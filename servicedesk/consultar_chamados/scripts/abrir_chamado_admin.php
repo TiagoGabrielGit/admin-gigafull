@@ -106,3 +106,55 @@
         xhr.send();
     });
 </script>
+
+<script>
+    document.getElementById('tipoChamado').addEventListener('change', function() {
+        var select = this;
+        var div = document.getElementById('selectDataConclusao');
+
+        if (select.value !== '' && select.options[select.selectedIndex].dataset.permiteDataEntrega === '1') {
+            div.style.display = 'block';
+        } else {
+            div.style.display = 'none';
+        }
+    });
+</script>
+
+<script>
+    // Obter o elemento select e o campo de data e hora
+    var selectTipoChamado = document.getElementById('tipoChamado');
+    var campoDataConclusao = document.getElementById('dataConclusao');
+
+    // Adicionar evento onchange ao select
+    selectTipoChamado.addEventListener('change', function() {
+        // Obter o tempo permitido para o tipo de chamado selecionado
+        var opcaoSelecionada = selectTipoChamado.options[selectTipoChamado.selectedIndex];
+        var permiteDataEntrega = opcaoSelecionada.getAttribute('data-permite-data-entrega');
+        var horasPrazoEntrega = opcaoSelecionada.getAttribute('data-horas-prazo-entrega');
+
+        // Atualizar o valor mínimo do campo de data e hora
+        if (permiteDataEntrega === '1') {
+            var dataMinima = new Date();
+            dataMinima.setHours(dataMinima.getHours() + parseInt(horasPrazoEntrega));
+            var dataMinimaFormatada = dataMinima.toISOString().slice(0, 16);
+            campoDataConclusao.min = dataMinimaFormatada;
+        } else {
+            campoDataConclusao.removeAttribute('min');
+        }
+    });
+</script>
+
+<script>
+// Verifica se o tipo de chamado permite atendente de abertura e exibe a div correspondente
+var tipoChamadoSelect = document.getElementById("tipoChamado");
+var selectAtendenteDiv = document.getElementById("selectAtendente");
+
+tipoChamadoSelect.addEventListener("change", function() {
+    var selectedOption = tipoChamadoSelect.options[tipoChamadoSelect.selectedIndex];
+    if (selectedOption.hasAttribute("data-nao-permite-atendente")) {
+        selectAtendenteDiv.style.display = "none";
+    } else {
+        selectAtendenteDiv.style.display = "block";
+    }
+});
+</script>

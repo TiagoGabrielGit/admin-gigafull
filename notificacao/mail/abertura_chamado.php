@@ -66,7 +66,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         u.perfil_id = 1
         and
         u.active = 1
-        
+        AND
+                u.notify_email = 1
         UNION
         
         (SELECT 

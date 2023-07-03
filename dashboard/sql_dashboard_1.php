@@ -1,22 +1,109 @@
 <?php
 
 $usuarioID = $_SESSION['id'];
+$tipo_usuario = $_SESSION['tipo_usuario'];
+$permissao_visualiza_chamado = $_SESSION['permissao_visualiza_chamado'];
+$empresa_usuario = $_SESSION['empresa_id'];
 
-//CHAMADOS ABERTOS
-$sql_count_chamados_abertos = 
-"SELECT
+if ($permissao_visualiza_chamado == 1) {
+    $sql_count_chamados_abertos =
+        "SELECT
+        count(*) as quantidade
+        FROM
+        chamados as c
+        WHERE
+        c.empresa_id = $empresa_usuario
+        and
+        c.status_id <> 3";
+} else if ($permissao_visualiza_chamado == 2) {
+    $sql_count_chamados_abertos =  "SELECT
+                            count(*) as quantidade
+                            FROM
+                            chamados as ch
+                            LEFT JOIN
+                            empresas as emp
+                            ON
+                            ch.empresa_id = emp.id
+                            LEFT JOIN
+                            tipos_chamados as tc
+                            ON
+                            ch.tipochamado_id = tc.id
+                            LEFT JOIN
+                            chamados_status as cs
+                            ON
+                            cs.id = ch.status_id
+                            LEFT JOIN
+                            pessoas as p
+                            ON
+                            p.id = ch.atendente_id
+                            WHERE
+                            tc.id IN (
+                                SELECT DISTINCT cae.tipo_id
+                                FROM equipes_integrantes ei
+                                JOIN chamados_autorizados_by_equipe cae ON ei.equipe_id = cae.equipe_id
+                                WHERE ei.integrante_id = $usuarioID)
+                                and ch.status_id <> 3";
+} else if ($permissao_visualiza_chamado == 3) {
+    $sql_count_chamados_abertos =
+        "SELECT
+        count(*) as quantidade
+        FROM
+        chamados as c
+        WHERE
+        c.status_id <> 3";
+}
+
+$chamados_abertos = mysqli_query($mysqli, $sql_count_chamados_abertos);
+$campos_chamados_abertos = $chamados_abertos->fetch_array();
+
+if ($permissao_visualiza_chamado == 1) {
+    $sql_count_chamados_sematendente =
+        "SELECT
 count(*) as quantidade
 FROM
 chamados as c
 WHERE
+c.empresa_id = $empresa_usuario
+and
+c.atendente_id = 0
+and
 c.status_id <> 3
 ";
-$chamados_abertos = mysqli_query($mysqli, $sql_count_chamados_abertos);
-$campos_chamados_abertos = $chamados_abertos->fetch_array();
-
-//CHAMADOS SEM ATENDENTE
-$sql_count_chamados_sematendente = 
-"SELECT
+} else if ($permissao_visualiza_chamado == 2) {
+    $sql_count_chamados_sematendente =   "SELECT
+count(*) as quantidade
+                            FROM
+                            chamados as ch
+                            LEFT JOIN
+                            empresas as emp
+                            ON
+                            ch.empresa_id = emp.id
+                            LEFT JOIN
+                            tipos_chamados as tc
+                            ON
+                            ch.tipochamado_id = tc.id
+                            LEFT JOIN
+                            chamados_status as cs
+                            ON
+                            cs.id = ch.status_id
+                            LEFT JOIN
+                            pessoas as p
+                            ON
+                            p.id = ch.atendente_id
+                            WHERE
+                            tc.id IN (
+                                SELECT DISTINCT cae.tipo_id
+                                FROM equipes_integrantes ei
+                                JOIN chamados_autorizados_by_equipe cae ON ei.equipe_id = cae.equipe_id
+                                WHERE ei.integrante_id = $usuarioID
+                            ) and ch.atendente_id = 0
+                                and
+                                ch.status_id <> 3
+                            ORDER BY
+                            ch.data_abertura DESC";
+} else if ($permissao_visualiza_chamado == 3) {
+    $sql_count_chamados_sematendente =
+        "SELECT
 count(*) as quantidade
 FROM
 chamados as c
@@ -25,12 +112,14 @@ c.atendente_id = 0
 and
 c.status_id <> 3
 ";
+}
+
 $chamados_sematendente = mysqli_query($mysqli, $sql_count_chamados_sematendente);
 $campos_chamados_sematendentes = $chamados_sematendente->fetch_array();
 
 //CHAMADOS MEUS CHAMADOS
-$sql_count_chamados_meus = 
-"SELECT
+$sql_count_chamados_meus =
+    "SELECT
 count(*) as quantidade
 FROM
 chamados as c
@@ -42,34 +131,96 @@ c.status_id <> 3
 $chamados_meus = mysqli_query($mysqli, $sql_count_chamados_meus);
 $campos_chamados_meus = $chamados_meus->fetch_array();
 
-//ÚLTIMOD 30 CHAMADOS
-$sql_ultimos_30_chamados = 
-"SELECT
-c.id as idChamado,
-e.fantasia as fantasia,
-tc.tipo as tipoChamado,
-c.assuntoChamado as assuntoChamado,
-c.status_id as statusChamado
-FROM
-chamados as c
-LEFT JOIN
-empresas as e
-ON
-e.id = c.empresa_id
-LEFT JOIN
-tipos_chamados as tc
-ON
-c.tipochamado_id = tc.id
-ORDER BY
-c.id DESC
-LIMIT 30
-";
+if ($permissao_visualiza_chamado == 1) {
+    $sql_ultimos_30_chamados =
+        "SELECT
+        c.id as idChamado,
+        e.fantasia as fantasia,
+        tc.tipo as tipoChamado,
+        c.assuntoChamado as assuntoChamado,
+        c.status_id as statusChamado
+        FROM
+        chamados as c
+        LEFT JOIN
+        empresas as e
+        ON
+        e.id = c.empresa_id
+        LEFT JOIN
+        tipos_chamados as tc
+        ON
+        c.tipochamado_id = tc.id
+        WHERE
+        e.id = 1
+        ORDER BY
+        c.id DESC
+        LIMIT 30
+        ";
+} else if ($permissao_visualiza_chamado == 2) {
+    $sql_ultimos_30_chamados =    "SELECT
+        ch.id as idChamado,
+        emp.fantasia as fantasia,
+        tc.tipo as tipoChamado,
+        ch.assuntoChamado as assuntoChamado,
+        ch.status_id as statusChamado
+                                FROM
+                                chamados as ch
+                                LEFT JOIN
+                                empresas as emp
+                                ON
+                                ch.empresa_id = emp.id
+                                LEFT JOIN
+                                tipos_chamados as tc
+                                ON
+                                ch.tipochamado_id = tc.id
+                                LEFT JOIN
+                                chamados_status as cs
+                                ON
+                                cs.id = ch.status_id
+                                LEFT JOIN
+                                pessoas as p
+                                ON
+                                p.id = ch.atendente_id
+                                WHERE
+                                tc.id IN (
+                                    SELECT DISTINCT cae.tipo_id
+                                    FROM equipes_integrantes ei
+                                    JOIN chamados_autorizados_by_equipe cae ON ei.equipe_id = cae.equipe_id
+                                    WHERE ei.integrante_id = $usuarioID
+                                )
+                                ORDER BY
+                                ch.data_abertura DESC
+                                LIMIT 30";
+} else if ($permissao_visualiza_chamado == 3) {
+    //ÚLTIMOD 30 CHAMADOS
+    $sql_ultimos_30_chamados =
+        "SELECT
+        c.id as idChamado,
+        e.fantasia as fantasia,
+        tc.tipo as tipoChamado,
+        c.assuntoChamado as assuntoChamado,
+        c.status_id as statusChamado
+        FROM
+        chamados as c
+        LEFT JOIN
+        empresas as e
+        ON
+        e.id = c.empresa_id
+        LEFT JOIN
+        tipos_chamados as tc
+        ON
+        c.tipochamado_id = tc.id
+        ORDER BY
+        c.id DESC
+        LIMIT 30
+        ";
+}
+
 
 $r_ultimos_30_chamados = mysqli_query($mysqli, $sql_ultimos_30_chamados);
 
 //Horas trabalhadas X Clientes
 $sql_horas_x_clientes =
-"SELECT
+    "SELECT
 CONCAT(MONTH(c.data_fechamento),'/',YEAR(c.data_fechamento)) as periodo,
 e.fantasia as fantasia,
 SUM(c.seconds_worked) as tempoTrabalhado
@@ -93,7 +244,7 @@ $r_sql_horas_x_clientes = mysqli_query($mysqli, $sql_horas_x_clientes);
 
 //Horas trabalhadas X Consultores
 $sql_horas_x_consultores =
-"SELECT
+    "SELECT
 CONCAT(MONTH(c.data_fechamento),'/',YEAR(c.data_fechamento)) as periodo,
 p.nome as consultor,
 SUM(cr.seconds_worked) as tempoTrabalhado

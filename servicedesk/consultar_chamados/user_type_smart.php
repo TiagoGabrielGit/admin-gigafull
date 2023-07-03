@@ -1,6 +1,7 @@
 <?php
 
 require "../../conexoes/conexao.php";
+require "../../conexoes/conexao_pdo.php";
 require "sql1.php";
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
@@ -155,7 +156,10 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                                                     $lista_tipos_chamados =
                                                                         "SELECT
                                                                             tc.id as idTipo,
-                                                                            tc.tipo as tipoChamado
+                                                                            tc.tipo as tipoChamado,
+                                                                            tc.permite_data_entrega as 'permite_data_entrega',
+                                                                            tc.horas_prazo_entrega as 'horas_prazo_entrega',
+                                                                            tc.permite_atendente_abertura as 'permite_atendente_abertura'
                                                                             FROM
                                                                             tipos_chamados as tc
                                                                             LEFT JOIN
@@ -178,7 +182,10 @@ $empresa_usuario = $pessoaID['empresa_id'];
 
                                                                         $lista_tipos_chamados = "SELECT
                                                                     tc.id as idTipo,
-                                                                    tc.tipo as tipoChamado
+                                                                    tc.tipo as tipoChamado,
+                                                                    tc.permite_data_entrega as 'permite_data_entrega',
+                                                                    tc.horas_prazo_entrega as 'horas_prazo_entrega',
+                                                                    tc.permite_atendente_abertura as 'permite_atendente_abertura'
                                                                     FROM
                                                                     tipos_chamados as tc
                                                                     LEFT JOIN
@@ -206,7 +213,10 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                                                 } else if ($permissao_abrir_chamado == 3) {
                                                                     $lista_tipos_chamados = "SELECT
                                                                             tc.id as idTipo,
-                                                                            tc.tipo as tipoChamado
+                                                                            tc.tipo as tipoChamado,
+                                                                            tc.permite_data_entrega as 'permite_data_entrega',
+                                                                            tc.horas_prazo_entrega as 'horas_prazo_entrega',
+                                                                            tc.permite_atendente_abertura as 'permite_atendente_abertura'
                                                                             FROM
                                                                             tipos_chamados as tc
                                                                             LEFT JOIN
@@ -238,9 +248,22 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                                                 $r_lista_tipos_chamados = mysqli_query($mysqli, $lista_tipos_chamados);
 
                                                                 while ($tipos_chamados = mysqli_fetch_object($r_lista_tipos_chamados)) {
+                                                                    $permite_atendente_abertura = $tipos_chamados->permite_atendente_abertura;
+                                                                    $permite_data_entrega = $tipos_chamados->permite_data_entrega;
+                                                                    $data_permitida = $permite_data_entrega ? '1' : '0';
+                                                                    $horas_prazo_entrega = $tipos_chamados->horas_prazo_entrega;
 
 
-                                                                    echo "<option value='$tipos_chamados->idTipo'> $tipos_chamados->tipoChamado</option>";
+                                                                    // Verifica se permite atendente de abertura
+                                                                    if ($permite_atendente_abertura == 1) {
+                                                                        echo "<option value='$tipos_chamados->idTipo' data-permite-data-entrega='$data_permitida' data-horas-prazo-entrega='$horas_prazo_entrega'>$tipos_chamados->tipoChamado</option>";
+                                                                    } else {
+                                                                        echo "<option value='$tipos_chamados->idTipo' data-permite-data-entrega='$data_permitida' data-horas-prazo-entrega='$horas_prazo_entrega' data-nao-permite-atendente>$tipos_chamados->tipoChamado</option>";
+                                                                    }
+
+                                                                    if ($tipos_chamados->permite_data_entrega == 1) {
+                                                                        $data_minima = date('Y-m-d H:i', strtotime("+ $horas_prazo_entrega hours"));
+                                                                    }
                                                                 }
                                                                 ?>
                                                             </select>
@@ -257,6 +280,56 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                                             <select class="form-select" id="selectIten" name="selectIten">
                                                                 <option disabled selected value="">Selecione um serviço</option>
                                                             </select>
+                                                        </div>
+                                                        <div class="col-6" id="selectAtendente" style="display: none;">
+                                                            <label for="selectAtendente" class="form-label">Atendente</label>
+                                                            <select class="form-select" id="selectAtendente" name="selectAtendente">
+                                                                <option disabled selected value="">Selecione o atendente</option>
+                                                                <?php
+                                                                $sql_atendentes = "SELECT
+                                                                    u.id as 'idUsuario',
+                                                                    p.nome as 'atendente'
+                                                                    FROM
+                                                                    usuarios as u
+                                                                    LEFT JOIN
+                                                                    pessoas as p
+                                                                    ON
+                                                                    p.id = u.pessoa_id
+                                                                    WHERE
+                                                                    u.active = 1
+                                                                    and
+                                                                    u.tipo_usuario = 1
+                                                                    ORDER BY
+                                                                    p.nome ASC";
+
+                                                                try {
+                                                                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                                                                    $stmt = $pdo->query($sql_atendentes);
+                                                                    $resultadoAtendente = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                                                    foreach ($resultadoAtendente as $rowAtendente) {
+                                                                        $idUsuario = $rowAtendente['idUsuario'];
+                                                                        $atendente = $rowAtendente['atendente'];
+                                                                        echo "<option value=\"$idUsuario\">$atendente</option>";
+                                                                    }
+                                                                } catch (PDOException $e) {
+                                                                    echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
+                                                                }
+
+                                                                // Feche a conexão com o banco de dados
+                                                                $pdo = null;
+                                                                ?>
+                                                            </select>
+                                                        </div>
+
+
+                                                        <div class="col-6" id="selectDataConclusao" style="display: none;">
+                                                            <label for="dataConclusao" class="form-label">Data de conclusão esperada</label>
+                                                            <?php
+                                                            $data_minima_formatada = date('Y-m-d\TH:i', strtotime($data_minima));
+                                                            ?>
+                                                            <input type="datetime-local" class="form-control" id="dataConclusao" name="dataConclusao" min="<?= $data_minima_formatada ?>">
                                                         </div>
 
                                                         <br><br><br>
@@ -473,6 +546,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 ch.atendente_id as id_atendente,
                                 date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
                                 ch.in_execution as inExecution,
+                                ch.data_prevista_conclusao as 'data_prevista_conclusao',
                                 ch.status_id as id_status,
                                 cs.status_chamado as statusChamado,
                                 tc.tipo as tipoChamado,
@@ -546,6 +620,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 ch.atendente_id as id_atendente,
                                 date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
                                 ch.in_execution as inExecution,
+                                ch.data_prevista_conclusao as 'data_prevista_conclusao',
                                 ch.status_id as id_status,
                                 cs.status_chamado as statusChamado,
                                 tc.tipo as tipoChamado,
@@ -624,6 +699,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
                                 ch.in_execution as inExecution,
                                 ch.status_id as id_status,
+                                ch.data_prevista_conclusao as 'data_prevista_conclusao',
                                 cs.status_chamado as statusChamado,
                                 tc.tipo as tipoChamado,
                                 emp.fantasia as fantasia,
@@ -703,6 +779,19 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                     $Color = "open";
                                 }
 
+                                $currentDate = strtotime(date("Y-m-d H:i:s")); // Data atual em formato timestamp
+                                $dataPrevistaConclusao = strtotime($campos['data_prevista_conclusao']); // Data prevista em formato timestamp
+
+                                if ($campos['data_prevista_conclusao'] === null) {
+                                    $Color = "green";
+                                } elseif ($dataPrevistaConclusao < $currentDate) {
+                                    $Color = "red";
+                                } elseif (($dataPrevistaConclusao - $currentDate) < 86400) {
+                                    $Color = "yellow";
+                                } else {
+                                    $Color = "green";
+                                }
+
 
                                 $calc_tempo_total =
                                     "SELECT SUM(seconds_worked) as secondsTotal
@@ -720,6 +809,11 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                             <div class="d-flex justify-content-between align-items-center w-100">
 
                                                 <span class="text-left">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="<?= $Color ?>" class="bi bi-alarm" viewBox="0 0 16 16">
+                                                        <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9V5.5z" />
+                                                        <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1h-3zm1.038 3.018a6.093 6.093 0 0 1 .924 0 6 6 0 1 1-.924 0zM0 3.5c0 .753.333 1.429.86 1.887A8.035 8.035 0 0 1 4.387 1.86 2.5 2.5 0 0 0 0 3.5zM13.5 1c-.753 0-1.429.333-1.887.86a8.035 8.035 0 0 1 3.527 3.527A2.5 2.5 0 0 0 13.5 1z" />
+                                                    </svg> &nbsp; &nbsp;
+
                                                     Chamado #<?= $id_chamado ?> - <?= $campos['tipoChamado']; ?> - <?= $campos['assunto']; ?> - <?= $atendente ?>
                                                 </span>
                                                 <?php

@@ -179,32 +179,6 @@ require "sql_dashboard_1.php";
                     </table>
                 </div>
             </div>
-
-            <div class="card recent-sales overflow-auto">
-                <div class="card-body">
-                    <h5 class="card-title">Horas X Clientes (mês)</h5>
-                    <table class="table table-striped" id="styleTable">
-                        <thead>
-                            <tr>
-                                <th scope="col">Período</th>
-                                <th scope="col">Cliente</th>
-                                <th scope="col">Horas trabalhadas</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            while ($campos_sql_horas_x_clientes = $r_sql_horas_x_clientes->fetch_array()) { ?>
-                                <tr>
-                                    <td><?= $campos_sql_horas_x_clientes['periodo'] ?></th>
-                                    <td><?= $campos_sql_horas_x_clientes['fantasia'] ?></td>
-                                    <td><?= gmdate("H:i:s", $campos_sql_horas_x_clientes['tempoTrabalhado']); ?></td>
-                                </tr>
-                            <?php
-                            } ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
         </div>
 
 
