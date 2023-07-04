@@ -187,7 +187,7 @@ require "sql.php";
             </div>
         </div>
     </div>
-</div><!-- End Basic Modal-->
+</div>
 
 <div class="modal fade" id="modalNovoUser" tabindex="-1">
     <div class="modal-dialog modal-xl">
@@ -314,7 +314,6 @@ require "sql.php";
             <div class="modal-body">
                 <div class="card-body">
                     <form method="POST" id="formInvite" class="row g-3">
-
                         <div class="col-lg-4">
                             <div class="row">
                                 <div class="col-12">
@@ -366,19 +365,23 @@ require "sql.php";
                                         <?php endwhile; ?>
                                     </select>
                                 </div>
-                                <div class="col-6" id="inviteControlaPerfil">
-                                    <label for="invitePerfil" class="form-label">Perfil</label>
-                                    <select name="invitePerfil" id="invitePerfil" class="form-select">
-                                        <option selected disabled>Selecione o perfil</option>
-                                        <?php
-                                        $resultado = mysqli_query($mysqli, $sql_perfil) or die("Erro ao retornar dados");
-                                        while ($p = $resultado->fetch_assoc()) : ?>
-                                            <option value="<?= $p['idPerfil']; ?>"><?= $p['perfil']; ?></option>
-                                        <?php endwhile; ?>
-                                    </select>
+                                <div id="inviteConfiguracoesUsuario" style="display: none;">
+                                    <div class="col-12">
+                                        <label for="invitePerfil" class="form-label">Perfil</label>
+                                        <select name="invitePerfil" id="invitePerfil" class="form-select">
+                                            <option selected disabled>Selecione o perfil</option>
+                                            <?php
+                                            $resultado = mysqli_query($mysqli, $sql_perfil) or die("Erro ao retornar dados");
+                                            while ($p = $resultado->fetch_assoc()) : ?>
+                                                <option value="<?= $p['idPerfil']; ?>"><?= $p['perfil']; ?></option>
+                                            <?php endwhile; ?>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
+
                             <br>
+                            
                             <div class="col-12">
                                 <label for="permissaoChamados" class="form-label">Permissão para abertura de chamados</label>
                                 <select name="permissaoChamados" id="permissaoChamados" class="form-select">

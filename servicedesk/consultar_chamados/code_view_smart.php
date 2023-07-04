@@ -79,8 +79,13 @@ if ($chamado['data_prevista_conclusao'] === null) {
                                 <b>Tempo total de atendimento:</b> <?= gmdate("H:i:s", $res_second['secondsTotal']); ?> <br>
                                 <br>
                                 <?php if ($chamado['data_prevista_conclusao'] === null) {
-                                } else { ?>
-                                    <span title="Data prevista de conclusão" class="btn btn-small btn-<?= $colorPill ?> rounded-pill"><?= date('d/m/Y H:i:s', strtotime($chamado['data_prevista_conclusao'])) ?></span>
+                                } else {
+                                    if ($chamado['status'] != "Fechado") { ?>
+                                        <span title="Data prevista de conclusão" class="btn btn-small btn-<?= $colorPill ?> rounded-pill"><?= date('d/m/Y H:i:s', strtotime($chamado['data_prevista_conclusao'])) ?></span>
+                                    <?php } else { ?>
+                                        <span title="Data prevista de conclusão" class="btn btn-small btn-secondary rounded-pill"><?= date('d/m/Y H:i:s', strtotime($chamado['data_prevista_conclusao'])) ?></span>
+                                    <?php }
+                                    ?>
                                 <?php } ?>
 
                             </div>
@@ -187,9 +192,7 @@ if ($chamado['data_prevista_conclusao'] === null) {
                                             <div class="col-5">
                                             </div>
                                             <div class="col-4">
-
                                                 <button type="submit" class="btn btn-danger">Relatar</button>
-
                                             </div>
                                         </div>
                                     </form>
@@ -254,6 +257,12 @@ if ($chamado['data_prevista_conclusao'] === null) {
 
                                             </div>
                                             <div class="col-4">
+
+                                                <span id="relatarLoading" hidden>
+                                                    <div class="spinner-border text-success" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </span>
                                                 <input id="btnRelatar" name="btnRelatar" type="button" value="Relatar" class="btn btn-danger"></input>
                                             </div>
                                         </div>

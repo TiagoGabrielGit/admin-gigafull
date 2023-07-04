@@ -22,39 +22,17 @@
     });
 </script>
 
-
 <script>
     function mostrarOcultarSelect() {
-        var tipoAcessoAdmin = document.getElementById("tipoAcessoAdmin");
-        var selectPerfil = document.getElementById("controlaPerfil");
-        var selectVisualizaChamado = document.getElementById("permissaoVisualizaChamado");
-
-        if (tipoAcessoAdmin.checked) {
-            selectVisualizaChamado.style.display = "block"; // Mostra o select
-            selectPerfil.style.display = "block"; // Mostra o select
-        } else {
-            selectVisualizaChamado.style.display = "none"; // Oculta o select
-            selectPerfil.style.display = "none"; // Oculta o select
-        }
-    }
-
-    mostrarOcultarSelect();
-</script>
-
-<script>
-    function mostrarOcultarSelectInvite() {
         var tipoAcessoSmart = document.getElementById("inviteAcessoSmart");
-        var selectPerfil = document.getElementById("inviteControlaPerfil");
+        var divConfiguracoesUsuario = document.getElementById("inviteConfiguracoesUsuario");
 
         if (tipoAcessoSmart.checked) {
-            selectPerfil.style.display = "block"; // Mostra o select
+            divConfiguracoesUsuario.style.display = "block";
         } else {
-            selectPerfil.style.display = "none"; // Oculta o select
+            divConfiguracoesUsuario.style.display = "none";
         }
     }
-
-    // Chamada inicial para garantir que o estado do select esteja correto ao carregar a página
-    mostrarOcultarSelectInvite();
 </script>
 
 <script>

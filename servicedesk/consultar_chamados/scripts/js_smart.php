@@ -4,12 +4,16 @@
 
 <script>
     $("#btnRelatar").click(function() {
+        document.querySelector("#btnRelatar").hidden = true;
+        document.querySelector("#relatarLoading").hidden = false;
         var dadosRelatar = $("#relatarChamado").serialize();
 
         $.post("/servicedesk/consultar_chamados/processa/newRelato.php", dadosRelatar, function(retornaRelatar) {
 
             if (retornaRelatar.includes("Error")) {
                 $("#msgRelatar").slideDown('slow').html(retornaRelatar);
+                document.querySelector("#btnRelatar").hidden = false;
+                document.querySelector("#relatarLoading").hidden = true;
                 salvaRascunho();
                 retirarMsgRelatar();
             } else if (retornaRelatar.includes("Success")) {
