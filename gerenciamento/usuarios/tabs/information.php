@@ -82,9 +82,114 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="permissaoAbrirChamado" class="form-label">Pode abrir chamados para outras empresas</label>
+                            <select name="permissaoAbrirChamado" id="permissaoAbrirChamado" class="form-select" required>
+                                <?php
+                                if ($campos['permissao_abrir_chamado'] == 1) { ?>
+
+                                    <option selected value="1">Sim</option>
+                                    <option value="0">Não</option>
+                                <?php } else if ($campos['permissao_abrir_chamados'] == 0) { ?>
+                                    <option value="1">Sim</option>
+                                    <option selected value="0">Não</option>
+                                <?php } else { ?>
+                                    <option selected disabled value="">Selecione uma opção</option>
+                                    <option value="1">Sim</option>
+                                    <option value="0">Não</option>
+                                <?php }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="permissaoApropriarChamados" class="form-label">Pode se apropriar de chamados</label>
+                            <select name="permissaoApropriarChamados" id="permissaoApropriarChamadoss" class="form-select" required>
+                                <?php
+                                if ($campos['permissao_apropriar_chamado'] == 1) { ?>
+                                    <option selected value="1">Sim</option>
+                                    <option value="0">Não</option>
+                                <?php } else if ($campos['permissao_apropriar_chamado'] == 0) { ?>
+                                    <option value="1">Sim</option>
+                                    <option selected value="0">Não</option>
+                                <?php } else { ?>
+                                    <option selected disabled value="">Selecione uma opção</option>
+                                    <option value="1">Sim</option>
+                                    <option value="0">Não</option>
+                                <?php }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="permissaoEncaminharChamados" class="form-label">Pode encaminhar chamados</label>
+                            <select name="permissaoEncaminharChamados" id="permissaoEncaminharChamados" class="form-select" required>
+                                <?php
+                                if ($campos['permissao_encaminhar_chamado'] == 1) { ?>
+                                    <option selected value="1">Sim</option>
+                                    <option value="0">Não</option>
+                                <?php } else if ($campos['permissao_encaminhar_chamado'] == 0) { ?>
+                                    <option value="1">Sim</option>
+                                    <option selected value="0">Não</option>
+                                <?php } else { ?>
+                                    <option selected disabled value="">Selecione uma opção</option>
+                                    <option value="1">Sim</option>
+                                    <option value="0">Não</option>
+                                <?php }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="permissaoInteressadosChamados" class="form-label">Pode incluir/remover interessados</label>
+                            <select name="permissaoInteressadosChamados" id="permissaoInteressadosChamados" class="form-select" required>
+                                <?php
+                                if ($campos['permissao_interessados_chamados'] == 1) { ?>
+                                    <option selected value="1">Sim</option>
+                                    <option value="0">Não</option>
+                                <?php } else if ($campos['permissao_interessados_chamados'] == 0) { ?>
+                                    <option value="1">Sim</option>
+                                    <option selected value="0">Não</option>
+                                <?php } else { ?>
+                                    <option selected disabled value="">Selecione uma opção</option>
+                                    <option value="1">Sim</option>
+                                    <option value="0">Não</option>
+                                <?php }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="permissaoSelecionarCompetencias" class="form-label">Pode selecionar competências na abertura do chamado</label>
+                            <select name="permissaoSelecionarCompetencias" id="permissaoSelecionarCompetencias" class="form-select" required>
+                                <?php
+                                if ($campos['permissao_selecionar_competencias'] == 1) { ?>
+                                    <option selected value="1">Sim</option>
+                                    <option value="0">Não</option>
+                                <?php } else if ($campos['permissao_selecionar_competencias'] == 0) { ?>
+                                    <option value="1">Sim</option>
+                                    <option selected value="0">Não</option>
+                                <?php } else { ?>
+                                    <option selected disabled value="">Selecione uma opção</option>
+                                    <option value="1">Sim</option>
+                                    <option value="0">Não</option>
+                                <?php }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
                 <?php } ?>
             </div>
-
 
             <div class="col-lg-5">
 

@@ -50,6 +50,11 @@ $empresa_usuario = $pessoaID['empresa_id'];
 ?>
 
 <style>
+.btn-small {
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
     .accordion-button:not(.collapsed) {
         color: #012970;
         background-color: #e6e6e6;
@@ -333,12 +338,12 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                                         </div>
 
                                                         <br><br><br>
-
-                                                        <h5 class="card-title">Competências necessárias para atendimento do chamado</h5>
-                                                        <div class="row mb-4">
-                                                            <?php
-                                                            $competencias =
-                                                                "SELECT
+                                                        <?php if ($_SESSION['permissao_selecionar_competencias'] == 1) { ?>
+                                                            <h5 class="card-title">Competências necessárias para atendimento do chamado</h5>
+                                                            <div class="row mb-4">
+                                                                <?php
+                                                                $competencias =
+                                                                    "SELECT
                                                                 c.id as idCompetencia,
                                                                 c.competencia as competencia
                                                                 FROM
@@ -347,25 +352,25 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                                                 c.active = 1
                                                                 ORDER BY 
                                                                 c.competencia ASC";
-                                                            $r_competencias = mysqli_query($mysqli, $competencias);
-                                                            while ($c_competencias = mysqli_fetch_assoc($r_competencias)) {
-                                                                $idCompetencia = $c_competencias['idCompetencia'];
-                                                                $competencia = $c_competencias['competencia'];
-                                                            ?>
-                                                                <div class="col-3">
-                                                                    <div class="form-check">
-                                                                        <input type="hidden" name="competencia_ids[]" value="<?= $idCompetencia ?>">
+                                                                $r_competencias = mysqli_query($mysqli, $competencias);
+                                                                while ($c_competencias = mysqli_fetch_assoc($r_competencias)) {
+                                                                    $idCompetencia = $c_competencias['idCompetencia'];
+                                                                    $competencia = $c_competencias['competencia'];
+                                                                ?>
+                                                                    <div class="col-3">
+                                                                        <div class="form-check">
+                                                                            <input type="hidden" name="competencia_ids[]" value="<?= $idCompetencia ?>">
 
-                                                                        <input class="form-check-input" type="checkbox" name="competencia<?= $idCompetencia ?>" id="competencia<?= $idCompetencia ?>">
-                                                                        <label class="form-check-label" for="competencia<?= $idCompetencia ?>">
-                                                                            <?= $competencia ?>
-                                                                        </label>
+                                                                            <input class="form-check-input" type="checkbox" name="competencia<?= $idCompetencia ?>" id="competencia<?= $idCompetencia ?>">
+                                                                            <label class="form-check-label" for="competencia<?= $idCompetencia ?>">
+                                                                                <?= $competencia ?>
+                                                                            </label>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
 
-                                                            <?php } ?>
-                                                        </div>
-
+                                                                <?php } ?>
+                                                            </div>
+                                                        <?php } ?>
                                                         <hr class="sidebar-divider">
 
                                                         <div class="col-6">
@@ -783,13 +788,16 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 $dataPrevistaConclusao = strtotime($campos['data_prevista_conclusao']); // Data prevista em formato timestamp
 
                                 if ($campos['data_prevista_conclusao'] === null) {
-                                    $Color = "green";
+                                    $relogioColor = "green";
                                 } elseif ($dataPrevistaConclusao < $currentDate) {
-                                    $Color = "red";
+                                    $colorPill = "danger";
+                                    $relogioColor = "red";
                                 } elseif (($dataPrevistaConclusao - $currentDate) < 86400) {
-                                    $Color = "yellow";
+                                    $colorPill = "Warning";
+                                    $relogioColor = "yellow";
                                 } else {
-                                    $Color = "green";
+                                    $colorPill = "success";
+                                    $relogioColor = "green";
                                 }
 
 
@@ -809,7 +817,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                             <div class="d-flex justify-content-between align-items-center w-100">
 
                                                 <span class="text-left">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="<?= $Color ?>" class="bi bi-alarm" viewBox="0 0 16 16">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="<?= $relogioColor ?>" class="bi bi-alarm" viewBox="0 0 16 16">
                                                         <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9V5.5z" />
                                                         <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1h-3zm1.038 3.018a6.093 6.093 0 0 1 .924 0 6 6 0 1 1-.924 0zM0 3.5c0 .753.333 1.429.86 1.887A8.035 8.035 0 0 1 4.387 1.86 2.5 2.5 0 0 0 0 3.5zM13.5 1c-.753 0-1.429.333-1.887.86a8.035 8.035 0 0 1 3.527 3.527A2.5 2.5 0 0 0 13.5 1z" />
                                                     </svg> &nbsp; &nbsp;
@@ -830,18 +838,19 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                                 $r_valida_competencia = mysqli_query($mysqli, $valida_competencia);
                                                 $c_valida_competencia = $r_valida_competencia->fetch_assoc();
 
-                                                // Verificar se o usuário tem todas as competências necessárias
+                                                echo '<span class="text-end">';
+                                                if ($campos['data_prevista_conclusao'] === null) {
+                                                } else { ?>
+                                                    <span title="Data prevista de conclusão" class="btn btn-small btn-<?= $colorPill ?> rounded-pill"><?= date('d/m/Y H:i', strtotime($campos['data_prevista_conclusao'])) ?></span>
+                                                <?php }
                                                 if ($c_valida_competencia) {
                                                     // O usuário tem todas as competências necessárias
-                                                    echo '<span class="text-end">
-                                                                <span class="btn btn-secondary rounded-pill">Qualificado</span>
-                                                            </span>';
+                                                    echo '<span class="btn btn-small btn-secondary rounded-pill">Qualificado</span>';
                                                 } else {
                                                     // O usuário não tem todas as competências necessárias
-                                                    echo '<span class="text-end">
-                                                            <span class="btn btn-success rounded-pill">Qualificado</span>
-                                                        </span>';
+                                                    echo '<span class="text-end"><span class="btn btn-small btn-success rounded-pill">Qualificado</span>';
                                                 }
+                                                echo '</span>';
                                                 ?>
                                             </div>
                                         </button>

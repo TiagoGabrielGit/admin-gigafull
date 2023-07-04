@@ -16,6 +16,11 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       u.senha as senha,
       u.empresa_id as empresa_id,
       u.permissao_visualiza_chamado as 'permissao_visualiza_chamado',
+      u.permissao_abrir_chamado as 'permissao_abrir_chamado',
+      u.permissao_apropriar_chamado as 'permissao_apropriar_chamado',
+      u.permissao_encaminhar_chamado as 'permissao_encaminhar_chamado',
+      u.permissao_interessados_chamados as 'permissao_interessados_chamados',
+      u.permissao_selecionar_competencias as 'permissao_selecionar_competencias',
       u.reset_password as reset_password,
       u.tipo_usuario as tipo_usuario,
       u.perfil_id as perfil,
@@ -57,6 +62,11 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       $_SESSION['ip_address'] = $_SERVER['REMOTE_ADDR'];
       $_SESSION['tipo_usuario'] = $usuario['tipo_usuario'];
       $_SESSION['permissao_visualiza_chamado'] = $usuario['permissao_visualiza_chamado'];
+      $_SESSION['permissao_abrir_chamado'] = $usuario['permissao_abrir_chamado'];
+      $_SESSION['permissao_apropriar_chamado'] = $usuario['permissao_apropriar_chamado'];
+      $_SESSION['permissao_encaminhar_chamado'] = $usuario['permissao_encaminhar_chamado'];
+      $_SESSION['permissao_interessados_chamados'] = $usuario['permissao_interessados_chamados'];
+      $_SESSION['permissao_selecionar_competencias'] = $usuario['permissao_selecionar_competencias'];
 
       $usuario_id = $_SESSION['id'];
       $ip_address = $_SESSION['ip_address'];

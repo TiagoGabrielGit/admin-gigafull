@@ -1,4 +1,9 @@
 <style>
+    .btn-small {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+
     .playColor {
         border-radius: 6px;
         background-color: #98FB98;
@@ -18,10 +23,18 @@ if ($chamado['in_execution'] == 1) {
     $classeColor = "";
 }
 
+$currentDate = strtotime(date("Y-m-d H:i:s")); // Data atual em formato timestamp
+$dataPrevistaConclusao = strtotime($chamado['data_prevista_conclusao']); // Data prevista em formato timestamp
 
 
-
-?>
+if ($chamado['data_prevista_conclusao'] === null) {
+} elseif ($dataPrevistaConclusao < $currentDate) {
+    $colorPill = "danger";
+} elseif (($dataPrevistaConclusao - $currentDate) < 86400) {
+    $colorPill = "Warning";
+} else {
+    $colorPill = "success";
+} ?>
 
 <main id="main" class="main">
     <div class="pagetitle">
@@ -64,6 +77,12 @@ if ($chamado['in_execution'] == 1) {
                                 <b>Solicitante:</b> <?= $solicitante['solicitante']; ?><br>
                                 <b>Atendente:</b> <?= $atendente ?><br>
                                 <b>Tempo total de atendimento:</b> <?= gmdate("H:i:s", $res_second['secondsTotal']); ?> <br>
+                                <br>
+                                <?php if ($chamado['data_prevista_conclusao'] === null) {
+                                } else { ?>
+                                    <span title="Data prevista de conclusão" class="btn btn-small btn-<?= $colorPill ?> rounded-pill"><?= date('d/m/Y H:i:s', strtotime($chamado['data_prevista_conclusao'])) ?></span>
+                                <?php } ?>
+
                             </div>
                         </div>
 
@@ -101,7 +120,7 @@ if ($chamado['in_execution'] == 1) {
                                 <div class="col-12 " style="margin-top: 5px;">
                                     <?php
                                     if ($c_valida_competencia == null && $id_usuario != $chamado['id_atendente'] && $chamado['status'] != "Fechado") {
-                                        if ($chamado['in_execution'] == '0') {
+                                        if ($chamado['in_execution'] == '0' && $_SESSION['permissao_apropriar_chamado'] == 1) {
                                     ?>
                                             <a href="processa/apropriar.php?id=<?= $id_chamado  ?>&pessoa=<?= $id_usuario ?> "><button title="Apropriar" type="button" class="btn btn-info"><i class="bi bi-pin"></i></button></a>
                                         <?php } ?>
@@ -117,11 +136,11 @@ if ($chamado['in_execution'] == 1) {
                                     <?php } ?>
 
                                     <?php
-                                    if ($chamado['status'] != "Fechado" &&  $chamado['in_execution'] == '0') { ?>
+                                    if ($chamado['status'] != "Fechado" &&  $chamado['in_execution'] == '0' && $_SESSION['permissao_encaminhar_chamado'] == 1) { ?>
                                         <button title="Encaminhar Chamado" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalEncaminhar"><i class="bi bi-arrow-left-right"></i></button>
                                     <?php }
 
-                                    if ($chamado['status'] != "Fechado") { ?>
+                                    if ($chamado['status'] != "Fechado" && $_SESSION['permissao_interessados_chamados'] == 1) { ?>
                                         <button title="Interessados no chamado" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalInteressados"><i class="bi bi-people"></i></button>
                                     <?php }
 
@@ -257,7 +276,18 @@ if ($chamado['in_execution'] == 1) {
                         $private = $campos['privacidade'];
                     ?>
                         <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-heading<?= $cont ?>"> <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<?= $cont ?>" aria-expanded="false" aria-controls="flush-collapse<?= $cont ?>">Relato #<?= $id_relato ?> - <?= $campos['relatante']; ?></button></h2>
+                            <h2 class="accordion-header" id="flush-heading<?= $cont ?>">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<?= $cont ?>" aria-expanded="false" aria-controls="flush-collapse<?= $cont ?>">
+                                    <div class="d-flex justify-content-between align-items-center w-100">
+                                        <span class="text-left">
+                                            Relato #<?= $id_relato ?> - <?= $campos['relatante']; ?>
+                                        </span>
+                                        <span class="text-end">
+                                            <?= $campos['inicio']; ?>
+                                        </span>
+                                    </div>
+                                </button>
+                            </h2>
                             <div id="flush-collapse<?= $cont ?>" class="accordion-collapse collapse" aria-labelledby="flush-heading<?= $cont ?>" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body">
                                     <b>Relatante: </b> <?= $campos['relatante']; ?> <br>
@@ -313,9 +343,12 @@ $r_competencias_necessarias2 = mysqli_query($mysqli, $competencias_necessarias);
             <div class="modal-header">
                 <h5 class="modal-title">Competências Necessárias</h5>
                 <div class="ml-auto">
-                    <button type="button" class="btn btn-info rounded-circle position-absolute top-0 end-0 mt-3 me-5" data-bs-toggle="modal" data-bs-target="#modalAdicionarQualificacao">
-                        <i class="bi bi-plus"></i>
-                    </button>
+                    <?php if ($_SESSION['permissao_selecionar_competencias'] == 1) { ?>
+
+                        <button type="button" class="btn btn-info rounded-circle position-absolute top-0 end-0 mt-3 me-5" data-bs-toggle="modal" data-bs-target="#modalAdicionarQualificacao">
+                            <i class="bi bi-plus"></i>
+                        </button>
+                    <?php } ?>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>

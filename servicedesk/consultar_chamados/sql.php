@@ -11,6 +11,7 @@ c.atendente_id as id_atendente,
 c.in_execution as in_execution,
 c.in_execution_atd_id as in_execution_atd_id,
 c.in_execution_start as in_execution_start,
+c.data_prevista_conclusao as 'data_prevista_conclusao',
 tc.tipo as tipo,
 tc.id as tipo_id,
 cs.status_chamado as status,
@@ -62,8 +63,6 @@ LEFT JOIN
 iten_service as ise
 ON
 ise.id = cis.iten_service
-
-
 WHERE
 c.id = '$id_chamado'
 ";

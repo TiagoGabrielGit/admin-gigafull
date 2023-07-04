@@ -21,6 +21,11 @@ user.senha as senha,
 user.perfil_id as idPerfil,
 user.permissao_chamado as 'permissao_abertura_chamado',
 user.permissao_visualiza_chamado as 'permissao_visualiza_chamado',
+user.permissao_abrir_chamado as 'permissao_abrir_chamado',
+user.permissao_apropriar_chamado as 'permissao_apropriar_chamado',
+user.permissao_encaminhar_chamado as 'permissao_encaminhar_chamado',
+user.permissao_interessados_chamados as 'permissao_interessados_chamados',
+user.permissao_selecionar_competencias as 'permissao_selecionar_competencias',
 p.perfil as nome_perfil,
 CASE
     WHEN user.active = 1 THEN 'Ativado'
