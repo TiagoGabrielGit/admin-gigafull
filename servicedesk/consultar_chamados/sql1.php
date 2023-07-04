@@ -1,6 +1,8 @@
 <?php
+$permissao_abrir_chamado = $_SESSION['permissao_abrir_chamado'];
 
-if ($_SESSION['permissao_abrir_chamado'] == 1) {
+
+if ($permissao_abrir_chamado == 1) {
     $sql_lista_empresas =
         "SELECT
     emp.id as id_empresa,
@@ -14,7 +16,7 @@ if ($_SESSION['permissao_abrir_chamado'] == 1) {
     ORDER BY
     emp.fantasia ASC
     ";
-} else if ($_SESSION['permissao_abrir_chamado'] == 0) {
+} else if ($permissao_abrir_chamado == 0) {
     $sql_lista_empresas =
         "SELECT
     emp.id as id_empresa,

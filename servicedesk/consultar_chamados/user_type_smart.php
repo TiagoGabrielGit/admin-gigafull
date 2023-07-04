@@ -793,7 +793,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                     $colorPill = "danger";
                                     $relogioColor = "red";
                                 } elseif (($dataPrevistaConclusao - $currentDate) < 86400) {
-                                    $colorPill = "Warning";
+                                    $colorPill = "warning";
                                     $relogioColor = "yellow";
                                 } else {
                                     $colorPill = "success";
