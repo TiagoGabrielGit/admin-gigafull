@@ -53,70 +53,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $empresa = $c_infos_chamado['empresa'];
 
 
-        $atendentes_capacitados =
-            "SELECT
-        pe.email as 'email'
-        FROM
-        usuarios as u
-        LEFT JOIN
-        pessoas as pe
-        ON
-        u.pessoa_id = pe.id
-        WHERE
-        u.perfil_id = 1
-        and
-        u.active = 1
-        AND
-                u.notify_email = 1
-        UNION
-        
-        (SELECT 
-                    pess.email as email
-                FROM
-                    usuarios AS u
-                LEFT JOIN 
-                    pessoas AS pess
-                ON 
-                    pess.id = u.pessoa_id
-                LEFT JOIN 
-                    (SELECT 
-                        cc.chamado_id, COUNT(cc.competencia_id) AS total_competencias
-                    FROM 
-                        chamados_competencias AS cc
-                    GROUP BY 
-                        cc.chamado_id) AS comp_total 
-                ON 
-                    comp_total.chamado_id = $id_chamado
-                LEFT JOIN 
-                    (SELECT 
-                        cc.chamado_id, uc.id_usuario,
-                        COUNT(uc.id_competencia) AS total_competencias_usuario
-                    FROM 
-                        chamados_competencias AS cc
-                   LEFT JOIN
-                        usuario_competencia AS uc 
-                    ON 
-                        cc.competencia_id = uc.id_competencia
-                    WHERE 
-                        cc.chamado_id = $id_chamado
-                    GROUP BY 
-                        cc.chamado_id, uc.id_usuario) AS comp_usuario 
-                ON 
-                    comp_usuario.chamado_id = $id_chamado 
-                AND 
-                    comp_usuario.id_usuario = u.id
-                WHERE (comp_total.chamado_id IS NULL
-                OR 
-                    comp_total.total_competencias = comp_usuario.total_competencias_usuario)
-                AND
-                u.tipo_usuario = 1
-                AND
-                u.notify_email = 1
-                ORDER BY 
-                pess.nome ASC);";
+        $lista_destinatarios =
+            "SELECT p.email as 'email'
+            FROM usuarios u
+            JOIN pessoas p ON p.id = u.pessoa_id
+            WHERE 
+            u.notify_email = 1
+            and
+            u.notify_email_abertura = 1
+            and
+            u.active = 1
+            
+            UNION
+
+            SELECT p.email as 'email'
+            FROM usuarios u
+            JOIN equipes_integrantes ei1 ON u.id = ei1.integrante_id
+            JOIN equipes_integrantes ei2 ON ei1.equipe_id = ei2.equipe_id
+            JOIN chamados c ON ei2.integrante_id = c.solicitante_id
+            JOIN pessoas p ON p.id = u.pessoa_id 
+            WHERE
+            c.id = $id_chamado
+            and
+            u.notify_email = 1
+            and
+            u.notify_email_abertura = 2
+            and
+            u.active = 1
+            ";
 
         // Executa a consulta no banco de dados
-        $result = $pdo->query($atendentes_capacitados);
+        $result = $pdo->query($lista_destinatarios);
 
         // Verifica se a consulta retornou algum resultado
         if ($result->rowCount() > 0) {
@@ -197,9 +164,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Fechar a sessão cURL
             curl_close($curl);
         } else {
-            echo "Nenhum resultado encontrado.";
+            echo "Error: Nenhum resultado encontrado.";
         }
     } else {
-        echo "O envio de e-mail não está habilitado.";
+        echo "Error: O envio de e-mail não está habilitado.";
     }
 }

@@ -24,30 +24,25 @@ require "../../../conexoes/conexao.php";
         $active = $_POST['situacao'];
         $notEmail = $_POST['notificaEmail'];
         $permissaoAberturaChamado = $_POST['permissaoAberturaChamado'];
-        $tipoUser = $_POST['tipoAcesso'];
-        if ($tipoUser == "1") {
-            $perfil = $_POST['perfil'];
-            $permissaoVisualizaChamado = $_POST['permissaoVisualizaChamado'];
-            $permissaoAbrirChamado = $_POST['permissaoAbrirChamado'];
-            $permissaoApropriarChamados = $_POST['permissaoApropriarChamados'];
-            $permissaoEncaminharChamados = $_POST['permissaoEncaminharChamados'];
-            $permissaoInteressadosChamados = $_POST['permissaoInteressadosChamados'];
-            $permissaoSelecionarCompetencias = $_POST['permissaoSelecionarCompetencias'];
-        } else if ($tipoUser == "2" || $tipoUser == "3") {
-            $perfil = "0";
-            $permissaoVisualizaChamado = "0";
-            $permissaoAbrirChamado = "0";
-            $permissaoApropriarChamados = "0";
-            $permissaoEncaminharChamados = "0";
-            $permissaoInteressadosChamados = "0";
-            $permissaoSelecionarCompetencias = "0";
-        }
+
+        $perfil = $_POST['perfil'];
+        $permissaoVisualizaChamado = $_POST['permissaoVisualizaChamado'];
+        $permissaoAbrirChamado = $_POST['permissaoAbrirChamado'];
+        $permissaoApropriarChamados = $_POST['permissaoApropriarChamados'];
+        $permissaoEncaminharChamados = $_POST['permissaoEncaminharChamados'];
+        $permissaoInteressadosChamados = $_POST['permissaoInteressadosChamados'];
+        $permissaoSelecionarCompetencias = $_POST['permissaoSelecionarCompetencias'];
+
+        $notificaEmailAbertura = $_POST['notificaEmailAbertura'];
+        $notificaEmailEncaminhamento = $_POST['notificaEmailEncaminhamento'];
+        $notificaEmailRelatos = $_POST['notificaEmailRelatos'];
+        $notificaEmailApropriação = $_POST['notificaEmailApropriação'];
 
         $empresaID = $_POST['empresaSelect'];
 
-        $resultEditUser = "UPDATE usuarios SET permissao_selecionar_competencias='$permissaoSelecionarCompetencias', permissao_visualiza_chamado='$permissaoVisualizaChamado', 
+        $resultEditUser = "UPDATE usuarios SET notify_email_abertura='$notificaEmailAbertura', notify_email_encaminhamento='$notificaEmailEncaminhamento', notify_email_relatos='$notificaEmailRelatos', notify_email_apropriacao='$notificaEmailApropriação', permissao_selecionar_competencias='$permissaoSelecionarCompetencias', permissao_visualiza_chamado='$permissaoVisualizaChamado', 
         permissao_chamado='$permissaoAberturaChamado', notify_email='$notEmail', empresa_id='$empresaID',
-        tipo_usuario='$tipoUser', perfil_id='$perfil', active='$active', modificado=NOW(), permissao_abrir_chamado='$permissaoAbrirChamado',
+        tipo_usuario='1', perfil_id='$perfil', active='$active', modificado=NOW(), permissao_abrir_chamado='$permissaoAbrirChamado',
         permissao_apropriar_chamado='$permissaoApropriarChamados', permissao_encaminhar_chamado='$permissaoEncaminharChamados', permissao_interessados_chamados='$permissaoInteressadosChamados' WHERE id='$id'"
 
         ?>

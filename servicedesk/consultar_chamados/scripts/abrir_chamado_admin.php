@@ -145,16 +145,35 @@
 </script>
 
 <script>
-// Verifica se o tipo de chamado permite atendente de abertura e exibe a div correspondente
-var tipoChamadoSelect = document.getElementById("tipoChamado");
-var selectAtendenteDiv = document.getElementById("selectAtendente");
+    // Verifica se o tipo de chamado permite atendente de abertura e exibe a div correspondente
+    var tipoChamadoSelect = document.getElementById("tipoChamado");
+    var selectAtendenteDiv = document.getElementById("selectAtendente");
 
-tipoChamadoSelect.addEventListener("change", function() {
-    var selectedOption = tipoChamadoSelect.options[tipoChamadoSelect.selectedIndex];
-    if (selectedOption.hasAttribute("data-nao-permite-atendente")) {
-        selectAtendenteDiv.style.display = "none";
-    } else {
-        selectAtendenteDiv.style.display = "block";
-    }
-});
+    tipoChamadoSelect.addEventListener("change", function() {
+        var selectedOption = tipoChamadoSelect.options[tipoChamadoSelect.selectedIndex];
+        if (selectedOption.hasAttribute("data-nao-permite-atendente")) {
+            selectAtendenteDiv.style.display = "none";
+        } else {
+            selectAtendenteDiv.style.display = "block";
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var form = document.getElementById('formAbrirChamado');
+        var btnAbrirChamado = document.getElementById('btnAbrirChamado');
+        var btnVoltar = document.getElementById('btnVoltar');
+        var loadingMessage = document.getElementById('loadingMessage');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            btnAbrirChamado.style.display = 'none';
+            btnVoltar.style.display = 'none';
+            loadingMessage.style.display = 'block';
+
+            form.submit();
+        });
+    });
 </script>

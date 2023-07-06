@@ -40,7 +40,7 @@
 
                                 ?>
                                 <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked1" <?= $checked1; ?>>
-                                <label class="form-check-label" for="flexSwitchCheckChecked1">(1) Envio de e-mail para usuários com competência para executar chamado.</label>
+                                <label class="form-check-label" for="flexSwitchCheckChecked1">(1) Envio de e-mail na abertura de chamado.</label>
                                 <select id="notificacao1_servidor" name="notificacao1_servidor" class="form-select form-select-sm" aria-label="Selecionar opção">
 
                                     <?php
@@ -81,7 +81,7 @@
                                 }
                                 ?>
                                 <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked2" <?= $checked2; ?>>
-                                <label class="form-check-label" for="flexSwitchCheckChecked2">(2) Envio de e-mail para usuário quando encaminhado chamado.</label>
+                                <label class="form-check-label" for="flexSwitchCheckChecked2">(2) Envio de e-mail para encaminhamento de chamado.</label>
                                 <select id="notificacao2_servidor" name="notificacao2_servidor" class="form-select form-select-sm" aria-label="Selecionar opção">
                                     <?php
                                     echo $server_not2;
@@ -121,7 +121,7 @@
                                 }
                                 ?>
                                 <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked3" <?= $checked3; ?>>
-                                <label class="form-check-label" for="flexSwitchCheckChecked3">(3) Envio de e-mail administradores, solicitante e atendente do chamado quando houver um novo relato.</label>
+                                <label class="form-check-label" for="flexSwitchCheckChecked3">(3) Envio de e-mail para relatos de chamados.</label>
                                 <select id="notificacao3_servidor" name="notificacao3_servidor" class="form-select form-select-sm" aria-label="Selecionar opção">
                                     <?php
                                     echo $server_not3;
@@ -161,7 +161,7 @@
                                 }
                                 ?>
                                 <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked4" <?= $checked4; ?>>
-                                <label class="form-check-label" for="flexSwitchCheckChecked4">(4) Envio de e-mail quando um chamado é apropriado.</label>
+                                <label class="form-check-label" for="flexSwitchCheckChecked4">(4) Envio de e-mail na apropriação de chamado.</label>
                                 <select id="notificacao4_servidor" name="notificacao4_servidor" class="form-select form-select-sm" aria-label="Selecionar opção">
                                     <?php
                                     echo $server_not4;

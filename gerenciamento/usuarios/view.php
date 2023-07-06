@@ -26,6 +26,10 @@ user.permissao_apropriar_chamado as 'permissao_apropriar_chamado',
 user.permissao_encaminhar_chamado as 'permissao_encaminhar_chamado',
 user.permissao_interessados_chamados as 'permissao_interessados_chamados',
 user.permissao_selecionar_competencias as 'permissao_selecionar_competencias',
+user.notify_email_abertura as 'notify_email_abertura',
+user.notify_email_encaminhamento as 'notify_email_encaminhamento',
+user.notify_email_relatos as 'notify_email_relatos',
+user.notify_email_apropriacao as 'notify_email_apropriacao',
 p.perfil as nome_perfil,
 CASE
     WHEN user.active = 1 THEN 'Ativado'

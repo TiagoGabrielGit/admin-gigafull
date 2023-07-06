@@ -253,3 +253,19 @@
         });
     });
 </script>
+
+<script>
+    function exibirOcultarDivConfsEmail() {
+        var notificaEmail = document.getElementById("notificaEmail");
+        var confsNotificacaoChamadosEmail = document.getElementById("confsNotificacaoChamadosEmail");
+
+        if (notificaEmail.value == "1") {
+            confsNotificacaoChamadosEmail.style.display = "block"; // Exibir a div
+        } else {
+            confsNotificacaoChamadosEmail.style.display = "none"; // Ocultar a div
+        }
+    }
+
+    // Chamar a função exibirOcultarDiv() quando o documento estiver totalmente carregado
+    document.addEventListener("DOMContentLoaded", exibirOcultarDivConfsEmail);
+</script>

@@ -91,50 +91,31 @@ if ($statusEquipe  == 'Ativo') {
                                                 <div class="col-sm-10">
                                                     <?php
                                                     $sql_nao_integrantes =
-                                                        "SELECT
-                                                        u.id as usuarioID,
-                                                        p.nome as nomePessoa,
-                                                        e.id as idEquipe,
-                                                        e.equipe as nomeEquipe
+                                                        "  SELECT
+                                                        u.id AS usuarioID,
+                                                        p.nome AS nomePessoa
                                                     FROM
-                                                        usuarios as u
+                                                        usuarios AS u
                                                     LEFT JOIN
-                                                        pessoas as p
-                                                    ON
-                                                        u.pessoa_id = p.id	
-                                                    LEFT JOIN
-                                                        equipes_integrantes as ei
-                                                    ON
-                                                        ei.integrante_id = u.id
-                                                    LEFT JOIN
-                                                        equipe as e
-                                                    ON
-                                                        e.id = ei.equipe_id
+                                                        pessoas AS p ON u.pessoa_id = p.id
                                                     WHERE
                                                         u.active = 1
-                                                    AND
-                                                        ei.integrante_id NOT IN (
+                                                        AND u.id NOT IN (
                                                             SELECT
                                                                 integrante_id
                                                             FROM
                                                                 equipes_integrantes
-                                                            WHERE
-                                                                equipe_id = $id_equipe)
-                                                    OR
-                                                        u.active = 1
-                                                    AND
-                                                        ei.equipe_id IS NULL
+                                                        )
                                                     GROUP BY
-                                                    p.nome
+                                                        u.id, p.nome
                                                     ORDER BY
-                                                    p.nome asc";
+                                                        p.nome ASC";
 
                                                     $result_n_int = mysqli_query($mysqli, $sql_nao_integrantes) or die("Erro ao retornar dados");
 
                                                     while ($nao_integrantes = $result_n_int->fetch_array()) {
                                                         $usuarioID = $nao_integrantes['usuarioID'];
-                                                        $nomePessoa = $nao_integrantes['nomePessoa'];
-                                                        $nomeEquipe = $nao_integrantes['nomeEquipe'];  ?>
+                                                        $nomePessoa = $nao_integrantes['nomePessoa'];?>
                                                         <div class="form-check form-switch">
                                                             <input onclick="AddIntegrante(<?= $id_equipe ?>, '<?= $usuarioID ?>', '<?= $nameEquipe ?>', '<?= $nomePessoa ?>')" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" data-bs-toggle="modal" data-bs-target="#modalConfirm">
                                                             <label class="form-check-label" for="flexSwitchCheckDefault"><?= $nomePessoa ?></label>

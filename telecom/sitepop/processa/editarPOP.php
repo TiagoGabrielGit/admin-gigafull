@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $popId = $_POST["id"];
     $pop = $_POST["pop"];
     $description = $_POST["descricaoPOP"];
-    $empresa = isset($_POST["empresa"]);
+    $empresa = $_POST["empresa"];
 
     $cep = $_POST["cep"];
     $ibgecode = $_POST["ibgecode"];

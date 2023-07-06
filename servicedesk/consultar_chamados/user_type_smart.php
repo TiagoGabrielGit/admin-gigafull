@@ -5,23 +5,51 @@ require "../../conexoes/conexao_pdo.php";
 require "sql1.php";
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
-    $empresa_id = $_POST['empresaPesquisa'];
-    $atendentePesquisa = $_POST['atendentePesquisa'];
-    $statusChamado = $_POST['statusChamado'];
-    if ($_POST['numChamadoPesquisa'] == "") {
-        $idChamado = "%";
+
+    if (!empty($_POST['atendentePesquisa'])) {
+        $atendentePesquisa = $_POST['atendentePesquisa'];
     } else {
-        $idChamado = $_POST['numChamadoPesquisa'];
+        $atendentePesquisa = "%";
     }
-    if ($_POST['chamadoPesquisa'] == "") {
-        $assuntoChamado = "%";
+
+
+    if (!empty($_POST['empresaPesquisa'])) {
+        $empresa_id = $_POST['empresaPesquisa'];
     } else {
-        $assuntoChamado = $_POST['chamadoPesquisa'];
-        $assuntoChamado = "%$assuntoChamado%";
+        $empresa_id = "%";
+    }
+
+    if (!empty($_POST['statusChamado'])) {
+        $statusChamado = $_POST['statusChamado'];
+    } else {
+        $statusChamado = "LIKE '%'";
+    }
+
+
+    if (!empty($_POST['numChamadoPesquisa'])) {
+        if ($_POST['numChamadoPesquisa'] == "") {
+            $idChamado = "%";
+        } else {
+            $idChamado = $_POST['numChamadoPesquisa'];
+        }
+    } else {
+        $idChamado = "%";
+    }
+
+    if (!empty($_POST['chamadoPesquisa'])) {
+        if ($_POST['chamadoPesquisa'] == "") {
+            $assuntoChamado = "%";
+        } else {
+            $assuntoChamado = $_POST['chamadoPesquisa'];
+            $assuntoChamado = "%$assuntoChamado%";
+        }
+    } else {
+        $assuntoChamado = "%";
     }
 } else {
-    $empresa_id = "%";
     $atendentePesquisa = "%";
+
+    $empresa_id = "%";
     $statusChamado = "LIKE '%'";
     $idChamado = "%";
     $assuntoChamado = "%";
@@ -131,7 +159,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                             <div class="modal-body">
                                                 <div class="card-body">
                                                     <!--<form id="abrirChamado" method="POST" class="row g-3">-->
-                                                    <form action="/servicedesk/consultar_chamados/processa/add.php" method="POST" class="row g-3">
+                                                    <form id="formAbrirChamado" action="/servicedesk/consultar_chamados/processa/add.php" method="POST" class="row g-3">
 
                                                         <span id="msg"></span>
 
@@ -389,14 +417,20 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                                         <div class="col-4"></div>
 
                                                         <div class="col-4" style="text-align: center;">
-                                                            <!--<input id="btnSalvar" name="btnSalvar" type="button" value="Salvar" class="btn btn-danger"></input>-->
-                                                            <button class="btn btn-danger" type="submit">Abrir Chamado</button>
 
-                                                            <a href="/servicedesk/consultar_chamados/index.php"> <input type="button" value="Voltar" class="btn btn-secondary"></input></a>
+                                                            <div id="loadingMessage" style="display: none;">
+                                                                <div class="spinner-border text-success" role="status">
+                                                                    <span class="visually-hidden">Loading...</span>
+                                                                </div>
+                                                            </div>
+
+                                                            <button id="btnAbrirChamado" class="btn btn-danger" type="submit">Abrir Chamado</button>
+
+                                                            <a href="/servicedesk/consultar_chamados/index.php"> <input id="btnVoltar" type="button" value="Voltar" class="btn btn-secondary"></input></a>
                                                         </div>
 
                                                         <div class="col-4"></div>
-                                                    </form><!-- End Horizontal Form -->
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
@@ -826,7 +860,8 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                                         </svg> &nbsp; &nbsp;
                                                     <?php } ?>
 
-                                                    <b>Chamado #<?= $id_chamado ?> - <?= $campos['tipoChamado']; ?> - <?= $campos['assunto']; ?></b><br><br>
+                                                    <b>Chamado #<?= $id_chamado ?> - <?= $campos['tipoChamado']; ?> - <?= $campos['assunto']; ?></b><br>
+                                                    Empresa: <?= $campos['fantasia']; ?><br>
                                                     Atendente: <?= $atendente ?>
                                                 </span>
                                                 <?php

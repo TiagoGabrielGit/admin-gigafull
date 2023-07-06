@@ -19,14 +19,23 @@ require "sql_dashboard_1.php";
                                 </div>
                                 <div class="ps-3">
                                     <h4>
-                                        <?= $campos_chamados_abertos['quantidade'] ?>
-                                        <?php
-                                        if ($campos_chamados_abertos['quantidade'] < 2) {
-                                            echo "<span>Chamado</span>";
-                                        } else {
-                                            echo "<span>Chamados</span>";
-                                        }
-                                        ?>
+
+                                        <form action="/servicedesk/consultar_chamados/index.php" method="POST">
+
+                                            <input type="hidden" name="atendentePesquisa" value="0">
+                                            <input type="hidden" name="statusChamado" value="!= 3">
+
+                                            <button type="submit" style=" background: none; border: none; cursor: pointer;">
+                                                <?= $campos_chamados_abertos['quantidade'] ?>
+                                                <?php
+                                                if ($campos_chamados_abertos['quantidade'] < 2) {
+                                                    echo "<span>Chamado</span>";
+                                                } else {
+                                                    echo "<span>Chamados</span>";
+                                                }
+                                                ?>
+                                            </button>
+                                        </form>
                                     </h4>
                                 </div>
                             </div>
@@ -44,14 +53,22 @@ require "sql_dashboard_1.php";
                                 </div>
                                 <div class="ps-3">
                                     <h4>
-                                        <?= $campos_chamados_sematendentes['quantidade'] ?>
-                                        <?php
-                                        if ($campos_chamados_sematendentes['quantidade'] < 2) {
-                                            echo "<span>Chamado</span>";
-                                        } else {
-                                            echo "<span>Chamados</span>";
-                                        }
-                                        ?>
+                                        <form action="/servicedesk/consultar_chamados/index.php" method="POST">
+
+                                            <input type="hidden" name="atendentePesquisa" value="0">
+                                            <input type="hidden" name="statusChamado" value="!= 3">
+
+                                            <button type="submit" style=" background: none; border: none; cursor: pointer;">
+                                                <?= $campos_chamados_sematendentes['quantidade'] ?>
+                                                <?php
+                                                if ($campos_chamados_sematendentes['quantidade'] < 2) {
+                                                    echo "<span>Chamado</span>";
+                                                } else {
+                                                    echo "<span>Chamados</span>";
+                                                }
+                                                ?>
+                                            </button>
+                                        </form>
                                     </h4>
                                 </div>
                             </div>
@@ -69,14 +86,21 @@ require "sql_dashboard_1.php";
                                 </div>
                                 <div class="ps-3">
                                     <h4>
-                                        <?= $campos_chamados_meus['quantidade'] ?>
-                                        <?php
-                                        if ($campos_chamados_meus['quantidade'] < 2) {
-                                            echo "<span>Chamado</span>";
-                                        } else {
-                                            echo "<span>Chamados</span>";
-                                        }
-                                        ?>
+                                        <form action="/servicedesk/consultar_chamados/index.php" method="POST">
+                                            <input type="hidden" name="atendentePesquisa" value="<?= $_SESSION['id'] ?>">
+                                            <input type="hidden" name="statusChamado" value="!= 3">
+
+                                            <button type="submit" style=" background: none; border: none; cursor: pointer;">
+                                                <?= $campos_chamados_meus['quantidade'] ?>
+                                                <?php
+                                                if ($campos_chamados_meus['quantidade'] < 2) {
+                                                    echo '<span>Chamado</span>';
+                                                } else {
+                                                    echo '<span>Chamados</span>';
+                                                }
+                                                ?>
+                                            </button>
+                                        </form>
                                     </h4>
                                 </div>
                             </div>
