@@ -15,11 +15,74 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
 
-              <!-- Versão 8.2 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading8-3">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8-3" aria-expanded="false" aria-controls="collapse8-3">
+                    Versão 8.3 - 06/07/2023
+                  </button>
+                </h2>
+                <div id="collapse8-3" class="accordion-collapse collapse" aria-labelledby="heading8-3" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Configurações de notify_email_encaminhamento;<br>
+                    # Configurações de notify_email_relatos;<br>
+                    # Configurações de notify_email_apropriacao;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Permitir selecionar solicitante na abertura do chamado;<br>
+                    # Permitir selecionar atendente na abertura do chamado;<br>
+                    # Cancelar um relato em execução;<br>
+                    # Fechar o modal cadastro de pessoa após cadastrar nova pessoa;<br>
+                    # Envio de sugestões;<br>
+                    # Em credenciais, aparecer inclusive os inativados na consulta inicial;<br>
+                    # Configurações especificas de notificação por e-mail;<br>
+                    # Solicitante Cliente especificar para quando quer pronto um chamado;<br>
+                    # Solicitante Tenant especificar para quando quer pronto um chamado;<br>
+                    # Resetar senha pelo acesso usuário;<br>
+                    # Redirecionar para senha de depois de cadastrar credencial portal;<br>
+                    # Não aparecer para selecionar perfil se usuario não é do tipo smart;<br>
+                    # Selecionar publico ou privado no relato avulso;<br>
+                    # Editar consulta sql e excluir/inativar;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Energia POP;<br>
+                    # Atributos de equipamentos;<br>
+                    # Cadastro de PONs;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+                    # Cadastro de rotas de rede de fibra;<br>
+                    # Check-list chamados;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Notificaçãoes de novos incidentes e relatos;<br>
+                    # Adequação incidentes cliente;<br>
+                    # Vinculo de chamado a incidente;<br>
+                    # Anexo arquivos em chamados;<br>
+                    # Anexo arquivos em vistorias;<br>
+                    # Permissões em documentações;<br>
+                    # Relatar em chamado já existente ao invés de abrir outro via integração Zabbix;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Segurança individual;<br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                    # Dependencia de chamados;<br>
+
+                    <br><strong>Backlog --- Rede Neutra</strong><br>
+                    # BUG retorna código em resultado do provisionamento;<br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas;<br>
+                    # Botão troca ONU;<br>
+                    # Armazenar LOG sinal do cliente após provisionamento;<br>
+                    # Validação sinal antes de adicionar serviços;<br>
+                    # Autofind no provisionamento;<br><br>
+                  </div>
+                </div>
+              </div>
+
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading8-2">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8-2" aria-expanded="false" aria-controls="collapse8-2">
-                    Versão 8.2 - 06s/07/2023
+                    Versão 8.2 - 06/07/2023
                   </button>
                 </h2>
                 <div id="collapse8-2" class="accordion-collapse collapse" aria-labelledby="heading8-2" data-bs-parent="#accordionExample">

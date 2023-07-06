@@ -349,16 +349,16 @@
                                     <option value="0">Não recebe e-mail de nenhum chamado</option>
                                 <?php } else if ($campos['notify_email_encaminhamento'] == 1) { ?>
                                     <option value="2">Recebe e-mail de chamados aberto por usuários da mesma equipe</option>
-                                    <option selected value="1">Recebe e-mail de qualquer chamado aberto</option>
+                                    <option selected value="1">Recebe e-mail de qualquer chamado</option>
                                     <option value="0">Não recebe e-mail de nenhum chamado</option>
                                 <?php } else if ($campos['notify_email_encaminhamento'] == 0) { ?>
                                     <option value="2">Recebe e-mail de chamados aberto por usuários da mesma equipe</option>
-                                    <option value="1">Recebe e-mail de qualquer chamado aberto</option>
+                                    <option value="1">Recebe e-mail de qualquer chamado</option>
                                     <option selected value="0">Não recebe e-mail de nenhum chamado</option>
                                 <?php } else { ?>
                                     <option selected disabled value="">Selecione uma opção</option>
                                     <option value="2">Recebe e-mail de chamados aberto por usuários da mesma equipe</option>
-                                    <option value="1">Recebe e-mail de qualquer chamado aberto</option>
+                                    <option value="1">Recebe e-mail de qualquer chamado</option>
                                     <option value="0">Não recebe e-mail de nenhum chamado</option>
                                 <?php }
                                 ?>
@@ -377,16 +377,16 @@
                                     <option value="0">Não recebe e-mail de nenhum chamado</option>
                                 <?php } else if ($campos['notify_email_relatos'] == 1) { ?>
                                     <option value="2">Recebe e-mail de chamados aberto por usuários da mesma equipe</option>
-                                    <option selected value="1">Recebe e-mail de qualquer chamado aberto</option>
+                                    <option selected value="1">Recebe e-mail de qualquer chamado</option>
                                     <option value="0">Não recebe e-mail de nenhum chamado</option>
                                 <?php } else if ($campos['notify_email_relatos'] == 0) { ?>
                                     <option value="2">Recebe e-mail de chamados aberto por usuários da mesma equipe</option>
-                                    <option value="1">Recebe e-mail de qualquer chamado aberto</option>
+                                    <option value="1">Recebe e-mail de qualquer chamado</option>
                                     <option selected value="0">Não recebe e-mail de nenhum chamado</option>
                                 <?php } else { ?>
                                     <option selected disabled value="">Selecione uma opção</option>
                                     <option value="2">Recebe e-mail de chamados aberto por usuários da mesma equipe</option>
-                                    <option value="1">Recebe e-mail de qualquer chamado aberto</option>
+                                    <option value="1">Recebe e-mail de qualquer chamado</option>
                                     <option value="0">Não recebe e-mail de nenhum chamado</option>
                                 <?php }
                                 ?>
@@ -401,20 +401,20 @@
                                 <?php
                                 if ($campos['notify_email_apropriacao'] == 2) { ?>
                                     <option selected value="2">Recebe e-mail de chamados aberto por usuários da mesma equipe</option>
-                                    <option value="1">Recebe e-mail de qualquer chamado aberto</option>
+                                    <option value="1">Recebe e-mail de qualquer chamado</option>
                                     <option value="0">Não recebe e-mail de nenhum chamado</option>
                                 <?php } else if ($campos['notify_email_apropriacao'] == 1) { ?>
                                     <option value="2">Recebe e-mail de chamados aberto por usuários da mesma equipe</option>
-                                    <option selected value="1">Recebe e-mail de qualquer chamado aberto</option>
+                                    <option selected value="1">Recebe e-mail de qualquer chamado</option>
                                     <option value="0">Não recebe e-mail de nenhum chamado</option>
                                 <?php } else if ($campos['notify_email_apropriacao'] == 0) { ?>
                                     <option value="2">Recebe e-mail de chamados aberto por usuários da mesma equipe</option>
-                                    <option value="1">Recebe e-mail de qualquer chamado aberto</option>
+                                    <option value="1">Recebe e-mail de qualquer chamado</option>
                                     <option selected value="0">Não recebe e-mail de nenhum chamado</option>
                                 <?php } else { ?>
                                     <option selected disabled value="">Selecione uma opção</option>
                                     <option value="2">Recebe e-mail de chamados aberto por usuários da mesma equipe</option>
-                                    <option value="1">Recebe e-mail de qualquer chamado aberto</option>
+                                    <option value="1">Recebe e-mail de qualquer chamado</option>
                                     <option value="0">Não recebe e-mail de nenhum chamado</option>
                                 <?php }
                                 ?>

@@ -91,83 +91,75 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($privacidade == 1) { //Publico
             $lista_destinatarios =
-                "SELECT
-            p.email as 'email'
-            FROM
-            usuarios as u
-            LEFT JOIN
-            pessoas as p
-            ON
-            p.id = u.pessoa_id
-            WHERE
-            u.perfil_id = 1
-            and
-            u.notify_email = 1
-
-            UNION
-
-            SELECT
-            p.email as 'email'
-            FROM
-            chamados as c
-            LEFT JOIN
-            usuarios as u
-            ON
-            u.id = c.atendente_id
-            LEFT JOIN
-            pessoas as p
-            ON
-            p.id = u.pessoa_id
-            WHERE
-            c.id = $id_chamado
-            and
-            u.notify_email = 1
-
-            UNION
-
-            SELECT
-            p.email as 'email'
-            FROM
-            chamados as c
-            LEFT JOIN
-            usuarios as u
-            ON
-            u.id = c.solicitante_id
-            LEFT JOIN
-            pessoas as p
-            ON
-            p.id = u.pessoa_id
-            WHERE
-            c.id = $id_chamado
-            and
-            u.notify_email = 1
-            and
-            u.id != 9999
-            
-            UNION
-            
-            SELECT
-            ci.email as 'email'
-            FROM
-            chamados_interessados as ci
-            WHERE
-            ci.chamado_id = $id_chamado
-            and
-            ci.active = 1";
-        } else if ($privacidade == 2) { //Privado
-            $lista_destinatarios =
-                "SELECT
+                "SELECT p.email as 'email'
+                FROM usuarios u
+                JOIN pessoas p ON p.id = u.pessoa_id
+                WHERE 
+                u.notify_email = 1
+                and
+                u.notify_email_relatos = 1
+                and
+                u.active = 1
+    
+                UNION 
+                
+                SELECT p.email as 'email'
+                FROM usuarios u
+                JOIN equipes_integrantes ei1 ON u.id = ei1.integrante_id
+                JOIN equipes_integrantes ei2 ON ei1.equipe_id = ei2.equipe_id
+                JOIN chamados c ON ei2.integrante_id = c.solicitante_id
+                JOIN pessoas p ON p.id = u.pessoa_id 
+                WHERE
+                u.id != 9999
+                and
+                c.id = $id_chamado
+                and
+                u.notify_email = 1
+                and
+                u.notify_email_relatos = 2
+                and
+                u.active = 1
+    
+                UNION
+    
+                SELECT
+                ci.email as 'email'
+                FROM
+                chamados_interessados as ci
+                WHERE
+                ci.chamado_id = $id_chamado
+                and
+                ci.active = 1
+                
+                UNION
+    
+                SELECT
                 p.email as 'email'
                 FROM
+                chamados as c
+                LEFT JOIN
                 usuarios as u
+                ON
+                u.id = c.atendente_id
                 LEFT JOIN
                 pessoas as p
                 ON
                 p.id = u.pessoa_id
                 WHERE
-                u.perfil_id = 1
-                and
+                c.id = $id_chamado
+                           and
+                u.notify_email = 1";
+        } else if ($privacidade == 2) { //Privado
+            $lista_destinatarios =
+                "SELECT p.email as 'email'
+                FROM usuarios u
+                JOIN pessoas p ON p.id = u.pessoa_id
+                WHERE 
                 u.notify_email = 1
+                and
+                u.notify_email_relatos = 1
+                and
+                u.active = 1
     
                 UNION
     
@@ -185,7 +177,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 p.id = u.pessoa_id
                 WHERE
                 c.id = $id_chamado
-                and
+                           and
                 u.notify_email = 1";
         }
 

@@ -63,19 +63,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         //SQL para receber lista de destinatários
         $lista_destinatarios =
-            "SELECT
-            p.email as 'email'
-            FROM
-            usuarios as u
-            LEFT JOIN
-            pessoas as p
-            ON
-            p.id = u.pessoa_id
+            "SELECT p.email as 'email'
+            FROM usuarios u
+            JOIN pessoas p ON p.id = u.pessoa_id
+            WHERE 
+            u.notify_email = 1
+            and
+            u.notify_email_encaminhamento = 1
+            and
+            u.active = 1
+
+            UNION 
+            
+            SELECT p.email as 'email'
+            FROM usuarios u
+            JOIN equipes_integrantes ei1 ON u.id = ei1.integrante_id
+            JOIN equipes_integrantes ei2 ON ei1.equipe_id = ei2.equipe_id
+            JOIN chamados c ON ei2.integrante_id = c.solicitante_id
+            JOIN pessoas p ON p.id = u.pessoa_id 
             WHERE
-            u.perfil_id = 1
+            u.id != 9999
+            and
+            c.id = $id_chamado
             and
             u.notify_email = 1
+            and
+            u.notify_email_encaminhamento = 2
+            and
+            u.active = 1
 
+            UNION
+
+            SELECT
+            ci.email as 'email'
+            FROM
+            chamados_interessados as ci
+            WHERE
+            ci.chamado_id = $id_chamado
+            and
+            ci.active = 1
+            
             UNION
 
             SELECT
@@ -93,37 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             WHERE
             c.id = $id_chamado
                        and
-            u.notify_email = 1
-            
-            UNION
-           
-            SELECT
-            p.email as 'email'
-            FROM
-            chamados as c
-            LEFT JOIN
-            usuarios as u
-            ON
-            u.id = c.solicitante_id
-            LEFT JOIN
-            pessoas as p
-            ON
-            p.id = u.pessoa_id
-            WHERE
-            c.id = $id_chamado
-            and
-            u.notify_email = 1
-                        
-            UNION
-            
-            SELECT
-            ci.email as 'email'
-            FROM
-            chamados_interessados as ci
-            WHERE
-            ci.chamado_id = $id_chamado
-            and
-            ci.active = 1";
+            u.notify_email = 1";
 
         // Executa a consulta no banco de dados
         $result = $pdo->query($lista_destinatarios);

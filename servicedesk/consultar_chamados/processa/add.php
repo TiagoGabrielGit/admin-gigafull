@@ -155,7 +155,7 @@ if (empty($_POST['selectService'])) {
             $stmt1->bindParam(':empresa_id', $empresa_id);
             $stmt1->bindParam(':service_id', $service_id);
             $stmt1->bindParam(':atendente_id', $atendente);
-            $stmt1->bindParam(':dataConclusao', $dataConclusao);
+            $stmt1->bindParam(':dataConclusao', $dataConclusao, PDO::PARAM_NULL);
 
 
             if ($stmt1->execute()) {
