@@ -30,6 +30,7 @@ user.notify_email_abertura as 'notify_email_abertura',
 user.notify_email_encaminhamento as 'notify_email_encaminhamento',
 user.notify_email_relatos as 'notify_email_relatos',
 user.notify_email_apropriacao as 'notify_email_apropriacao',
+user.notify_email_execucao as 'notify_email_execucao',
 p.perfil as nome_perfil,
 CASE
     WHEN user.active = 1 THEN 'Ativado'

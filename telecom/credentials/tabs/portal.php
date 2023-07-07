@@ -53,13 +53,10 @@ $varDescricao = $_POST['pesquisaDescricao'];
                                         <div class="modal-body">
                                             <div class="card-body">
 
-                                                <!-- Vertical Form -->
-                                                <form id="addCredenciaisPortal" method="POST" class="row g-3">
+                                                <form method="POST" action="/telecom/credentials/portal/processa/add.php" class="row g-3">
 
 
                                                     <input name="usuarioCriador" type="text" class="form-control" id="usuarioCriador" value="<?php echo $_SESSION['id']; ?>" hidden>
-
-                                                    <span id="msgNewPortal"></span>
 
                                                     <div class="col-6">
                                                         <label for="cadastroEmpresa" class="form-label">Empresa*</label>
@@ -97,7 +94,7 @@ $varDescricao = $_POST['pesquisaDescricao'];
                                                     <div class="col-lg-12">
                                                         <div class="col-6">
                                                             <label for="portalDescricao" class="form-label">Descrição</label>
-                                                            <input name="portalDescricao" type="text" class="form-control" id="portalDescricao">
+                                                            <input name="portalDescricao" type="text" class="form-control" id="portalDescricao" required>
                                                         </div>
                                                     </div>
 
@@ -105,17 +102,17 @@ $varDescricao = $_POST['pesquisaDescricao'];
                                                         <div class="row">
                                                             <div class="col-4">
                                                                 <label for="portalPaginaAcesso" class="form-label">Página de Acesso</label>
-                                                                <input name="portalPaginaAcesso" type="text" class="form-control" id="portalPaginaAcesso">
+                                                                <input name="portalPaginaAcesso" type="text" class="form-control" id="portalPaginaAcesso" required>
                                                             </div>
 
                                                             <div class="col-4">
                                                                 <label for="portalUsuario" class="form-label">Usuário</label>
-                                                                <input name="portalUsuario" type="text" class="form-control" id="portalUsuario">
+                                                                <input name="portalUsuario" type="text" class="form-control" id="portalUsuario" required>
                                                             </div>
 
                                                             <div class="col-4">
                                                                 <label for="portalSenha" class="form-label">Senha</label>
-                                                                <input name="portalSenha" type="text" class="form-control" id="portalSenha">
+                                                                <input name="portalSenha" type="text" class="form-control" id="portalSenha" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -127,7 +124,7 @@ $varDescricao = $_POST['pesquisaDescricao'];
                                                     <hr class="sidebar-divider">
 
                                                     <div class="text-center">
-                                                        <input id="btnSalvarNovoPortal" name="btnSalvarNovoPortal" type="button" value="Salvar" class="btn btn-danger"></input>
+                                                        <button type="submit" class="btn btn-danger">Salvar</button>
                                                         <a href="/telecom/credentials/index.php"> <input type="button" value="Voltar" class="btn btn-secondary"></input></a>
                                                     </div>
                                                 </form><!-- Vertical Form -->

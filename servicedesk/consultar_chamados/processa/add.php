@@ -30,21 +30,22 @@ if (empty($_POST['selectService'])) {
     $r_itens = $mysqli->query($sql_qtde_itens);
     $row_itens = $r_itens->fetch_assoc();
 
+    $dataConclusao = isset($_POST['dataConclusao']) ? $_POST['dataConclusao'] : null;
+    $atendente = isset($_POST['selectAtendente']) ? $_POST['selectAtendente'] : 0;
+
     if ($row_itens['qtde'] > 0) {
         if (empty($_POST['assuntoChamado']) || empty($_POST['tipoChamado']) || empty($_POST['solicitante']) || empty($_POST['solicitante']) || empty($_POST['empresaChamado']) || empty($_POST['relatoChamado']) || empty($_POST['selectService']) || empty($_POST['selectIten'])) {
             echo "<p style='color:red;'>Error: Dados obrigatórios não preenchidos.</p>";
         } else {
 
             $assuntoChamado = $_POST['assuntoChamado'];
-            $tipochamado_id = $_POST['tipoChamado'];
             $solicitante_id = $_POST['solicitante'];
             $relator_id = $_POST['solicitante'];
             $empresa_id = $_POST['empresaChamado'];
             $relato = $_POST['relatoChamado'];
             $service_id = $_POST['selectService'];
             $iten_id = $_POST['selectIten'];
-            $atendente = isset($_POST['selectAtendente']) ? $_POST['selectAtendente'] : 0;
-            $dataConclusao = isset($_POST['dataConclusao']) ? $_POST['dataConclusao'] : null;
+            $tipochamado_id = $_POST['tipoChamado'];
 
 
             $cont_insert = false;
@@ -62,7 +63,11 @@ if (empty($_POST['selectService'])) {
             $stmt1->bindParam(':service_id', $service_id);
             $stmt1->bindParam(':iten_service_id', $iten_id);
             $stmt1->bindParam(':atendente_id', $atendente);
-            $stmt1->bindParam(':dataConclusao', $dataConclusao, PDO::PARAM_NULL);
+            if (empty($dataConclusao)) {
+                $stmt1->bindParam(':dataConclusao', $dataConclusao, PDO::PARAM_NULL);
+            } else {
+                $stmt1->bindParam(':dataConclusao', $dataConclusao);
+            }
 
             if ($stmt1->execute()) {
                 $id_chamado = $pdo->lastInsertId();
@@ -134,15 +139,12 @@ if (empty($_POST['selectService'])) {
             echo "<p style='color:red;'>Error: Dados obrigatórios não preenchidos.</p>";
         } else {
             $assuntoChamado = $_POST['assuntoChamado'];
-            $tipochamado_id = $_POST['tipoChamado'];
             $solicitante_id = $_POST['solicitante'];
             $relator_id = $_POST['solicitante'];
             $empresa_id = $_POST['empresaChamado'];
             $relato = $_POST['relatoChamado'];
             $service_id = $_POST['selectService'];
-            $atendente = isset($_POST['selectAtendente']) ? $_POST['selectAtendente'] : 0;
-            $dataConclusao = isset($_POST['dataConclusao']) ? $_POST['dataConclusao'] : null;
-
+            $tipochamado_id = $_POST['tipoChamado'];
             $cont_insert = false;
 
             $sql = "INSERT INTO chamados (atendente_id, data_prevista_conclusao, assuntoChamado, relato_inicial, tipochamado_id, solicitante_id, empresa_id, status_id, data_abertura, in_execution, in_execution_atd_id, seconds_worked, service_id)
@@ -155,7 +157,12 @@ if (empty($_POST['selectService'])) {
             $stmt1->bindParam(':empresa_id', $empresa_id);
             $stmt1->bindParam(':service_id', $service_id);
             $stmt1->bindParam(':atendente_id', $atendente);
-            $stmt1->bindParam(':dataConclusao', $dataConclusao, PDO::PARAM_NULL);
+            if (empty($dataConclusao)) {
+                $stmt1->bindParam(':dataConclusao', $dataConclusao, PDO::PARAM_NULL);
+            } else {
+                $stmt1->bindParam(':dataConclusao', $dataConclusao);
+            }
+
 
 
             if ($stmt1->execute()) {

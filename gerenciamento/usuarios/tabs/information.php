@@ -421,6 +421,34 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="notificaEmailExecucao" class="form-label"><b>Recebe e-mail na execução de chamados</b></label>
+                            <select name="notificaEmailExecucao" id="notificaEmailExecucao" class="form-select" required>
+                                <?php
+                                if ($campos['notify_email_execucao'] == 2) { ?>
+                                    <option selected value="2">Recebe e-mail de chamados aberto por usuários da mesma equipe</option>
+                                    <option value="1">Recebe e-mail de qualquer chamado</option>
+                                    <option value="0">Não recebe e-mail de nenhum chamado</option>
+                                <?php } else if ($campos['notify_email_execucao'] == 1) { ?>
+                                    <option value="2">Recebe e-mail de chamados aberto por usuários da mesma equipe</option>
+                                    <option selected value="1">Recebe e-mail de qualquer chamado</option>
+                                    <option value="0">Não recebe e-mail de nenhum chamado</option>
+                                <?php } else if ($campos['notify_email_execucao'] == 0) { ?>
+                                    <option value="2">Recebe e-mail de chamados aberto por usuários da mesma equipe</option>
+                                    <option value="1">Recebe e-mail de qualquer chamado</option>
+                                    <option selected value="0">Não recebe e-mail de nenhum chamado</option>
+                                <?php } else { ?>
+                                    <option selected disabled value="">Selecione uma opção</option>
+                                    <option value="2">Recebe e-mail de chamados aberto por usuários da mesma equipe</option>
+                                    <option value="1">Recebe e-mail de qualquer chamado</option>
+                                    <option value="0">Não recebe e-mail de nenhum chamado</option>
+                                <?php }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

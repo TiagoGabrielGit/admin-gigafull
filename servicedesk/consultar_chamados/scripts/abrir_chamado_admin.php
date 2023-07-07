@@ -111,14 +111,18 @@
     document.getElementById('tipoChamado').addEventListener('change', function() {
         var select = this;
         var div = document.getElementById('selectDataConclusao');
+        var input = div.querySelector('input');
 
         if (select.value !== '' && select.options[select.selectedIndex].dataset.permiteDataEntrega === '1') {
             div.style.display = 'block';
+            input.required = true;
         } else {
             div.style.display = 'none';
+            input.required = false;
         }
     });
 </script>
+
 
 <script>
     // Obter o elemento select e o campo de data e hora
@@ -145,7 +149,6 @@
 </script>
 
 <script>
-    // Verifica se o tipo de chamado permite atendente de abertura e exibe a div correspondente
     var tipoChamadoSelect = document.getElementById("tipoChamado");
     var selectAtendenteDiv = document.getElementById("selectAtendente");
 

@@ -146,7 +146,6 @@ require "includes/scripts_pesquisa_equipamento.php";
 require "includes/scripts_pesquisa_VM.php";
 require "includes/scripts_add_equipamento.php";
 require "includes/scripts_add_VM.php";
-require "includes/scripts_portal.php";
 require "includes/scripts_email.php";
 require "../../includes/footer.php";
 ?>

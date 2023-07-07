@@ -28,7 +28,7 @@ if (empty($_POST['equipamentoPesquisa'])) {
 }
 
 if (empty($_POST['statusEquipamentoPesquisa'])) {
-    $_POST['statusEquipamentoPesquisa'] = "Ativado";
+    $_POST['statusEquipamentoPesquisa'] = "%";
 }
 
 if (empty($_POST['limiteBusca'])) {
@@ -358,7 +358,8 @@ LIMIT $limiteBusca
                         <div class="col-3">
                             <label for="statusEquipamentoPesquisa" class="form-label">Status</label>
                             <select id="statusEquipamentoPesquisa" name="statusEquipamentoPesquisa" class="form-select" required>
-                                <option selected disabled>Ativado</option>>
+                                
+                                <option selected value="%">Todos</option>
                                 <option value="Ativado">Ativado</option>
                                 <option value="Em Implementação">Em Implementação</option>
                                 <option value="Inativado">Inativado</option>
@@ -367,7 +368,7 @@ LIMIT $limiteBusca
                                 <?php if ($_SERVER["REQUEST_METHOD"] == 'POST') : ?>
                                     <script>
                                         let statusEquipamentoPesquisa = '<?= $_POST['statusEquipamentoPesquisa']; ?>'
-                                        if (statusEquipamentoPesquisa == 'Ativado') {} else {
+                                        if (statusEquipamentoPesquisa == 'Todos') {} else {
                                             document.querySelector("#statusEquipamentoPesquisa").value = statusEquipamentoPesquisa
                                         }
                                     </script>

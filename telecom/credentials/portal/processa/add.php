@@ -33,14 +33,11 @@ if ($stmt->execute([$cadastroEmpresa, $cadastroTipo, $usuarioCriador, $cadastroP
 
 
 if ($cont_insert) {
-    echo "<p style='color:green;'>Cadastrado com Sucesso</p>";
+    $lastInsertedId = $pdo->lastInsertId();
+    header("Location: /telecom/credentials/portal/view.php?id=$lastInsertedId&tipo=Portal");
+    exit();
 } else {
-    echo "<p style='color:red;'>Erro ao cadastrar</p>";
-}
-
-
-
-if ($cont_insert) {
-} else {
-    echo "<p style='color:red;'>Erro ao cadastrar</p>";
+    $referer = $_SERVER['HTTP_REFERER'];
+    header("Location: $referer");
+    exit();
 }

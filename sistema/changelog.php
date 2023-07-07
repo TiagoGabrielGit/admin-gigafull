@@ -16,6 +16,130 @@ require "../includes/menu.php";
             <div class="accordion" id="accordionExample">
 
               <div class="accordion-item">
+                <h2 class="accordion-header" id="heading8-5">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8-5" aria-expanded="false" aria-controls="collapse8-5">
+                    Versão 8.5 - 06/07/2023
+                  </button>
+                </h2>
+                <div id="collapse8-5" class="accordion-collapse collapse" aria-labelledby="heading8-5" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Permitir usuário selecionar solicitante na abertura do chamado;<br>
+                    # Permitir no tipo de chamado selecionar solicitante na abertura do chamado;<br>
+                    # Permitir usuário selecionar atendente na abertura do chamado;<br>
+                    # Cancelar um relato em execução;<br>
+                    # Fechar o modal cadastro de pessoa após cadastrar nova pessoa;<br>
+                    # Revisão geral no cadastro de usuário e invites;<br>
+                    # Envio de sugestões;<br>
+                    # Solicitante Cliente especificar para quando quer pronto um chamado;<br>
+                    # Solicitante Tenant especificar para quando quer pronto um chamado;<br>
+                    # Resetar senha pelo acesso usuário;<br>
+                    # Selecionar publico ou privado no relato avulso;<br>
+                    # Editar consulta sql e excluir/inativar;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Energia POP;<br>
+                    # Atributos de equipamentos;<br>
+                    # Cadastro de PONs;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+                    # Cadastro de rotas de rede de fibra;<br>
+                    # Check-list chamados;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Notificaçãoes de novos incidentes e relatos;<br>
+                    # Adequação incidentes cliente;<br>
+                    # Vinculo de chamado a incidente;<br>
+                    # Anexo arquivos em chamados;<br>
+                    # Anexo arquivos em vistorias;<br>
+                    # Permissões em documentações;<br>
+                    # Relatar em chamado já existente ao invés de abrir outro via integração Zabbix;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Segurança individual;<br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                    # Dependencia de chamados;<br>
+
+                    <br><strong>Backlog --- Rede Neutra</strong><br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas;<br>
+                    # Botão troca ONU;<br>
+                    # Armazenar LOG sinal do cliente após provisionamento;<br>
+                    # Validação sinal antes de adicionar serviços;<br>
+                    # Autofind no provisionamento;<br><br>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading8-4">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8-4" aria-expanded="false" aria-controls="collapse8-4">
+                    Versão 8.4 - 06/07/2023
+                  </button>
+                </h2>
+                <div id="collapse8-4" class="accordion-collapse collapse" aria-labelledby="heading8-4" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Obrigar colocar data de conclusão quando exigida pelo chamado;<br>
+                    # Em credenciais, aparecer inclusive os inativados na consulta inicial;<br>
+                    # Redirecionar para senha de depois de cadastrar credencial portal;<br>
+                    # Notificação quando chamado entra em execução;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Permitir usuário selecionar solicitante na abertura do chamado;<br>
+                    # Permitir no tipo de chamado selecionar solicitante na abertura do chamado;<br>
+                    # Permitir usuário selecionar atendente na abertura do chamado;<br>
+                    # Cancelar um relato em execução;<br>
+                    # Fechar o modal cadastro de pessoa após cadastrar nova pessoa;<br>
+                    # Revisão geral no cadastro de usuário e invites;<br>
+                    # Envio de sugestões;<br>
+                    # Solicitante Cliente especificar para quando quer pronto um chamado;<br>
+                    # Solicitante Tenant especificar para quando quer pronto um chamado;<br>
+                    # Resetar senha pelo acesso usuário;<br>
+                    # Selecionar publico ou privado no relato avulso;<br>
+                    # Editar consulta sql e excluir/inativar;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Energia POP;<br>
+                    # Atributos de equipamentos;<br>
+                    # Cadastro de PONs;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+                    # Cadastro de rotas de rede de fibra;<br>
+                    # Check-list chamados;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Notificaçãoes de novos incidentes e relatos;<br>
+                    # Adequação incidentes cliente;<br>
+                    # Vinculo de chamado a incidente;<br>
+                    # Anexo arquivos em chamados;<br>
+                    # Anexo arquivos em vistorias;<br>
+                    # Permissões em documentações;<br>
+                    # Relatar em chamado já existente ao invés de abrir outro via integração Zabbix;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Segurança individual;<br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                    # Dependencia de chamados;<br>
+
+                    <br><strong>Backlog --- Rede Neutra</strong><br>
+                    # BUG retorna código em resultado do provisionamento;<br>
+                    # Ativar os serviços do profile dentro do menu de ONUs Provisionadas;<br>
+                    # Botão troca ONU;<br>
+                    # Armazenar LOG sinal do cliente após provisionamento;<br>
+                    # Validação sinal antes de adicionar serviços;<br>
+                    # Autofind no provisionamento;<br><br>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="accordion-item">
                 <h2 class="accordion-header" id="heading8-3">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8-3" aria-expanded="false" aria-controls="collapse8-3">
                     Versão 8.3 - 06/07/2023

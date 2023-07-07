@@ -28,7 +28,7 @@ if (empty($_POST['SOPesquisa'])) {
 }
 
 if (empty($_POST['statusVMPesquisa'])) {
-    $_POST['statusVMPesquisa'] = "Ativado";
+    $_POST['statusVMPesquisa'] = "%";
 }
 
 $empresa_id = $_POST['VMempresaPesquisa'];
@@ -363,7 +363,7 @@ LIMIT $limiteBusca
                         <div class="col-3">
                             <label for="statusVMPesquisa" class="form-label">Status</label>
                             <select id="statusVMPesquisa" name="statusVMPesquisa" class="form-select" required>
-                                <option selected disabled>Ativado</option>>
+                                <option selected value="%">Todos</option>>
                                 <option value="Ativado">Ativado</option>
                                 <option value="Em Implementação">Em Implementação</option>
                                 <option value="Inativado">Inativado</option>
@@ -371,7 +371,7 @@ LIMIT $limiteBusca
                                 <?php if ($_SERVER["REQUEST_METHOD"] == 'POST') : ?>
                                     <script>
                                         let status = '<?= $_POST['statusVMPesquisa']; ?>'
-                                        if (status == 'Ativado') {} else {
+                                        if (status == 'Todos') {} else {
                                             document.querySelector("#statusVMPesquisa").value = status
                                         }
                                     </script>
