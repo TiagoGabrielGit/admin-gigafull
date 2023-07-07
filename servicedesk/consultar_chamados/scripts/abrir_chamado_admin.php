@@ -149,20 +149,6 @@
 </script>
 
 <script>
-    var tipoChamadoSelect = document.getElementById("tipoChamado");
-    var selectAtendenteDiv = document.getElementById("selectAtendente");
-
-    tipoChamadoSelect.addEventListener("change", function() {
-        var selectedOption = tipoChamadoSelect.options[tipoChamadoSelect.selectedIndex];
-        if (selectedOption.hasAttribute("data-nao-permite-atendente")) {
-            selectAtendenteDiv.style.display = "none";
-        } else {
-            selectAtendenteDiv.style.display = "block";
-        }
-    });
-</script>
-
-<script>
     document.addEventListener('DOMContentLoaded', function() {
         var form = document.getElementById('formAbrirChamado');
         var btnAbrirChamado = document.getElementById('btnAbrirChamado');

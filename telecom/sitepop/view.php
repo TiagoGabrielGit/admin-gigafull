@@ -17,6 +17,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         $nav_equipamentos = "";
         $tab_vistoria = "";
         $nav_vistoria = "";
+        $nav_arCondicionado = "";
+        $tab_arCondicionado = "";
+        $nav_materiais = "";
+        $tab_materiais = "";
+        $nav_anexo = "";
+        $tab_anexo = "";
     } else if (isset($_POST['tabEnergia'])) {
         $tab_informacoes = "";
         $nav_informacoes = "";
@@ -28,6 +34,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         $nav_equipamentos = "";
         $tab_vistoria = "";
         $nav_vistoria = "";
+        $nav_arCondicionado = "";
+        $tab_arCondicionado = "";
+        $nav_materiais = "";
+        $tab_materiais = "";
+        $nav_anexo = "";
+        $tab_anexo = "";
     } else if (isset($_POST['tabRack'])) {
         $tab_informacoes = "";
         $nav_informacoes = "";
@@ -39,6 +51,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         $nav_equipamentos = "";
         $tab_vistoria = "";
         $nav_vistoria = "";
+        $nav_arCondicionado = "";
+        $tab_arCondicionado = "";
+        $nav_materiais = "";
+        $tab_materiais = "";
+        $nav_anexo = "";
+        $tab_anexo = "";
     } else if (isset($_POST['tabEquipamentos'])) {
         $tab_informacoes = "";
         $nav_informacoes = "";
@@ -50,6 +68,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         $nav_equipamentos = "active";
         $tab_vistoria = "";
         $nav_vistoria = "";
+        $nav_arCondicionado = "";
+        $tab_arCondicionado = "";
+        $nav_materiais = "";
+        $tab_materiais = "";
+        $nav_anexo = "";
+        $tab_anexo = "";
     } else if (isset($_POST['tabVistoria'])) {
         $tab_informacoes = "";
         $nav_informacoes = "";
@@ -61,6 +85,63 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         $nav_equipamentos = "";
         $tab_vistoria = "show active";
         $nav_vistoria = "active";
+        $nav_arCondicionado = "";
+        $tab_arCondicionado = "";
+        $nav_materiais = "";
+        $tab_materiais = "";
+        $nav_anexo = "";
+        $tab_anexo = "";
+    } else if (isset($_POST['tabArCondicionado'])) {
+        $tab_informacoes = "";
+        $nav_informacoes = "";
+        $tab_energia = "";
+        $nav_energia = "";
+        $tab_rack = "";
+        $nav_rack = "";
+        $tab_equipamentos = "";
+        $nav_equipamentos = "";
+        $tab_vistoria = "";
+        $nav_vistoria = "";
+        $nav_arCondicionado = "show active";
+        $tab_arCondicionado = "active";
+        $nav_materiais = "";
+        $tab_materiais = "";
+        $nav_anexo = "";
+        $tab_anexo = "";
+    } else if (isset($_POST['tabMateriais'])) {
+        $tab_informacoes = "";
+        $nav_informacoes = "";
+        $tab_energia = "";
+        $nav_energia = "";
+        $tab_rack = "";
+        $nav_rack = "";
+        $tab_equipamentos = "";
+        $nav_equipamentos = "";
+        $tab_vistoria = "";
+        $nav_vistoria = "";
+        $nav_arCondicionado = "";
+        $tab_arCondicionado = "";
+        $nav_materiais = "show active";
+        $tab_materiais = "active";
+        $nav_anexo = "";
+        $tab_anexo = "";
+    } else if (isset($_POST['tabAnexo'])) {
+        $tab_informacoes = "";
+        $nav_informacoes = "";
+        $tab_energia = "";
+        $nav_energia = "";
+        $tab_rack = "";
+        $nav_rack = "";
+        $tab_equipamentos = "";
+        $nav_equipamentos = "";
+        $tab_vistoria = "";
+        $nav_vistoria = "";
+        $nav_arCondicionado = "";
+        $tab_arCondicionado = "";
+        $nav_materiais = "";
+        $tab_materiais = "";
+        $nav_anexo = "show active";
+        $tab_anexo = "active";
     }
 } else {
     $tab_informacoes = "show active";
@@ -73,6 +154,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     $nav_equipamentos = "";
     $tab_vistoria = "";
     $nav_vistoria = "";
+    $nav_arCondicionado = "";
+    $tab_arCondicionado = "";
+    $nav_materiais = "";
+    $tab_materiais = "";
+    $nav_anexo = "";
+    $tab_anexo = "";
 }
 
 $sql_pop =
@@ -191,7 +278,7 @@ v.date DESC";
 $r_datas_vistorias = mysqli_query($mysqli, $sql_datas_vistorias);
 ?>
 
-<main id="main" class="main"> 
+<main id="main" class="main">
 
     <section class="section">
         <div class="row">
@@ -206,15 +293,31 @@ $r_datas_vistorias = mysqli_query($mysqli, $sql_datas_vistorias);
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link <?= $nav_informacoes ?>" id="informacoes-tab" data-bs-toggle="tab" data-bs-target="#informacoes" type="button" role="tab" aria-controls="informacoes" aria-selected="true">Informacoes</button>
                             </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link <?= $nav_energia ?>" id="energia-tab" data-bs-toggle="tab" data-bs-target="#energia" type="button" role="tab" aria-controls="energia" aria-selected="false">Energia</button>
-                            </li>
+
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link <?= $nav_rack ?>" id="rack-tab" data-bs-toggle="tab" data-bs-target="#rack" type="button" role="tab" aria-controls="rack" aria-selected="false" tabindex="-1">Rack</button>
                             </li>
+
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link <?= $nav_equipamentos ?>" id="equipamentos-tab" data-bs-toggle="tab" data-bs-target="#equipamentos" type="button" role="tab" aria-controls="equipamentos" aria-selected="false" tabindex="-1">Equipamentos</button>
                             </li>
+
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link <?= $nav_energia ?>" id="energia-tab" data-bs-toggle="tab" data-bs-target="#energia" type="button" role="tab" aria-controls="energia" aria-selected="false">Energia</button>
+                            </li>
+
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link <?= $nav_arCondicionado ?>" id="arCondicionado-tab" data-bs-toggle="tab" data-bs-target="#arCondicionado" type="button" role="tab" aria-controls="arCondicionado" aria-selected="false">Ar Condicionado</button>
+                            </li>
+
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link <?= $nav_materiais ?>" id="materiais-tab" data-bs-toggle="tab" data-bs-target="#materiais" type="button" role="tab" aria-controls="materiais" aria-selected="false">Materiais</button>
+                            </li>
+
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link <?= $nav_anexo ?>" id="anexo-tab" data-bs-toggle="tab" data-bs-target="#anexo" type="button" role="tab" aria-controls="anexo" aria-selected="false">Anexos</button>
+                            </li>
+
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link <?= $nav_vistoria ?>" id="vistoria-tab" data-bs-toggle="tab" data-bs-target="#vistoria" type="button" role="tab" aria-controls="vistoria" aria-selected="false" tabindex="-1">Vistoria</button>
                             </li>
@@ -223,15 +326,32 @@ $r_datas_vistorias = mysqli_query($mysqli, $sql_datas_vistorias);
                             <div class="tab-pane fade <?= $tab_informacoes ?>" id="informacoes" role="tabpanel" aria-labelledby="informacoes-tab">
                                 <?php require "tabs/informacoes.php" ?>
                             </div>
-                            <div class="tab-pane fade <?= $tab_energia ?>" id="energia" role="tabpanel" aria-labelledby="energia-tab">
-                                <?php require "tabs/energia.php" ?>
-                            </div>
+
                             <div class="tab-pane fade <?= $tab_rack ?>" id="rack" role="tabpanel" aria-labelledby="rack-tab">
                                 <?php require "tabs/rack.php" ?>
                             </div>
+
                             <div class="tab-pane fade <?= $tab_equipamentos ?>" id="equipamentos" role="tabpanel" aria-labelledby="equipamentos-tab">
                                 <?php require "tabs/equipamentos.php" ?>
                             </div>
+
+                            <div class="tab-pane fade <?= $tab_energia ?>" id="energia" role="tabpanel" aria-labelledby="energia-tab">
+                                <?php require "tabs/energia.php" ?>
+                            </div>
+
+                            <div class="tab-pane fade <?= $tab_arCondicionado ?>" id="arCondicionado" role="tabpanel" aria-labelledby="arCondicionado-tab">
+                                <?php require "tabs/arCondicionado.php" ?>
+                            </div>
+
+                            <div class="tab-pane fade <?= $tab_materiais ?>" id="materiais" role="tabpanel" aria-labelledby="materiais-tab">
+                                <?php require "tabs/materiais.php" ?>
+                            </div>
+
+                            <div class="tab-pane fade <?= $tab_anexo ?>" id="anexo" role="tabpanel" aria-labelledby="anexo-tab">
+                                <?php require "tabs/anexo.php" ?>
+                            </div>
+
+
                             <div class="tab-pane fade <?= $tab_vistoria ?>" id="vistoria" role="tabpanel" aria-labelledby="vistoria-tab">
                                 <?php require "tabs/vistoria.php" ?>
                             </div>

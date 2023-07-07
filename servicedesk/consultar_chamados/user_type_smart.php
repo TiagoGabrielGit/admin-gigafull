@@ -191,8 +191,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                                                             tc.id as idTipo,
                                                                             tc.tipo as tipoChamado,
                                                                             tc.permite_data_entrega as 'permite_data_entrega',
-                                                                            tc.horas_prazo_entrega as 'horas_prazo_entrega',
-                                                                            tc.permite_atendente_abertura as 'permite_atendente_abertura'
+                                                                            tc.horas_prazo_entrega as 'horas_prazo_entrega'
                                                                             FROM
                                                                             tipos_chamados as tc
                                                                             LEFT JOIN
@@ -217,8 +216,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                                                     tc.id as idTipo,
                                                                     tc.tipo as tipoChamado,
                                                                     tc.permite_data_entrega as 'permite_data_entrega',
-                                                                    tc.horas_prazo_entrega as 'horas_prazo_entrega',
-                                                                    tc.permite_atendente_abertura as 'permite_atendente_abertura'
+                                                                    tc.horas_prazo_entrega as 'horas_prazo_entrega'
                                                                     FROM
                                                                     tipos_chamados as tc
                                                                     LEFT JOIN
@@ -248,8 +246,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                                                             tc.id as idTipo,
                                                                             tc.tipo as tipoChamado,
                                                                             tc.permite_data_entrega as 'permite_data_entrega',
-                                                                            tc.horas_prazo_entrega as 'horas_prazo_entrega',
-                                                                            tc.permite_atendente_abertura as 'permite_atendente_abertura'
+                                                                            tc.horas_prazo_entrega as 'horas_prazo_entrega'
                                                                             FROM
                                                                             tipos_chamados as tc
                                                                             LEFT JOIN
@@ -281,18 +278,12 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                                                 $r_lista_tipos_chamados = mysqli_query($mysqli, $lista_tipos_chamados);
 
                                                                 while ($tipos_chamados = mysqli_fetch_object($r_lista_tipos_chamados)) {
-                                                                    $permite_atendente_abertura = $tipos_chamados->permite_atendente_abertura;
                                                                     $permite_data_entrega = $tipos_chamados->permite_data_entrega;
                                                                     $data_permitida = $permite_data_entrega ? '1' : '0';
                                                                     $horas_prazo_entrega = $tipos_chamados->horas_prazo_entrega;
 
+                                                                    echo "<option value='$tipos_chamados->idTipo' data-permite-data-entrega='$data_permitida' data-horas-prazo-entrega='$horas_prazo_entrega' data-nao-permite-atendente>$tipos_chamados->tipoChamado</option>";
 
-                                                                    // Verifica se permite atendente de abertura
-                                                                    if ($permite_atendente_abertura == 1) {
-                                                                        echo "<option value='$tipos_chamados->idTipo' data-permite-data-entrega='$data_permitida' data-horas-prazo-entrega='$horas_prazo_entrega'>$tipos_chamados->tipoChamado</option>";
-                                                                    } else {
-                                                                        echo "<option value='$tipos_chamados->idTipo' data-permite-data-entrega='$data_permitida' data-horas-prazo-entrega='$horas_prazo_entrega' data-nao-permite-atendente>$tipos_chamados->tipoChamado</option>";
-                                                                    }
 
                                                                     if ($tipos_chamados->permite_data_entrega == 1) {
                                                                         $data_minima = date('Y-m-d H:i', strtotime("+ $horas_prazo_entrega hours"));
@@ -314,12 +305,66 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                                                 <option disabled selected value="">Selecione um serviço</option>
                                                             </select>
                                                         </div>
-                                                        <div class="col-6" id="selectAtendente" style="display: none;">
-                                                            <label for="selectAtendente" class="form-label">Atendente</label>
-                                                            <select class="form-select" id="selectAtendente" name="selectAtendente">
-                                                                <option disabled selected value="">Selecione o atendente</option>
-                                                                <?php
-                                                                $sql_atendentes = "SELECT
+
+                                                        <?php if ($_SESSION['permissao_selecionar_solicitante'] == 1) { ?>
+                                                            <div class="col-6">
+                                                                <label for="selectSolicitante" class="form-label">Solicitante</label>
+                                                                <select class="form-select" id="selectSolicitante" name="selectSolicitante">
+                                                                    <option disabled selected value="">Selecione o solicitante</option>
+                                                                    <?php
+                                                                    // Verifique se $pdo está inicializado corretamente
+                                                                    if ($pdo) {
+                                                                        $sql_solicitante = "SELECT
+                                                                    u.id as 'idUsuario',
+                                                                    p.nome as 'solicitante'
+                                                                    FROM
+                                                                    usuarios as u
+                                                                    LEFT JOIN
+                                                                    pessoas as p
+                                                                    ON
+                                                                    p.id = u.pessoa_id
+                                                                    WHERE
+                                                                    u.active = 1
+                                                                    and
+                                                                    u.tipo_usuario = 1
+                                                                    ORDER BY
+                                                                    p.nome ASC";
+
+                                                                        try {
+                                                                            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                                                                            // Execute a consulta SQL e verifique se foi bem-sucedida
+                                                                            if ($stmt = $pdo->query($sql_solicitante)) {
+                                                                                $resultadoSolicitante = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                                                                foreach ($resultadoSolicitante as $rowSolicitante) {
+                                                                                    $idUsuario = $rowSolicitante['idUsuario'];
+                                                                                    $solicitante = $rowSolicitante['solicitante'];
+                                                                                    echo "<option value='$idUsuario'>$solicitante</option>";
+                                                                                }
+                                                                            } else {
+                                                                                echo "Erro ao executar a consulta SQL.";
+                                                                            }
+                                                                        } catch (PDOException $e) {
+                                                                            echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
+                                                                        }
+                                                                    } else {
+                                                                        echo "Erro ao conectar ao banco de dados.";
+                                                                    }
+                                                                    ?>
+                                                                </select>
+                                                            </div>
+                                                        <?php } ?>
+
+                                                        <?php if ($_SESSION['permissao_selecionar_atendente'] == 1) { ?>
+                                                            <div class="col-6">
+                                                                <label for="selectAtendente" class="form-label">Atendente</label>
+                                                                <select class="form-select" id="selectAtendente" name="selectAtendente">
+                                                                    <option disabled selected value="">Selecione o atendente</option>
+                                                                    <?php
+                                                                    // Verifique se $pdo está inicializado corretamente
+                                                                    if ($pdo) {
+                                                                        $sql_atendentes = "SELECT
                                                                     u.id as 'idUsuario',
                                                                     p.nome as 'atendente'
                                                                     FROM
@@ -335,27 +380,32 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                                                     ORDER BY
                                                                     p.nome ASC";
 
-                                                                try {
-                                                                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                                                                        try {
+                                                                            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                                                                    $stmt = $pdo->query($sql_atendentes);
-                                                                    $resultadoAtendente = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                                                            // Execute a consulta SQL e verifique se foi bem-sucedida
+                                                                            if ($stmt = $pdo->query($sql_atendentes)) {
+                                                                                $resultadoAtendente = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                                                                    foreach ($resultadoAtendente as $rowAtendente) {
-                                                                        $idUsuario = $rowAtendente['idUsuario'];
-                                                                        $atendente = $rowAtendente['atendente'];
-                                                                        echo "<option value=\"$idUsuario\">$atendente</option>";
+                                                                                foreach ($resultadoAtendente as $rowAtendente) {
+                                                                                    $idUsuario = $rowAtendente['idUsuario'];
+                                                                                    $atendente = $rowAtendente['atendente'];
+
+                                                                                    echo "<option value='$idUsuario'>$atendente</option>";
+                                                                                }
+                                                                            } else {
+                                                                                echo "Erro ao executar a consulta SQL.";
+                                                                            }
+                                                                        } catch (PDOException $e) {
+                                                                            echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
+                                                                        }
+                                                                    } else {
+                                                                        echo "Erro ao conectar ao banco de dados.";
                                                                     }
-                                                                } catch (PDOException $e) {
-                                                                    echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
-                                                                }
-
-                                                                // Feche a conexão com o banco de dados
-                                                                $pdo = null;
-                                                                ?>
-                                                            </select>
-                                                        </div>
-
+                                                                    ?>
+                                                                </select>
+                                                            </div>
+                                                        <?php } ?>
 
                                                         <div class="col-6" id="selectDataConclusao" style="display: none;">
                                                             <label for="dataConclusao" class="form-label">Data de conclusão esperada</label>

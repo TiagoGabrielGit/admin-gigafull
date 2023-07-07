@@ -42,20 +42,6 @@
         </div>
         <div class="col-lg-12">
             <div class="row mb-3">
-                <label class="col-sm-5 col-form-label">Permite selecionar atendente na abertura</label>
-                <div class="col-sm-2">
-
-                    <select name="selectAtendenteAbertura" id="selectAtendenteAbertura" class="form-select" aria-label="Default select example">
-                        <option value="1" <?= ($c_tipo_chamado['permite_atendente_abertura'] == "1") ? "selected" : "" ?>>Sim</option>
-                        <option value="0" <?= ($c_tipo_chamado['permite_atendente_abertura'] == "0") ? "selected" : "" ?>>Não</option>
-                    </select>
-
-
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="row mb-3">
                 <label class="col-sm-5 col-form-label">Permite selecionar data de entrega</label>
                 <div class="col-sm-2">
                     <select name="selectEntrega" id="selectEntrega" class="form-select" aria-label="Default select example">

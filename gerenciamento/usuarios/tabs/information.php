@@ -285,6 +285,50 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="permissaoSelecionaSolicitante" class="form-label"><b>Permite selecionar solicitante na abertura de um chamado</b></label>
+                            <select name="permissaoSelecionaSolicitante" id="permissaoSelecionaSolicitante" class="form-select" required>
+                                <?php
+                                if ($campos['permissao_selecionar_solicitante'] == 1) { ?>
+                                    <option selected value="1">Sim</option>
+                                    <option value="0">Não</option>
+                                <?php } else if ($campos['permissao_selecionar_solicitante'] == 0) { ?>
+                                    <option value="1">Sim</option>
+                                    <option selected value="0">Não</option>
+                                <?php } else { ?>
+                                    <option selected disabled value="">Selecione uma opção</option>
+                                    <option value="1">Sim</option>
+                                    <option value="0">Não</option>
+                                <?php }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="permissaoSelecionaAtendente" class="form-label"><b>Permite selecionar atentende na abertura de um chamado</b></label>
+                            <select name="permissaoSelecionaAtendente" id="permissaoSelecionaAtendente" class="form-select" required>
+                                <?php
+                                if ($campos['permissao_selecionar_atendente'] == 1) { ?>
+                                    <option selected value="1">Sim</option>
+                                    <option value="0">Não</option>
+                                <?php } else if ($campos['permissao_selecionar_atendente'] == 0) { ?>
+                                    <option value="1">Sim</option>
+                                    <option selected value="0">Não</option>
+                                <?php } else { ?>
+                                    <option selected disabled value="">Selecione uma opção</option>
+                                    <option value="1">Sim</option>
+                                    <option value="0">Não</option>
+                                <?php }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+
+
                 <?php } ?>
             </div>
             <div class="col-lg-6">

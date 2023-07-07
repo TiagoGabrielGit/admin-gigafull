@@ -2,7 +2,6 @@
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	if (
-		!isset($_POST['selectAtendenteAbertura']) || $_POST['selectAtendenteAbertura'] === '' ||
 		!isset($_POST['selectEntrega']) || $_POST['selectEntrega'] === '' ||
 		!isset($_POST['id']) || $_POST['id'] === '' ||
 		!isset($_POST['tipoChamadoEdit']) || $_POST['tipoChamadoEdit'] === '' ||
@@ -14,7 +13,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$id = $_POST['id'];
 		$tipo = $_POST['tipoChamadoEdit'];
 		$situacao = $_POST['situacao'];
-		$permite_atendente_abertura = $_POST['selectAtendenteAbertura'];
 		$permite_data_entrega = $_POST['selectEntrega'];
 
 		if ($permite_data_entrega == 1) {
@@ -27,12 +25,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 					'id' => $id,
 					'tipo' => $tipo,
 					'active' => $situacao,
-					'permite_atendente_abertura' => $permite_atendente_abertura,
 					'permite_data_entrega' => $permite_data_entrega,
 					'horas_prazo_entrega' => $horas_prazo_entrega,
 				];
 
-				$sql = "UPDATE tipos_chamados SET permite_atendente_abertura=:permite_atendente_abertura, permite_data_entrega=:permite_data_entrega, horas_prazo_entrega=:horas_prazo_entrega, tipo=:tipo, active=:active WHERE id=:id";
+				$sql = "UPDATE tipos_chamados SET permite_data_entrega=:permite_data_entrega, horas_prazo_entrega=:horas_prazo_entrega, tipo=:tipo, active=:active WHERE id=:id";
 				$stmt1 = $pdo->prepare($sql);
 
 				if ($stmt1->execute($data)) {
@@ -48,12 +45,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				'id' => $id,
 				'tipo' => $tipo,
 				'active' => $situacao,
-				'permite_atendente_abertura' => $permite_atendente_abertura,
 				'permite_data_entrega' => $permite_data_entrega,
 				'horas_prazo_entrega' => $horas_prazo_entrega,
 			];
 
-			$sql = "UPDATE tipos_chamados SET permite_atendente_abertura=:permite_atendente_abertura, permite_data_entrega=:permite_data_entrega, horas_prazo_entrega=:horas_prazo_entrega, tipo=:tipo, active=:active WHERE id=:id";
+			$sql = "UPDATE tipos_chamados SET permite_data_entrega=:permite_data_entrega, horas_prazo_entrega=:horas_prazo_entrega, tipo=:tipo, active=:active WHERE id=:id";
 			$stmt1 = $pdo->prepare($sql);
 
 			if ($stmt1->execute($data)) {

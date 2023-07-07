@@ -14,8 +14,11 @@
             if (retornaCadastrarPessoa.includes("Error")) {
                 // Lógica para tratar o erro, se necessário
             } else {
-                // Limpar os campos
-                $('#cadastraPessoa')[0].reset();
+                // Fechar o modal
+                $('#basicModal').modal('hide');
+
+                // Atualizar a página
+                location.reload();
             }
 
             //Apresentar a mensagem leve
@@ -65,7 +68,7 @@
 </script>
 
 <script>
- function buscarEnderecoPorCep() {
+    function buscarEnderecoPorCep() {
         var cep = document.getElementById('cep').value;
 
         // Fazer a chamada à API de CEP

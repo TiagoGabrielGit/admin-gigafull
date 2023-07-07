@@ -38,8 +38,12 @@ if (empty($_POST['selectService'])) {
             echo "<p style='color:red;'>Error: Dados obrigatórios não preenchidos.</p>";
         } else {
 
+            if (isset($_POST['selectSolicitante'])) {
+                $solicitante_id = $_POST['selectSolicitante'];
+            } else {
+                $solicitante_id = $_POST['solicitante'];
+            }
             $assuntoChamado = $_POST['assuntoChamado'];
-            $solicitante_id = $_POST['solicitante'];
             $relator_id = $_POST['solicitante'];
             $empresa_id = $_POST['empresaChamado'];
             $relato = $_POST['relatoChamado'];
@@ -138,8 +142,14 @@ if (empty($_POST['selectService'])) {
         if (empty($_POST['assuntoChamado']) || empty($_POST['tipoChamado']) || empty($_POST['solicitante']) || empty($_POST['solicitante']) || empty($_POST['empresaChamado']) || empty($_POST['relatoChamado']) || empty($_POST['selectService'])) {
             echo "<p style='color:red;'>Error: Dados obrigatórios não preenchidos.</p>";
         } else {
+
+            if (isset($_POST['selectSolicitante'])) {
+                $solicitante_id = $_POST['selectSolicitante'];
+            } else {
+                $solicitante_id = $_POST['solicitante'];
+            }
+
             $assuntoChamado = $_POST['assuntoChamado'];
-            $solicitante_id = $_POST['solicitante'];
             $relator_id = $_POST['solicitante'];
             $empresa_id = $_POST['empresaChamado'];
             $relato = $_POST['relatoChamado'];

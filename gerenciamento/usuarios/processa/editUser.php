@@ -32,6 +32,8 @@ require "../../../conexoes/conexao.php";
         $permissaoEncaminharChamados = $_POST['permissaoEncaminharChamados'];
         $permissaoInteressadosChamados = $_POST['permissaoInteressadosChamados'];
         $permissaoSelecionarCompetencias = $_POST['permissaoSelecionarCompetencias'];
+        $permissaoSelecionaSolicitante = $_POST['permissaoSelecionaSolicitante'];
+        $permissaoSelecionaAtendente = $_POST['permissaoSelecionaAtendente'];
 
         $notificaEmailAbertura = $_POST['notificaEmailAbertura'];
         $notificaEmailEncaminhamento = $_POST['notificaEmailEncaminhamento'];
@@ -41,7 +43,7 @@ require "../../../conexoes/conexao.php";
 
         $empresaID = $_POST['empresaSelect'];
 
-        $resultEditUser = "UPDATE usuarios SET notify_email_execucao='$notificaEmailExecucao', notify_email_abertura='$notificaEmailAbertura', notify_email_encaminhamento='$notificaEmailEncaminhamento', notify_email_relatos='$notificaEmailRelatos', notify_email_apropriacao='$notificaEmailApropriação', permissao_selecionar_competencias='$permissaoSelecionarCompetencias', permissao_visualiza_chamado='$permissaoVisualizaChamado', 
+        $resultEditUser = "UPDATE usuarios SET permissao_selecionar_atendente='$permissaoSelecionaAtendente', permissao_selecionar_solicitante='$permissaoSelecionaSolicitante', notify_email_execucao='$notificaEmailExecucao', notify_email_abertura='$notificaEmailAbertura', notify_email_encaminhamento='$notificaEmailEncaminhamento', notify_email_relatos='$notificaEmailRelatos', notify_email_apropriacao='$notificaEmailApropriação', permissao_selecionar_competencias='$permissaoSelecionarCompetencias', permissao_visualiza_chamado='$permissaoVisualizaChamado', 
         permissao_chamado='$permissaoAberturaChamado', notify_email='$notEmail', empresa_id='$empresaID',
         tipo_usuario='1', perfil_id='$perfil', active='$active', modificado=NOW(), permissao_abrir_chamado='$permissaoAbrirChamado',
         permissao_apropriar_chamado='$permissaoApropriarChamados', permissao_encaminhar_chamado='$permissaoEncaminharChamados', permissao_interessados_chamados='$permissaoInteressadosChamados' WHERE id='$id'"

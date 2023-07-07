@@ -10,7 +10,6 @@ $sql_tipo_chamado =
 tc.id as id_tipo,
 tc.tipo as nome_tipo,
 tc.horas_prazo_entrega as tempo_entrega,
-tc.permite_atendente_abertura as permite_atendente_abertura,
 tc.permite_data_entrega as permite_data_entrega,
 CASE
     WHEN tc.active = 1 THEN 'Ativado'

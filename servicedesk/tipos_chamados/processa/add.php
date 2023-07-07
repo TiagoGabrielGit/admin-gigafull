@@ -9,8 +9,8 @@ if (empty($_POST['tipoChamado'])) {
 
     $cont_insert1 = false;
 
-    $sql = "INSERT INTO tipos_chamados (tipo, permite_atendente_abertura, permite_data_entrega, horas_prazo_entrega, active) 
-        VALUES (:tipo, '0', '0', '0', '1')";
+    $sql = "INSERT INTO tipos_chamados (tipo, permite_data_entrega, horas_prazo_entrega, active) 
+        VALUES (:tipo, '0', '0', '1')";
     $stmt1 = $pdo->prepare($sql);
     $stmt1->bindParam(':tipo', $tipo);
 

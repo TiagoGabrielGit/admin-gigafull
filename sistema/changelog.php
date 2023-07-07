@@ -18,26 +18,28 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading8-5">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse8-5" aria-expanded="false" aria-controls="collapse8-5">
-                    Versão 8.5 - 06/07/2023
+                    Versão 8.5 - 07/07/2023
                   </button>
                 </h2>
                 <div id="collapse8-5" class="accordion-collapse collapse" aria-labelledby="heading8-5" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
+                    # Anexo de imagens em POPs;<br>
+                    # Permitir usuário selecionar solicitante na abertura do chamado;<br>
+                    # Permitir usuário selecionar atendente na abertura do chamado;<br>
+                    # Fechar o modal cadastro de pessoa após cadastrar nova pessoa;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
+                    # Criado a coluna "permissao_selecionar_solicitante" na tabela "usuarios";<br>
+                    # Criado a coluna "permissao_selecionar_atendente" na tabela "usuarios";<br>
+                    # Excluido a coluna "permite_atendente_abertura" na tabela "tipos_chamados";<br>
+
 
                     <br><strong>Backlog</strong><br>
-                    # Permitir usuário selecionar solicitante na abertura do chamado;<br>
-                    # Permitir no tipo de chamado selecionar solicitante na abertura do chamado;<br>
-                    # Permitir usuário selecionar atendente na abertura do chamado;<br>
                     # Cancelar um relato em execução;<br>
-                    # Fechar o modal cadastro de pessoa após cadastrar nova pessoa;<br>
                     # Revisão geral no cadastro de usuário e invites;<br>
                     # Envio de sugestões;<br>
-                    # Solicitante Cliente especificar para quando quer pronto um chamado;<br>
-                    # Solicitante Tenant especificar para quando quer pronto um chamado;<br>
                     # Resetar senha pelo acesso usuário;<br>
                     # Selecionar publico ou privado no relato avulso;<br>
                     # Editar consulta sql e excluir/inativar;<br>
@@ -53,7 +55,6 @@ require "../includes/menu.php";
                     # Adequação incidentes cliente;<br>
                     # Vinculo de chamado a incidente;<br>
                     # Anexo arquivos em chamados;<br>
-                    # Anexo arquivos em vistorias;<br>
                     # Permissões em documentações;<br>
                     # Relatar em chamado já existente ao invés de abrir outro via integração Zabbix;<br>
                     # Mostrar LOG de alteração e criação de registros por usuário;<br>
