@@ -1,14 +1,27 @@
 <div class="card-body">
-    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="novaVistoria-tab" data-bs-toggle="tab" data-bs-target="#novaVistoria" type="button" role="tab" aria-controls="novaVistoria" aria-selected="true">Nova Vistoria</button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="realizadas-tab" data-bs-toggle="tab" data-bs-target="#realizadas" type="button" role="tab" aria-controls="realizadas" aria-selected="false" tabindex="-1">Vistorias Realizadas</button>
-        </li>
-    </ul>
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-8">
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="novaVistoria-tab" data-bs-toggle="tab" data-bs-target="#novaVistoria" type="button" role="tab" aria-controls="novaVistoria" aria-selected="true">Nova Vistoria</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="realizadas-tab" data-bs-toggle="tab" data-bs-target="#realizadas" type="button" role="tab" aria-controls="realizadas" aria-selected="false" tabindex="-1">Vistorias Realizadas</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-4">
+                <button class="btn btn-primary text-right" onclick="window.open('/tcpdf.php?id=<?= $idPOP ?>', '_blank')">Gerar Formulário de Vistoria</button>
+            </div>
+        </div>
+    </div>
+
+
     <div class="tab-content pt-2" id="myTabContent">
         <div class="tab-pane fade show active" id="novaVistoria" role="tabpanel" aria-labelledby="novaVistoria-tab">
+
+
 
             <form id="salvarVistoria" method="POST">
                 <span id="msgSalvarVistoria"></span>
