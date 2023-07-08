@@ -7,8 +7,8 @@ if (!isset($_SESSION["id"])) {
     exit;
 }
 
-require "tcpdf/tcpdf.php";
-require "conexoes/conexao_pdo.php";
+require "../tcpdf.php";
+require "../../conexoes/conexao_pdo.php";
 
 $idPOP = $_GET['id'];
 
@@ -69,7 +69,7 @@ try {
     $pdf->AddPage();
     $pdf->SetFont('helvetica', '', 12);
 
-    $pdf->Image('assets/img/logo.png', 10, 10, 20, 0, 'PNG');
+    $pdf->Image('../../assets/img/logo.png', 10, 10, 20, 0, 'PNG');
     $larguraImagem = 20; // Largura da imagem
 
     $tamanhoFonte = 20; // Tamanho da fonte do título

@@ -12,7 +12,7 @@
                 </ul>
             </div>
             <div class="col-4">
-                <button class="btn btn-primary text-right" onclick="window.open('/tcpdf.php?id=<?= $idPOP ?>', '_blank')">Gerar Formulário de Vistoria</button>
+                <button class="btn btn-primary text-right" onclick="window.open('/tcpdf/export/relatorio_vistorias.php?id=<?= $idPOP ?>', '_blank')">Gerar Formulário de Vistoria</button>
             </div>
         </div>
     </div>

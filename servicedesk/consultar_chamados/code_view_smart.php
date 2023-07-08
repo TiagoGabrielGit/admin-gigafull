@@ -155,6 +155,11 @@ if ($chamado['data_prevista_conclusao'] === null) {
                                         <button title="Não qualificado para atender" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalQualificacao"><i class="bi bi-award"></i></button>
                                     <?php  }
                                     ?>
+                                    <button title="Gerar relatório do chamado" type="button" class="btn btn-info">
+                                        <a href="/tcpdf/export/relatorio_chamados.php?id=<?= $id_chamado ?>" target="_blank">
+                                            <i class="bi bi-cloud-download"></i>
+                                        </a>
+                                    </button>
                                 </div>
                             </div>
                         </div>
