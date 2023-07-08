@@ -76,8 +76,8 @@ try {
             tc.tipo as 'tipo',
             TIME_FORMAT(SEC_TO_TIME(c.seconds_worked), '%H:%i:%s') as 'seconds_worked',
             CASE
-            WHEN C.status_id = 3 THEN 'Fechado'
-            WHEN C.status_id <> 3 THEN 'Em Andamento'
+            WHEN c.status_id = 3 THEN 'Fechado'
+            WHEN c.status_id <> 3 THEN 'Em Andamento'
             END as 'status'
         FROM 
             chamados as c
