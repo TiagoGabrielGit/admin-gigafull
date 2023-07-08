@@ -148,8 +148,26 @@ try {
         $pdf->SetFont('helvetica', 'B', 12);
         $pdf->Cell(0, 5, 'Descrição da abertura:', 0, 1, 'L');
         $pdf->SetFont('helvetica', '', 12);
-        $pdf->Cell(0, 5, $chamado['relato_inicial'], 0, 1, 'L');
-        $pdf->Ln(10); // Adiciona uma linha em branco
+        $pdf->MultiCell(0, 5, $chamado['relato_inicial'], 0, 'L');
+        $pdf->Ln(4); // Adiciona uma linha em branco
+
+
+
+        // Obtém as coordenadas atuais do cursor
+        $cursorX = $pdf->GetX();
+        $cursorY = $pdf->GetY();
+
+        // Define a posição inicial e final da linha horizontal
+        $lineStartX = $cursorX;
+        $lineStartY = $cursorY + 2;
+        $lineEndX = $pdf->getPageWidth() - 20; // Defina o valor desejado para a margem direita
+        $lineEndY = $lineStartY;
+
+        // Define a largura da linha
+        $pdf->SetLineWidth(0.2);
+
+        // Desenha a linha horizontal
+        $pdf->Line($lineStartX, $lineStartY, $lineEndX, $lineEndY);
 
         // Consulta os relatos do chamado usando Prepared Statements
         $stmtRelatos = $pdo->prepare(
@@ -171,17 +189,38 @@ try {
         $stmtRelatos->execute();
 
         $relatos = $stmtRelatos->fetchAll(PDO::FETCH_ASSOC);
-        $pdf->SetFont('helvetica', 'B', 12);
         if ($relatos) {
-            $pdf->Cell(0, 10, 'Relatos do chamado:', 0, 1, 'L');
-            $pdf->SetFont('helvetica', '', 12);
             foreach ($relatos as $relato) {
+                $pdf->Ln(6); // Adiciona uma linha em branco
+                $pdf->SetFont('helvetica', 'B', 12);
                 $pdf->Cell(0, 5, 'Relato' . ' #' . $relato['id_relato'], 0, 1, 'L');
+                $pdf->SetFont('helvetica', '', 12);
+
                 $pdf->Cell(0, 5, 'Horário: ' . $relato['relato_hora_inicial'] . ' à ' . $relato['relato_hora_final'], 0, 1, 'L');
                 $pdf->Cell(0, 5, 'Tempo trabalhado: ' . $relato['seconds_worked'], 0, 1, 'L');
-                $pdf->Cell(0, 5, '=> ' . $relato['relato'], 0, 1, 'L');
+                $pdf->Ln(6); // Adiciona uma linha em branco
+                $pdf->SetFont('helvetica', 'B', 12);
+                $pdf->Cell(0, 5, 'Descrição do relato', 0, 1, 'L');
+                $pdf->SetFont('helvetica', '', 12);
+                $pdf->Ln(2); // Adiciona uma linha em branco
+                $pdf->MultiCell(0, 5, $relato['relato'], 0, 'L');
                 $pdf->Ln(6); // Adiciona uma linha em branco
 
+                // Obtém as coordenadas atuais do cursor
+                $cursorX = $pdf->GetX();
+                $cursorY = $pdf->GetY();
+
+                // Define a posição inicial e final da linha horizontal
+                $lineStartX = $cursorX;
+                $lineStartY = $cursorY + 2;
+                $lineEndX = $pdf->getPageWidth() - 20; // Defina o valor desejado para a margem direita
+                $lineEndY = $lineStartY;
+
+                // Define a largura da linha
+                $pdf->SetLineWidth(0.2);
+
+                // Desenha a linha horizontal
+                $pdf->Line($lineStartX, $lineStartY, $lineEndX, $lineEndY);
             }
         }
     } else {
