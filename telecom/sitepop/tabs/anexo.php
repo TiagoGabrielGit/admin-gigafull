@@ -62,6 +62,12 @@
         echo "<img src='$dir/$file' alt='$file' width='$width' height='$height' />";
         echo "</a>";
         echo "<div class='image-caption'>$file</div>";
+
+        // Remove a barra extra no final do diretório
+        $dir = rtrim($dir, '/');
+
+        echo "<button class='btn btn-dark rounded-pill btn-sm' onclick='deleteImage(\"../$dir/$file\")'>Excluir</button>";
+
         echo "</div>";
       }
     }
@@ -171,6 +177,32 @@
     imageField.appendChild(removeButtonWrapper);
 
     imageFields.appendChild(imageField);
+  }
+
+  function deleteImage(imageUrl) {
+    if (confirm("Tem certeza de que deseja excluir esta imagem? " + imageUrl)) {
+      fetch('processa/delete_anexo.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            imageUrl: imageUrl
+          })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            location.reload();
+          } else {
+            alert('Falha ao excluir a imagem. Por favor, tente novamente.');
+          }
+        })
+        .catch(error => {
+          console.error('Erro ao excluir a imagem:', error);
+          alert('Ocorreu um erro ao excluir a imagem. Por favor, tente novamente.');
+        });
+    }
   }
 
   document.getElementById('uploadForm').addEventListener('submit', (event) => {

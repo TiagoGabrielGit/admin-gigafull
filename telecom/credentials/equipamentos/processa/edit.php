@@ -69,12 +69,12 @@ require "../../../../conexoes/conexao.php";
                 $inputTipoEquipamento = $_POST['inputTipoEquipamento'];
                 $inputIpAddress = $_POST['inputIpAddress'];
                 $inputStatus = $_POST['inputStatus'];
+                $privacidade = $_POST['privacidadeEquipamento'];
                 $anotacaoEquipamento = $_POST['anotacaoEquipamento'];
                 $usuario_id = $_SESSION['id'];
 
 
-
-                $result_update_eqpop = "UPDATE equipamentospop SET serialEquipamento='$serialEquipamento', portaTelnet='$portaTelnet', portaSSH='$portaSSH', portaWeb='$portaWeb', portaWinbox='$portaWinbox', anotacaoEquipamento='$anotacaoEquipamento', empresa_id='$inputEmpresa', pop_id='$inputPop', ipaddress='$inputIpAddress', hostname='$inputHostname', tipoEquipamento_id='$inputTipoEquipamento', equipamento_id='$inputEquipamento', statusEquipamento='$inputStatus', rack_id='$rack_id', modificado=NOW() WHERE id='$id'";
+                $result_update_eqpop = "UPDATE equipamentospop SET privacidade='$privacidade', serialEquipamento='$serialEquipamento', portaTelnet='$portaTelnet', portaSSH='$portaSSH', portaWeb='$portaWeb', portaWinbox='$portaWinbox', anotacaoEquipamento='$anotacaoEquipamento', empresa_id='$inputEmpresa', pop_id='$inputPop', ipaddress='$inputIpAddress', hostname='$inputHostname', tipoEquipamento_id='$inputTipoEquipamento', equipamento_id='$inputEquipamento', statusEquipamento='$inputStatus', rack_id='$rack_id', modificado=NOW() WHERE id='$id'";
                 $resultado_eqpop = mysqli_query($mysqli, $result_update_eqpop);
 
 
@@ -90,7 +90,7 @@ require "../../../../conexoes/conexao.php";
                                                         <?php echo $inputHostname; ?>
                                                 </div>
                                                 <div class="modal-footer">
-                                                        <a href="/telecom/credentials/equipamentos/view.php?id=<?=$id?>"><button type="button" class="btn btn-success">Ok</button></a>
+                                                        <a href="/telecom/credentials/equipamentos/view.php?id=<?= $id ?>"><button type="button" class="btn btn-success">Ok</button></a>
                                                 </div>
                                         </div>
                                 </div>
@@ -111,10 +111,10 @@ require "../../../../conexoes/conexao.php";
                                                 </div>
                                                 <div class="modal-body">
                                                         <?= $result_update_eqpop; ?> <>
-                                                        <?php echo $inputHostname; ?>
+                                                                <?php echo $inputHostname; ?>
                                                 </div>
                                                 <div class="modal-footer">
-                                                        <a href="/telecom/credentials/equipamentos/view.php?id=<?=$id?>"><button type="button" class="btn btn-danger">Ok</button></a>
+                                                        <a href="/telecom/credentials/equipamentos/view.php?id=<?= $id ?>"><button type="button" class="btn btn-danger">Ok</button></a>
                                                 </div>
                                         </div>
                                 </div>

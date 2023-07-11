@@ -4,11 +4,8 @@ require "sql_dashboard_1.php";
 
 <section class="section dashboard">
     <div class="row">
-
-        <!-- Left side columns -->
         <div class="col-lg-12">
             <div class="row">
-
                 <div class="col-xxl-3 col-md-6">
                     <div class="card info-card sales-card">
                         <div class="card-body">
@@ -42,7 +39,6 @@ require "sql_dashboard_1.php";
                         </div>
                     </div>
                 </div>
-
                 <div class="col-xxl-3 col-md-6">
                     <div class="card info-card revenue-card">
                         <div class="card-body">
@@ -75,7 +71,6 @@ require "sql_dashboard_1.php";
                         </div>
                     </div>
                 </div>
-
                 <div class="col-xxl-3 col-md-6">
                     <div class="card info-card customers-card">
                         <div class="card-body">
@@ -107,7 +102,6 @@ require "sql_dashboard_1.php";
                         </div>
                     </div>
                 </div>
-
                 <div class="col-xxl-3 col-md-6">
                     <div class="card info-card">
                         <div class="card-body">
@@ -136,8 +130,9 @@ require "sql_dashboard_1.php";
                 </div>
             </div>
         </div>
-
-        <div class="col-lg-8">
+    </div>
+    <div class="row">
+        <div class="col-lg-7">
             <div class="col-12">
                 <div class="card recent-sales overflow-auto">
                     <div class="card-body">
@@ -178,8 +173,67 @@ require "sql_dashboard_1.php";
                 </div>
             </div>
         </div>
+        <div class="col-lg-5">
+            <div class="card recent-sales overflow-auto">
+                <div class="card-body">
+                    <h5 class="card-title">POPs Atividades</h5>
+                    <table class="table table-striped" id="styleTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">POP</th>
+                                <th scope="col">Atividade</th>
+                                <th scope="col">Data</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php try {
+                                // Prepara a consulta SQL para buscar as atividades agendadas dos POPs
+                                $stmt = $pdo->prepare("SELECT 
+                                CASE
+                                WHEN pap.status = 1 THEN 'Programada'
+                                END as status,
+                                CASE
+                                WHEN pap.atividade_id = 1 THEN 'Manutenção de Ar Condicionado'
+                                WHEN pap.atividade_id = 2 THEN 'Troca de Bateria'
+                                WHEN pap.atividade_id = 3 THEN 'Vistoria de POP'
+                                END as atividade,
+                                p.pop as pop, 
+                                DATE_FORMAT(pap.date, '%d %m %Y') as data
+                                FROM 
+                                    pop_atividade_programada as pap
+                                LEFT JOIN
+                                    pop as p
+                                ON
+                                    p.id = pap.pop_id
+                                WHERE
+                                    pap.status = 1
+                                ORDER BY data ASC");
 
-        <div class="col-lg-4">
+                                // Executa a consulta
+                                $stmt->execute();
+
+                                // Obtém os resultados da consulta
+                                $atividades = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                // Exibe os resultados na tabela
+                                foreach ($atividades as $atividade) {
+                                    echo '<tr>';
+
+                                    echo '<td>' . $atividade['pop'] . '</td>';
+                                    echo '<td>' . $atividade['atividade'] . '</td>';
+                                    echo '<td>' . $atividade['data'] . '</td>';
+                                    echo '<td>' . $atividade['status'] . '</td>';
+                                    echo '</tr>';
+                                }
+                            } catch (PDOException $e) {
+                                echo "Erro ao buscar as atividades agendadas: " . $e->getMessage();
+                            } ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <div class="card recent-sales overflow-auto">
                 <div class="card-body">
                     <h5 class="card-title">RN - ONUs Por Parceiro</h5>
@@ -203,8 +257,7 @@ require "sql_dashboard_1.php";
                     </table>
                 </div>
             </div>
+
         </div>
-
-
     </div>
 </section>

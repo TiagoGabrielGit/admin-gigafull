@@ -1,0 +1,164 @@
+<div class="col-lg-12">
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Programar Atividade</h5>
+                        <form method="POST" action="processa/add_atividade_programada.php">
+                            <input readonly hidden name="atividade_popid" id="atividade_popid" value="<?= $idPOP ?>"></input>
+                            <div class="col-12">
+                                <label class="form-label">Atividade</label>
+                                <select name="atividade_atividade" id="atividade_atividade" class="form-select" required>
+                                    <option disabled value="" selected="">Selecione uma atividade</option>
+                                    <option value="1">Manutenção Ar Condicionado</option>
+                                    <option value="2">Troca de Bateria</option>
+                                    <option value="3">Vistoria de POP</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Data Agendamento</label>
+                                <input name="atividade_data_agendamento" id="atividade_data_agendamento" type="date" class="form-control" required></input>
+                            </div>
+                            <br>
+                            <div class="text-center">
+                                <button class="btn btn-danger" type="submit">Agendar Atividade</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Atividades Programadas</h5>
+
+                    <table class="table datatable">
+                        <thead>
+                            <!-- ... -->
+                        </thead>
+                        <tbody>
+                            <?php
+                            try {
+                                // Sua conexão com o banco de dados já deve estar estabelecida aqui
+
+                                // Prepara a instrução SQL de seleção
+                                $stmt = $pdo->prepare(
+                                    "SELECT
+                                        id as id,
+                                        CASE
+                                        WHEN pap.atividade_id = 1 THEN 'Manutenção de Ar Condicionado'
+                                        WHEN pap.atividade_id = 2 THEN 'Troca de Bateria'
+                                        WHEN pap.atividade_id = 3 THEN 'Vistoria POP'
+                                        END as atividade, 
+                                        date, 
+                                        case
+                                        WHEN pap.statuS = 1 THEN 'Programada'
+                                        WHEN pap.statuS = 2 THEN 'Cancelada'
+                                        WHEN pap.statuS = 3 THEN 'Executada'
+                                        END as status
+                                    FROM 
+                                        pop_atividade_programada as pap
+                                    WHERE 
+                                        pap.pop_id = $idPOP
+                                    ORDER BY
+                                        pap.date ASC"
+                                );
+
+                                // Executa a instrução SQL
+                                $stmt->execute();
+
+                                // Obtém os resultados da consulta
+                                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                // Itera sobre os resultados e gera as linhas da tabela
+                                foreach ($results as $row) {
+                                    echo "<tr>";
+                                    echo "<td>" . $row['atividade'] . "</td>";
+                                    $dataFormatada = date('d/m/Y', strtotime($row['date']));
+                                    echo "<td>" . $dataFormatada . "</td>";
+                                    echo "<td>" . $row['status'] . "</td>";
+                                    if ($row['status'] == 'Programada') {  ?>
+                                        <td>
+                                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalStatus_<?= $row['id'] ?>"><i class="bi bi-pencil-square"></i></button>
+                                        </td>
+                                    <?php } else {
+                                        echo "<td></td>";
+                                    }
+                                    echo "</tr>";
+
+                                    if ($row['status'] == 'Programada') { ?>
+                                        <div class="modal fade" id="modalStatus_<?= $row['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="modalStatusLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Alterar Status</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form method="POST" action="processa/status_atividade_programada.php">
+                                                            <input name="ap_pop_id" id="ap_pop_id" readonly hidden value="<?= $idPOP ?>" required></input>
+
+                                                            <input name="ap_id" id="ap_id" readonly hidden value="<?= $row['id'] ?>" required></input>
+                                                            <div class="col-12">
+                                                                <label class="form-label">Selecione o novo status</label>
+                                                                <select name="ap_status" id="ap_status" class="form-select" required>
+                                                                    <option disabled value="" selected>Selecione uma opção</option>
+                                                                    <option value="2">Cancelada</option>
+                                                                    <option value="3">Executada</option>
+                                                                </select>
+                                                            </div>
+                                                            <br>
+                                                            <div class="text-center">
+                                                                <button class="btn btn-danger" type="submit">Alterar Status</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                <?php }
+                                }
+                            } catch (PDOException $e) {
+                                echo "Erro ao consultar registros: " . $e->getMessage();
+                            }
+                                ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<?php
+$stmt = $pdo->prepare("SELECT melhoria_conhecida FROM pop_melhorias_conhecidas WHERE pop_id = :idPOP");
+$stmt->execute(array(':idPOP' => $idPOP));
+
+// Verifica se a consulta retornou algum resultado
+if ($stmt->rowCount() > 0) {
+    // Obtém a anotação encontrada
+    $anotacao = $stmt->fetch(PDO::FETCH_ASSOC)['melhoria_conhecida'];
+} else {
+    // Define uma anotação em branco
+    $anotacao = '';
+}
+?>
+
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Melhorias Conhecidas</h5>
+            <form method="POST" action="processa/pop_melhoria_conhecida.php">
+                <input name="mc_pop_id" id="mc_pop_id" readonly hidden value="<?= $idPOP ?>" required></input>
+                <div class="col-12">
+                    <label for="melhoriasConhecidas" class="form-label">Anotações</label>
+                    <textarea id="melhoriasConhecidas" name="melhoriasConhecidas" class="form-control" maxlength="100000" rows="7"><?= $anotacao ?></textarea>
+                </div>
+                <br>
+                <button type="submit" class="btn btn-danger">Salvar Anotação</button>
+            </form>
+        </div>
+    </div>
+</div>

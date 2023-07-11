@@ -34,6 +34,8 @@ require "../../../../conexoes/conexao.php";
         $cadastroVCPU = $_POST['VMcadastroVCPU'];
         $cadastroDisco1 = $_POST['VMcadastroDisco1'];
         $cadastroDisco2 = $_POST['VMcadastroDisco2'];
+        $privacidade = "1";
+        $idUsuario = $_SESSION['id'];
 
         if (empty($_POST['VMcadastroVLAN'])) {
             $cadastroVLAN = $_POST['VMcadastroVLAN'];
@@ -42,7 +44,8 @@ require "../../../../conexoes/conexao.php";
         }
 
         //Realiza o cadastro
-        $result = "INSERT INTO vms (empresa_id, pop_id, servidor_id, hostname, ipaddress, dominio, vlan, sistemaOperacional, recursoMemoria, recursoCPU, recursoDisco1, recursoDisco2, statusvm, criado) VALUES ('$cadastroEmpresa', '$cadastroPop', '$cadastroServidor', '$cadastroHostname', '$cadastroIPAddress', '$cadastroDomino', '$cadastroVLAN', '$cadastroSO', '$cadastroMemoria', '$cadastroVCPU', '$cadastroDisco1', '$cadastroDisco2', '$cadastroStatusVM', NOW())";
+        $result = "INSERT INTO vms (privacidade, usuario_criador, empresa_id, pop_id, servidor_id, hostname, ipaddress, dominio, vlan, sistemaOperacional, recursoMemoria, recursoCPU, recursoDisco1, recursoDisco2, statusvm, criado)
+        VALUES ('$privacidade', '$idUsuario', '$cadastroEmpresa', '$cadastroPop', '$cadastroServidor', '$cadastroHostname', '$cadastroIPAddress', '$cadastroDomino', '$cadastroVLAN', '$cadastroSO', '$cadastroMemoria', '$cadastroVCPU', '$cadastroDisco1', '$cadastroDisco2', '$cadastroStatusVM', NOW())";
         $resultado = mysqli_query($mysqli, $result);
 
         $id_vm = mysqli_insert_id($mysqli);

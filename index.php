@@ -1,6 +1,7 @@
 <?php
 require "includes/menu.php";
 require "conexoes/conexao.php";
+require "conexoes/conexao_pdo.php";
 ?>
 
 <main id="main" class="main">

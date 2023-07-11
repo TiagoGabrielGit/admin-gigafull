@@ -1,4 +1,5 @@
 <?php
+session_start();
 require "../../../../conexoes/conexao.php";
 ?>
 
@@ -37,9 +38,9 @@ require "../../../../conexoes/conexao.php";
         $editDisco2 = $_POST['editDisco2'];
         $anotacaoVM = $_POST['anotacaoVM'];
         $usuario_id = $_SESSION['id'];
-
-
-        $result_update_vm = "UPDATE vms SET anotacaoVM='$anotacaoVM', empresa_id='$editEmpresa', pop_id='$editPOP', servidor_id='$editServidor', hostname='$editHostname', ipaddress='$editIPAddress',
+        $privacidade = $_POST['privacidadeVM'];
+        
+        $result_update_vm = "UPDATE vms SET privacidade='$privacidade', anotacaoVM='$anotacaoVM', empresa_id='$editEmpresa', pop_id='$editPOP', servidor_id='$editServidor', hostname='$editHostname', ipaddress='$editIPAddress',
         dominio='$editDominio', vlan='$editVLAN', sistemaOperacional='$editSO', recursoMemoria='$editMemoria', recursoCPU='$editVCPU', 
         recursoDisco1='$editDisco1', recursoDisco2='$editDisco2', statusvm='$editStatusVM', modificado=NOW() WHERE id='$id'";
         $resultado_eqpop = mysqli_query($mysqli, $result_update_vm);

@@ -1,7 +1,8 @@
 <?php
+session_start();
 require "../../../../conexoes/conexao.php";
 ?>
- 
+
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -29,6 +30,8 @@ require "../../../../conexoes/conexao.php";
         $ipaddress = $_POST['EquipamentoCadastroIPAddress'];
         $statusEquipamento = $_POST['EquipamentoCadastroStatus'];
         $rackPop = $_POST['EquipamentoCadastroRackPop'];
+        $privacidade = "1";
+        $idUsuario = $_SESSION['id'];
 
         if (empty($_POST['EquipamentoCadastroSerial'])) {
             $serialEquipamento = "";
@@ -37,8 +40,8 @@ require "../../../../conexoes/conexao.php";
         }
 
         //Realiza o cadastro 
-        $result = "INSERT INTO equipamentospop (empresa_id, pop_id, equipamento_id, tipoEquipamento_id, hostname, ipaddress, statusEquipamento, deleted, rack_id, serialEquipamento, criado)
-        VALUES ('$cadastroEmpresa', '$cadastroPop', '$cadastroEquipamento', '$cadastroTipoEquipamento', '$hostname', '$ipaddress', '$statusEquipamento', '1', '$rackPop', '$serialEquipamento', NOW())";
+        $result = "INSERT INTO equipamentospop (privacidade, usuario_criador, empresa_id, pop_id, equipamento_id, tipoEquipamento_id, hostname, ipaddress, statusEquipamento, deleted, rack_id, serialEquipamento, criado)
+        VALUES ('$privacidade', '$idUsuario', '$cadastroEmpresa', '$cadastroPop', '$cadastroEquipamento', '$cadastroTipoEquipamento', '$hostname', '$ipaddress', '$statusEquipamento', '1', '$rackPop', '$serialEquipamento', NOW())";
         $resultado = mysqli_query($mysqli, $result);
 
         $id_equipamento = mysqli_insert_id($mysqli);
