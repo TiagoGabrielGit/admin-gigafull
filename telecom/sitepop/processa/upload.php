@@ -2,6 +2,7 @@
 if (!empty($_FILES['images'])) {
   $popId = $_POST['popId']; // Obtenha o ID do POP
 
+
   $targetDirectory = '../../../uploads/pop' . $popId . '/';
 
   if (!file_exists($targetDirectory)) {
@@ -21,14 +22,14 @@ if (!empty($_FILES['images'])) {
     $targetPath = $targetDirectory . $newFileName;
 
     if (move_uploaded_file($tempFilePath, $targetPath)) {
-      header("location: /telecom/sitepop/view.php?id=$popId");
+      header("location: /telecom/sitepop/view.php?id=$popId&tab=anexo");
       //echo 'Imagem enviada com sucesso: ' . $newFileName . ' (Legenda: ' . $caption . ')<br>';
     } else {
-      header("location: /telecom/sitepop/view.php?id=$popId");
+      header("location: /telecom/sitepop/view.php?id=$popId&tab=anexo'");
       //echo 'Erro ao salvar a imagem: ' . $_FILES['images']['name'][$i] . '<br>';
     }
   }
 } else {
-  header("location: /telecom/sitepop/view.php?id=$popId");
+  header("location: /telecom/sitepop/view.php?id=$popId&tab=anexo");
   //echo 'Nenhuma imagem enviada.';
 }

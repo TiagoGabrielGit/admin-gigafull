@@ -120,6 +120,15 @@ v.pop_id LIKE '$idPOP'
 ORDER BY
 v.date DESC";
 $r_datas_vistorias = mysqli_query($mysqli, $sql_datas_vistorias);
+
+if (isset($_GET['tab'])) {
+    $_SESSION['active_tab'] = $_GET['tab'];
+}
+
+$active_tab = isset($_SESSION['active_tab']) ? $_SESSION['active_tab'] : 'informacoes';
+
+
+
 ?>
 
 <main id="main" class="main">
@@ -135,76 +144,80 @@ $r_datas_vistorias = mysqli_query($mysqli, $sql_datas_vistorias);
                         <!-- Default Tabs -->
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="informacoes-tab" data-bs-toggle="tab" data-bs-target="#informacoes" type="button" role="tab" aria-controls="informacoes" aria-selected="true">Informacoes</button>
+                                <button class="nav-link <?= $active_tab === 'informacoes' ? 'active' : ''; ?>" id="informacoes-tab" data-bs-toggle="tab" data-bs-target="#informacoes" type="button" role="tab" aria-controls="informacoes" aria-selected="true" onclick="window.location.href = 'view.php?id=<?= $idPOP ?>&tab=informacoes';">Informacoes</button>
                             </li>
 
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="rack-tab" data-bs-toggle="tab" data-bs-target="#rack" type="button" role="tab" aria-controls="rack" aria-selected="false" tabindex="-1">Rack</button>
+                                <button class="nav-link <?= $active_tab === 'rack' ? 'active' : ''; ?>" id="rack-tab" data-bs-toggle="tab" data-bs-target="#rack" type="button" role="tab" aria-controls="rack" aria-selected="false" onclick="window.location.href = 'view.php?id=<?= $idPOP ?>&tab=rack';">Rack</button>
                             </li>
 
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="equipamentos-tab" data-bs-toggle="tab" data-bs-target="#equipamentos" type="button" role="tab" aria-controls="equipamentos" aria-selected="false" tabindex="-1">Equipamentos</button>
+                                <button class="nav-link <?= $active_tab === 'equipamentos' ? 'active' : ''; ?>" id="equipamentos-tab" data-bs-toggle="tab" data-bs-target="#equipamentos" type="button" role="tab" aria-controls="equipamentos" aria-selected="false" onclick="window.location.href = 'view.php?id=<?= $idPOP ?>&tab=equipamentos';">Equipamentos</button>
                             </li>
 
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="energia-tab" data-bs-toggle="tab" data-bs-target="#energia" type="button" role="tab" aria-controls="energia" aria-selected="false">Energia</button>
+                                <button class="nav-link <?= $active_tab === 'energia' ? 'active' : ''; ?>" id="energia-tab" data-bs-toggle="tab" data-bs-target="#energia" type="button" role="tab" aria-controls="energia" aria-selected="false" onclick="window.location.href = 'view.php?id=<?= $idPOP ?>&tab=energia';">Energia</button>
                             </li>
 
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="arCondicionado-tab" data-bs-toggle="tab" data-bs-target="#arCondicionado" type="button" role="tab" aria-controls="arCondicionado" aria-selected="false">Ar Condicionado</button>
+                                <button class="nav-link <?= $active_tab === 'arCondicionado' ? 'active' : ''; ?>" id="arCondicionado-tab" data-bs-toggle="tab" data-bs-target="#arCondicionado" type="button" role="tab" aria-controls="arCondicionado" aria-selected="false" onclick="window.location.href = 'view.php?id=<?= $idPOP ?>&tab=arCondicionado';">Ar Condicionado</button>
                             </li>
 
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="materiais-tab" data-bs-toggle="tab" data-bs-target="#materiais" type="button" role="tab" aria-controls="materiais" aria-selected="false">Materiais</button>
+                                <button class="nav-link <?= $active_tab === 'materiais' ? 'active' : ''; ?>" id="materiais-tab" data-bs-toggle="tab" data-bs-target="#materiais" type="button" role="tab" aria-controls="materiais" aria-selected="false" onclick="window.location.href = 'view.php?id=<?= $idPOP ?>&tab=materiais';">Materiais</button>
                             </li>
 
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="anexo-tab" data-bs-toggle="tab" data-bs-target="#anexo" type="button" role="tab" aria-controls="anexo" aria-selected="false">Anexos</button>
+                                <button class="nav-link <?= $active_tab === 'anexo' ? 'active' : ''; ?>" id="anexo-tab" data-bs-toggle="tab" data-bs-target="#anexo" type="button" role="tab" aria-controls="anexo" aria-selected="false" onclick="window.location.href = 'view.php?id=<?= $idPOP ?>&tab=anexo';">Anexos</button>
                             </li>
 
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="atividades-tab" data-bs-toggle="tab" data-bs-target="#atividades" type="button" role="tab" aria-controls="atividades" aria-selected="false" tabindex="-1">Atividades</button>
+                                <button class="nav-link <?= $active_tab === 'atividades' ? 'active' : ''; ?>" id="atividades-tab" data-bs-toggle="tab" data-bs-target="#atividades" type="button" role="tab" aria-controls="atividades" aria-selected="false" onclick="window.location.href = 'view.php?id=<?= $idPOP ?>&tab=atividades';">Atividades</button>
                             </li>
 
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="vistoria-tab" data-bs-toggle="tab" data-bs-target="#vistoria" type="button" role="tab" aria-controls="vistoria" aria-selected="false" tabindex="-1">Vistoria</button>
+                                <button class="nav-link <?= $active_tab === 'vistoria' ? 'active' : ''; ?>" id="vistoria-tab" data-bs-toggle="tab" data-bs-target="#vistoria" type="button" role="tab" aria-controls="vistoria" aria-selected="false" onclick="window.location.href = 'view.php?id=<?= $idPOP ?>&tab=vistoria';">Vistoria</button>
                             </li>
 
                         </ul>
                         <div class="tab-content pt-2" id="myTabContent">
-                            <div class="tab-pane fade show active" id="informacoes" role="tabpanel" aria-labelledby="informacoes-tab">
+
+                            <div class="tab-pane fade <?= $active_tab === 'informacoes' ? 'show active' : ''; ?>" id="informacoes" role="tabpanel" aria-labelledby="informacoes-tab">
                                 <?php require "tabs/informacoes.php" ?>
                             </div>
 
-                            <div class="tab-pane fade" id="rack" role="tabpanel" aria-labelledby="rack-tab">
+
+                            <div class="tab-pane fade <?= $active_tab === 'rack' ? 'show active' : ''; ?>" id="rack" role="tabpanel" aria-labelledby="rack-tab">
                                 <?php require "tabs/rack.php" ?>
                             </div>
 
-                            <div class="tab-pane fade" id="equipamentos" role="tabpanel" aria-labelledby="equipamentos-tab">
+
+                            <div class="tab-pane fade <?= $active_tab === 'equipamentos' ? 'show active' : ''; ?>" id="equipamentos" role="tabpanel" aria-labelledby="equipamentos-tab">
                                 <?php require "tabs/equipamentos.php" ?>
                             </div>
 
-                            <div class="tab-pane fade" id="energia" role="tabpanel" aria-labelledby="energia-tab">
+                            <div class="tab-pane fade <?= $active_tab === 'energia' ? 'show active' : ''; ?>" id="energia" role="tabpanel" aria-labelledby="energia-tab">
                                 <?php require "tabs/energia.php" ?>
                             </div>
 
-                            <div class="tab-pane fade" id="arCondicionado" role="tabpanel" aria-labelledby="arCondicionado-tab">
+
+                            <div class="tab-pane fade <?= $active_tab === 'arCondicionado' ? 'show active' : ''; ?>" id="arCondicionado" role="tabpanel" aria-labelledby="arCondicionado-tab">
                                 <?php require "tabs/arCondicionado.php" ?>
                             </div>
 
-                            <div class="tab-pane fade" id="materiais" role="tabpanel" aria-labelledby="materiais-tab">
+                            <div class="tab-pane fade <?= $active_tab === 'materiais' ? 'show active' : ''; ?>" id="materiais" role="materiais" aria-labelledby="materiais-tab">
                                 <?php require "tabs/materiais.php" ?>
                             </div>
 
-                            <div class="tab-pane fade" id="anexo" role="tabpanel" aria-labelledby="anexo-tab">
+                            <div class="tab-pane fade <?= $active_tab === 'anexo' ? 'show active' : ''; ?>" id="anexo" role="tabpanel" aria-labelledby="anexo-tab">
                                 <?php require "tabs/anexo.php" ?>
                             </div>
 
-                            <div class="tab-pane fade" id="atividades" role="tabpanel" aria-labelledby="atividades-tab">
+                            <div class="tab-pane fade  <?= $active_tab === 'atividades' ? 'show active' : ''; ?>" id="atividades" role="tabpanel" aria-labelledby="atividades-tab">
                                 <?php require "tabs/atividades.php" ?>
                             </div>
 
-                            <div class="tab-pane fade" id="vistoria" role="tabpanel" aria-labelledby="vistoria-tab">
+                            <div class="tab-pane fade  <?= $active_tab === 'vistoria' ? 'show active' : ''; ?>" id="vistoria" role="tabpanel" aria-labelledby="vistoria-tab">
                                 <?php require "tabs/vistoria.php" ?>
                             </div>
                         </div>

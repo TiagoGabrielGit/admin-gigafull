@@ -71,14 +71,14 @@ if ($privacidade == 1) {
     $userId = $_SESSION['id'];
 
     // Verificar se o equipamento está liberado para o usuário
-    $sql_check_perm_user = "SELECT * FROM vm_pop_privacidade_usuario WHERE equipamento_id = :id AND usuario_id = :userId";
+    $sql_check_perm_user = "SELECT * FROM vm_privacidade_usuario WHERE vm_id = :id AND usuario_id = :userId";
     $stmt_check_perm_user = $pdo->prepare($sql_check_perm_user);
     $stmt_check_perm_user->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt_check_perm_user->bindParam(':userId', $userId, PDO::PARAM_INT);
     $stmt_check_perm_user->execute();
 
     // Verificar se o equipamento está liberado para alguma equipe do usuário
-    $sql_check_perm_equipe = "SELECT * FROM vm_pop_privacidade_equipe WHERE equipamento_id = :id AND equipe_id IN (SELECT equipe_id FROM equipes_integrantes WHERE integrante_id = :userId)";
+    $sql_check_perm_equipe = "SELECT * FROM vm_privacidade_equipe WHERE vm_id = :id AND equipe_id IN (SELECT equipe_id FROM equipes_integrantes WHERE integrante_id = :userId)";
     $stmt_check_perm_equipe = $pdo->prepare($sql_check_perm_equipe);
     $stmt_check_perm_equipe->bindParam(':id', $id, PDO::PARAM_INT);
     $stmt_check_perm_equipe->bindParam(':userId', $userId, PDO::PARAM_INT);

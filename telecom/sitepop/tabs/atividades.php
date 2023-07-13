@@ -117,12 +117,13 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                <?php }
+                                        </div>
+                            <?php }
                                 }
                             } catch (PDOException $e) {
                                 echo "Erro ao consultar registros: " . $e->getMessage();
                             }
-                                ?>
+                            ?>
                         </tbody>
                     </table>
                 </div>
@@ -130,21 +131,6 @@
         </div>
     </div>
 </div>
-
-
-<?php
-$stmt = $pdo->prepare("SELECT melhoria_conhecida FROM pop_melhorias_conhecidas WHERE pop_id = :idPOP");
-$stmt->execute(array(':idPOP' => $idPOP));
-
-// Verifica se a consulta retornou algum resultado
-if ($stmt->rowCount() > 0) {
-    // Obtém a anotação encontrada
-    $anotacao = $stmt->fetch(PDO::FETCH_ASSOC)['melhoria_conhecida'];
-} else {
-    // Define uma anotação em branco
-    $anotacao = '';
-}
-?>
 
 <div class="col-lg-12">
     <div class="card">
@@ -154,11 +140,135 @@ if ($stmt->rowCount() > 0) {
                 <input name="mc_pop_id" id="mc_pop_id" readonly hidden value="<?= $idPOP ?>" required></input>
                 <div class="col-12">
                     <label for="melhoriasConhecidas" class="form-label">Anotações</label>
-                    <textarea id="melhoriasConhecidas" name="melhoriasConhecidas" class="form-control" maxlength="100000" rows="7"><?= $anotacao ?></textarea>
+                    <textarea id="melhoriasConhecidas" name="melhoriasConhecidas" class="form-control" maxlength="10000" rows="2"></textarea>
                 </div>
                 <br>
-                <button type="submit" class="btn btn-danger">Salvar Anotação</button>
+                <button type="submit" class="btn btn-danger">Adicionar</button>
             </form>
+        </div>
+        <div class="card-body">
+            <table class="table datatable">
+
+                <thead>
+                    <tr>
+                        <th scope="col">Melhoria</th>
+                        <th scope="col">Data Criação</th>
+                        <th scope="col">Criador</th>
+                        <th scope="col">Status</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $sql_consulta_melhorias =
+                        "SELECT 
+                        pmc.id as 'id',
+                        pmc.melhoria_conhecida as 'melhoria_conhecida', 
+                        pmc.criado as 'criado',
+                        p.nome as 'nome',
+                        CASE
+                        WHEN pmc.status = 1 THEN 'Pendente'
+                        WHEN pmc.status = 2 THEN 'Cancelado'
+                        WHEN pmc.status = 3 THEN 'Executado'
+                        END as Status,
+                        pmc.status as status_id
+                    FROM 
+                        pop_melhorias_conhecidas as pmc
+                    LEFT JOIN
+                            usuarios as u
+                        ON
+                            u.id = pmc.usuario_criador
+                    LEFT JOIN
+                            pessoas as p
+                        ON
+                            p.id = u.pessoa_id                                
+                    WHERE
+                        pmc.pop_id = $idPOP
+                    ORDER BY
+                        pmc.criado ASC    ";
+
+                    $stmt_melhorias = $pdo->query($sql_consulta_melhorias);
+                    $r_melhorias = $stmt_melhorias->fetchAll(PDO::FETCH_ASSOC);
+
+                    // Iterar sobre os resultados e gerar as linhas da tabela
+                    foreach ($r_melhorias as $row_melhorias) {
+                        $melhoria = $row_melhorias['melhoria_conhecida'];
+                        echo "<tr>";
+                        echo "<td>";
+
+                        if (strlen($melhoria) > 50) {
+                            echo substr($melhoria, 0, 50) . "..." ?>
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalMelhoria<?= $row_melhorias['id'] ?>">Ler mais</button>
+
+                            <div class="modal fade" id="modalMelhoria<?= $row_melhorias['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="modalMelhoria<?= $row_melhorias['id'] ?>Label" aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="modalMelhoria<?= $row_melhorias['id'] ?>Label">Melhoria</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <?= $melhoria ?> </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } else {
+                            echo $melhoria;
+                        } ?>
+                        </td>
+                        <td><?= date('d/m/Y', strtotime($row_melhorias['criado'])) ?></td>
+                        <td><?= $row_melhorias['nome'] ?></td>
+                        <td><?= $row_melhorias['Status'] ?></td>
+
+                        <?php if ($row_melhorias['status_id'] == 1) { ?>
+
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditarStatus<?= $row_melhorias['id'] ?>">
+                                    <i class="bi bi-pencil-square"></i>
+                                </button>
+                            </td>
+
+                            <div class="modal fade" id="modalEditarStatus<?= $row_melhorias['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="modalEditarStatus<?= $row_melhorias['id'] ?>Label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Alterar Status</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" action="processa/status_melhoria_conhecida.php">
+                                                <input name="mc_id" id="mc_id" readonly hidden value="<?= $row_melhorias['id'] ?>" required></input>
+                                                <input name="mc_pop_id" id="mc_pop_id" readonly hidden value="<?= $idPOP ?>" required></input>
+                                                <div class="col-12">
+                                                    <label class="form-label">Selecione o novo status</label>
+                                                    <select name="mc_status" id="mc_status" class="form-select" required>
+                                                        <option disabled value="" selected>Selecione uma opção</option>
+                                                        <option value="2">Cancelada</option>
+                                                        <option value="3">Executada</option>
+                                                    </select>
+                                                </div>
+                                                <br>
+                                                <div class="text-center">
+                                                    <button class="btn btn-danger" type="submit">Alterar Status</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                    <?php }
+
+                        echo "</tr>";
+                    }
+
+                    ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

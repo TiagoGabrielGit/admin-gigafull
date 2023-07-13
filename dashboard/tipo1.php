@@ -198,8 +198,8 @@ require "sql_dashboard_1.php";
                                 WHEN pap.atividade_id = 2 THEN 'Troca de Bateria'
                                 WHEN pap.atividade_id = 3 THEN 'Vistoria de POP'
                                 END as atividade,
-                                p.pop as pop, 
-                                DATE_FORMAT(pap.date, '%d %m %Y') as data
+                                p.pop as pop,
+                                DATE_FORMAT(pap.date, '%d %m %Y') as data_programada
                                 FROM 
                                     pop_atividade_programada as pap
                                 LEFT JOIN
@@ -208,7 +208,7 @@ require "sql_dashboard_1.php";
                                     p.id = pap.pop_id
                                 WHERE
                                     pap.status = 1
-                                ORDER BY data ASC");
+                                ORDER BY pap.date ASC");
 
                                 // Executa a consulta
                                 $stmt->execute();
@@ -222,7 +222,7 @@ require "sql_dashboard_1.php";
 
                                     echo '<td>' . $atividade['pop'] . '</td>';
                                     echo '<td>' . $atividade['atividade'] . '</td>';
-                                    echo '<td>' . $atividade['data'] . '</td>';
+                                    echo '<td>' . $atividade['data_programada'] . '</td>';
                                     echo '<td>' . $atividade['status'] . '</td>';
                                     echo '</tr>';
                                 }
@@ -233,6 +233,44 @@ require "sql_dashboard_1.php";
                     </table>
                 </div>
             </div>
+
+
+            <div class="card recent-sales overflow-auto">
+                <div class="card-body">
+                    <h5 class="card-title">Diretório Uploads (Max: 10Gb)</h5>
+<h1>
+                    <?php
+                    $folderPath = 'uploads/';
+
+                    // Calcula o tamanho ocupado pela pasta em bytes
+                    $totalSize = 0;
+
+                    $dirIterator = new RecursiveDirectoryIterator($folderPath);
+                    $iterator = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::SELF_FIRST);
+
+                    foreach ($iterator as $file) {
+                        if ($file->isFile()) {
+                            $totalSize += $file->getSize();
+                        }
+                    }
+
+                    // Converte para megabytes (MB) e arredonda para o valor mais próximo
+                    $usedSpaceMB = round($totalSize / (1024 * 1024));
+
+                    echo "{$usedSpaceMB}MB";
+                    ?>
+                    </h1>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
 
             <div class="card recent-sales overflow-auto">
                 <div class="card-body">
