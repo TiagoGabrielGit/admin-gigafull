@@ -1,6 +1,7 @@
 <?php
 require "../../includes/menu.php";
 require "sql.php";
+require "../../conexoes/conexao_pdo.php";
 ?>
 
 <main id="main" class="main">
@@ -20,8 +21,7 @@ require "sql.php";
                             </div>
                             <div class="col-3">
                                 <div class="card">
-                                    <!-- Basic Modal -->
-                                    <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalNovoPOP">
+                                    <button style="margin-top: 15px" type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#modalNovoPOP">
                                         Novo POP
                                     </button>
                                 </div>
@@ -34,16 +34,10 @@ require "sql.php";
                                 <table class="table datatable datatable-table">
                                     <thead>
                                         <tr>
-                                            <th data-sortable="true" style="width: 6.211180124223603%;"><a href="#" class="datatable-sorter">#</a></th>
-
-                                            <th data-sortable="true" style="width: 36.43892339544513%;">
-                                                <a href="#" class="datatable-sorter">POP</a>
-                                            </th>
-                                            <th data-sortable="true" style="width: 27.74327122153209%;">
-                                                <a href="#" class="datatable-sorter">Empresa</a>
-                                            </th>
-
-                                            <th data-sortable="true" style="width: 10.351966873706004%;"><a href="#" class="datatable-sorter">Cidade</a></th>
+                                            <th>POP</th>
+                                            <th>Melhorias</th>
+                                            <th>Empresa</th>
+                                            <th>Cidade</th>
                                         </tr>
                                     </thead>
 
@@ -54,10 +48,31 @@ require "sql.php";
 
                                         // Obtendo os dados por meio de um loop while
                                         while ($campos = $resultado->fetch_array()) {
-                                            $id = $campos['id']; ?>
-                                            <tr data-index="<?= $id ?>">
-                                                <td><?= $id ?></td>
-                                                <td><a href="view.php?id=<?= $id ?>"><span style="color: red;"><?= $campos['pop']; ?></span></a></td>
+                                            $id = $campos['id'];
+                                            $sql_melhorias = "SELECT COUNT(*) AS total_melhorias FROM pop_melhorias_conhecidas WHERE status = :status and pop_id = :id";
+                                            $stmt = $pdo->prepare($sql_melhorias);
+                                            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                                            $stmt->bindValue(':status', '1', PDO::PARAM_INT);
+                                            $stmt->execute();
+                                            $dados_melhorias = $stmt->fetch(PDO::FETCH_ASSOC);
+                                            $total_melhorias = $dados_melhorias['total_melhorias'];
+
+
+                                        ?>
+                                            <tr>
+                                                <td>
+                                                    <a href="view.php?id=<?= $id ?>">
+                                                        <span style="color: red;"><?= $campos['pop']; ?></span>
+                                                    </a>
+                                                </td>
+
+                                                <td>
+                                                    <?php if ($total_melhorias > 0) { ?>
+                                                        <h6>
+                                                            <span title="Melhorias Conhecidas" class="badge bg-danger"><?= $total_melhorias ?></span>
+                                                        </h6>
+                                                    <?php } ?>
+                                                </td>
                                                 <td><?= $campos['empresa']; ?></td>
                                                 <td><?= $campos['cidade']; ?></td>
                                             </tr>
