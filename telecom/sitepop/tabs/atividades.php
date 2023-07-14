@@ -135,7 +135,7 @@
 <div class="col-lg-12">
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Melhorias Conhecidas</h5>
+            <h5 class="card-title">Melhorias Recomendadas</h5>
             <form method="POST" action="processa/pop_melhoria_conhecida.php">
                 <input name="mc_pop_id" id="mc_pop_id" readonly hidden value="<?= $idPOP ?>" required></input>
                 <div class="col-12">

@@ -40,27 +40,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $bateria_unit =
         "SELECT
-        pbu.id as 'id',
-        pt.modelo as 'modelo',
-        pbu.patrimonio as 'patrimonio',
-        pbu.n_serie as 'serie',
+        pbu.id AS 'id',
+        pt.modelo AS 'modelo',
+        pbu.patrimonio AS 'patrimonio',
+        pbu.n_serie AS 'serie',
         CASE
-        WHEN pbu.active = 1 THEN 'Ativo'
-        WHEN pbu.active = 0 THEN 'Inativo'
-        END as 'active',
+            WHEN pbu.active = 1 THEN 'Ativo'
+            WHEN pbu.active = 0 THEN 'Inativo'
+        END AS 'active',
         CASE
-        WHEN pbu.disponibilidade = 1 THEN 'Disponivel'
-        WHEN pbu.disponibilidade = 0 THEN 'Indisponivel'
-        END as 'disponibilidade',
-        date_format(pbu.created,'%H:%i:%s %d/%m/%Y') as created
-        FROM
-        produtos_bateria_units as pbu
-        LEFT JOIN
-        produtos_bateria as pt
-        ON
-        pt.id = pbu.produto_bateria_id
-        WHERE
-        pbu.produto_bateria_id = $id
+            WHEN (
+                SELECT COUNT(*) 
+                FROM pop_baterias_in_use 
+                WHERE bateria_id = pbu.id
+            ) > 1 THEN 'Em USO'
+            WHEN (
+                SELECT COUNT(*) 
+                FROM pop_baterias_in_use 
+                WHERE bateria_id = pbu.id AND status = 1
+            ) = 1 THEN 'Em USO'
+            ELSE 'Disponível'
+        END AS 'status',
+        DATE_FORMAT(pbu.created,'%H:%i:%s %d/%m/%Y') AS created
+    FROM
+        produtos_bateria_units AS pbu
+        LEFT JOIN produtos_bateria AS pt ON pt.id = pbu.produto_bateria_id
+    WHERE
+        pbu.produto_bateria_id = $id;
+    
         ";
 }
 ?>
@@ -183,7 +190,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                                 <td><?= $c_bateria_unit['serie']; ?></td>
                                                 <td><?= $c_bateria_unit['created']; ?></td>
                                                 <td><?= $c_bateria_unit['active']; ?></td>
-                                                <td><?= $c_bateria_unit['disponibilidade']; ?></td>
+
+                                                <td><?= $c_bateria_unit['status']; ?></td>
                                             </tr>
                                         <?php } ?>
                                     </tbody>
@@ -229,7 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                 <button type="submit" class="btn btn-danger">Salvar</button>
                                 <button type="reset" class="btn btn-secondary">Limpar</button>
                             </div>
-                        </form> 
+                        </form>
                     </div>
                 </div>
             </div>

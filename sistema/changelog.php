@@ -15,25 +15,31 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
 
-            <div class="accordion-item">
+              <div class="accordion-item">
                 <h2 class="accordion-header" id="heading9-0">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9-0" aria-expanded="false" aria-controls="collapse9-0">
-                    Versão 9.0 - XX/07/2023
+                    Versão 9.0 - 14/07/2023
                   </button>
                 </h2>
                 <div id="collapse9-0" class="accordion-collapse collapse" aria-labelledby="heading9-0" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
+                    # Adicionar bateria a POP;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
+                    # Criado a tabela pop_baterias_in_use;<br>
+                    # Excluido a coluna disponibilidade da tabela produtos_bateria_units;<br>
 
                     <br><strong>Backlog</strong><br>
+                    
+                    
+                    # Demora para executar chamado;<br>
+                    # Cancelar um relato em execução;<br>
                     # Não esta listando os tipos de chamados de acordo com permissão do usuario;<br>
                     # Filtro chamado sem atendente;<br>
                     # Controlar espaço em disco em anexo/POPs;<br>
                     # Ficar o que foi filtrado em Descrição em Portal;<br>
-                    # Cancelar um relato em execução;<br>
                     # Revisão geral no cadastro de usuário e invites;<br>
                     # Envio de sugestões;<br>
                     # Resetar senha pelo acesso usuário;<br>

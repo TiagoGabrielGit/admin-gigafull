@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $patrimonioBateria = $_POST['patrimonioBateria'];
     $nSerieBateria = $_POST['nSerieBateria'];
 
-    $sql = "INSERT INTO produtos_bateria_units (produto_bateria_id, patrimonio, n_serie, active, created, disponibilidade) VALUES (?, ?, ?, '1', NOW(), '1')";
+    $sql = "INSERT INTO produtos_bateria_units (produto_bateria_id, patrimonio, n_serie, active, created) VALUES (?, ?, ?, '1', NOW())";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$bateriaID, $patrimonioBateria, $nSerieBateria]);
 
