@@ -151,7 +151,7 @@
 
                 <thead>
                     <tr>
-                        <th scope="col">Melhoria</th>
+                        <th scope="col">Melhoria Recomendada</th>
                         <th scope="col">Data Criação</th>
                         <th scope="col">Criador</th>
                         <th scope="col">Status</th>

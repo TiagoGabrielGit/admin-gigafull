@@ -24,13 +24,13 @@
 
                                         $sql_baterias_pop =
                                             "SELECT
-                                            pbiu.id as 'bateria_id',
+                                                pbiu.id as 'id',
                                                 pbu.n_serie as 'n_serie',
                                                 pbu.patrimonio as 'patrimonio',
                                                 DATE_FORMAT(pbiu.data_instalacao, '%d/%m/%Y') AS 'data_instalacao'
-                                            FROM 
+                                                FROM 
                                                 pop_baterias_in_use as pbiu
-                                            LEFT JOIN
+                                                LEFT JOIN
                                                 produtos_bateria_units as pbu
                                                 ON pbu.id = pbiu.bateria_id
                                                 WHERE pbiu.pop_id = :idPOP and pbiu.status = 1 ";
@@ -42,6 +42,7 @@
                                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
 
                                             <div class="row mb-3">
+                                            
                                                 <label for="inputText" class="col-sm-2 col-form-label">Bataria <?= $cont ?></label>
                                                 <div class="col-sm-3">
                                                     <input title="Nº Série" readonly value="<?= $row['n_serie'] ?>" type="text" class="form-control">
@@ -53,24 +54,24 @@
                                                     <input title="Data Instalação" readonly value="<?= $row['data_instalacao'] ?>" type="text" class="form-control">
                                                 </div>
                                                 <div class="col-sm-1">
-                                                    <button data-bs-toggle="modal" data-bs-target="#confirmarExclusao<?= $row['bateria_id'] ?>" title="Retirar Bateria" type="button" class="badge rounded-pill bg-danger" onclick="excluirBateria(<?= $row['bateria_id'] ?>)">X</button>
+                                                    <button data-bs-toggle="modal" data-bs-target="#confirmarExclusao<?= $row['id'] ?>" title="Retirar Bateria" type="button" class="badge rounded-pill bg-danger" onclick="excluirBateria(<?= $row['id'] ?>)">X</button>
                                                 </div>
 
-                                                <div class="modal fade" id="confirmarExclusao<?= $row['bateria_id'] ?>" tabindex="-1" aria-labelledby="confirmarExclusaoLabel<?= $row['bateria_id'] ?>" aria-hidden="true">
+                                                <div class="modal fade" id="confirmarExclusao<?= $row['id'] ?>" tabindex="-1" aria-labelledby="confirmarExclusaoLabel<?= $row['id'] ?>" aria-hidden="true">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="confirmarExclusaoLabel<?= $row['bateria_id'] ?>">Confirmação de Retirada</h5>
+                                                                <h5 class="modal-title" id="confirmarExclusaoLabel<?= $row['id'] ?>">Confirmação de Retirada</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <form method="POST" action="processa/retirada_bateria_pop.php">
                                                                 <div class="modal-body">
                                                                     <p>Tem certeza que deseja retirar a bateria?</p>
-                                                                    <input readonly id="idBateria" name="idBateria" value="<?= $row['bateria_id'] ?>"></input>
-                                                                    <input readonly id="idPOPBateriaRetirada" name="idPOPBateriaRetirada" value="<?= $idPOP ?>"></input>
+                                                                    <input hidden readonly id="idBateria" name="idBateria" value="<?= $row['id'] ?>"></input>
+                                                                    <input hidden readonly id="idPOPBateriaRetirada" name="idPOPBateriaRetirada" value="<?= $idPOP ?>"></input>
                                                                     <div class="mb-3">
-                                                                        <label for="dataRetirada<?= $row['bateria_id'] ?>" class="form-label">Data de Retirada:</label>
-                                                                        <input required type="date" class="form-control" name="dataRetirada<?= $row['bateria_id'] ?>" id="dataRetirada<?= $row['bateria_id'] ?>">
+                                                                        <label for="dataRetirada<?= $row['id'] ?>" class="form-label">Data de Retirada:</label>
+                                                                        <input required type="date" class="form-control" name="dataRetirada<?= $row['id'] ?>" id="dataRetirada<?= $row['id'] ?>">
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">
@@ -78,7 +79,7 @@
                                                                     <button type="submit" class="btn btn-danger">Confirmar Retirada</button>
                                                                 </div>
                                                             </form>
-                                                        </div>
+                                                        </div> 
                                                     </div>
                                                 </div>
 

@@ -6,12 +6,17 @@ require "sql1.php";
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
-    if (!empty($_POST['atendentePesquisa'])) {
+    if ($_POST['atendentePesquisa'] === '0') {
         $atendentePesquisa = $_POST['atendentePesquisa'];
     } else {
         $atendentePesquisa = "%";
     }
 
+    if ($atendentePesquisa === '0') {
+        $whereAtendente = "AND ch.atendente_id = '0'";
+    } else {
+        $whereAtendente = "AND ch.atendente_id LIKE '$atendentePesquisa'";
+    }
 
     if (!empty($_POST['empresaPesquisa'])) {
         $empresa_id = $_POST['empresaPesquisa'];
@@ -47,13 +52,16 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         $assuntoChamado = "%";
     }
 } else {
-    $atendentePesquisa = "%";
+    //$atendentePesquisa = "%";
+    $whereAtendente = "AND ch.atendente_id LIKE '%'";
 
     $empresa_id = "%";
     $statusChamado = "LIKE '%'";
     $idChamado = "%";
     $assuntoChamado = "%";
 }
+
+
 
 $id_usuario = $_SESSION['id'];
 $sql_captura_id_pessoa =
@@ -128,6 +136,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
     <div class="pagetitle">
         <h1>Listagem de chamados</h1>
     </div><!-- End Page Title -->
+
 
     <section class="section">
         <div class="row">
@@ -518,27 +527,17 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 <div class="col-4">
                                     <label for="atendentePesquisa" class="form-label">Atendente</label>
                                     <select id="atendentePesquisa" name="atendentePesquisa" class="form-select">
-                                        <option selected value="%">Todos</option>
+                                        <option value="%">Todos</option>
                                         <?php
                                         $resultado = mysqli_query($mysqli, $sql_lista_atendentes);
-                                        while ($atendente = mysqli_fetch_object($resultado)) :
-                                            echo "<option value='$atendente->id'> $atendente->nome</option>";
-                                        endwhile;
+                                        while ($atendente = mysqli_fetch_object($resultado)) {
+                                            $selected = ($_POST['atendentePesquisa'] == $atendente->id) ? 'selected' : '';
+                                            echo "<option value='$atendente->id' $selected> $atendente->nome</option>";
+                                        }
                                         ?>
-
-                                        <?php if ($_SERVER["REQUEST_METHOD"] == 'POST') : ?>
-                                            <script>
-                                                let atendentePesquisa = '<?= $_POST['atendentePesquisa']; ?>'
-                                                if (atendentePesquisa == '%') {} else {
-                                                    document.querySelector("#atendentePesquisa").value = atendentePesquisa
-                                                }
-                                            </script>
-                                        <?php
-                                        endif;
-                                        ?>
-
                                     </select>
                                 </div>
+
 
                                 <div class="col-4">
                                     <label for="statusChamado" class="form-label">Status</label>
@@ -684,20 +683,18 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 ise.id = cis.iten_service
                                 WHERE
                                 ch.empresa_id LIKE '$empresa_usuario'
-                                and                                
+                                AND                                
                                 ch.empresa_id LIKE '$empresa_id'
-                                and
-                                ch.atendente_id LIKE '$atendentePesquisa'
-                                and
+                                $whereAtendente
+                                AND
                                 ch.status_id $statusChamado
-                                and
+                                AND
                                 ch.id LIKE '$idChamado'
-                                and
+                                AND
                                 ch.assuntoChamado LIKE '$assuntoChamado'
                                 ORDER BY
                                 ch.data_abertura DESC
-                                LIMIT $inicio, $qnt
-                                ";
+                                LIMIT $inicio, $qnt";
                             }
 
                             if ($permissao_visualiza_chamado == 2) {
@@ -764,8 +761,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 ) 
                                 and                                
                                 ch.empresa_id LIKE '$empresa_id'
-                                and
-                                ch.atendente_id LIKE '$atendentePesquisa'
+                                $whereAtendente
                                 and
                                 ch.status_id $statusChamado
                                 and
@@ -836,8 +832,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 ise.id = cis.iten_service
                                 WHERE                    
                                 ch.empresa_id LIKE '$empresa_id'
-                                and
-                                ch.atendente_id LIKE '$atendentePesquisa'
+                                $whereAtendente
                                 and
                                 ch.status_id $statusChamado
                                 and
@@ -1033,8 +1028,8 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 ch.empresa_id LIKE '$empresa_usuario'
                                 and     
                                 ch.empresa_id LIKE '$empresa_id'
-                                and
-                                ch.atendente_id LIKE '$atendentePesquisa'
+                                $whereAtendente
+
                                 and
                                 ch.status_id $statusChamado
                                 and
@@ -1084,8 +1079,8 @@ $empresa_usuario = $pessoaID['empresa_id'];
                 WHERE ei.integrante_id = $id_usuario
             ) and   
                                 ch.empresa_id LIKE '$empresa_id'
-                                and
-                                ch.atendente_id LIKE '$atendentePesquisa'
+                                $whereAtendente
+
                                 and
                                 ch.status_id $statusChamado
                                 and
@@ -1129,8 +1124,8 @@ $empresa_usuario = $pessoaID['empresa_id'];
                             p.id = ch.atendente_id
                             WHERE
                             ch.empresa_id LIKE '$empresa_id'
-                            and
-                            ch.atendente_id LIKE '$atendentePesquisa'
+                            $whereAtendente
+
                             and
                             ch.status_id $statusChamado
                             and

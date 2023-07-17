@@ -12,7 +12,7 @@ if (isset($_SESSION['id']) && $_SERVER["REQUEST_METHOD"] == "POST") {
 
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        $sql = "UPDATE pop_baterias_in_use SET data_retirada = :dataRetirada, status = :status, user_retirada = :user_retirada WHERE bateria_id = :idBateria";
+        $sql = "UPDATE pop_baterias_in_use SET data_retirada = :dataRetirada, status = :status, user_retirada = :user_retirada WHERE id = :idBateria";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':dataRetirada', $dataRetirada);
         $stmt->bindParam(':idBateria', $idBateria);
@@ -25,3 +25,4 @@ if (isset($_SESSION['id']) && $_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Erro: " . $e->getMessage();
     }
 }
+ 

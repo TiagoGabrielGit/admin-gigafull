@@ -51,7 +51,7 @@ tipo.tipo ASC
 
 $sql_lista_atendentes =
     "SELECT
-CASE WHEN p.nome IS NULL THEN '0' ELSE u.id END AS 'id',
+CASE WHEN p.nome IS NULL THEN '0'             ELSE u.id END AS 'id',
 CASE WHEN p.nome IS NULL THEN 'Sem Atendente' ELSE p.nome END AS 'nome'
 FROM
 chamados as ch
