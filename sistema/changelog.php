@@ -17,7 +17,7 @@ require "../includes/menu.php";
 
 
 
-            <div class="accordion-item">
+              <div class="accordion-item">
                 <h2 class="accordion-header" id="heading9-1">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9-1" aria-expanded="false" aria-controls="collapse9-1">
                     Versão 9.1 - 14/07/2023
@@ -32,6 +32,8 @@ require "../includes/menu.php";
                     <br><strong>Alterações banco de dados</strong><br>
 
                     <br><strong>Backlog</strong><br>
+                    # Reboot de ONU 17/08/2023;<br>
+                    # FIltro chamados com atendentes;<br>
                     # Organizar imagens por data;<br>
                     # Permissao de mudar permissão de acesso a vm/equipamento por usuario;<br>
                     # Não permitir cadastrar baterias com numero de serie duplicado;<br>

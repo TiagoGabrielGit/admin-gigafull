@@ -6,7 +6,7 @@ require "sql1.php";
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
-    if ($_POST['atendentePesquisa'] === '0') {
+    if ($_POST['atendentePesquisa'] != '%') {
         $atendentePesquisa = $_POST['atendentePesquisa'];
     } else {
         $atendentePesquisa = "%";
@@ -137,6 +137,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
         <h1>Listagem de chamados</h1>
     </div><!-- End Page Title -->
 
+    <?= $whereAtendente ?>
 
     <section class="section">
         <div class="row">
