@@ -137,8 +137,6 @@ $empresa_usuario = $pessoaID['empresa_id'];
         <h1>Listagem de chamados</h1>
     </div><!-- End Page Title -->
 
-    <?= $whereAtendente ?>
-
     <section class="section">
         <div class="row">
             <div class="col-lg-12">

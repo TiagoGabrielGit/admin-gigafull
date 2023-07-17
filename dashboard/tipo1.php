@@ -19,7 +19,7 @@ require "sql_dashboard_1.php";
 
                                         <form action="/servicedesk/consultar_chamados/index.php" method="POST">
 
-                                            <input type="hidden" name="atendentePesquisa" value="0">
+                                            <input type="hidden" name="atendentePesquisa" value="%">
                                             <input type="hidden" name="statusChamado" value="!= 3">
 
                                             <button type="submit" style=" background: none; border: none; cursor: pointer;">
