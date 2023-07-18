@@ -23,6 +23,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       u.permissao_selecionar_competencias as 'permissao_selecionar_competencias',
       u.permissao_selecionar_solicitante as 'permissao_selecionar_solicitante',
       u.permissao_selecionar_atendente as 'permissao_selecionar_atendente',
+      u.permissao_privacidade_credenciais as 'permissao_privacidade_credenciais',
       u.reset_password as reset_password,
       u.tipo_usuario as tipo_usuario,
       u.perfil_id as perfil,
@@ -71,6 +72,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       $_SESSION['permissao_selecionar_competencias'] = $usuario['permissao_selecionar_competencias'];
       $_SESSION['permissao_selecionar_solicitante'] = $usuario['permissao_selecionar_solicitante'];
       $_SESSION['permissao_selecionar_atendente'] = $usuario['permissao_selecionar_atendente'];
+      $_SESSION['permissao_privacidade_credenciais'] = $usuario['permissao_privacidade_credenciais'];
 
       $usuario_id = $_SESSION['id'];
       $ip_address = $_SESSION['ip_address'];

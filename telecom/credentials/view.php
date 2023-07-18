@@ -20,9 +20,15 @@ if ($tipo == "E-mail") {
 
     if ($row['cred_priv'] == 2) {
         $checkEquipe = "checked";
-        $aplicaButton = "<div class='col-4' style='text-align: left;'>
-        <a onclick='dadosCredencial(".$row['cred_id'].")' data-bs-toggle='modal' data-bs-target='#modalConfigPermissoes'><input type='button' class='btn btn-outline-dark btn-sm' value='Configurar permissões'></input></a>
-    </div>";
+        if ($_SESSION['permissao_privacidade_credenciais'] == 1) {
+            $aplicaButton = "<div class='col-4' style='text-align: left;'>
+                <a onclick='dadosCredencial(" . $row['cred_id'] . ")' data-bs-toggle='modal' data-bs-target='#modalConfigPermissoes'>
+                    <input type='button' class='btn btn-outline-dark btn-sm' value='Configurar permissões'>
+                </a>
+            </div>";
+        } else {
+            $aplicaButton = "";
+        }
     } else {
         $checkEquipe = "";
         $aplicaButton = "";
@@ -49,9 +55,15 @@ if ($tipo == "Equipamento") {
 
     if ($row['cred_priv'] == 2) {
         $checkEquipe = "checked";
-        $aplicaButton = "<div class='col-4' style='text-align: left;'>
-        <a onclick='dadosCredencial(".$row['cred_id'].")' data-bs-toggle='modal' data-bs-target='#modalConfigPermissoes'><input type='button' class='btn btn-outline-dark btn-sm' value='Configurar permissões'></input></a>
-    </div>";
+        if ($_SESSION['permissao_privacidade_credenciais'] == 1) {
+            $aplicaButton = "<div class='col-4' style='text-align: left;'>
+                <a onclick='dadosCredencial(" . $row['cred_id'] . ")' data-bs-toggle='modal' data-bs-target='#modalConfigPermissoes'>
+                    <input type='button' class='btn btn-outline-dark btn-sm' value='Configurar permissões'>
+                </a>
+            </div>";
+        } else {
+            $aplicaButton = "";
+        }
     } else {
         $checkEquipe = "";
         $aplicaButton = "";
@@ -79,9 +91,15 @@ if ($tipo == "Portal") {
 
     if ($row['cred_priv'] == 2) {
         $checkEquipe = "checked";
-        $aplicaButton = "<div class='col-4' style='text-align: left;'>
-        <a onclick='dadosCredencial(".$row['cred_id'].")' data-bs-toggle='modal' data-bs-target='#modalConfigPermissoes'><input type='button' class='btn btn-outline-dark btn-sm' value='Configurar permissões'></input></a>
-    </div>";
+        if ($_SESSION['permissao_privacidade_credenciais'] == 1) {
+            $aplicaButton = "<div class='col-4' style='text-align: left;'>
+                <a onclick='dadosCredencial(" . $row['cred_id'] . ")' data-bs-toggle='modal' data-bs-target='#modalConfigPermissoes'>
+                    <input type='button' class='btn btn-outline-dark btn-sm' value='Configurar permissões'>
+                </a>
+            </div>";
+        } else {
+            $aplicaButton = "";
+        }
     } else {
         $checkEquipe = "";
         $aplicaButton = "";
@@ -109,13 +127,20 @@ if ($tipo == "VM") {
 
     if ($row['cred_priv'] == 2) {
         $checkEquipe = "checked";
-        $aplicaButton = "<div class='col-4' style='text-align: left;'>
-        <a onclick='dadosCredencial(".$row['cred_id'].")' data-bs-toggle='modal' data-bs-target='#modalConfigPermissoes'><input type='button' class='btn btn-outline-dark btn-sm' value='Configurar permissões'></input></a>
-    </div>";
+        if ($_SESSION['permissao_privacidade_credenciais'] == 1) {
+            $aplicaButton = "<div class='col-4' style='text-align: left;'>
+            <a onclick='dadosCredencial(" . $row['cred_id'] . ")' data-bs-toggle='modal' data-bs-target='#modalConfigPermissoes'><input type='button' class='btn btn-outline-dark btn-sm' value='Configurar permissões'></input></a>
+            </div>";
+        } else {
+            $aplicaButton = "";
+        }
     } else {
         $checkEquipe = "";
         $aplicaButton = "";
     }
+
+
+
 
     if ($row['cred_priv'] == 3) {
         $checkSomEu = "checked";

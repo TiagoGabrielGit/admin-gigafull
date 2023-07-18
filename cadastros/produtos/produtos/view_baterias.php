@@ -4,6 +4,25 @@ require "../../../conexoes/conexao_pdo.php";
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $id = $_GET['id'];
 
+    if (isset($_GET['tabBateria']) && $_GET['tabBateria'] === 'dados') {
+        $nav_dados = "active";
+        $tab_dados = "show active";
+        $nav_units = "";
+        $tab_units = "";
+    } else if (isset($_GET['tabBateria']) && $_GET['tabBateria'] === 'units') {
+        $nav_dados = "";
+        $tab_dados = "";
+        $nav_units = "active";
+        $tab_units = "show active";
+    } else {
+        $nav_dados = "active";
+        $tab_dados = "show active";
+        $nav_units = "";
+        $tab_units = "";
+    }
+
+
+
     $sql_bateria =
         "SELECT
         pb.id as 'id',
@@ -77,6 +96,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         <h1>Bateria</h1>
     </div><!-- End Page Title -->
 
+    <?php
+
+    if (isset($_GET['error'])) {
+        $errorMessage = $_GET['error'];
+
+        // Exibe a mensagem de erro dentro do elemento <div> de alerta
+        if ($errorMessage === 'numero_serie_duplicado') {
+            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
+            echo 'O número de série já está cadastrado no banco de dados.';
+            echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+            echo '</div>';
+        }
+    }
+    ?>
+
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
@@ -97,14 +131,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         <!-- Default Tabs -->
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="dados-tab" data-bs-toggle="tab" data-bs-target="#dados" type="button" role="tab" aria-controls="dados" aria-selected="true">Dados</button>
+                                <button class="nav-link <?= $nav_dados ?>" id="dados-tab" data-bs-toggle="tab" data-bs-target="#dados" type="button" role="tab" aria-controls="dados" aria-selected="true">Dados</button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="unidades-tab" data-bs-toggle="tab" data-bs-target="#unidades" type="button" role="tab" aria-controls="unidades" aria-selected="false">Unidades</button>
+                                <button class="nav-link <?= $nav_units ?>" id="unidades-tab" data-bs-toggle="tab" data-bs-target="#unidades" type="button" role="tab" aria-controls="unidades" aria-selected="false">Unidades</button>
                             </li>
                         </ul>
                         <div class="tab-content pt-2" id="myTabContent">
-                            <div class="tab-pane fade show active" id="dados" role="tabpanel" aria-labelledby="dados-tab">
+                            <div class="tab-pane fade <?= $tab_dados ?>" id="dados" role="tabpanel" aria-labelledby="dados-tab">
                                 <form id="bateriasEditarForm">
 
                                     <input hidden readonly value="<?= $id ?>" id="idBateria" name="idBateria"></input>
@@ -157,7 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                     </div>
                                 </form>
                             </div>
-                            <div class="tab-pane fade" id="unidades" role="tabpanel" aria-labelledby="unidades-tab">
+                            <div class="tab-pane fade <?= $tab_units ?>" id="unidades" role="tabpanel" aria-labelledby="unidades-tab">
                                 <div class="ml-auto">
                                     <button title="Adicionar unidade" type="button" class="btn btn-info rounded-circle position-absolute top-0 end-0 mt-3 me-5" data-bs-toggle="modal" data-bs-target="#modalAdicionarUnidadeBateria">
                                         <i class="bi bi-plus"></i>
@@ -243,7 +277,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             </div>
         </div>
     </div>
-</div><!-- End Basic Modal-->
+</div>
 
 
 <?php

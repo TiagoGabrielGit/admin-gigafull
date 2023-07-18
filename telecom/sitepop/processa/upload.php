@@ -2,8 +2,12 @@
 if (!empty($_FILES['images'])) {
   $popId = $_POST['popId']; // Obtenha o ID do POP
 
+  $uploadDate = date('dmY'); // Obtém a data atual no formato: AnoMêsDiaHoraMinutoSegundo
+  $targetDirectory = '../../../uploads/pop/pop' . $popId . '/' . $uploadDate . '/';
 
-  $targetDirectory = '../../../uploads/pop' . $popId . '/';
+
+
+  //$targetDirectory = '../../../uploads/pop/pop' . $popId . '/';
 
   if (!file_exists($targetDirectory)) {
     mkdir($targetDirectory, 0777, true); // Cria o diretório se ele não existir

@@ -120,7 +120,46 @@
         </div>
 
         <hr class="sidebar-divider">
+        <div class="row">
+            <div class="col-lg-12">
+                <h4><b>TELECOM</b></h4>
+            </div>
+        </div>
 
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-12">
+                        <label for="permissaoPrivacidadeCredenciais" class="form-label"><b>Permissão Configurar Privacidade Credenciais</b></label>
+                        <select name="permissaoPrivacidadeCredenciais" id="permissaoPrivacidadeCredenciais" class="form-select" required>
+                            <?php
+                            if ($campos['permissao_privacidade_credenciais'] == 1) { ?>
+                                <option selected value="1">Sim</option>
+                                <option value="0">Não</option>
+                            <?php } else if ($campos['permissao_privacidade_credenciais'] == 0) { ?>
+                                <option value="1">Sim</option>
+                                <option selected value="0">Não</option>
+                            <?php } else { ?>
+                                <option selected disabled value="">Selecione uma opção</option>
+                                <option value="1">Sim</option>
+                                <option value="0">Não</option>
+                            <?php }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <hr class="sidebar-divider">
+        <div class="row">
+            <div class="col-lg-12">
+                <h4><b>SERVICE DESK</b></h4>
+            </div>
+        </div>
+        <br>
         <div class="row">
             <div class="col-lg-6">
                 <div class="row">
