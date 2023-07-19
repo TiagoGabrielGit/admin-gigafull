@@ -34,6 +34,7 @@ user.notify_email_relatos as 'notify_email_relatos',
 user.notify_email_apropriacao as 'notify_email_apropriacao',
 user.notify_email_execucao as 'notify_email_execucao',
 user.permissao_privacidade_credenciais as 'permissao_privacidade_credenciais',
+user.permissao_configuracoes_chamados as 'permissao_configuracoes_chamados',
 p.perfil as nome_perfil,
 CASE
     WHEN user.active = 1 THEN 'Ativado'

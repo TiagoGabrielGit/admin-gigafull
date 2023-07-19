@@ -90,3 +90,31 @@
         });
     }
 </script>
+
+<script>
+    // Função para remover os parâmetros 'success' e 'error' da URL
+    function removeParameters() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('success') || urlParams.has('error')) {
+            urlParams.delete('success');
+            urlParams.delete('error');
+            const newUrl = window.location.pathname + '?' + urlParams.toString();
+            history.replaceState({}, '', newUrl);
+        }
+    }
+
+    // Chame a função quando a página for carregada
+    window.addEventListener('load', removeParameters);
+</script>
+
+<script>
+    function confirmarCancelarRelato() {
+        if (confirm("Tem certeza que deseja cancelar a execução do chamado?")) {
+            // O usuário clicou em 'OK', prosseguir com o cancelamento do relato
+            return true;
+        } else {
+            // O usuário clicou em 'Cancelar', cancelar a ação
+            return false;
+        }
+    }
+</script>

@@ -69,7 +69,7 @@
         </div>
     <?php
     } else {
-        echo "O diretório não existe.";
+        echo "Nenhuma imagem encontrada para o POP.";
     }
 
     // Verifica se o formulário foi submetido

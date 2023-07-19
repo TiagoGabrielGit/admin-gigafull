@@ -367,6 +367,27 @@
                         </div>
                     </div>
 
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="permissaoAlterarConfiguracoes" class="form-label"><b>Permite Alterar Configurações do Chamado</b></label>
+                            <select name="permissaoAlterarConfiguracoes" id="permissaoAlterarConfiguracoes" class="form-select" required>
+                                <?php
+                                if ($campos['permissao_configuracoes_chamados'] == 1) { ?>
+                                    <option selected value="1">Sim</option>
+                                    <option value="0">Não</option>
+                                <?php } else if ($campos['permissao_configuracoes_chamados'] == 0) { ?>
+                                    <option value="1">Sim</option>
+                                    <option selected value="0">Não</option>
+                                <?php } else { ?>
+                                    <option selected disabled value="">Selecione uma opção</option>
+                                    <option value="1">Sim</option>
+                                    <option value="0">Não</option>
+                                <?php }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+
 
                 <?php } ?>
             </div>

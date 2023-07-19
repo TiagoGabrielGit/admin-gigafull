@@ -40,6 +40,36 @@ if ($chamado['data_prevista_conclusao'] === null) {
     <div class="pagetitle">
         <h1>Chamado #<?= $id_chamado ?></h1>
     </div>
+
+    <?php
+    if (isset($_GET['success'])) {
+        $successMessage = $_GET['success'];
+
+        if ($successMessage == 1) {
+            echo '<div class="alert alert-success alert-dismissible fade show" role="alert">';
+            echo 'Cancelado execução de chamado e realizado exclusão de rascunho de relato.';
+            echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+            echo '</div>';
+        }
+
+        if ($successMessage == 2) {
+            echo '<div class="alert alert-success alert-dismissible fade show" role="alert">';
+            echo 'Cancelada execução de chamado. Nenhum rascunho de chamado encontrado.';
+            echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+            echo '</div>';
+        }
+    } else if (isset($_GET['error'])) {
+        $errorMessage = $_GET['error'];
+
+        if ($errorMessage == 1) {
+            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
+            echo 'Nenhum chamado encontrado com o ID informado.';
+            echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+            echo '</div>';
+        }
+    }
+    ?>
+
     <section class="section">
         <div class="card">
             <div class="card-body">
@@ -147,9 +177,20 @@ if ($chamado['data_prevista_conclusao'] === null) {
 
                                     if ($chamado['status'] != "Fechado" && $_SESSION['permissao_interessados_chamados'] == 1) { ?>
                                         <button title="Interessados no chamado" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalInteressados"><i class="bi bi-people"></i></button>
-                                    <?php }
+                                    <?php } ?>
 
-                                    if ($c_valida_competencia == null) { ?>
+
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 " style="margin-top: 5px;">
+
+                                    <?php if ($chamado['status'] != "Fechado" && $_SESSION['permissao_configuracoes_chamados'] == 1) { ?>
+                                        <button title="Configurações do Chamado" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalConfiguracoesChamados"><i class="bi bi-gear"></i></button>
+                                    <?php } ?>
+
+                                    <?php if ($c_valida_competencia == null) { ?>
                                         <button title="Qualificado para atender" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalQualificacao"><i class="bi bi-award"></i></button>
                                     <?php } else { ?>
                                         <button title="Não qualificado para atender" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalQualificacao"><i class="bi bi-award"></i></button>
@@ -257,18 +298,17 @@ if ($chamado['data_prevista_conclusao'] === null) {
 
                                         <hr class="sidebar-divider">
                                         <div class="row">
-
-                                            <div class="col-5">
-
-                                            </div>
+                                            <div class="col-5"></div>
                                             <div class="col-4">
-
                                                 <span id="relatarLoading" hidden>
                                                     <div class="spinner-border text-success" role="status">
                                                         <span class="visually-hidden">Loading...</span>
                                                     </div>
                                                 </span>
-                                                <input id="btnRelatar" name="btnRelatar" type="button" value="Relatar" class="btn btn-danger"></input>
+                                                <input id="btnRelatar" name="btnRelatar" type="button" value="Relatar" class="btn btn-danger btn-sm"></input>
+                                            </div>
+                                            <div class="col-3">
+                                                <a href="processa/cancelar_relato.php?idChamado=<?= $id_chamado ?>" class="btn btn-secondary btn-sm" onclick="confirmarCancelarRelato()">Cancelar Execução do Chamado</a>
                                             </div>
                                         </div>
                                     </form>
@@ -640,6 +680,31 @@ $r_competencias_necessarias2 = mysqli_query($mysqli, $competencias_necessarias);
 
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
             </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalConfiguracoesChamados" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Configurações do Chamado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST" action="processa/atualiza_confs_chamado.php">
+
+                <div class="modal-body">
+                    <input readonly hidden value="<?= $id_chamado ?>" id="conf_id_chamado" name="conf_id_chamado"></input>
+                    <div class="col-8">
+                        <label for="conf_data_entrega" class="form-label">Data de Entrega</label>
+                        <input value="<?= isset($chamado['data_prevista_conclusao']) ? $chamado['data_prevista_conclusao'] : ''; ?>" id="conf_data_entrega" name="conf_data_entrega" type="datetime-local" class="form-control"></input>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger btn-sm">Atualizar</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

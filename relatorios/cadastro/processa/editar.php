@@ -12,17 +12,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = $_POST['idConsulta'];
         $consultaNome = $_POST['consulta_nome'];
         $consultaSql = $_POST['consulta_sql'];
+        $statusConsulta = $_POST['statusConsulta'];
 
         require "../../../conexoes/conexao_pdo.php";
 
         try {
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $sql = "UPDATE consultas_sql SET consulta_identificacao = :consultaNome, consulta_sql = :consultaSql WHERE id = :id ";
+            $sql = "UPDATE consultas_sql SET consulta_identificacao = :consultaNome, consulta_sql = :consultaSql, active = :statusConsulta WHERE id = :id ";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':consultaSql', $consultaSql);
             $stmt->bindParam(':consultaNome', $consultaNome);
             $stmt->bindParam(':id', $id);
+            $stmt->bindParam(':statusConsulta', $statusConsulta);
 
             // Executa a consulta
             $stmt->execute();

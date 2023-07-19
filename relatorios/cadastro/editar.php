@@ -13,7 +13,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     CASE
     WHEN active = 1 THEN 'Ativo'
     WHEN active = 0 THEN 'Inativo'
-    END as active
+    END as active,
+    active as activeID
     FROM consultas_sql as cs
     WHERE
     id = $id_consulta";
@@ -62,6 +63,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                     <label for="consulta_nome" class="form-label">Identificação da Consulta</label>
                                     <input value="<?= $consulta_identificacao ?>" type="text" class="form-control" name="consulta_nome" id="consulta_nome">
                                 </div>
+
+                                <div class="col-4">
+                                    <fieldset class="row mb-3">
+                                        <div class="col-sm-10">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="statusConsulta" id="gridRadios1" value="1" <?= $consulta['activeID'] == 1 ? 'checked' : '' ?>>
+                                                <label class="form-check-label" for="gridRadios1">
+                                                    Ativo
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="statusConsulta" id="gridRadios2" value="0" <?= $consulta['activeID'] == 0 ? 'checked' : '' ?>>
+                                                <label class="form-check-label" for="gridRadios2">
+                                                    Inativo
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </div>
+
                                 <div class="col-12">
                                     <label for="consulta_sql" class="form-label">Consulta SQL</label>
                                     <textarea class="form-control" name="consulta_sql" id="consulta_sql" rows="10"><?= $consulta_sql ?></textarea>
@@ -70,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                     <input id="btnEditar" name="btnEditar" type="button" value="Editar Consulta" class="btn btn-danger"></input>
                                     <input id="btnTestar" name="btnTestar" type="button" value="Testar Consulta" class="btn btn-primary"></input>
                                 </div>
-                            </form><!-- Vertical Form -->
+                            </form>
 
                         </div>
                     </div>

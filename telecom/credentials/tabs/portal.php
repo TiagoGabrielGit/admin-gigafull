@@ -137,59 +137,31 @@ $varDescricao = $_POST['pesquisaDescricao'];
                     </div>
 
                     <form method="POST" action="#" class="row g-3">
-
                         <input type="hidden" id="tabportal" name="tabportal">
-
                         <div class="col-4">
                             <label for="empresaPesquisa" class="form-label">Empresa</label>
                             <select id="empresaPesquisa" name="empresaPesquisa" class="form-select">
-                                <option value="%" selected>Todas</option>
+                                <option value="%" <?php echo ($_POST['empresaPesquisa'] == '%') ? 'selected' : ''; ?>>Todas</option>
                                 <?php
                                 $resultado = mysqli_query($mysqli, $sql_lista_empresas);
                                 while ($empresa = mysqli_fetch_object($resultado)) :
-                                    echo "<option value='$empresa->id'> $empresa->empresa</option>";
+                                    $selected = ($_POST['empresaPesquisa'] == $empresa->id) ? 'selected' : '';
+                                    echo "<option value='$empresa->id' $selected> $empresa->empresa</option>";
                                 endwhile;
-
-                                if ($_SERVER["REQUEST_METHOD"] == 'POST') :
-
-                                ?>
-                                    <script>
-                                        let nomeEmpresa = '<?= $_POST['empresaPesquisa']; ?>'
-                                        if (nomeEmpresa == '%') {} else {
-                                            document.querySelector("#empresaPesquisa").value = nomeEmpresa
-                                        }
-                                    </script>
-                                <?php
-                                endif;
                                 ?>
                             </select>
                         </div>
 
                         <div class="col-4">
                             <label for="pesquisaDescricao" class="form-label">Descrição</label>
-                            <input name="pesquisaDescricao" type="text" class="form-control" id="pesquisaDescricao">
-                            <?php
-                            if ($_SERVER["REQUEST_METHOD"] == 'POST') :
-                            ?>
-                                <script>
-                                    let pesquisaDescricao = '<?= $_POST['pesquisaDescricao']; ?>'
-                                    if (pesquisaDescricao == '%') {} else {
-                                        document.querySelector("#pesquisaDescricao").value = pesquisaDescricao
-                                    }
-                                </script>
-                            <?php
-                            endif;
-                            ?>
+                            <input name="pesquisaDescricao" type="text" class="form-control" id="pesquisaDescricao" <?php echo ($_POST['pesquisaDescricao'] !== '%') ? 'value="' . $_POST['pesquisaDescricao'] . '"' : ''; ?>>
                         </div>
-
                         <div class="col-2"></div>
 
                         <div class="col-6">
                             <button style="margin-top: 15px; " type="submit" class="btn btn-danger">Filtrar</button>
                         </div>
-
                     </form>
-
                     <hr class="sidebar-divider">
 
                     <table class="table table-striped" id="styleTable">
