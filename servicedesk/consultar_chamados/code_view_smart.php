@@ -118,6 +118,11 @@ if ($chamado['data_prevista_conclusao'] === null) {
                                     ?>
                                 <?php } ?>
 
+                                <?php if (isset($chamado['prioridade'])) { ?>
+                                    <span class="badge bg-warning  text-dark">Prioridade: <?= $chamado['prioridade'] ?></span>
+                                <?php } ?>
+
+
                             </div>
                         </div>
 
@@ -263,12 +268,15 @@ if ($chamado['data_prevista_conclusao'] === null) {
                                     <form method="POST" id="relatarChamado" class="row g-3">
                                         <span id="msgSalvaRascunhoRelato"></span>
                                         <span id="msgRelatar"></span>
-                                        <input hidden id="chamadoID" name="chamadoID" value="<?= $id_chamado ?>"></input>
-                                        <input hidden id="tipoUsuario" name="tipoUsuario" value="<?= $tipoUsuario ?>"></input>
-                                        <input hidden id="relatorID" name="relatorID" value="<?= $id_usuario ?>"></input>
-
+                                        <input readonly hidden id="chamadoID" name="chamadoID" value="<?= $id_chamado ?>"></input>
+                                        <input readonly hidden id="tipoUsuario" name="tipoUsuario" value="<?= $tipoUsuario ?>"></input>
+                                        <input readonly hidden id="relatorID" name="relatorID" value="<?= $id_usuario ?>"></input>
                                         <input hidden id="startTime" name="startTime" value="<?= $chamado['in_execution_start']; ?>"></input>
 
+                   
+                                        <?php if (isset($chamado['prioridade'])) { ?>
+                                            <input readonly  id="chamadoPrioridade" name="chamadoPrioridade" value="<?= $chamado['prioridade']; ?>"></input>
+                                        <?php } ?>
                                         <div class="col-4">
                                             <label for="statusChamado" class="form-label">Status*</label>
                                             <select class="form-select" id="statusChamado" name="statusChamado">
@@ -684,6 +692,30 @@ $r_competencias_necessarias2 = mysqli_query($mysqli, $competencias_necessarias);
     </div>
 </div>
 
+<?php
+try {
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // Busca os chamados com suas prioridades
+    $sql_prioridades_chamados = "SELECT id, prioridade, assuntoChamado FROM chamados where prioridade IS NOT NULL and status_id <> 3 ORDER BY prioridade";
+    $stmt_prioridades_chamados = $pdo->query($sql_prioridades_chamados);
+    $chamados_prioridades = $stmt_prioridades_chamados->fetchAll(PDO::FETCH_ASSOC);
+
+    // Encontra a próxima prioridade disponível
+    $proximo_numero = 1;
+    foreach ($chamados_prioridades as $chamado_pri) {
+        if ($chamado_pri['prioridade'] == $proximo_numero) {
+            $proximo_numero++;
+        } else {
+            break;
+        }
+    }
+} catch (PDOException $e) {
+    echo "Erro: " . $e->getMessage();
+}
+
+?>
+
 
 <div class="modal fade" id="modalConfiguracoesChamados" tabindex="-1" style="display: none;" aria-hidden="true">
     <div class="modal-dialog">
@@ -692,19 +724,48 @@ $r_competencias_necessarias2 = mysqli_query($mysqli, $competencias_necessarias);
                 <h5 class="modal-title">Configurações do Chamado</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="POST" action="processa/atualiza_confs_chamado.php">
 
-                <div class="modal-body">
+            <div class="modal-body">
+                <form method="POST" action="processa/atualiza_confs_chamado.php">
                     <input readonly hidden value="<?= $id_chamado ?>" id="conf_id_chamado" name="conf_id_chamado"></input>
-                    <div class="col-8">
-                        <label for="conf_data_entrega" class="form-label">Data de Entrega</label>
-                        <input value="<?= isset($chamado['data_prevista_conclusao']) ? $chamado['data_prevista_conclusao'] : ''; ?>" id="conf_data_entrega" name="conf_data_entrega" type="datetime-local" class="form-control"></input>
+                    <div class="row">
+                        <div class="col-8">
+                            <label for="conf_data_entrega" class="form-label">Data de Entrega</label>
+                            <input value="<?= isset($chamado['data_prevista_conclusao']) ? $chamado['data_prevista_conclusao'] : ''; ?>" id="conf_data_entrega" name="conf_data_entrega" type="datetime-local" class="form-control"></input>
+                        </div>
+                        <div class="col-4">
+                            <button style="margin-top: 38px;" type="submit" class="btn btn-danger btn-sm">Atualizar</button>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-danger btn-sm">Atualizar</button>
-                </div>
-            </form>
+                </form>
+                <form method="POST" action="processa/prioridade_chamado.php">
+                    <input readonly hidden value="<?= $id_chamado ?>" id="conf_id_chamado" name="conf_id_chamado"></input>
+                    <div class="row">
+                        <div class="col-8">
+                            <label for="chamado_prioridade" class="form-label">Prioridade</label>
+                            <select class="form-select" name="chamado_prioridade" id="chamado_prioridade" required>
+                                <option selected disabled value="">Selecione</option>
+                                <?php
+                                // Insere as opções do select com as prioridades e chamados do banco de dados
+                                foreach ($chamados_prioridades as $chamado_pri) {
+                                    echo "<option value=\"{$chamado_pri['prioridade']}\">#{$chamado_pri['prioridade']} - Chamado {$chamado_pri['id']}: {$chamado_pri['assuntoChamado']}</option>";
+                                }
+
+                                // Insere a próxima prioridade disponível
+                                echo "<option value=\"$proximo_numero\">#$proximo_numero - Disponivel</option>";
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <button style="margin-top: 38px;" type="submit" class="btn btn-danger btn-sm">Atualizar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+
         </div>
     </div>
 </div>

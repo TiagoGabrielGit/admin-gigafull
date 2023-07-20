@@ -4,7 +4,18 @@ require "../../conexoes/conexao.php";
 require "../../conexoes/conexao_pdo.php";
 require "sql1.php";
 
+
+
+
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+
+
+    // Modificação na consulta SQL para ordenação personalizada
+    if ($_POST['ordenarChamados'] == 1) {
+        $ordenarChamadosSelecionado  = "ch.data_abertura DESC";
+    } else if ($_POST['ordenarChamados'] == 2) {
+        $ordenarChamadosSelecionado  = "IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
+    }
 
     if ($_POST['atendentePesquisa'] != '%') {
         $atendentePesquisa = $_POST['atendentePesquisa'];
@@ -52,16 +63,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         $assuntoChamado = "%";
     }
 } else {
-    //$atendentePesquisa = "%";
     $whereAtendente = "AND ch.atendente_id LIKE '%'";
-
+    $ordenarChamadosSelecionado = "ch.data_abertura DESC";
     $empresa_id = "%";
     $statusChamado = "LIKE '%'";
     $idChamado = "%";
     $assuntoChamado = "%";
 }
-
-
 
 $id_usuario = $_SESSION['id'];
 $sql_captura_id_pessoa =
@@ -565,7 +573,6 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 </div>
                             </div>
                             <div class="col-lg-12 row">
-
                                 <div class="col-2">
                                     <label for="numChamadoPesquisa" class="form-label">Nº Chamado</label>
                                     <input name="numChamadoPesquisa" type="text" class="form-control" id="numChamadoPesquisa">
@@ -582,7 +589,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                     ?>
                                 </div>
 
-                                <div class="col-6">
+                                <div class="col-5">
                                     <label for="chamadoPesquisa" class="form-label">Chamado</label>
                                     <input name="chamadoPesquisa" type="text" class="form-control" id="chamadoPesquisa">
 
@@ -596,6 +603,14 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                     <?php
                                     endif;
                                     ?>
+                                </div>
+
+                                <div class="col-5">
+                                    <label for="ordenarChamados" class="form-label">Ordenar</label>
+                                    <select name="ordenarChamados" id="ordenarChamados" class="form-select">
+                                        <option value="1" <?php echo ($ordenarChamadosSelecionado == 'chamado') ? 'selected' : ''; ?>>Por Chamados</option>
+                                        <option value="2" <?php echo ($ordenarChamadosSelecionado == 'prioridade') ? 'selected' : ''; ?>>Por Prioridade</option>
+                                    </select>
                                 </div>
 
                             </div>
@@ -631,6 +646,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 ch.assuntoChamado as assunto,
                                 ch.relato_inicial as relato_inicial,
                                 ch.atendente_id as id_atendente,
+                                ch.prioridade as prioridade,
                                 date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
                                 ch.in_execution as inExecution,
                                 ch.data_prevista_conclusao as 'data_prevista_conclusao',
@@ -692,7 +708,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 AND
                                 ch.assuntoChamado LIKE '$assuntoChamado'
                                 ORDER BY
-                                ch.data_abertura DESC
+                                $ordenarChamadosSelecionado
                                 LIMIT $inicio, $qnt";
                             }
 
@@ -703,6 +719,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 ch.assuntoChamado as assunto,
                                 ch.relato_inicial as relato_inicial,
                                 ch.atendente_id as id_atendente,
+                                ch.prioridade as prioridade,
                                 date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
                                 ch.in_execution as inExecution,
                                 ch.data_prevista_conclusao as 'data_prevista_conclusao',
@@ -768,7 +785,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 and
                                 ch.assuntoChamado LIKE '$assuntoChamado'
                                 ORDER BY
-                                ch.data_abertura DESC
+                                $ordenarChamadosSelecionado
                                 LIMIT $inicio, $qnt
                                 ";
                             }
@@ -780,6 +797,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 ch.assuntoChamado as assunto,
                                 ch.relato_inicial as relato_inicial,
                                 ch.atendente_id as id_atendente,
+                                ch.prioridade as prioridade,
                                 date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
                                 ch.in_execution as inExecution,
                                 ch.status_id as id_status,
@@ -839,7 +857,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 and
                                 ch.assuntoChamado LIKE '$assuntoChamado'
                                 ORDER BY
-                                ch.data_abertura DESC
+                                $ordenarChamadosSelecionado
                                 LIMIT $inicio, $qnt
                                 ";
                             }
@@ -907,6 +925,11 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                                     <b>Chamado #<?= $id_chamado ?> - <?= $campos['tipoChamado']; ?> - <?= $campos['assunto']; ?></b><br>
                                                     Empresa: <?= $campos['fantasia']; ?><br>
                                                     Atendente: <?= $atendente ?>
+                                                    <br>
+                                                    <?php if (isset($campos['prioridade'])) { ?>
+                                                        <span class="badge bg-warning  text-dark">Prioridade: <?= $campos['prioridade'] ?></span>
+                                                    <?php } ?>
+
                                                 </span>
                                                 <?php
                                                 $valida_competencia =
@@ -997,6 +1020,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 ch.id as id_chamado,
                                 ch.assuntoChamado as assunto,
                                 ch.relato_inicial as relato_inicial,
+                                ch.prioridade as prioridade,
                                 ch.atendente_id as id_atendente,
                                 date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
                                 ch.in_execution as inExecution,
@@ -1036,7 +1060,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 and
                                 ch.assuntoChamado LIKE '$assuntoChamado'
                                 ORDER BY
-                                ch.data_abertura DESC";
+                                $ordenarChamadosSelecionado";
                             }
 
                             if ($permissao_visualiza_chamado == 2) {
@@ -1087,7 +1111,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 and
                                 ch.assuntoChamado LIKE '$assuntoChamado'
                                 ORDER BY
-                                ch.data_abertura DESC";
+                                $ordenarChamadosSelecionado";
                             }
 
                             if ($permissao_visualiza_chamado == 3) {
@@ -1132,7 +1156,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                             and
                             ch.assuntoChamado LIKE '$assuntoChamado'
                             ORDER BY
-                            ch.data_abertura DESC";
+                            $ordenarChamadosSelecionado";
                             }
                             // Executa o query da seleção acimas
                             $sql_query_all = mysqli_query($mysqli, $sql_select_all);

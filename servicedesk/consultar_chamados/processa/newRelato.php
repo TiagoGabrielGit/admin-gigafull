@@ -53,8 +53,15 @@ if ($tipoUsuario == 1) {
                 'in_execution_atd_id' => 0,
             ];
 
-            $sql2 = "UPDATE chamados SET seconds_worked=:seconds_worked, status_id=:status_id, in_execution=:in_execution, in_execution_atd_id=:in_execution_atd_id, in_execution_start=NULL, data_fechamento=NOW() WHERE id=$chamadoID";
+            $sql2 = "UPDATE chamados SET seconds_worked=:seconds_worked, status_id=:status_id, in_execution=:in_execution, in_execution_atd_id=:in_execution_atd_id, in_execution_start=NULL, data_fechamento=NOW(), prioridade=NULL WHERE id=$chamadoID";
             $stmt2 = $pdo->prepare($sql2);
+            if (isset($_POST['chamadoPrioridade'])) {
+                $prioridade_alvo = $_POST['chamadoPrioridade'];
+
+                $sql_update_prioridade = "UPDATE chamados SET prioridade = prioridade - 1 WHERE prioridade > $prioridade_alvo";
+                $stmt_prioridade = $pdo->prepare($sql_update_prioridade);
+                $stmt_prioridade->execute();
+            }
         } else {
             $data = [
                 'seconds_worked' => $total_seconds_worked,
