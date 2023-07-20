@@ -647,6 +647,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 ch.relato_inicial as relato_inicial,
                                 ch.atendente_id as id_atendente,
                                 ch.prioridade as prioridade,
+                                ch.melhoria_recomendada as melhoria_recomendada,
                                 date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
                                 ch.in_execution as inExecution,
                                 ch.data_prevista_conclusao as 'data_prevista_conclusao',
@@ -720,6 +721,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 ch.relato_inicial as relato_inicial,
                                 ch.atendente_id as id_atendente,
                                 ch.prioridade as prioridade,
+                                ch.melhoria_recomendada as melhoria_recomendada,
                                 date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
                                 ch.in_execution as inExecution,
                                 ch.data_prevista_conclusao as 'data_prevista_conclusao',
@@ -798,6 +800,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 ch.relato_inicial as relato_inicial,
                                 ch.atendente_id as id_atendente,
                                 ch.prioridade as prioridade,
+                                ch.melhoria_recomendada as melhoria_recomendada,
                                 date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
                                 ch.in_execution as inExecution,
                                 ch.status_id as id_status,
@@ -919,7 +922,28 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="<?= $relogioColor ?>" class="bi bi-alarm" viewBox="0 0 16 16">
                                                             <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9V5.5z" />
                                                             <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1h-3zm1.038 3.018a6.093 6.093 0 0 1 .924 0 6 6 0 1 1-.924 0zM0 3.5c0 .753.333 1.429.86 1.887A8.035 8.035 0 0 1 4.387 1.86 2.5 2.5 0 0 0 0 3.5zM13.5 1c-.753 0-1.429.333-1.887.86a8.035 8.035 0 0 1 3.527 3.527A2.5 2.5 0 0 0 13.5 1z" />
-                                                        </svg> &nbsp; &nbsp;
+                                                        </svg> &nbsp;
+                                                    <?php } ?>
+
+                                                    <?php if ($campos['melhoria_recomendada'] === null) {
+                                                    } else {
+                                                        $melhoria_recomendada = $campos['melhoria_recomendada'];
+
+                                                        $sql_melhoria = "SELECT pmc.melhoria_conhecida as 'melhoria', p.pop as pop FROM pop_melhorias_conhecidas as pmc LEFT JOIN pop as p ON p.id = pmc.pop_id WHERE pmc.id = :valor";
+                                                        $stmt_melhoria = $pdo->prepare($sql_melhoria);
+                                                        $stmt_melhoria->bindParam(':valor', $melhoria_recomendada);
+                                                        $stmt_melhoria->execute();
+
+                                                        $conteudo_coluna = $stmt_melhoria->fetch(PDO::FETCH_ASSOC);
+                                                        $conteudo_tooltip =  $conteudo_coluna['pop'] . ' - ' . $conteudo_coluna['melhoria'];
+                                                    ?>
+                                                        <span title="Melhoria Recomendada: <?= $conteudo_tooltip ?>">
+
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#9c7a16" class="bi bi-gem" viewBox="0 0 16 16">
+                                                                <path d="M3.1.7a.5.5 0 0 1 .4-.2h9a.5.5 0 0 1 .4.2l2.976 3.974c.149.185.156.45.01.644L8.4 15.3a.5.5 0 0 1-.8 0L.1 5.3a.5.5 0 0 1 0-.6l3-4zm11.386 3.785-1.806-2.41-.776 2.413 2.582-.003zm-3.633.004.961-2.989H4.186l.963 2.995 5.704-.006zM5.47 5.495 8 13.366l2.532-7.876-5.062.005zm-1.371-.999-.78-2.422-1.818 2.425 2.598-.003zM1.499 5.5l5.113 6.817-2.192-6.82L1.5 5.5zm7.889 6.817 5.123-6.83-2.928.002-2.195 6.828z" />
+                                                            </svg>
+                                                        </span>
+                                                        &nbsp;
                                                     <?php } ?>
 
                                                     <b>Chamado #<?= $id_chamado ?> - <?= $campos['tipoChamado']; ?> - <?= $campos['assunto']; ?></b><br>
@@ -1022,6 +1046,7 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                 ch.relato_inicial as relato_inicial,
                                 ch.prioridade as prioridade,
                                 ch.atendente_id as id_atendente,
+                                ch.melhoria_recomendada as melhoria_recomendada,
                                 date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
                                 ch.in_execution as inExecution,
                                 ch.status_id as id_status,

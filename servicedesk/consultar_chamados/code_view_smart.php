@@ -273,9 +273,9 @@ if ($chamado['data_prevista_conclusao'] === null) {
                                         <input readonly hidden id="relatorID" name="relatorID" value="<?= $id_usuario ?>"></input>
                                         <input hidden id="startTime" name="startTime" value="<?= $chamado['in_execution_start']; ?>"></input>
 
-                   
+
                                         <?php if (isset($chamado['prioridade'])) { ?>
-                                            <input readonly  id="chamadoPrioridade" name="chamadoPrioridade" value="<?= $chamado['prioridade']; ?>"></input>
+                                            <input readonly id="chamadoPrioridade" name="chamadoPrioridade" value="<?= $chamado['prioridade']; ?>"></input>
                                         <?php } ?>
                                         <div class="col-4">
                                             <label for="statusChamado" class="form-label">Status*</label>
@@ -754,6 +754,57 @@ try {
                                 // Insere a próxima prioridade disponível
                                 echo "<option value=\"$proximo_numero\">#$proximo_numero - Disponivel</option>";
                                 ?>
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <button style="margin-top: 38px;" type="submit" class="btn btn-danger btn-sm">Atualizar</button>
+                        </div>
+                    </div>
+                </form>
+                <form method="POST" action="processa/melhoria_recomendada.php">
+                    <input readonly hidden value="<?= $id_chamado ?>" id="conf_id_chamado" name="conf_id_chamado"></input>
+                    <div class="row">
+                        <div class="col-8">
+                            <label for="chamado_melhoria_recomendada" class="form-label">Melhoria Recomendada</label>
+                            <select class="form-select" name="chamado_melhoria_recomendada" id="chamado_melhoria_recomendada" required>
+                                <option selected disabled value="">Selecione</option>
+
+                                <?php
+                                try {
+
+                                    $stmt_melhoria_recomendada = $pdo->prepare("SELECT 
+                                    pmc.id as 'id_mc', 
+                                    pmc.melhoria_conhecida as 'mc',
+                                    p.pop as 'pop'
+                                    FROM 
+                                    pop_melhorias_conhecidas as pmc
+                                    LEFT JOIN
+                                    pop as p
+                                    ON
+                                    p.id = pmc.pop_id
+                                    WHERE 
+                                    pmc.status = 1
+                                    order by
+                                    p.pop ASC,
+                                    pmc.melhoria_conhecida ASC");
+                                    $stmt_melhoria_recomendada->execute();
+
+                                    $result_mr = $stmt_melhoria_recomendada->fetchAll(PDO::FETCH_ASSOC);
+
+                                    if (count($result_mr) > 0) {
+                                        foreach ($result_mr as $row_mr) {
+                                            $optionValue = $row_mr['id_mc'];
+                                            $optionText = $row_mr['pop'] . ' - ' . $row_mr['mc'];
+                                            $selected = ($chamado['melhoria_recomendada'] == $optionValue) ? 'selected' : '';
+                                ?>
+                                            <option value="<?= $optionValue ?>" <?= $selected ?>><?= $optionText ?></option>
+                                <?php }
+                                    } else {
+                                        echo '<option value="" disabled>Nenhuma melhoria recomendada encontrada.</option>';
+                                    }
+                                } catch (PDOException $e) {
+                                    echo "Erro na consulta: " . $e->getMessage();
+                                } ?>
                             </select>
                         </div>
                         <div class="col-4">
