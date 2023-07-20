@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     }
 } else {
     $whereAtendente = "AND ch.atendente_id LIKE '%'";
-    $ordenarChamadosSelecionado = "ch.status_id = 3, ch.data_abertura DESC";
+    $ordenarChamadosSelecionado = "ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
     $empresa_id = "%";
     $statusChamado = "LIKE '%'";
     $idChamado = "%";
