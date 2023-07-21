@@ -230,7 +230,6 @@ if ($chamado['data_prevista_conclusao'] === null) {
 
                             <div class="modal-body">
                                 <div class="card-body">
-                                    <!--<form method="POST" action="processa/newRelato.php" class="row g-3 needs-validation">-->
                                     <form method="POST" action="processa/relatoAvulso.php">
                                         <input readonly hidden id="relatoRelator" name="relatoRelator" value="<?= $id_usuario ?>">
                                         <input readonly hidden id="relatoAvulsoChamado" name="relatoAvulsoChamado" value="<?= $id_chamado ?>"></input>
@@ -275,7 +274,7 @@ if ($chamado['data_prevista_conclusao'] === null) {
 
 
                                         <?php if (isset($chamado['prioridade'])) { ?>
-                                            <input readonly id="chamadoPrioridade" name="chamadoPrioridade" value="<?= $chamado['prioridade']; ?>"></input>
+                                            <input hidden readonly id="chamadoPrioridade" name="chamadoPrioridade" value="<?= $chamado['prioridade']; ?>"></input>
                                         <?php } ?>
                                         <div class="col-4">
                                             <label for="statusChamado" class="form-label">Status*</label>

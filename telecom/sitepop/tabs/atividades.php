@@ -171,7 +171,8 @@
                         WHEN pmc.status = 2 THEN 'Cancelado'
                         WHEN pmc.status = 3 THEN 'Executado'
                         END as Status,
-                        pmc.status as status_id
+                        pmc.status as status_id,
+                        c.id as chamado_id
                     FROM 
                         pop_melhorias_conhecidas as pmc
                     LEFT JOIN
@@ -181,7 +182,11 @@
                     LEFT JOIN
                             pessoas as p
                         ON
-                            p.id = u.pessoa_id                                
+                            p.id = u.pessoa_id
+                    LEFT JOIN
+						chamados as c
+                        ON
+                        c.melhoria_recomendada = pmc.id                               
                     WHERE
                         pmc.pop_id = $idPOP
                     ORDER BY
@@ -222,7 +227,17 @@
                         </td>
                         <td><?= date('d/m/Y', strtotime($row_melhorias['criado'])) ?></td>
                         <td><?= $row_melhorias['nome'] ?></td>
+
                         <td><?= $row_melhorias['Status'] ?></td>
+                        <td>
+                            <?php if (isset($row_melhorias['chamado_id'])) { ?>
+                                <a href="/servicedesk/consultar_chamados/view.php?id=<?= $row_melhorias['chamado_id'] ?>">
+                                    <button class="btn btn-warning btn-sm">
+                                        <i class="bi bi-gem"></i>
+                                    </button>
+                                </a>
+                            <?php } ?>
+                        </td>
 
                         <?php if ($row_melhorias['status_id'] == 1) { ?>
 
