@@ -10,6 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         $ordenarChamadosSelecionado  = "ch.status_id = 3, ch.data_abertura DESC";
     } else if ($_POST['ordenarChamados'] == 2) {
         $ordenarChamadosSelecionado  = "ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
+    } else {
+        $ordenarChamadosSelecionado  = "ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
     }
 
     if ($_POST['atendentePesquisa'] != '%') {
