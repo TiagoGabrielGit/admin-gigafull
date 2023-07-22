@@ -717,7 +717,7 @@ try {
 
 
 <div class="modal fade" id="modalConfiguracoesChamados" tabindex="-1" style="display: none;" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Configurações do Chamado</h5>
@@ -772,31 +772,41 @@ try {
                                 try {
 
                                     $stmt_melhoria_recomendada = $pdo->prepare("SELECT 
-                                    pmc.id as 'id_mc', 
-                                    pmc.melhoria_conhecida as 'mc',
-                                    p.pop as 'pop'
-                                    FROM 
-                                    pop_melhorias_conhecidas as pmc
-                                    LEFT JOIN
-                                    pop as p
-                                    ON
-                                    p.id = pmc.pop_id
-                                    WHERE 
+                                    pmc.id AS 'id_mc', 
+                                    pmc.melhoria_conhecida AS 'mc',
+                                    p.pop AS 'pop',
+                                    COALESCE(c.id, NULL) AS 'id_chamado'
+                                FROM 
+                                    pop_melhorias_conhecidas AS pmc
+                                LEFT JOIN
+                                    pop AS p ON p.id = pmc.pop_id
+                                LEFT JOIN
+                                    chamados AS c ON c.melhoria_recomendada = pmc.id
+                                WHERE 
                                     pmc.status = 1
-                                    order by
+                                ORDER BY
                                     p.pop ASC,
-                                    pmc.melhoria_conhecida ASC");
+                                    pmc.melhoria_conhecida ASC;
+                                ");
                                     $stmt_melhoria_recomendada->execute();
 
-                                    $result_mr = $stmt_melhoria_recomendada->fetchAll(PDO::FETCH_ASSOC);
-
+                                    $result_mr = $stmt_melhoria_recomendada->fetchAll(PDO::FETCH_ASSOC); ?>
+                                    <?php
                                     if (count($result_mr) > 0) {
                                         foreach ($result_mr as $row_mr) {
                                             $optionValue = $row_mr['id_mc'];
                                             $optionText = $row_mr['pop'] . ' - ' . $row_mr['mc'];
                                             $selected = ($chamado['melhoria_recomendada'] == $optionValue) ? 'selected' : '';
-                                ?>
-                                            <option value="<?= $optionValue ?>" <?= $selected ?>><?= $optionText ?></option>
+
+
+                                            if ($row_mr['id_chamado'] !== null) {
+                                                $optionText .= ' (Chamado: ' . $row_mr['id_chamado'] . ')';
+                                    ?>
+                                                <option disabled value="<?= $optionValue ?>" <?= $selected ?>><?= $optionText ?></option>
+                                            <?php } else { ?>
+                                                <option value="<?= $optionValue ?>" <?= $selected ?>><?= $optionText ?></option>
+                                            <?php } ?>
+
                                 <?php }
                                     } else {
                                         echo '<option value="" disabled>Nenhuma melhoria recomendada encontrada.</option>';

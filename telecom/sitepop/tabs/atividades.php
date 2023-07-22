@@ -229,15 +229,17 @@
                         <td><?= $row_melhorias['nome'] ?></td>
 
                         <td><?= $row_melhorias['Status'] ?></td>
-                        <td>
-                            <?php if (isset($row_melhorias['chamado_id'])) { ?>
+                        <?php if (isset($row_melhorias['chamado_id'])) { ?>
+                            <td>
+
                                 <a href="/servicedesk/consultar_chamados/view.php?id=<?= $row_melhorias['chamado_id'] ?>">
                                     <button class="btn btn-warning btn-sm">
                                         <i class="bi bi-gem"></i>
                                     </button>
                                 </a>
-                            <?php } ?>
-                        </td>
+
+                            </td>
+                        <?php } ?>
 
                         <?php if ($row_melhorias['status_id'] == 1) { ?>
 

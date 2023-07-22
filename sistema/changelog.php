@@ -18,13 +18,14 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading9-5">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9-5" aria-expanded="false" aria-controls="collapse9-5">
-                    Versão 9.5 - XX/07/2023
+                    Versão 9.5 - 21/07/2023
                   </button>
                 </h2>
                 <div id="collapse9-5" class="accordion-collapse collapse" aria-labelledby="heading9-5" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
+                    # Criado vinculo de chamados com melhorias recomendadas;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criada a coluna melhoria_recomendada em chamados;<br>
