@@ -4,13 +4,8 @@ require "../../conexoes/conexao.php";
 require "../../conexoes/conexao_pdo.php";
 require "sql1.php";
 
-
-
-
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
-
-    // Modificação na consulta SQL para ordenação personalizada
     if ($_POST['ordenarChamados'] == 1) {
         $ordenarChamadosSelecionado  = "ch.status_id = 3, ch.data_abertura DESC";
     } else if ($_POST['ordenarChamados'] == 2) {
@@ -538,7 +533,12 @@ $empresa_usuario = $pessoaID['empresa_id'];
                                         <?php
                                         $resultado = mysqli_query($mysqli, $sql_lista_atendentes);
                                         while ($atendente = mysqli_fetch_object($resultado)) {
-                                            $selected = ($_POST['atendentePesquisa'] == $atendente->id) ? 'selected' : '';
+                                            if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                                                $atdPesquisa = $_POST['atendentePesquisa'];
+                                            } else {
+                                                $atdPesquisa = "";
+                                            }
+                                            $selected = ($atdPesquisa == $atendente->id) ? 'selected' : '';
                                             echo "<option value='$atendente->id' $selected> $atendente->nome</option>";
                                         }
                                         ?>
