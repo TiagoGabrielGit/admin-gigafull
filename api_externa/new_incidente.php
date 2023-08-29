@@ -2,11 +2,14 @@
 require $_SERVER['DOCUMENT_ROOT'] . "/conexoes/conexao_pdo.php";
 require $_SERVER['DOCUMENT_ROOT'] . "/conexoes/conexao.php";
 
-$ipHost = $_GET["ipHost"];
+
 $descricaoIncidente = $_GET["descricaoIncidente"];
 $zabbixEventID = $_GET["eventID"];
+$incidentType =  $_GET["incidentType"];
 $classificacao = "0";
+$idEquipamento =  $_GET["equipamentID"];
 
+/*$ipHost = $_GET["ipHost"];
 $sql_dados_equipamento =
     "SELECT
 eqpop.id as idEquipamento
@@ -21,17 +24,19 @@ eqpop.deleted = 1
 $consulta = mysqli_query($mysqli, $sql_dados_equipamento);
 $result = mysqli_fetch_assoc($consulta);
 $idEquipamento = $result['idEquipamento'];
+*/
 
 if ($idEquipamento == "") {
     $idEquipamento = "0";
     $sql_new_incidente =
-        "INSERT INTO incidentes (zabbix_event_id, equipamento_id, descricaoIncidente, classificacao, inicioIncidente, active)
-    VALUES (:zabbix_event_id, :equipamento_id, :descricaoIncidente, :classificacao, NOW(), '1')";
+        "INSERT INTO incidentes (zabbix_event_id, equipamento_id, descricaoIncidente, classificacao, inicioIncidente, active, incident_type)
+    VALUES (:zabbix_event_id, :equipamento_id, :descricaoIncidente, :classificacao, NOW(), '1', :incidentType)";
     $stmt = $pdo->prepare($sql_new_incidente);
     $stmt->bindParam(':equipamento_id', $idEquipamento);
     $stmt->bindParam(':descricaoIncidente', $descricaoIncidente);
     $stmt->bindParam(':zabbix_event_id', $zabbixEventID);
     $stmt->bindParam(':classificacao', $classificacao);
+    $stmt->bindParam(':incidentType', $incidentType);
     $stmt->execute();
     $idIncidente = $pdo->lastInsertId();
 
@@ -40,13 +45,14 @@ if ($idEquipamento == "") {
     }
 } else {
     $sql_new_incidente =
-        "INSERT INTO incidentes (zabbix_event_id, equipamento_id, descricaoIncidente, classificacao, inicioIncidente, active)
-    VALUES (:zabbix_event_id, :equipamento_id, :descricaoIncidente,:classificacao, NOW(), '1')";
+        "INSERT INTO incidentes (zabbix_event_id, equipamento_id, descricaoIncidente, classificacao, inicioIncidente, active, incident_typeincident_type)
+    VALUES (:zabbix_event_id, :equipamento_id, :descricaoIncidente,:classificacao, NOW(), '1', :incidentType)";
     $stmt = $pdo->prepare($sql_new_incidente);
     $stmt->bindParam(':equipamento_id', $idEquipamento);
     $stmt->bindParam(':descricaoIncidente', $descricaoIncidente);
     $stmt->bindParam(':zabbix_event_id', $zabbixEventID);
     $stmt->bindParam(':classificacao', $classificacao);
+    $stmt->bindParam(':incidentType', $incidentType);
     $stmt->execute();
     $idIncidente = $pdo->lastInsertId();
 

@@ -1,5 +1,6 @@
 <?php
 require "../../../../conexoes/conexao.php";
+session_start();
 ?>
 
 
