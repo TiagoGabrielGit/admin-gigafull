@@ -16,12 +16,12 @@ require "../includes/menu.php";
             <div class="accordion" id="accordionExample">
 
               <div class="accordion-item">
-                <h2 class="accordion-header" id="heading10-0">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse10-0" aria-expanded="false" aria-controls="collapse10-0">
-                    Versão 10.0 - XX/08/2023
+                <h2 class="accordion-header" id="heading9-6">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9-6" aria-expanded="false" aria-controls="collapse9-6">
+                    Versão 9.6 - XX/08/2023
                   </button>
                 </h2>
-                <div id="collapse10-0" class="accordion-collapse collapse" aria-labelledby="heading10-0" data-bs-parent="#accordionExample">
+                <div id="collapse9-6" class="accordion-collapse collapse" aria-labelledby="heading9-6" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
@@ -29,7 +29,7 @@ require "../includes/menu.php";
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado a tabela "incidentes_types";<br>
                     # Adicionado a coluna "incident_type" na tabela "incidentes";<br>
-                    
+
                     <br><strong>Backlog</strong><br>
                     # Reboot de ONU 17/08/2023;<br>
                     # Não esta listando os tipos de chamados de acordo com permissão do usuario;<br>
