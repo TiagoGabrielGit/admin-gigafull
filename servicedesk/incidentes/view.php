@@ -32,6 +32,8 @@ if ($tipoUsuario == 1) {
     rni.zabbix_event_id as zabbixID,
     rni.active as statusID,
     rni.autor_id as autor_id,
+    rni.incident_type as tipo,
+    it.type as tipoIncidente,
     eqpop.hostname as equipamento,
     rni.classificacao as idClassificacao,
     ic.classificacao as classificacao,
@@ -63,6 +65,10 @@ if ($tipoUsuario == 1) {
     incidentes_classificacao as ic
     ON
     ic.id = rni.classificacao
+    LEFT JOIN
+    incidentes_types as it
+    ON
+    it.codigo = rni.incident_type
     WHERE
     rni.id = $id_incidente
     ";
@@ -119,9 +125,16 @@ if ($tipoUsuario == 1) {
                                                                         $resultado_usuario = mysqli_query($mysqli, $sql_usuario);
                                                                         $row_usuario = mysqli_fetch_assoc($resultado_usuario);
                                                                         echo $row_usuario['nome_usuario'];
-                                                                    } ?><br><br>
+                                                                    } ?><br>
 
 
+                                        <b>Tipo de Incidente: </b>
+                                        <?php
+                                        if ($campos['tipoIncidente'] == NULL) {
+                                            echo "Não Definido";
+                                        } else {
+                                            echo $campos['tipoIncidente'];
+                                        } ?> <br>
 
                                         <b>Classificação: </b>
                                         <?php
@@ -132,13 +145,7 @@ if ($tipoUsuario == 1) {
                                         } ?> <br>
 
 
-                                        <b>Previsão Normalização: </b>
-                                        <?php
-                                        if ($campos['previsaoNormalizacao'] == NULL) {
-                                            echo "Sem Previsão";
-                                        } else {
-                                            echo $campos['previsaoNormalizacao'];
-                                        } ?> <br>
+
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -146,7 +153,14 @@ if ($tipoUsuario == 1) {
                                         <div class="col-12" style="text-align: left;">
                                             <br>
                                             <b>Hora Inicial: </b><?= $campos['horainicial']; ?><br>
-                                            <b>Hora Normalização: </b><?= $campos['horafinal']; ?><br><br>
+                                            <b>Previsão Normalização: </b>
+                                            <?php
+                                            if ($campos['previsaoNormalizacao'] == NULL) {
+                                                echo "Sem Previsão";
+                                            } else {
+                                                echo $campos['previsaoNormalizacao'];
+                                            } ?> <br>
+                                            <b>Hora Normalização: </b><?= $campos['horafinal']; ?><br>
                                             <b>Tempo total incidente: </b><?= $campos['tempoIncidente']; ?>
                                         </div>
                                     </div>
@@ -169,7 +183,7 @@ if ($tipoUsuario == 1) {
                                         <div class="col-12" style="text-align: center;">
                                             <br>
                                             <?php
-                                            if ($campos['statusID'] == "1") { ?>
+                                            if ($campos['statusID'] == "1" && $campos['tipo'] == "100") { ?>
                                                 <button data-bs-toggle="modal" data-bs-target="#modalAnalisarGPON" id="buttonAnalisarGPON" class="btn btn-danger" type="button">Analisar GPON</button>
                                             <?php
                                             }
@@ -330,6 +344,34 @@ if ($tipoUsuario == 1) {
                                             <option value="0">Fechado</option>
                                         </select>
                                     </div>
+                                </div>
+
+                                <div class="col-5">
+                                    <label for="tipoIncidente" class="form-label">Tipo de Incidente</label>
+                                    <select id="tipoIncidente" name="tipoIncidente" class="form-select">
+                                        <option selected value="">Selecione</option>
+
+                                        <?php
+                                        $sql_tipos =
+                                            "SELECT
+                                                    it.codigo as idCodigo,
+                                                    it.type as tipo
+                                                FROM
+                                                    incidentes_types as it
+                                                WHERE
+                                                    it.active = 1
+                                                ORDER BY
+                                                    it.type ASC";
+
+                                        $r_tipo = mysqli_query($mysqli, $sql_tipos);
+                                        while ($c_tipo = mysqli_fetch_object($r_tipo)) :
+                                            echo "<option value='$c_tipo->idCodigo'> $c_tipo->tipo</option>";
+                                        endwhile;
+                                        ?>
+
+
+
+                                    </select>
                                 </div>
 
                                 <div class="col-5">

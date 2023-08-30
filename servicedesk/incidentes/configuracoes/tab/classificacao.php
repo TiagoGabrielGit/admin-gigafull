@@ -61,9 +61,7 @@
 
                                             <div class="modal-body">
                                                 <div class="card-body">
-                                                    <form id="editarClassificacao" method="POST" class="row g-3">
-
-                                                        <span id="msg"></span>
+                                                    <form action="/servicedesk/incidentes/configuracoes/processa/editarClassificacao.php" method="POST" class="row g-3">
 
                                                         <input hidden id="classificacaoID" name="classificacaoID" value="<?= $c_lista_classificacao['id']; ?>"></input>
 
@@ -88,14 +86,10 @@
 
                                                         <hr class="sidebar-divider">
 
-                                                        <div class="col-4"></div>
-
-                                                        <div class="col-4" style="text-align: center;">
-                                                            <input id="btnSalvarEdicaoClassificacao" name="btnSalvarEdicaoClassificacao" type="button" value="Salvar" class="btn btn-danger"></input>
-                                                            <a href="/servicedesk/incidentes/configuracoes/index.php"> <input type="button" value="Voltar" class="btn btn-secondary"></input></a>
+                                                        <div class="text-center">
+                                                            <button type="submit" class="btn btn-danger">Salvar</button>
+                                                            <button type="reset" class="btn btn-secondary">Limpar</button>
                                                         </div>
-
-                                                        <div class="col-4"></div>
                                                     </form><!-- End Horizontal Form -->
                                                 </div>
                                             </div>
@@ -118,15 +112,13 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Cadastar Classificação</h5>
+                <h5 class="modal-title">Cadastrar Classificação</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body">
                 <div class="card-body">
-                    <form id="cadastrarClassificacao" method="POST" class="row g-3">
-
-                        <span id="msg"></span>
+                    <form action="/servicedesk/incidentes/configuracoes/processa/cadastrarClassificacao.php" method="POST" class="row g-3">
 
                         <div class="col-6">
                             <label for="classificacaoIncidente" class="form-label">Classificação</label>
@@ -140,67 +132,13 @@
 
                         <hr class="sidebar-divider">
 
-                        <div class="col-4"></div>
-
-                        <div class="col-4" style="text-align: center;">
-                            <input id="btnSalvarClassificacao" name="btnSalvarClassificacao" type="button" value="Salvar" class="btn btn-danger"></input>
-                            <a href="/servicedesk/incidentes/configuracoes/index.php"> <input type="button" value="Voltar" class="btn btn-secondary"></input></a>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-danger">Salvar</button>
+                            <button type="reset" class="btn btn-secondary">Limpar</button>
                         </div>
-
-                        <div class="col-4"></div>
                     </form><!-- End Horizontal Form -->
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
-
-
-<script>
-    $("#btnSalvarClassificacao").click(function() {
-        var dados = $("#cadastrarClassificacao").serialize();
-
-        $.post("/servicedesk/incidentes/configuracoes/processa/cadastrarClassificacao.php", dados, function(retorna) {
-            $("#msg").slideDown('slow').html(retorna);
-
-            //Limpar os campos
-            $('#cadastrarClassificacao')[0].reset();
-
-            //Apresentar a mensagem leve
-            retirarMsg();
-        });
-    });
-
-    //Retirar a mensagem após 1700 milissegundos
-    function retirarMsg() {
-        setTimeout(function() {
-            $("#msg").slideUp('slow', function() {});
-        }, 1700);
-    }
-</script>
-
-<script>
-    $("#btnSalvarEdicaoClassificacao").click(function() {
-        var dados = $("#editarClassificacao").serialize();
-
-        $.post("/servicedesk/incidentes/configuracoes/processa/editarClassificacao.php", dados, function(retorna) {
-            $("#msg").slideDown('slow').html(retorna);
-
-            //Limpar os campos
-            $('#editarClassificacao')[0].reset();
-
-            //Apresentar a mensagem leve
-            retirarMsg();
-        });
-    });
-
-    //Retirar a mensagem após 1700 milissegundos
-    function retirarMsg() {
-        setTimeout(function() {
-            $("#msg").slideUp('slow', function() {});
-        }, 1700);
-    }
-</script>

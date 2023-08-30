@@ -1,30 +1,37 @@
 <?php
 require "../../../../conexoes/conexao_pdo.php";
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-$classificacaoID = $_POST['classificacaoID'];
-$classificacaoIncidenteEditar = $_POST['classificacaoIncidenteEditar'];
-$descricaoClassificacaoEditar = $_POST['descricaoClassificacaoEditar'];
-$ativoClassificacaoEditar = $_POST['ativoClassificacaoEditar'];
+    $classificacaoID = $_POST['classificacaoID'];
+    $classificacaoIncidenteEditar = $_POST['classificacaoIncidenteEditar'];
+    $descricaoClassificacaoEditar = $_POST['descricaoClassificacaoEditar'];
+    $ativoClassificacaoEditar = $_POST['ativoClassificacaoEditar'];
 
-$data = [
-    'classificacaoID' => $classificacaoID,
-    'classificacaoIncidenteEditar' => $classificacaoIncidenteEditar,
-    'descricaoClassificacaoEditar' => $descricaoClassificacaoEditar,
-    'active' => $ativoClassificacaoEditar,
-];
+    $data = [
+        'classificacaoID' => $classificacaoID,
+        'classificacaoIncidenteEditar' => $classificacaoIncidenteEditar,
+        'descricaoClassificacaoEditar' => $descricaoClassificacaoEditar,
+        'active' => $ativoClassificacaoEditar,
+    ];
 
-$sql2 = "UPDATE incidentes_classificacao SET classificacao=:classificacaoIncidenteEditar, descricao=:descricaoClassificacaoEditar, active=:active WHERE id=:classificacaoID";
-$stmt2 = $pdo->prepare($sql2);
+    try {
+        $sql2 = "UPDATE incidentes_classificacao SET classificacao=:classificacaoIncidenteEditar, descricao=:descricaoClassificacaoEditar, active=:active WHERE id=:classificacaoID";
+        $stmt2 = $pdo->prepare($sql2);
+        $stmt2->execute($data);
 
-
-if ($stmt2->execute($data)) {
-    $cont_insert = true;
-} else {
-    $cont_insert = false;
-}
-
-if ($cont_insert) {
-    echo "<p style='color:green;'>Classificação editada com sucesso!</p>";
-} else {
-    echo "<p style='color:red;'>Erro ao editar classificação</p>";
+        if ($stmt2->rowCount() > 0) {
+            header("Location: /servicedesk/incidentes/configuracoes/index.php?incidentesConfiguracao=classificacao");
+            exit;
+        } else {
+            header("Location: /servicedesk/incidentes/configuracoes/index.php?incidentesConfiguracao=classificacao");
+            exit;
+        }
+    } catch (PDOException $e) {
+        if ($e->errorInfo[1] === 1062) {
+            header("Location: /servicedesk/incidentes/configuracoes/index.php?incidentesConfiguracao=classificacao");
+            exit;
+        } else {
+            echo "Ocorreu um erro durante a inserção: " . $e->getMessage();
+        }
+    }
 }

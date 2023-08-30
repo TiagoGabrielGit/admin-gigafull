@@ -65,6 +65,7 @@ require "../../includes/menu.php";
                                     </div>
                                 </div>
                             </div>
+
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="headingTwo">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
@@ -78,11 +79,12 @@ require "../../includes/menu.php";
                                                 <b>Funcionalidade: Abertura Incidente</b><br>
                                                 <b>Método:</b> GET <br>
                                                 <b>Caminho:</b> /api_externa/new_incidente.php<br>
-                                                <b>Corpo:</b> 'ipHost' ; 'descricaoIncidente' ; 'eventID'<br>
-                                            </div>
+                                                <b>Corpo:</b> 'equipamentID' ; 'descricaoIncidente' ; 'eventID' ; 'incidentType'<br>
+                                            </div> 
                                             <div class="col-lg-6">
                                                 <b> Descrição do corpo</b><br>
-                                                <b>ipHost:</b> IP do equipamento. O equipamento deve estar cadastrado no SmartControl com o endereço IP<br>
+                                                <b>equipamentID:</b> ID do equipamento. Este deve estar cadastrado no SmartControl e cadastrado a tag smartcontrolEquipamentID no host do Zabbix.<br>
+                                                <b>incidentType:</b> Tipo do equipamento. Este deve estar cadastrado na trigger com a tag smartcontrolIncidentType.<br>
                                                 <b>descricaoIncidente:</b> Descrição do evento<br>
                                                 <b>eventID:</b> ID do evento no sistema integrador<br>
                                             </div>

@@ -84,6 +84,7 @@
         p.nome as criador,
         eqp.hostname as equipamento,
         ic.classificacao as classificacao,
+        it.type as tipo,
         i.descricaoIncidente as descricaoIncidente,
         date_format(i.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
         date_format(i.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
@@ -107,6 +108,10 @@
         pessoas as p
         ON
         p.id = u.pessoa_id
+        LEFT JOIN
+        incidentes_types as it
+        ON
+        it.codigo = i.incident_type
         WHERE
         i.active = 1
         ORDER BY
@@ -146,7 +151,11 @@
                                                 } else {
                                                     echo "Integração Zabbix";
                                                 } ?><br>
-
+                            <b>Tipo Incidente:</b> <?php if ($campos['tipo'] <> null) {
+                                                    echo $campos['tipo'];
+                                                } else {
+                                                    echo "Não definido";
+                                                } ?><br>
                             <b>Classificação: </b>
                             <?php
                             if ($campos['classificacao'] == NULL) {
@@ -156,6 +165,11 @@
                             } ?> <br>
 
 
+
+
+                        </div>
+                        <div class="col-5">
+                            <b>Hora Inicial: </b><?= $campos['horainicial']; ?><br>
                             <b>Previsão Normalização: </b>
                             <?php
                             if ($campos['previsaoNormalizacao'] == NULL) {
@@ -163,11 +177,7 @@
                             } else {
                                 echo $campos['previsaoNormalizacao'];
                             } ?> <br>
-
-                        </div>
-                        <div class="col-5">
-                            <b>Hora Inicial: </b><?= $campos['horainicial']; ?><br>
-                            <b>Hora Normalização: </b><?= $campos['horafinal']; ?><br><br>
+                            <b>Hora Normalização: </b><?= $campos['horafinal']; ?><br>
                             <b>Tempo total incidente: </b><?= $campos['tempoIncidente']; ?>
                         </div>
 

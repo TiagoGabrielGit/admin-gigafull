@@ -45,7 +45,7 @@ if ($idEquipamento == "") {
     }
 } else {
     $sql_new_incidente =
-        "INSERT INTO incidentes (zabbix_event_id, equipamento_id, descricaoIncidente, classificacao, inicioIncidente, active, incident_typeincident_type)
+        "INSERT INTO incidentes (zabbix_event_id, equipamento_id, descricaoIncidente, classificacao, inicioIncidente, active, incident_type)
     VALUES (:zabbix_event_id, :equipamento_id, :descricaoIncidente,:classificacao, NOW(), '1', :incidentType)";
     $stmt = $pdo->prepare($sql_new_incidente);
     $stmt->bindParam(':equipamento_id', $idEquipamento);

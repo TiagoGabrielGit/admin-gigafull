@@ -6,17 +6,23 @@ $solicitante = isset($_POST['solicitante']) ? $_POST['solicitante'] : null;
 $classIncidente = isset($_POST['classIncidente']) ? $_POST['classIncidente'] : null;
 $statusIncidente = isset($_POST['statusIncidente']) ? $_POST['statusIncidente'] : null;
 $previsaoConclusao = isset($_POST['previsaoConclusao']) ? $_POST['previsaoConclusao'] : null;
+$tipoIncidente = isset($_POST['tipoIncidente']) ? $_POST['tipoIncidente'] : null;
 $relatoIncidente = isset($_POST['relatoIncidente']) ? $_POST['relatoIncidente'] : null;
 $horaAtual = date('Y-m-d H:i:s');
 
 
-if ($classIncidente != null || $statusIncidente != null || $previsaoConclusao != null) {
+if ($classIncidente != null || $statusIncidente != null || $previsaoConclusao != null || $tipoIncidente != null) {
     $sql = "UPDATE incidentes SET ";
     $params = array();
 
     if ($classIncidente != null) {
         $sql .= "classificacao = :classIncidente, ";
         $params[':classIncidente'] = $classIncidente;
+    }
+
+    if ($tipoIncidente != null) {
+        $sql .= "incident_type = :tipoIncidente, ";
+        $params[':tipoIncidente'] = $tipoIncidente;
     }
 
     if ($statusIncidente != null && $statusIncidente == "0") {

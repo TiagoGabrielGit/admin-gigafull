@@ -18,13 +18,15 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading9-6">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9-6" aria-expanded="false" aria-controls="collapse9-6">
-                    Versão 9.6 - XX/08/2023
+                    Versão 9.6 - 30/08/2023
                   </button>
                 </h2>
                 <div id="collapse9-6" class="accordion-collapse collapse" aria-labelledby="heading9-6" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
+                    # Ajustado para a correlação do equipamento ocorrer através do ID e não do IP na geração de incidente.<br>
+                    # Criado o tipo de incidente;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado a tabela "incidentes_types";<br>
