@@ -17,7 +17,9 @@
                     <tr>
                         <th scope="col">Classificação</th>
                         <th scope="col">Descrição</th>
+                        <th scope="col">Cor Identificação</th>
                         <th scope="col">Status</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -26,6 +28,8 @@
                         "SELECT
                         ic.id as id,
                         ic.classificacao as classificacao,
+                        ic.color as color,
+
                         ic.descricao as descricao,
                         CASE
                         WHEN ic.active = 1 THEN 'Ativo'
@@ -42,14 +46,16 @@
 
                     while ($c_lista_classificacao = $r_lista_classificacao->fetch_array()) {
                     ?>
-                        <tr>
+                        <tr style="vertical-align: middle;">
                             <td><?= $c_lista_classificacao['classificacao']; ?></td>
 
                             <td><?= $c_lista_classificacao['descricao']; ?></td>
+                            <td><?= $c_lista_classificacao['color']; ?></td>
+
                             <td><?= $c_lista_classificacao['active']; ?></td>
 
                             <td>
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEditar<?= $c_lista_classificacao['id']; ?>">Editar</button>
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalEditar<?= $c_lista_classificacao['id']; ?>">Editar</button>
 
                                 <div class="modal fade" id="modalEditar<?= $c_lista_classificacao['id']; ?>" tabindex="-1">
                                     <div class="modal-dialog modal-lg">
@@ -69,7 +75,7 @@
                                                             <label for="classificacaoIncidenteEditar" class="form-label">Classificação</label>
                                                             <input type="text" class="form-control" id="classificacaoIncidenteEditar" name="classificacaoIncidenteEditar" value="<?= $c_lista_classificacao['classificacao']; ?>" required>
                                                         </div>
-                                                        <div class="col-2"></div>
+
                                                         <div class="col-4">
                                                             <label for="ativoClassificacaoEditar" class="form-label">Status</label>
                                                             <select class="form-select" id="ativoClassificacaoEditar" name="ativoClassificacaoEditar" required>
@@ -77,7 +83,9 @@
                                                                 <option value="0" <?= $c_lista_classificacao['active'] == 'Inativo' ? 'selected' : ''; ?>>Inativo</option>
                                                             </select>
                                                         </div>
-
+                                                        <div class="col-2">
+                                                            <br> <input style="margin-top: 5px;" type="color" class="form-control form-control-color" name="colorClassificacao" id="colorClassificacao" value="<?= $c_lista_classificacao['color'] ?>">
+                                                        </div>
 
                                                         <div class="col-12">
                                                             <label for="descricaoClassificacaoEditar" class="form-label">Descrição</label>
@@ -123,6 +131,11 @@
                         <div class="col-6">
                             <label for="classificacaoIncidente" class="form-label">Classificação</label>
                             <input type="text" class="form-control" id="classificacaoIncidente" name="classificacaoIncidente" required>
+                        </div>
+
+                        <div class="col-6">
+                            
+                            <br ><input  style="margin-top: 5px;" type="color" class="form-control form-control-color" name="colorClassificacao" id="colorClassificacao" value="#4154f1">
                         </div>
 
                         <div class="col-12">

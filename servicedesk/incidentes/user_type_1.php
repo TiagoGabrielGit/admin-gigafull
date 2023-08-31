@@ -78,9 +78,7 @@ $pesquisaIncidenteAbertoClassificacao = $_POST['pesquisaIncidenteAbertoClassific
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link <?= $nav_abertos ?>" id="abertos-tab" data-bs-toggle="tab" data-bs-target="#abertos" type="button" role="tab" aria-controls="abertos" aria-selected="true">Abertos</button>
                             </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link <?= $nav_prevExcedido ?>" id="prevExcedido-tab" data-bs-toggle="tab" data-bs-target="#prevExcedido" type="button" role="tab" aria-controls="prevExcedido" aria-selected="true">Previsão Excedida</button>
-                            </li>
+
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link <?= $nav_fechados ?>" id="fechados-tab" data-bs-toggle="tab" data-bs-target="#fechados" type="button" role="tab" aria-controls="fechados" aria-selected="false">Normalizados</button>
                             </li>
@@ -90,12 +88,6 @@ $pesquisaIncidenteAbertoClassificacao = $_POST['pesquisaIncidenteAbertoClassific
                             <div class="tab-pane fade <?= $tab_abertos ?>" id="abertos" role="tabpanel" aria-labelledby="abertos-tab">
                                 <?php
                                 require "tabs/user_type_1/abertos.php";
-                                ?>
-                            </div>
-
-                            <div class="tab-pane fade <?= $tab_prevExcedido ?>" id="prevExcedido" role="tabpanel" aria-labelledby="prevExcedido-tab">
-                                <?php
-                                require "tabs/user_type_1/prevExcedida.php";
                                 ?>
                             </div>
 

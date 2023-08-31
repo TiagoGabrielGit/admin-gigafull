@@ -6,16 +6,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $classificacaoIncidenteEditar = $_POST['classificacaoIncidenteEditar'];
     $descricaoClassificacaoEditar = $_POST['descricaoClassificacaoEditar'];
     $ativoClassificacaoEditar = $_POST['ativoClassificacaoEditar'];
+    $colorClassificacao = $_POST['colorClassificacao'];
+    
 
     $data = [
         'classificacaoID' => $classificacaoID,
         'classificacaoIncidenteEditar' => $classificacaoIncidenteEditar,
         'descricaoClassificacaoEditar' => $descricaoClassificacaoEditar,
         'active' => $ativoClassificacaoEditar,
+        'colorClassificacao' => $colorClassificacao,
     ];
 
     try {
-        $sql2 = "UPDATE incidentes_classificacao SET classificacao=:classificacaoIncidenteEditar, descricao=:descricaoClassificacaoEditar, active=:active WHERE id=:classificacaoID";
+        $sql2 = "UPDATE incidentes_classificacao SET color=:colorClassificacao, classificacao=:classificacaoIncidenteEditar, descricao=:descricaoClassificacaoEditar, active=:active WHERE id=:classificacaoID";
         $stmt2 = $pdo->prepare($sql2);
         $stmt2->execute($data);
 
