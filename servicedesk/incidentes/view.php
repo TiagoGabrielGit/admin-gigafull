@@ -295,7 +295,7 @@ if ($tipoUsuario == 1) {
 
                 <div class="modal-body">
                     <div class="card-body">
-                        <form id="updateIncidente" method="POST" class="row g-3">
+                        <form action="processa/update.php" method="POST" class="row g-3">
 
                             <span id="msg"></span>
 
@@ -369,15 +369,23 @@ if ($tipoUsuario == 1) {
                                         endwhile;
                                         ?>
 
-
-
                                     </select>
                                 </div>
 
-                                <div class="col-5">
+                                <div class="col-4">
                                     <label for="previsaoConclusao" class="form-label">Previsão de Conclusão</label>
                                     <input name="previsaoConclusao" type="datetime-local" class="form-control" id="previsaoConclusao">
                                 </div>
+
+                                <div class="col-3 d-flex flex-column align-items-center">
+                                    <div>
+                                        <label for="semPrevisao" class="form-label">Sem Previsão</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="semPrevisao" name="semPrevisao">
+                                    </div>
+                                </div>
+
                             </div>
 
                             <div class="col-12">
@@ -390,8 +398,7 @@ if ($tipoUsuario == 1) {
                             <div class="col-4"></div>
 
                             <div class="col-4" style="text-align: center;">
-                                <input id="btnUpdate" name="btnUpdate" type="button" value="Update" class="btn btn-danger"></input>
-                                <a href="#"> <input type="button" value="Voltar" class="btn btn-secondary"></input></a>
+                                <button class="btn btn-danger" type="submit">Atualizar</button>
                             </div>
 
                             <div class="col-4"></div>
@@ -411,6 +418,5 @@ if ($tipoUsuario == 1) {
 <?php }
 
 require "js_analise_incidente.php";
-require "../../scripts/update_incidente.php";
 require "../../includes/footer.php";
 ?>

@@ -11,65 +11,58 @@ $relatoIncidente = isset($_POST['relatoIncidente']) ? $_POST['relatoIncidente'] 
 $horaAtual = date('Y-m-d H:i:s');
 
 
-if ($classIncidente != null || $statusIncidente != null || $previsaoConclusao != null || $tipoIncidente != null) {
-    $sql = "UPDATE incidentes SET ";
-    $params = array();
+$sql = "UPDATE incidentes SET ";
+$params = array();
 
-    if ($classIncidente != null) {
-        $sql .= "classificacao = :classIncidente, ";
-        $params[':classIncidente'] = $classIncidente;
-    }
+if ($classIncidente != null) {
+    $sql .= "classificacao = :classIncidente, ";
+    $params[':classIncidente'] = $classIncidente;
+}
 
-    if ($tipoIncidente != null) {
-        $sql .= "incident_type = :tipoIncidente, ";
-        $params[':tipoIncidente'] = $tipoIncidente;
-    }
+if ($tipoIncidente != null) {
+    $sql .= "incident_type = :tipoIncidente, ";
+    $params[':tipoIncidente'] = $tipoIncidente;
+}
 
-    if ($statusIncidente != null && $statusIncidente == "0") {
-        $sql .= "active = :statusIncidente, ";
-        $params[':statusIncidente'] = $statusIncidente;
+if ($statusIncidente != null && $statusIncidente == "0") {
+    $sql .= "active = :statusIncidente, ";
+    $params[':statusIncidente'] = $statusIncidente;
 
-        $sql .= "fimIncidente = :fimIncidente, ";
-        $params[':fimIncidente'] = $horaAtual;
-    } else if (($statusIncidente != null && $statusIncidente == "1")) {
-        $sql .= "active = :statusIncidente, ";
-        $params[':statusIncidente'] = $statusIncidente;
-    }
+    $sql .= "fimIncidente = :fimIncidente, ";
+    $params[':fimIncidente'] = $horaAtual;
+} else if (($statusIncidente != null && $statusIncidente == "1")) {
+    $sql .= "active = :statusIncidente, ";
+    $params[':statusIncidente'] = $statusIncidente;
+}
 
+if (isset($_POST['semPrevisao'])) {
+    $previsaoConclusao = null;
+    $sql .= "previsaoNormalizacao = :previsaoConclusao, ";
+    $params[':previsaoConclusao'] = $previsaoConclusao;
+} else {
     if ($previsaoConclusao != null) {
         $sql .= "previsaoNormalizacao = :previsaoConclusao, ";
         $params[':previsaoConclusao'] = $previsaoConclusao;
     }
-
-    $sql = rtrim($sql, ", ") . " WHERE id = :id";
-    $params[':id'] = $incidenteID;
-
-    $stmt = $pdo->prepare($sql);;
-
-    if ($stmt->execute($params)) {
-        echo "<script>";
-        echo "$('#modalUpdate').modal('hide');";
-        echo "window.location.reload();";
-        echo "</script>";
-    }
 }
 
+$sql = rtrim($sql, ", ") . " WHERE id = :id";
+$params[':id'] = $incidenteID;
 
-################################################################################################v
+$stmt = $pdo->prepare($sql);
+$stmt->execute($params);
 
-if ($relatoIncidente != null) {
+$sql2 = "INSERT INTO incidentes_relatos (incidente_id, relato_autor, relato, horarioRelato) VALUES (:valor1, :valor4, :valor2, :valor3)";
+$stmt2 = $pdo->prepare($sql2);
 
-    $sql2 = "INSERT INTO incidentes_relatos (incidente_id, relato_autor, relato, horarioRelato) VALUES (:valor1, :valor4, :valor2, :valor3)";
-    $stmt2 = $pdo->prepare($sql2);
-
-    $stmt2->bindValue(':valor1', $incidenteID);
-    $stmt2->bindValue(':valor2', $relatoIncidente);
-    $stmt2->bindValue(':valor3', $horaAtual);
-    $stmt2->bindValue(':valor4', $solicitante);
-    if ($stmt2->execute()) {
-        echo "<script>";
-        echo "$('#modalUpdate').modal('hide');";
-        echo "window.location.reload();";
-        echo "</script>";
-    }
+$stmt2->bindValue(':valor1', $incidenteID);
+$stmt2->bindValue(':valor2', $relatoIncidente);
+$stmt2->bindValue(':valor3', $horaAtual);
+$stmt2->bindValue(':valor4', $solicitante);
+if ($stmt2->execute()) {
+    header("Location: /servicedesk/incidentes/view.php?id=$incidenteID");
+    exit();
+} else {
+    header("Location: /servicedesk/incidentes/view.php?id=$incidenteID");
+    exit();
 }

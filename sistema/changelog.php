@@ -16,6 +16,56 @@ require "../includes/menu.php";
             <div class="accordion" id="accordionExample">
 
               <div class="accordion-item">
+                <h2 class="accordion-header" id="heading9-8">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9-8" aria-expanded="false" aria-controls="collapse9-8">
+                    Versão 9.8 - XX/08/2023
+                  </button>
+                </h2>
+                <div id="collapse9-8" class="accordion-collapse collapse" aria-labelledby="heading9-8" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Adicionado a opção "Sem Previsão" na atualização de incidentes;<br>
+                    
+                    <br><strong>Alterações banco de dados</strong><br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Abertura de chamado através de incidentes;<br>
+                    # Notificação de incidentes;<br>
+                    # Relato em incidentes sobre updates;<br>
+                    # Dados de contado técnico de parceiros para notificação;<br>
+                    # Interessados em rotas de fibra; <br>
+                    # Vincular uma documentação à um tipo de incidente;<br>
+                    # Reboot de ONU 17/08/2023;<br>
+                    # Não esta listando os tipos de chamados de acordo com permissão do usuario;<br>
+                    # Controlar espaço em disco em anexo/POPs;<br>
+                    # Revisão geral no cadastro de usuário e invites;<br>
+                    # Envio de sugestões;<br>
+                    # Resetar senha pelo acesso usuário;<br>
+                    # Selecionar publico ou privado no relato avulso;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Energia POP;<br>
+                    # Atributos de equipamentos;<br>
+                    # Cadastro de PONs;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Notificaçãoes de novos incidentes e relatos;<br>
+                    # Adequação incidentes cliente;<br>
+                    # Vinculo de chamado a incidente;<br>
+                    # Anexo arquivos em chamados;<br>
+                    # Permissões em documentações;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Segurança individual;<br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                    # Dependencia de chamados;<br>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
                 <h2 class="accordion-header" id="heading9-7">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9-7" aria-expanded="false" aria-controls="collapse9-7">
                     Versão 9.7 - 31/08/2023
@@ -67,7 +117,6 @@ require "../includes/menu.php";
                   </div>
                 </div>
               </div>
-
 
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading9-6">
