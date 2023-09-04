@@ -517,3 +517,21 @@ ppsm.perfil_id = $perfil_id";
 $r_nav_sub_rotasFibra = mysqli_query($mysqli, $nav_sub_rotasFibra);
 $c_nav_sub_rotasFibra = mysqli_fetch_assoc($r_nav_sub_rotasFibra);
 /////////////////////////////////////////
+
+
+$nav_sub_intZabbix = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '31'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_intZabbix = mysqli_query($mysqli, $nav_sub_intZabbix);
+$c_nav_sub_intZabbix = mysqli_fetch_assoc($r_nav_sub_intZabbix);
+/////////////////////////////////////////

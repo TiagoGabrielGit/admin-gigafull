@@ -378,7 +378,16 @@ require "validaRotina.php";
                             </a>
                         </li>
                     <?php } ?>
-                    <?php if ($c_nav_sub_logAdmin['c'] == 1) { ?>
+
+                    <?php if ($c_nav_sub_changelog['c'] == 1) { ?>
+                        <li>
+                            <a href="/sistema/integracao/zabbix/index.php">
+                                <i class="bi bi-circle"></i><span>Integração > Zabbix</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+                    <?php if ($c_nav_sub_intZabbix['c'] == 1) { ?>
                         <li>
                             <a href="/sistema/log_acesso/index.php">
                                 <i class="bi bi-circle"></i><span>LOG de acesso - Admin</span>

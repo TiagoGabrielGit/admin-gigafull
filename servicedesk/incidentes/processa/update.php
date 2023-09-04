@@ -8,50 +8,52 @@ $statusIncidente = isset($_POST['statusIncidente']) ? $_POST['statusIncidente'] 
 $previsaoConclusao = isset($_POST['previsaoConclusao']) ? $_POST['previsaoConclusao'] : null;
 $tipoIncidente = isset($_POST['tipoIncidente']) ? $_POST['tipoIncidente'] : null;
 $relatoIncidente = isset($_POST['relatoIncidente']) ? $_POST['relatoIncidente'] : null;
+$zabbixEventID = isset($_POST['zabbixEventID']) ? $_POST['zabbixEventID'] : null;
 $horaAtual = date('Y-m-d H:i:s');
 
+if ($classIncidente != NULL || $statusIncidente != NULL || $tipoIncidente != NULL || $previsaoConclusao != NULL) {
 
-$sql = "UPDATE incidentes SET ";
-$params = array();
+    $sql = "UPDATE incidentes SET ";
+    $params = array();
 
-if ($classIncidente != null) {
-    $sql .= "classificacao = :classIncidente, ";
-    $params[':classIncidente'] = $classIncidente;
-}
+    if ($classIncidente != null) {
+        $sql .= "classificacao = :classIncidente, ";
+        $params[':classIncidente'] = $classIncidente;
+    }
 
-if ($tipoIncidente != null) {
-    $sql .= "incident_type = :tipoIncidente, ";
-    $params[':tipoIncidente'] = $tipoIncidente;
-}
+    if ($tipoIncidente != null) {
+        $sql .= "incident_type = :tipoIncidente, ";
+        $params[':tipoIncidente'] = $tipoIncidente;
+    }
 
-if ($statusIncidente != null && $statusIncidente == "0") {
-    $sql .= "active = :statusIncidente, ";
-    $params[':statusIncidente'] = $statusIncidente;
+    if ($statusIncidente != null && $statusIncidente == "0") {
+        $sql .= "active = :statusIncidente, ";
+        $params[':statusIncidente'] = $statusIncidente;
 
-    $sql .= "fimIncidente = :fimIncidente, ";
-    $params[':fimIncidente'] = $horaAtual;
-} else if (($statusIncidente != null && $statusIncidente == "1")) {
-    $sql .= "active = :statusIncidente, ";
-    $params[':statusIncidente'] = $statusIncidente;
-}
+        $sql .= "fimIncidente = :fimIncidente, ";
+        $params[':fimIncidente'] = $horaAtual;
+    } else if (($statusIncidente != null && $statusIncidente == "1")) {
+        $sql .= "active = :statusIncidente, ";
+        $params[':statusIncidente'] = $statusIncidente;
+    }
 
-if (isset($_POST['semPrevisao'])) {
-    $previsaoConclusao = null;
-    $sql .= "previsaoNormalizacao = :previsaoConclusao, ";
-    $params[':previsaoConclusao'] = $previsaoConclusao;
-} else {
-    if ($previsaoConclusao != null) {
+    if (isset($_POST['semPrevisao'])) {
+        $previsaoConclusao = null;
         $sql .= "previsaoNormalizacao = :previsaoConclusao, ";
         $params[':previsaoConclusao'] = $previsaoConclusao;
+    } else {
+        if ($previsaoConclusao != null) {
+            $sql .= "previsaoNormalizacao = :previsaoConclusao, ";
+            $params[':previsaoConclusao'] = $previsaoConclusao;
+        }
     }
+
+    $sql = rtrim($sql, ", ") . " WHERE id = :id";
+    $params[':id'] = $incidenteID;
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
 }
-
-$sql = rtrim($sql, ", ") . " WHERE id = :id";
-$params[':id'] = $incidenteID;
-
-$stmt = $pdo->prepare($sql);
-$stmt->execute($params);
-
 $sql2 = "INSERT INTO incidentes_relatos (incidente_id, relato_autor, relato, horarioRelato) VALUES (:valor1, :valor4, :valor2, :valor3)";
 $stmt2 = $pdo->prepare($sql2);
 
@@ -60,8 +62,60 @@ $stmt2->bindValue(':valor2', $relatoIncidente);
 $stmt2->bindValue(':valor3', $horaAtual);
 $stmt2->bindValue(':valor4', $solicitante);
 if ($stmt2->execute()) {
-    header("Location: /servicedesk/incidentes/view.php?id=$incidenteID");
-    exit();
+    if ($zabbixEventID == null) {
+        header("Location: /servicedesk/incidentes/view.php?id=$incidenteID");
+        exit();
+    } else {
+        $integracao_zabbix =
+            "SELECT
+            iz.id as id,
+            iz.tokenAPI as tokenAPI,
+            iz.statusIntegracao as statusIntegracao,
+            iz.urlZabbix as urlZabbix
+            FROM
+            integracao_zabbix as iz
+            WHERE
+            iz.id = 1
+            ";
+
+        $r_integracao_zabbix = $pdo->query($integracao_zabbix);
+        $c_integracao_zabbix = $r_integracao_zabbix->fetch(PDO::FETCH_ASSOC);
+
+        if ($c_integracao_zabbix['statusIntegracao'] == 1) {
+            $api_url = $c_integracao_zabbix['urlZabbix'];
+            $tokenZabbix = $c_integracao_zabbix['tokenAPI'];
+
+            $api_data = array(
+                "jsonrpc" => "2.0",
+                "method" => "event.acknowledge",
+                "params" => array(
+                    "eventids" => "$zabbixEventID",
+                    "action" => 6,
+                    "message" => "$relatoIncidente"
+                ),
+                "auth" => "$tokenZabbix",
+                "id" => 1
+            );
+
+            $ch = curl_init($api_url);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($api_data));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json-rpc',
+            ));
+
+            $api_response = curl_exec($ch);
+            curl_close($ch);
+            //echo "Resposta da API: " . $api_response;
+            //echo "Corpo: " . json_encode($api_data, JSON_PRETTY_PRINT);
+            header("Location: /servicedesk/incidentes/view.php?id=$incidenteID");
+            exit();
+        } else {
+            header("Location: /servicedesk/incidentes/view.php?id=$incidenteID");
+            exit();
+        }
+    }
 } else {
     header("Location: /servicedesk/incidentes/view.php?id=$incidenteID");
     exit();

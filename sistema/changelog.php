@@ -18,7 +18,7 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading9-8">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse9-8" aria-expanded="false" aria-controls="collapse9-8">
-                    Versão 9.8 - XX/08/2023
+                    Versão 9.8 - 04/09/2023
                   </button>
                 </h2>
                 <div id="collapse9-8" class="accordion-collapse collapse" aria-labelledby="heading9-8" data-bs-parent="#accordionExample">
@@ -26,8 +26,12 @@ require "../includes/menu.php";
 
                     <br><strong>Melhorias</strong><br>
                     # Adicionado a opção "Sem Previsão" na atualização de incidentes;<br>
-                    
+                    # Integrado com zabbix para reconhecimento e relato de incidentes;<br>
+                    # Melhorias em incidentes abertos e fechados;<br>
+
                     <br><strong>Alterações banco de dados</strong><br>
+                    # Submenu Integração Zabbix;<br>
+                    # Definido o tipo de incidente "backbone" como default id 102;<br>
 
                     <br><strong>Backlog</strong><br>
                     # Abertura de chamado através de incidentes;<br>

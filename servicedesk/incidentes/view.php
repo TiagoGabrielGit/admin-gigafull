@@ -76,6 +76,7 @@ if ($tipoUsuario == 1) {
     $r_sql_incidente = mysqli_query($mysqli, $sql_incidente);
     $campos = mysqli_fetch_assoc($r_sql_incidente);
     $descIncidente = $campos['descricaoIncidente'];
+    $zabbixID = $campos['zabbixID'];
 ?>
     <main id="main" class="main">
         <div class="pagetitle">
@@ -301,6 +302,7 @@ if ($tipoUsuario == 1) {
 
                             <input hidden id="incidenteID" name="incidenteID" value="<?= $id_incidente ?>"></input>
                             <input hidden id="solicitante" name="solicitante" value="<?= $usuarioID ?>"></input>
+                            <input hidden id="zabbixEventID" name="zabbixEventID" value="<?= $zabbixID ?>"></input>
 
                             <div class="row">
                                 <div class="col-5">
