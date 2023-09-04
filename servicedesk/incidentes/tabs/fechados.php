@@ -3,7 +3,7 @@
 <div class="accordion" id="accordionFlushExample">
 
     <?php
-    $sql_incidentes =
+    $incidentes_fechados =
         "SELECT
         i.id as idIncidente,
         i.zabbix_event_id as zabbixID,
@@ -44,14 +44,14 @@
         i.inicioIncidente DESC
         LIMIT 100";
 
-    $r_sql_incidentes = mysqli_query($mysqli, $sql_incidentes);
+    $r_incidentes_fechados = mysqli_query($mysqli, $incidentes_fechados);
 
     $cont = 1;
-    while ($campos = $r_sql_incidentes->fetch_array()) {
-        $id_incidente = $campos['idIncidente'];
+    while ($campos_fechados = $r_incidentes_fechados->fetch_array()) {
+        $id_incidente = $campos_fechados['idIncidente'];
 
-        if ($campos['incident_type'] == "100") {
-            $hostID = $campos['equipamento_id'];
+        if ($campos_fechados['incident_type'] == "100") {
+            $hostID = $campos_fechados['equipamento_id'];
             $sql_host =
                 "SELECT
                     eqp.hostname as identificacao
@@ -64,8 +64,8 @@
             $r_host = mysqli_query($mysqli, $sql_host);
             $c_host = $r_host->fetch_array();
             $identificacao = "EQUIPAMENTO: " . $c_host['identificacao'];
-        } else if ($campos['incident_type'] == 102) {
-            $hostID = $campos['equipamento_id'];
+        } else if ($campos_fechados['incident_type'] == 102) {
+            $hostID = $campos_fechados['equipamento_id'];
             $sql_host =
                 "SELECT
                     rf.ponta_a as ponta_a,
@@ -101,37 +101,31 @@
                                 ?>
 
                             </b> <br>
-                            &nbsp; &nbsp; &nbsp; &nbsp; <?= $campos['descricaoIncidente'] ?>
+                            &nbsp; &nbsp; &nbsp; &nbsp; <?= $campos_fechados['descricaoIncidente'] ?>
                             <br><br>
-                            <b>&nbsp; &nbsp; &nbsp; &nbsp;Tempo total incidente: </b><?= $campos['tempoIncidente']; ?>
+                            <b>&nbsp; &nbsp; &nbsp; &nbsp;Tempo total incidente: </b><?= $campos_fechados['tempoIncidente']; ?>
                         </span>
                         <span class="text-end">
 
                             <?php
-                            if ($campos['classificacao'] == NULL) { ?>
-                                <span class="btn btn-sm rounded-pill mb-1" style="background-color: <?= $campos['ClassColor'] ?>"><b>Não Classificado</b></span>
+                            if ($campos_fechados['classificacao'] == NULL) { ?>
+                                <span class="btn btn-sm rounded-pill mb-1" style="background-color: <?= $campos_fechados['ClassColor'] ?>"><b>Não Classificado</b></span>
                             <?php } else { ?>
-                                <span class="btn btn-sm rounded-pill mb-1" style="background-color: <?= $campos['ClassColor'] ?>"><b><?= $campos['classificacao'] ?></b></span>
+                                <span class="btn btn-sm rounded-pill mb-1" style="background-color: <?= $campos_fechados['ClassColor'] ?>"><b><?= $campos_fechados['classificacao'] ?></b></span>
                             <?php } ?>
 
                             <?php
                             $currentDate = strtotime(date("Y-m-d H:i:s"));
-                            $previsaoNormalizacao = strtotime($campos['previsaoNormalizacao2']);
+                            $previsaoNormalizacao = strtotime($campos_fechados['previsaoNormalizacao2']);
 
-                            if ($campos['previsaoNormalizacao2'] === null) {
+                            if ($campos_fechados['previsaoNormalizacao2'] === null) {
                                 $colorPill = "secondary";
                             } else if ($previsaoNormalizacao < $currentDate) {
                                 $colorPill = "danger";
                             } else if ($previsaoNormalizacao > $currentDate) {
                                 $colorPill = "info";
                             }
-
-                            if ($campos['previsaoNormalizacao'] == NULL) { ?>
-                                <span class="btn btn-sm btn-<?= $colorPill ?> rounded-pill"><b>Sem Previsão</b></span>
-                            <?php } else { ?>
-                                <span class="btn btn-sm btn-<?= $colorPill ?> rounded-pill"><b><?= $campos['previsaoNormalizacao'] ?></b></span>
-                            <?php } ?>
-                            <!-- </div>-->
+                            ?>
                         </span>
                     </div>
                 </button>
@@ -141,35 +135,35 @@
                 <div class="accordion-body colorAccordion">
                     <div class="row justify-content-between">
                         <div class="col-5">
-                            <b>Criador: </b> <?php if ($campos['criador'] <> null) {
-                                                    echo $campos['criador'];
+                            <b>Criador: </b> <?php if ($campos_fechados['criador'] <> null) {
+                                                    echo $campos_fechados['criador'];
                                                 } else {
                                                     echo "Integração Zabbix";
                                                 } ?><br>
-                            <b>Tipo Incidente:</b> <?php if ($campos['tipo'] <> null) {
-                                                        echo $campos['tipo'];
+                            <b>Tipo Incidente:</b> <?php if ($campos_fechados['tipo'] <> null) {
+                                                        echo $campos_fechados['tipo'];
                                                     } else {
                                                         echo "Não definido";
                                                     } ?><br>
                             <b>Classificação: </b>
                             <?php
-                            if ($campos['classificacao'] == NULL) {
+                            if ($campos_fechados['classificacao'] == NULL) {
                                 echo "Não Classificado";
                             } else {
-                                echo $campos['classificacao'];
+                                echo $campos_fechados['classificacao'];
                             } ?> <br>
 
                         </div>
                         <div class="col-5">
-                            <b>Hora Inicial: </b><?= $campos['horainicial']; ?><br>
+                            <b>Hora Inicial: </b><?= $campos_fechados['horainicial']; ?><br>
                             <b>Previsão Normalização: </b>
                             <?php
-                            if ($campos['previsaoNormalizacao'] == NULL) {
+                            if ($campos_fechados['previsaoNormalizacao'] == NULL) {
                                 echo "Sem Previsão";
                             } else {
-                                echo $campos['previsaoNormalizacao'];
+                                echo $campos_fechados['previsaoNormalizacao'];
                             } ?> <br>
-                            <b>Hora Normalização: </b><?= $campos['horafinal']; ?><br>
+                            <b>Hora Normalização: </b><?= $campos_fechados['horafinal']; ?><br>
                         </div>
 
                         <div class="col-2">

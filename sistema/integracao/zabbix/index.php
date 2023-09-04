@@ -24,7 +24,7 @@ $c_integracao_zabbix = $r_integracao_zabbix->fetch(PDO::FETCH_ASSOC);
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Parametros Integração Zabbix</h5>
+                        <h5 class="card-title">Parâmetros Integração Zabbix</h5>
                         <div class="row">
                             <div class="col-lg-12">
                                 <form action="processa/update.php" method="POST">
@@ -50,7 +50,7 @@ $c_integracao_zabbix = $r_integracao_zabbix->fetch(PDO::FETCH_ASSOC);
                                     </div>
                                     <br><br>
                                     <div class="text-center">
-                                        <button class="btn btn-danger" type="submit">Salver</button>
+                                        <button class="btn btn-danger" type="submit">Salvar</button>
                                     </div>
                                 </form>
                             </div>
