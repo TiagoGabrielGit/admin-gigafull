@@ -88,12 +88,6 @@ if (empty($chamado['execucao'])) {
   <link href="/assets/css/style.css" rel="stylesheet">
   <link href="/assets/css/stylesheet.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin - v2.2.2
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -336,14 +330,5 @@ if (empty($chamado['execucao'])) {
   </header><!-- End Header -->
 
   <?php
-  if ($userType == "1") {
-    require "navbar_type_1.php";
-  } else if ($userType == "2") {
-    require "navbar_type_2.php";
-  } else if ($userType == "3") {
-    require "navbar_type_3.php";
-  }
-
-
-
-  ?>
+  require "navbar_type_1.php";
+?>
