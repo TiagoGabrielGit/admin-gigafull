@@ -50,9 +50,9 @@
         // Fechar o modal
         setTimeout(function() {
           modal.modal('hide');
-          //window.location.reload(); // Atualizar a página atual
+          window.location.reload();
 
-        }, 2000);
+        }, 1000);
       }
     });
   });

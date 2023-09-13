@@ -26,6 +26,8 @@ FROM
 perfil as p
 WHERE
 p.active = 1
+ORDER BY
+p.perfil ASC
 ";
 
 $sql_empresas =

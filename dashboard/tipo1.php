@@ -112,7 +112,7 @@ require "sql_dashboard_1.php";
                                 </div>
                                 <div class="ps-3">
                                     <h4>
-                                        <a style="color: red;" href="/servicedesk/incidentes/index.php">
+                                        <a style="color: red;" href="/servicedesk/incidentes/abertos.php">
                                             <?= $c_incidentes['qtde'] ?>
                                             <?php
                                             if ($c_incidentes['qtde'] < 2) {

@@ -208,7 +208,7 @@ p.active = 1";
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <div class="card">
-                                    <div class="card-body">
+                                    <div class="card-body"> 
 
                                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                                             <li class="nav-item" role="presentation">
@@ -241,17 +241,17 @@ p.active = 1";
 
 
                                             <div class="tab-pane fade" id="competencia" role="tabpanel" aria-labelledby="competencia-tab">
-                                                <?php require "tabs/competencias.php" 
+                                                <?php require "tabs/competencias.php"
                                                 ?>
                                             </div>
 
                                             <div class="tab-pane fade" id="log" role="tabpanel" aria-labelledby="log-tab">
-                                                <?php require "tabs/log.php" 
+                                                <?php require "tabs/log.php"
                                                 ?>
                                             </div>
 
                                             <div class="tab-pane fade" id="permission" role="tabpanel" aria-labelledby="permission-tab">
-                                                <?php require "tabs/permission.php" 
+                                                <?php require "tabs/permission.php"
                                                 ?>
                                             </div>
                                         </div>

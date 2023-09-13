@@ -8,15 +8,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $dados_olt =
         "SELECT
-        ro.olt_ipAddress as 'ip',
-        ro.olt_username as 'usuario',
-        ro.olt_password as 'password'
+		eqp.ipaddress as 'ip',
+        gop.olt_username as 'usuario',
+        gop.olt_password as 'password'
         FROM
         incidentes as i
         LEFT JOIN
-        redeneutra_olts as ro
+        gpon_olts as gop
         ON
-        ro.equipamento_id = i.equipamento_id
+        gop.equipamento_id = i.equipamento_id
+        LEFT JOIN
+        equipamentospop as eqp
+        ON
+        eqp.id = gop.equipamento_id
         WHERE
         i.id = $id_incidente";
 

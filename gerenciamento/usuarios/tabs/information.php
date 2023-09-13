@@ -1,4 +1,17 @@
 <h5 class="card-title">Usuário: <?= $campos['nome']; ?></h5>
+
+<?php
+if (isset($_SESSION['temp_password'])) {
+    $tempPassword = $_SESSION['temp_password'];
+
+    echo '<div class="alert alert-success alert-dismissible fade show" role="alert">';
+    echo 'Usuário criado. A senha provisória é: "<b>' . $tempPassword . '</b>". Por favor, salve essa senha, pois ela não ficará disponível para visualização novamente.';
+    echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+    echo '</div>';
+    unset($_SESSION['temp_password']);
+}
+?>
+
 <form method="POST" action="processa/edita_user_information.php">
     <div class="col-lg-12">
         <div class="row">

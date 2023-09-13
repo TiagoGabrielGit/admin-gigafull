@@ -36,44 +36,6 @@
 </script>
 
 <script>
-    $("#btnSalvarUsuario").click(function() {
-        var senhaProvisoria = gerarSenhaProvisoria();
-        var dadosCadastrarUsuario = $("#formNovoUsuario").serialize();
-
-        // Enviar dados via AJAX
-        $.ajax({
-            url: "processa/add.php", // Substitua pelo caminho correto para o arquivo que salvará no banco de dados
-            type: "POST",
-            data: dadosCadastrarUsuario + "&senha=" + senhaProvisoria,
-            success: function(responseSalvarUsuario) {
-
-                if (responseSalvarUsuario.includes("Error")) {
-                    $("#msgSalvarUsuario1").slideDown('slow').html(responseSalvarUsuario);
-                    $("#msgSalvarUsuario2").slideDown('slow').html(responseSalvarUsuario);
-                    retirarMsgSalvarUsuario();
-                } else {
-                    document.querySelector("#btnSalvarUsuario").hidden = true;
-                    $("#msgSalvarUsuario2").slideDown('slow').html(responseSalvarUsuario);
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                $("#msgSalvarUsuario1").slideDown('slow').html(responseSalvarUsuario);
-                $("#msgSalvarUsuario2").slideDown('slow').html(responseSalvarUsuario);
-                retirarMsgSalvarUsuario();
-            }
-        });
-    });
-
-    //Retirar a mensagem após 1700 milissegundos
-    function retirarMsgSalvarUsuario() {
-        setTimeout(function() {
-            $("#msgSalvarUsuario1").slideUp('slow', function() {});
-            $("#msgSalvarUsuario2").slideUp('slow', function() {});
-        }, 1700);
-    }
-</script>
-
-<script>
     function incluirCompetencia(idCompetencia, idUsuario, nomeUsuario, competencia) {
         document.querySelector("#idIncluirCompetencia").value = idCompetencia;
         document.querySelector("#idUsuarioCompetencia").value = idUsuario;
