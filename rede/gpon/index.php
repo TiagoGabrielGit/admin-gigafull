@@ -3,13 +3,11 @@ require "../../includes/menu.php";
 require "../../conexoes/conexao_pdo.php";
 
 $uid = $_SESSION['id'];
-$page_type = "submenu";
-$menu_submenu_id = "30";
 
+$submenu_id = "32";
 
-if ($page_type == "submenu") {
-    $permissions =
-        "SELECT 
+$permissions =
+    "SELECT 
 	u.perfil_id
 FROM 
 	usuarios u
@@ -20,22 +18,8 @@ ON
 WHERE
 	u.id = $uid
 AND 
-	pp.url_submenu = $menu_submenu_id";
-} else if ($page_type == "menu") {
-    $permissions =
-        "SELECT 
-	u.perfil_id
-FROM 
-	usuarios u
-JOIN 
-	perfil_permissoes_menu pp
-ON 
-	u.perfil_id = pp.perfil_id
-WHERE
-	u.id = $uid
-AND 
-	pp.url_submenu = $menu_submenu_id";
-}
+	pp.url_submenu = $submenu_id";
+
 $exec_permissions = $pdo->prepare($permissions);
 $exec_permissions->execute();
 
@@ -43,22 +27,21 @@ $rowCount_permissions = $exec_permissions->rowCount();
 
 if ($rowCount_permissions > 0) {
 
-
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
-        if (isset($_GET['rotasDeFibra']) && $_GET['rotasDeFibra'] === 'rotas') {
-            $nav_rotas = "active";
-            $tab_rotas = "show active";
+        if (isset($_GET['gpon']) && $_GET['gpon'] === 'olt') {
+            $nav_gpon = "active";
+            $tab_gpon = "show active";
             $nav_interessados = "";
             $tab_interessados = "";
-        } else if (isset($_GET['rotasDeFibra']) && $_GET['rotasDeFibra'] === 'interessados') {
-            $nav_rotas = "";
-            $tab_rotas = "";
+        } else if (isset($_GET['gpon']) && $_GET['gpon'] === 'interessados') {
+            $nav_gpon = "";
+            $tab_gpon = "";
             $nav_interessados = "active";
             $tab_interessados = "show active";
         } else {
-            $nav_rotas = "active";
-            $tab_rotas = "show active";
+            $nav_gpon = "active";
+            $tab_gpon = "show active";
             $nav_interessados = "";
             $tab_interessados = "";
         }
@@ -67,7 +50,7 @@ if ($rowCount_permissions > 0) {
 
     <main id="main" class="main">
         <div class="pagetitle">
-            <h1>Rotas de Fibra</h1>
+            <h1>GPON</h1>
         </div>
         <section class="section">
             <div class="row">
@@ -80,16 +63,16 @@ if ($rowCount_permissions > 0) {
 
                                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                                             <li class="nav-item" role="presentation">
-                                                <button class="nav-link <?= $nav_rotas ?>" id="rotas-tab" data-bs-toggle="tab" data-bs-target="#rotas" type="button" role="tab" aria-controls="rotas" aria-selected="true">Rotas</button>
+                                                <button class="nav-link <?= $nav_gpon ?>" id="olt-tab" data-bs-toggle="tab" data-bs-target="#olt" type="button" role="tab" aria-controls="olt" aria-selected="true">OLTs</button>
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link <?= $nav_interessados ?>" id="interessados-tab" data-bs-toggle="tab" data-bs-target="#interessados" type="button" role="tab" aria-controls="interessados" aria-selected="false">Interessados</button>
                                             </li>
                                         </ul>
                                         <div class="tab-content pt-2" id="myTabContent">
-                                            <div class="tab-pane fade <?= $tab_rotas ?>" id="rotas" role="tabpanel" aria-labelledby="rotas-tab">
+                                            <div class="tab-pane fade <?= $tab_gpon ?>" id="olt" role="tabpanel" aria-labelledby="olt-tab">
                                                 <?php
-                                                require "tab/rotas.php";
+                                                require "tab/olt.php";
                                                 ?>
                                             </div>
                                             <div class="tab-pane fade <?= $tab_interessados ?>" id="interessados" role="tabpanel" aria-labelledby="interessados-tab">

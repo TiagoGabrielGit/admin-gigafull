@@ -1,32 +1,28 @@
 <div class="card-body">
     <h5 class="card-title">Interessados</h5>
 
-    <form method="POST" action="processa/adiciona_interessado.php" class="row g-3">
+    <form method="POST" action="processa/adicionar_interessados.php" class="row g-3">
         <hr class="sidebar-divider">
 
         <div class="row">
             <div class="col-4">
-                <label for="rotaInteressado" class="form-label">Rota</label>
-                <select required id="rotaInteressado" name="rotaInteressado" class="form-select">
+                <label for="oltInteressado" class="form-label">OLT</label>
+                <select required id="oltInteressado" name="oltInteressado" class="form-select">
                     <option value="" disabled selected>Selecione...</option>
                     <?php
-                    $lista_rotas = "SELECT
-                        rf.id as idRota,
-                        rf.ponta_a as ponta_a,
-                        rf.ponta_b as ponta_b
-                        FROM
-                        rotas_fibra as rf
-                        WHERE
-                        rf.active = 1
-                        ORDER BY
-                        rf.ponta_a ASC";
-                    $result = mysqli_query($mysqli, $lista_rotas) or die("Erro ao retornar dados");
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $idRota = $row['idRota'];
-                        $pontaA = $row['ponta_a'];
-                        $pontaB = $row['ponta_b'];
+                    $lista_olts = "SELECT
+                    gop.id as idOlt,
+                    gop.olt_name as olt_name
+                    FROM
+                    gpon_olts as gop
+                    WHERE
+                    gop.active = 1
+                    ORDER BY
+                    gop.olt_name ASC";
+                    $r_olts = mysqli_query($mysqli, $lista_olts) or die("Erro ao retornar dados");
+                    while ($c_olts = mysqli_fetch_assoc($r_olts)) {
                     ?>
-                        <option value="<?= $idRota; ?>"><?= $pontaA . ' - ' . $pontaB; ?></option>
+                        <option value="<?= $c_olts['idOlt']; ?>"><?= $c_olts['olt_name'] ?></option>
                     <?php
                     }
                     ?>
@@ -34,8 +30,8 @@
             </div>
 
             <div class="col-4">
-                <label for="notificacaoMetodo" class="form-label">Interessado</label>
-                <select required id="notificacaoMetodo" name="notificacaoMetodo" class="form-select">
+                <label for="empresaInteressada" class="form-label">Interessado</label>
+                <select required id="empresaInteressada" name="empresaInteressada" class="form-select">
                     <option value="" disabled selected>Selecione...</option>
                     <?php
                     $lista_interessados =
@@ -73,7 +69,7 @@
     <table class="table datatable">
         <thead>
             <tr>
-                <th scope="col">Rota</th>
+                <th scope="col">OLT</th>
                 <th scope="col">Interessado</th>
                 <th scope="col"></th>
             </tr>
@@ -82,37 +78,35 @@
             <?php
             $interessados_cadastrados =
                 "SELECT
-                rfi.id as interessadoID,
-                e.fantasia as fantasia,
-                rf.ponta_a as ponta_a,
-                rf.ponta_b as ponta_b
+                goi.id as interessadoID,
+                gpo.olt_name as olt_name,
+                e.fantasia as fantasia
                 FROM
-                rotas_fibras_interessados as rfi
+                gpon_olts_interessados as goi
                 LEFT JOIN
                 empresas as e
                 ON
-                e.id = rfi.interessado_empresa_id
+                e.id = goi.interessado_empresa_id
                 LEFT JOIN
-                rotas_fibra as rf
-                ON rf.id = rfi.rf_id
+                gpon_olts as gpo
+                ON
+                gpo.id = goi.gpon_olt_id
                 WHERE
-                rfi.active = 1
+                goi.active = 1
                 ORDER BY
-                rf.ponta_a ASC,
-                rf.ponta_b ASC
-                ";
+                gpo.olt_name ASC,
+                e.fantasia ASC";
             $r_cadastrados = mysqli_query($mysqli, $interessados_cadastrados) or die("Erro ao retornar dados");
             while ($c_cadastrados = $r_cadastrados->fetch_array()) {
                 $interessadoID = $c_cadastrados['interessadoID'];
             ?>
                 <tr id="tabelaLista">
-                    <td><?= $c_cadastrados['ponta_a'] ?> - <?= $c_cadastrados['ponta_b'] ?></td>
+                    <td><?= $c_cadastrados['olt_name'] ?></td>
                     <td><?= $c_cadastrados['fantasia'] ?></td>
                     <td>
                         <form method="POST" action="processa/excluir_interessado.php">
                             <input hidden readonly id="intID" name="intID" value="<?= $interessadoID ?>"></input>
                             <button class="btn btn-sm btn-danger">Excluir</button>
-
                         </form>
                     </td>
                 </tr>

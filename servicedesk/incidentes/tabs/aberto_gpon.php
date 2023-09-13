@@ -3,45 +3,33 @@
 <div class="accordion" id="accordionFlushExample">
 
     <?php
+
     $sql_incidentes =
         "SELECT
-        i.id as idIncidente,
-        i.zabbix_event_id as zabbixID,
-        i.active as activeID,
-        p.nome as criador,
-        ic.classificacao as classificacao,
-        ic.color as ClassColor,
-        it.type as tipo,
-        i.descricaoIncidente as descricaoIncidente,
-        i.previsaoNormalizacao as previsaoNormalizacao2,
-        i.incident_type as incident_type,
-        i.equipamento_id,
-        date_format(i.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
-        date_format(i.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
-        date_format(i.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
-        IF (i.fimIncidente IS NULL, TIMEDIFF(NOW(), i.inicioIncidente), TIMEDIFF(i.fimIncidente, i.inicioIncidente)) as tempoIncidente
-        FROM
-        incidentes as i
-        LEFT JOIN
-		incidentes_classificacao as ic
-        ON
-        ic.id = i.classificacao
-        LEFT JOIN
-        usuarios as u
-        ON
-        i.autor_id = u.id
-        LEFT JOIN
-        pessoas as p
-        ON
-        p.id = u.pessoa_id
-        LEFT JOIN
-        incidentes_types as it
-        ON
-        it.codigo = i.incident_type
-        WHERE
-        i.active = 1
-        ORDER BY
-        i.inicioIncidente DESC";
+                i.zabbix_event_id as zabbixID,
+                i.id as idIncidente,
+                i.incident_type as incident_type,
+                i.equipamento_id,
+                i.descricaoIncidente as descricaoIncidente,
+                i.active as activeID,
+                ic.classificacao as classificacao,
+                ic.color as ClassColor,
+                i.previsaoNormalizacao as previsaoNormalizacao2,
+                it.type as tipo,
+                p.nome as criador,
+                date_format(i.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
+                date_format(i.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
+                date_format(i.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
+                IF (i.fimIncidente IS NULL, TIMEDIFF(NOW(), i.inicioIncidente), TIMEDIFF(i.fimIncidente, i.inicioIncidente)) as tempoIncidente
+                FROM incidentes i
+                INNER JOIN gpon_olts o ON i.equipamento_id = o.equipamento_id
+                INNER JOIN gpon_olts_interessados oi ON o.id = oi.gpon_olt_id
+                LEFT JOIN incidentes_classificacao as ic ON ic.id = i.classificacao
+                LEFT JOIN usuarios as u ON i.autor_id = u.id LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                LEFT JOIN incidentes_types as it ON it.codigo = i.incident_type
+                WHERE oi.interessado_empresa_id = $empresaID AND i.active = 1 AND oi.active = 1
+                ORDER BY i.inicioIncidente DESC";
+
 
     $r_sql_incidentes = mysqli_query($mysqli, $sql_incidentes);
 
@@ -49,10 +37,9 @@
     while ($campos = $r_sql_incidentes->fetch_array()) {
         $id_incidente = $campos['idIncidente'];
 
-        if ($campos['incident_type'] == "100") {
-            $hostID = $campos['equipamento_id'];
-            $sql_host =
-                "SELECT
+        $hostID = $campos['equipamento_id'];
+        $sql_host =
+            "SELECT
                     eqp.hostname as identificacao
                 FROM
                     equipamentospop as eqp
@@ -60,27 +47,9 @@
                     eqp.id = $hostID
                 ";
 
-            $r_host = mysqli_query($mysqli, $sql_host);
-            $c_host = $r_host->fetch_array();
-            $identificacao = "EQUIPAMENTO: " . $c_host['identificacao'];
-        } else if ($campos['incident_type'] == 102) {
-            $hostID = $campos['equipamento_id'];
-            $sql_host =
-                "SELECT
-                    rf.ponta_a as ponta_a,
-                    rf.ponta_b as ponta_b
-                FROM
-                    rotas_fibra as rf
-                WHERE
-                    rf.codigo = $hostID
-                ";
-
-            $r_host = mysqli_query($mysqli, $sql_host);
-            $c_host = $r_host->fetch_array();
-            $identificacao = "ROTA: " . $c_host['ponta_a'] . " <> " . $c_host['ponta_b'];
-        } else {
-            $identificacao = "";
-        }
+        $r_host = mysqli_query($mysqli, $sql_host);
+        $c_host = $r_host->fetch_array();
+        $identificacao = "EQUIPAMENTO: " . $c_host['identificacao'];
 
     ?>
 
@@ -171,17 +140,21 @@
                             <b>Hora Normalização: </b><?= $campos['horafinal']; ?><br>
                         </div>
 
-                        <div class="col-2">
-                            <a href="/servicedesk/incidentes/view.php?id=<?= $id_incidente ?>&status=open" title="Visualizar">
-                                <button type="button" class="btn btn-danger">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                    </svg>
-                                    Ver incidente
-                                </button>
-                            </a>
-                        </div>
+                        <?php
+                        if ($permissaoGerenciar == 1) { ?>
+                            <div class="col-2">
+                                <a href="/servicedesk/incidentes/view.php?id=<?= $id_incidente ?>" title="Visualizar">
+                                    <button type="button" class="btn btn-danger">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                                        </svg>
+                                        Ver incidente
+                                    </button>
+                                </a>
+                            </div>
+                        <?php
+                        } ?>
                     </div>
                 </div>
             </div>

@@ -27,6 +27,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       u.permissao_configuracoes_chamados as 'permissao_configuracoes_chamados',
       u.reset_password as reset_password,
       u.tipo_usuario as tipo_usuario,
+      u.dashboard as dashboard,
       u.perfil_id as perfil,
       u.active as active,
       pe.perfil as nome_perfil
@@ -62,7 +63,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       $_SESSION['empresa_id'] = $usuario['empresa_id'];
       $_SESSION['perfil'] = $usuario['perfil'];
       $_SESSION['nome_perfil'] = $usuario['nome_perfil'];
-      $_SESSION['dashboard'] = $usuario['tipo_usuario'];
+      $_SESSION['dashboard'] = $usuario['dashboard'];
       $_SESSION['ip_address'] = $_SERVER['REMOTE_ADDR'];
       $_SESSION['tipo_usuario'] = $usuario['tipo_usuario'];
       $_SESSION['permissao_visualiza_chamado'] = $usuario['permissao_visualiza_chamado'];

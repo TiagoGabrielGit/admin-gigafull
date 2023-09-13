@@ -131,10 +131,18 @@ require "validaRotina.php";
                 </a>
                 <ul id="informativos-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
-                    <?php if ($c_nav_sub_incidentes['c'] == 1) { ?>
+                    <?php if ($c_nav_sub_incidentes_abertos['c'] == 1) { ?>
                         <li>
-                            <a href="/servicedesk/incidentes/index.php">
-                                <i class="bi bi-circle"></i><span>Incidentes</span>
+                            <a href="/servicedesk/incidentes/abertos.php">
+                                <i class="bi bi-circle"></i><span>Incidentes Abertos</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+                    <?php if ($c_nav_sub_incidentes_fechados['c'] == 1) { ?>
+                        <li>
+                            <a href="/servicedesk/incidentes/normalizados.php">
+                                <i class="bi bi-circle"></i><span>Incidentes Normalizados</span>
                             </a>
                         </li>
                     <?php } ?>
@@ -216,6 +224,15 @@ require "validaRotina.php";
                     <i class="bi bi-layout-text-window-reverse"></i><span>Rede</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="rede-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <?php if ($c_nav_sub_gpon['c'] == 1) { ?>
+                        <li>
+                            <a href="/rede/gpon/index.php">
+                                <i class="bi bi-circle"></i><span>GPON</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+                </ul>
+                <ul id="rede-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <?php if ($c_nav_sub_rotasFibra['c'] == 1) { ?>
                         <li>
                             <a href="/rede/rotas_de_fibra/index.php">
@@ -223,7 +240,6 @@ require "validaRotina.php";
                             </a>
                         </li>
                     <?php } ?>
-
                 </ul>
             </li>
         <?php } ?>

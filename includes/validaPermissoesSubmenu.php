@@ -218,7 +218,7 @@ $c_nav_sub_ativacao = mysqli_fetch_assoc($r_nav_sub_ativacao);
 /////////////////////////////////////////
 
 //SUBMENU >> REDE NEUTRA >> INICIDENTES
-$nav_sub_incidentes = "SELECT
+$nav_sub_incidentes_abertos = "SELECT
 count(*) as c
 FROM
 url_submenu as usm
@@ -227,12 +227,12 @@ perfil_permissoes_submenu as ppsm
 ON
 ppsm.url_submenu = usm.id
 WHERE
-usm.id = '12'
+usm.id = '22'
 and
 ppsm.perfil_id = $perfil_id";
 
-$r_nav_sub_inicidentes = mysqli_query($mysqli, $nav_sub_incidentes);
-$c_nav_sub_incidentes = mysqli_fetch_assoc($r_nav_sub_inicidentes);
+$r_nav_sub_inicidentes_abertos = mysqli_query($mysqli, $nav_sub_incidentes_abertos);
+$c_nav_sub_incidentes_abertos = mysqli_fetch_assoc($r_nav_sub_inicidentes_abertos);
 /////////////////////////////////////////
 
 //SUBMENU >> REDE NEUTRA >> OLTS
@@ -535,3 +535,38 @@ ppsm.perfil_id = $perfil_id";
 $r_nav_sub_intZabbix = mysqli_query($mysqli, $nav_sub_intZabbix);
 $c_nav_sub_intZabbix = mysqli_fetch_assoc($r_nav_sub_intZabbix);
 /////////////////////////////////////////
+
+$nav_sub_gpon = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '32'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_gpon = mysqli_query($mysqli, $nav_sub_gpon);
+$c_nav_sub_gpon = mysqli_fetch_assoc($r_nav_sub_gpon);
+/////////////////////////////////////////
+/////////////////////////////////////////
+
+//SUBMENU >> INCIDENTES FECHADOS
+$nav_sub_incidentes_fechados = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '33'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_inicidentes_fechados = mysqli_query($mysqli, $nav_sub_incidentes_fechados);
+$c_nav_sub_incidentes_fechados = mysqli_fetch_assoc($r_nav_sub_inicidentes_fechados);
