@@ -46,8 +46,6 @@ if ($rowCount_permissions_submenu > 0) {
 
     if ($gerenciarIncidentes == 1) {
 
-
-
         $id_incidente = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
         $sql_incidente =
@@ -119,7 +117,7 @@ if ($rowCount_permissions_submenu > 0) {
                                 <div class="col-12">
                                     <hr class="sidebar-divider">
                                     <b>
-                                        <h5 style="text-align: center;"> <?= $campos['descricaoIncidente'] ?></5>
+                                        <h5 style="text-align: center;"><?= $campos['descricaoIncidente'] ?></5>
                                     </b>
                                     <hr class="sidebar-divider">
                                 </div>
@@ -444,6 +442,15 @@ if ($rowCount_permissions_submenu > 0) {
                                 <input hidden id="solicitante" name="solicitante" value="<?= $usuarioID ?>"></input>
                                 <input hidden id="zabbixEventID" name="zabbixEventID" value="<?= $zabbixID ?>"></input>
 
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="col-12">
+                                            <label for="descIncidente" class="form-label">Descrição</label>
+                                            <input value="<?= $descIncidente ?>" id="descIncidente" name="descIncidente" class="form-control" required></input>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
                                 <div class="row">
                                     <div class="col-5">
                                         <div class="col-12">

@@ -159,6 +159,25 @@ require "validaRotina.php";
             </li>
         <?php } ?>
 
+        <?php if ($c_nav_man_programada['c'] == 1) { ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#manutencaoProgramada-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-layout-text-window-reverse"></i><span>Manutenção Programada</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="manutencaoProgramada-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                    <?php if ($c_nav_sub_agendar_manutencao['c'] == 1) { ?>
+                        <li>
+                            <a href="/servicedesk/manutencao_programada/agendar_manutencao/index.php">
+                                <i class="bi bi-circle"></i><span>Agendar Manutenção</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+                </ul>
+            </li>
+        <?php } ?>
+
         <?php if ($c_nav_tiposChamados['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/servicedesk/tipos_chamados/index.php">

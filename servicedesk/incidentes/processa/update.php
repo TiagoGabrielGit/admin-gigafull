@@ -10,9 +10,11 @@ $tipoIncidente = isset($_POST['tipoIncidente']) ? $_POST['tipoIncidente'] : null
 $relatoIncidente = isset($_POST['relatoIncidente']) ? $_POST['relatoIncidente'] : null;
 $zabbixEventID = isset($_POST['zabbixEventID']) ? $_POST['zabbixEventID'] : null;
 $comunicarInteressados = $_POST['comunicarInteressados'];
+$descIncidente = $_POST['descIncidente'];
+
 $horaAtual = date('Y-m-d H:i:s');
 
-if ($classIncidente != NULL || $statusIncidente != NULL || $tipoIncidente != NULL || $previsaoConclusao != NULL) {
+if ($classIncidente != NULL || $statusIncidente != NULL || $tipoIncidente != NULL || $previsaoConclusao != NULL || $descIncidente != NULL) {
 
     $sql = "UPDATE incidentes SET ";
     $params = array();
@@ -25,6 +27,11 @@ if ($classIncidente != NULL || $statusIncidente != NULL || $tipoIncidente != NUL
     if ($tipoIncidente != null) {
         $sql .= "incident_type = :tipoIncidente, ";
         $params[':tipoIncidente'] = $tipoIncidente;
+    }
+
+    if ($descIncidente != null) {
+        $sql .= "descricaoIncidente = :descricaoIncidente, ";
+        $params[':descricaoIncidente'] = $descIncidente;
     }
 
     if ($statusIncidente != null && $statusIncidente == "0") {

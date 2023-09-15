@@ -53,6 +53,48 @@ if ($rowCount_permissions_submenu > 0) {
     $nav_backbone = "";
     $tab_outros = "";
     $nav_outros = "";
+
+    $count_inc_gpon =
+        "SELECT
+    count(id) as qtde
+    FROM
+    incidentes as i
+    WHERE
+    i.active = 1
+    and
+    i.incident_type = 100";
+
+    $r_inc_gpon = mysqli_query($mysqli, $count_inc_gpon);
+    $c_inc_gpon = $r_inc_gpon->fetch_array();
+
+
+    $count_inc_backb =
+        "SELECT
+        count(id) as qtde
+        FROM
+        incidentes as i
+        WHERE
+        i.active = 1
+        and
+        i.incident_type = 102";
+
+    $r_inc_backb = mysqli_query($mysqli, $count_inc_backb);
+    $c_inc_backb = $r_inc_backb->fetch_array();
+
+    $count_inc_oth =
+        "SELECT
+        count(id) as qtde
+        FROM
+        incidentes as i
+        WHERE
+        i.active = 1
+        and
+        i.incident_type <> 100
+            and
+        i.incident_type <> 102";
+
+    $r_inc_oth = mysqli_query($mysqli, $count_inc_oth);
+    $c_inc_oth = $r_inc_oth->fetch_array();
 ?>
 
     <main id="main" class="main">
@@ -70,15 +112,30 @@ if ($rowCount_permissions_submenu > 0) {
                             <!-- Default Tabs -->
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link <?= $nav_gpon ?>" id="gpon-tab" data-bs-toggle="tab" data-bs-target="#gpon" type="button" role="tab" aria-controls="gpon" aria-selected="true">GPON</button>
+                                    <button class="nav-link <?= $nav_gpon ?>" id="gpon-tab" data-bs-toggle="tab" data-bs-target="#gpon" type="button" role="tab" aria-controls="gpon" aria-selected="true">GPON
+                                        <?php
+                                        if ($c_inc_gpon['qtde'] > 0) {    ?>
+                                            <span class="badge bg-danger text-white"><?= $c_inc_gpon['qtde'] ?></span>
+                                        <?php } ?>
+                                    </button>
                                 </li>
 
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link <?= $nav_backbone ?>" id="backbone-tab" data-bs-toggle="tab" data-bs-target="#backbone" type="button" role="tab" aria-controls="backbone" aria-selected="false">Backbone</button>
+                                    <button class="nav-link <?= $nav_backbone ?>" id="backbone-tab" data-bs-toggle="tab" data-bs-target="#backbone" type="button" role="tab" aria-controls="backbone" aria-selected="false">Backbone
+                                        <?php
+                                        if ($c_inc_backb['qtde'] > 0) {    ?>
+                                            <span class="badge bg-danger text-white"><?= $c_inc_backb['qtde'] ?></span>
+                                        <?php } ?>
+                                    </button>
                                 </li>
 
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link <?= $nav_backbone ?>" id="outros-tab" data-bs-toggle="tab" data-bs-target="#outros" type="button" role="tab" aria-controls="outros" aria-selected="false">Outros</button>
+                                    <button class="nav-link <?= $nav_backbone ?>" id="outros-tab" data-bs-toggle="tab" data-bs-target="#outros" type="button" role="tab" aria-controls="outros" aria-selected="false">Outros
+                                        <?php
+                                        if ($c_inc_oth['qtde'] > 0) {    ?>
+                                            <span class="badge bg-danger text-white"><?= $c_inc_oth['qtde'] ?></span>
+                                        <?php } ?>
+                                    </button>
                                 </li>
                             </ul>
 

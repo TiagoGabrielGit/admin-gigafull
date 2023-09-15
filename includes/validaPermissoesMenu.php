@@ -362,3 +362,23 @@ ppm.perfil_id = $perfil_id";
 $r_nav_rede = mysqli_query($mysqli, $nav_rede);
 $c_nav_rede = mysqli_fetch_assoc($r_nav_rede);
 
+//MENU >> MAN PROGRAMADA
+$nav_man_programada = "SELECT
+count(*) as c
+FROM
+url_menu as um
+LEFT JOIN
+perfil_permissoes_menu as ppm
+ON
+ppm.url_menu = um.id
+WHERE
+um.id = '21'
+and
+ppm.perfil_id = $perfil_id";
+
+$r_nav_man_programada = mysqli_query($mysqli, $nav_man_programada);
+$c_nav_man_programada = mysqli_fetch_assoc($r_nav_man_programada);
+
+
+
+

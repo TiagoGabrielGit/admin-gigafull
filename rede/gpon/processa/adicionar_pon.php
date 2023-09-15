@@ -12,6 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = "INSERT INTO gpon_pon (olt_id, slot, pon, cod_int, active) VALUES (:oltId, :slot, :pon, :cod_int, '1')";
         $stmt = $pdo->prepare($sql);
 
+        $insercoesBemSucedidas = true; // Flag para controlar se todas as inserções foram bem-sucedidas
+
         for ($i = 0; $i < count($_POST['slot']); $i++) {
             $slot = $_POST['slot'][$i];
             $pon = $_POST['pon'][$i];
@@ -35,16 +37,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ':pon' => $pon,
                     ':cod_int' => $codigo, // Use o valor de código correto aqui
                 ]);
-
-                $pdo->commit();
-
-                header('Location: /rede/gpon/index.php?gpon=pon');
             } else {
-                header('Location: /rede/gpon/index.php?gpon=pon&error=cadastro_ja_existe');
+                $insercoesBemSucedidas = false; // Defina a flag como false se uma inserção não for bem-sucedida
             }
+        }
+
+        if ($insercoesBemSucedidas) {
+            $pdo->commit();
+            header('Location: /rede/gpon/index.php?gpon=pon');
+        } else {
+            $pdo->rollBack();
+            header('Location: /rede/gpon/index.php?gpon=pon&error=cadastro_ja_existe');
         }
     } catch (PDOException $e) {
         //echo "Erro: " . $e->getMessage();
         header('Location: /rede/gpon/index.php?gpon=pon&error=cadastro_ja_existe');
     }
 }
+?>
