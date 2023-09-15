@@ -9,6 +9,7 @@ $previsaoConclusao = isset($_POST['previsaoConclusao']) ? $_POST['previsaoConclu
 $tipoIncidente = isset($_POST['tipoIncidente']) ? $_POST['tipoIncidente'] : null;
 $relatoIncidente = isset($_POST['relatoIncidente']) ? $_POST['relatoIncidente'] : null;
 $zabbixEventID = isset($_POST['zabbixEventID']) ? $_POST['zabbixEventID'] : null;
+$comunicarInteressados = $_POST['comunicarInteressados'];
 $horaAtual = date('Y-m-d H:i:s');
 
 if ($classIncidente != NULL || $statusIncidente != NULL || $tipoIncidente != NULL || $previsaoConclusao != NULL) {
@@ -63,8 +64,13 @@ $stmt2->bindValue(':valor3', $horaAtual);
 $stmt2->bindValue(':valor4', $solicitante);
 if ($stmt2->execute()) {
     if ($zabbixEventID == null) {
-        header("Location: /servicedesk/incidentes/view.php?id=$incidenteID");
-        exit();
+        if ($comunicarInteressados == 1) {
+            header("Location: /servicedesk/incidentes/comunicaIncidente.php?$incidenteID");
+            exit();
+        } else {
+            header("Location: /servicedesk/incidentes/view.php?id=$incidenteID");
+            exit();
+        }
     } else {
         $integracao_zabbix =
             "SELECT
@@ -107,13 +113,21 @@ if ($stmt2->execute()) {
 
             $api_response = curl_exec($ch);
             curl_close($ch);
-            //echo "Resposta da API: " . $api_response;
-            //echo "Corpo: " . json_encode($api_data, JSON_PRETTY_PRINT);
-            header("Location: /servicedesk/incidentes/view.php?id=$incidenteID");
-            exit();
+            if ($comunicarInteressados == 1) {
+                header("Location: /servicedesk/incidentes/comunicaIncidente.php?$incidenteID");
+                exit();
+            } else {
+                header("Location: /servicedesk/incidentes/view.php?id=$incidenteID");
+                exit();
+            }
         } else {
-            header("Location: /servicedesk/incidentes/view.php?id=$incidenteID");
-            exit();
+            if ($comunicarInteressados == 1) {
+                header("Location: /servicedesk/incidentes/comunicaIncidente.php?$incidenteID");
+                exit();
+            } else {
+                header("Location: /servicedesk/incidentes/view.php?id=$incidenteID");
+                exit();
+            }
         }
     }
 } else {

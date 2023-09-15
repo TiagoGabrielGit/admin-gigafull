@@ -70,43 +70,29 @@ if (empty($atendente['atendente'])) {
     $atendente = $atendente['atendente'];
 }
 
-if ($tipoUsuario == "1") {
-    if ($permissao_visualiza_chamado == 1 && ($chamado['idEmpresa'] == $empresa_usuario)) { // Visualiza somente chamados da empresa
-        require "code_view_smart.php";
-    } else if ($permissao_visualiza_chamado == 2) {
-        $permissao_equipe = "SELECT DISTINCT ei.equipe_id
+if ($permissao_visualiza_chamado == 1 && ($chamado['idEmpresa'] == $empresa_usuario)) { // Visualiza somente chamados da empresa
+    require "code_view.php";
+} else if ($permissao_visualiza_chamado == 2) {
+    $permissao_equipe = "SELECT DISTINCT ei.equipe_id
         FROM equipes_integrantes ei
         JOIN chamados_autorizados_by_equipe cae ON ei.equipe_id = cae.equipe_id
         WHERE ei.integrante_id = $idUsuario
         AND cae.tipo_id = $tipo_chamado";
 
-        $r_permissao_equipe = $pdo->query($permissao_equipe);
-        if ($r_permissao_equipe) {
-            if ($r_permissao_equipe->rowCount() > 0) {
-                require "code_view_smart.php";
-            } else {
-                require "../../acesso_negado.php";
-                require "../../includes/footer.php";
-            }
+    $r_permissao_equipe = $pdo->query($permissao_equipe);
+    if ($r_permissao_equipe) {
+        if ($r_permissao_equipe->rowCount() > 0) {
+            require "code_view.php";
         } else {
-            echo "Erro na execução da consulta: " . $pdo->errorInfo()[2];
+            require "../../acesso_negado.php";
+            require "../../includes/footer.php";
         }
-    } else if ($permissao_visualiza_chamado == 3) { //Visuliza todos chamados
-        require "code_view_smart.php";
     } else {
-        require "../../acesso_negado.php";
-        require "../../includes/footer.php";
+        echo "Erro na execução da consulta: " . $pdo->errorInfo()[2];
     }
-} else if ($tipoUsuario == "2" && $idEmpresa == $idEmpresaChamado) {
-    require "code_view_cliente.php";
-} else if ($tipoUsuario == "3" && $idEmpresa == $idEmpresaChamado) {
-    require "code_view_tenant.php";
-} else { ?>
-    <main id="main" class="main">
-        <div class="pagetitle">
-            <h1>Operação não permitida!</h1>
-        </div>
-    </main>
-<?php
+} else if ($permissao_visualiza_chamado == 3) { //Visuliza todos chamados
+    require "code_view.php";
+} else {
+    require "../../acesso_negado.php";
     require "../../includes/footer.php";
 }

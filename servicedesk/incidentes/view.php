@@ -475,20 +475,7 @@ if ($rowCount_permissions_submenu > 0) {
                                         </div>
                                     </div>
 
-                                    <div class="col-3"></div>
-
-                                    <div class="col-4">
-                                        <div class="col-12">
-                                            <label for="statusIncidente" class="form-label">Status</label>
-                                            <select id="statusIncidente" name="statusIncidente" class="form-select">
-                                                <option selected value="">Selecione</option>
-                                                <option value="1">Aberto</option>
-                                                <option value="0">Fechado</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-5">
+                                    <div class="col-3">
                                         <label for="tipoIncidente" class="form-label">Tipo de Incidente</label>
                                         <select id="tipoIncidente" name="tipoIncidente" class="form-select">
                                             <option selected value="">Selecione</option>
@@ -513,6 +500,30 @@ if ($rowCount_permissions_submenu > 0) {
 
                                         </select>
                                     </div>
+
+                                    <div class="col-4">
+                                        <div class="col-12">
+                                            <label for="statusIncidente" class="form-label">Status</label>
+                                            <select id="statusIncidente" name="statusIncidente" class="form-select">
+                                                <option selected value="">Selecione</option>
+                                                <option value="1">Aberto</option>
+                                                <option value="0">Fechado</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-5">
+                                        <div class="col-12">
+                                            <label for="comunicarInteressados" class="form-label">Comunicar Interessados</label>
+                                            <select id="comunicarInteressados" name="comunicarInteressados" class="form-select" required>
+                                                <option disabled selected value="">Selecione</option>
+                                                <option value="1">Sim</option>
+                                                <option value="0">Não</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
 
                                     <div class="col-4">
                                         <label for="previsaoConclusao" class="form-label">Previsão de Conclusão</label>
