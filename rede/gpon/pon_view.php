@@ -170,6 +170,8 @@ if ($rowCount_permissions > 0) {
                                         gpon_localidades as gpl
                                         WHERE
                                         gpl.active = 1
+                                        and
+                                        gpl.pon_id = $idPON
                                         ";
                                     $r_localidades = mysqli_query($mysqli, $localidades) or die("Erro ao retornar dados");
                                     while ($c_localidades = $r_localidades->fetch_array()) {
