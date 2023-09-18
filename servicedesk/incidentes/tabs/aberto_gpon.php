@@ -139,26 +139,65 @@
                             } ?> <br>
                             <b>Hora Normalização: </b><?= $campos['horafinal']; ?><br>
                         </div>
-
-                        <?php
-                        if ($permissaoGerenciar == 1) { ?>
-                            <div class="col-2">
-                                <a href="/servicedesk/incidentes/view.php?id=<?= $id_incidente ?>" title="Visualizar">
-                                    <button type="button" class="btn btn-danger">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                            <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                            <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                        </svg>
-                                        Ver incidente
-                                    </button>
-                                </a>
-                            </div>
-                        <?php
-                        } ?>
+                        <div class="col-2">
+                            <?php
+                            if ($permissaoGerenciar == 1) { ?>
+                                <div class="col-12">
+                                    <a href="/servicedesk/incidentes/view.php?id=<?= $id_incidente ?>" title="Visualizar">
+                                        <button type="button" class="btn btn-sm btn-danger">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                                            </svg>
+                                            Ver incidente
+                                        </button>
+                                    </a>
+                                </div>
+                                <br>
+                                <div class="col-12">
+                                    <button title="Localidades" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalLocalidades"><i class="bi bi-pin-map"></i></button>
+                                </div>
+                            <?php
+                            } ?>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     <?php $cont++;
     } ?>
+</div>
+
+<div class="modal fade" id="modalLocalidades" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Localidades</h5>
+            </div>
+
+            <div class="modal-body">
+                <div class="card-body">
+                    <div class="col-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;">Cidade</th>
+                                    <th style="text-align: center;">Bairro</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align: center;"></td>
+                                    <td style="text-align: center;"></td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
