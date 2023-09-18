@@ -12,6 +12,7 @@
                 i.equipamento_id,
                 i.descricaoIncidente as descricaoIncidente,
                 i.active as activeID,
+                i.pon_id as pon_id,
                 ic.classificacao as classificacao,
                 ic.color as ClassColor,
                 i.previsaoNormalizacao as previsaoNormalizacao2,
@@ -36,7 +37,7 @@
     $cont = 1;
     while ($campos = $r_sql_incidentes->fetch_array()) {
         $id_incidente = $campos['idIncidente'];
-
+        $pon_id = $campos['pon_id'];
         $hostID = $campos['equipamento_id'];
         $sql_host =
             "SELECT
@@ -186,15 +187,31 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td style="text-align: center;"></td>
-                                    <td style="text-align: center;"></td>
-                                </tr>
+                                <?php
+                                // Preparar e executar a consulta SQL usando PDO
+                                $localidades_query = "SELECT cidade, bairro FROM gpon_localidades WHERE pon_id = :pon_id AND active = 1";
+                                $stmt_localidades = $pdo->prepare($localidades_query);
+                                $stmt_localidades->bindParam(':pon_id', $pon_id);
+                                $stmt_localidades->execute();
 
+                                // Verificar se há resultados
+                                if ($stmt_localidades->rowCount() > 0) {
+                                    // Iterar pelos resultados e criar as linhas da tabela
+                                    while ($row = $stmt_localidades->fetch(PDO::FETCH_ASSOC)) {
+                                        echo '<tr>';
+                                        echo '<td style="text-align: center;">' . $row['cidade'] . '</td>';
+                                        echo '<td style="text-align: center;">' . $row['bairro'] . '</td>';
+                                        echo '</tr>';
+                                    }
+                                } else {
+                                    // Caso não haja resultados
+                                    echo '<tr><td colspan="2" style="text-align: center;">Nenhuma localidade encontrada.</td></tr>';
+                                }
+                                ?>
                             </tbody>
                         </table>
-
                     </div>
+
 
                 </div>
             </div>

@@ -14,6 +14,7 @@
                 i.active as activeID,
                 ic.classificacao as classificacao,
                 ic.color as ClassColor,
+                i.pon_id as pon_id,
                 i.previsaoNormalizacao as previsaoNormalizacao2,
                 it.type as tipo,
                 p.nome as criador,
@@ -37,6 +38,7 @@
     $cont = 1;
     while ($campos = $r_sql_incidentes->fetch_array()) {
         $id_incidente = $campos['idIncidente'];
+        $pon_id = $campos['pon_id'];
 
         $hostID = $campos['equipamento_id'];
         $sql_host =
