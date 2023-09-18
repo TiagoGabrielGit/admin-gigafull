@@ -25,10 +25,11 @@ require "../includes/menu.php";
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
+                    # Mostrar localidades em incidentes;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criada a coluna pon_id na tabela "incidentes";<br>
-                    
+
                     <br><strong>Backlog</strong><br>
                     # Ver localidades em incidentes;<br>
                     # Recriar a pagina index e view de chamados;<br>

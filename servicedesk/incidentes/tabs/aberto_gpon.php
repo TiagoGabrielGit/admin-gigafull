@@ -155,12 +155,12 @@
                                     </a>
                                 </div>
                                 <br>
-                                <div class="col-12">
-                                    <button title="Localidades" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalLocalidades<?= $cont ?>"><i class="bi bi-pin-map"></i></button>
-                                </div>
                             <?php
                             } ?>
 
+                            <div class="col-12">
+                                <button title="Localidades" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalLocalidades<?= $cont ?>"><i class="bi bi-pin-map"></i></button>
+                            </div>
                             <div class="modal fade" id="modalLocalidades<?= $cont ?>" tabindex="-1">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
