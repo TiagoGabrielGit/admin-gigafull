@@ -156,10 +156,60 @@
                                 </div>
                                 <br>
                                 <div class="col-12">
-                                    <button title="Localidades" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalLocalidades"><i class="bi bi-pin-map"></i></button>
+                                    <button title="Localidades" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalLocalidades<?= $cont ?>"><i class="bi bi-pin-map"></i></button>
                                 </div>
                             <?php
                             } ?>
+
+                            <div class="modal fade" id="modalLocalidades<?= $cont ?>" tabindex="-1">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Localidades</h5>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <div class="card-body">
+                                                <div class="col-12">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="text-align: center;">Cidade</th>
+                                                                <th style="text-align: center;">Bairro</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <?php
+                                                            // Preparar e executar a consulta SQL usando PDO
+                                                            $localidades_query = "SELECT cidade, bairro FROM gpon_localidades WHERE pon_id = :pon_id AND active = 1";
+                                                            $stmt_localidades = $pdo->prepare($localidades_query);
+                                                            $stmt_localidades->bindParam(':pon_id', $pon_id);
+                                                            $stmt_localidades->execute();
+
+                                                            // Verificar se há resultados
+                                                            if ($stmt_localidades->rowCount() > 0) {
+                                                                // Iterar pelos resultados e criar as linhas da tabela
+                                                                while ($row = $stmt_localidades->fetch(PDO::FETCH_ASSOC)) {
+                                                                    echo '<tr>';
+                                                                    echo '<td style="text-align: center;">' . $row['cidade'] . '</td>';
+                                                                    echo '<td style="text-align: center;">' . $row['bairro'] . '</td>';
+                                                                    echo '</tr>';
+                                                                }
+                                                            } else {
+                                                                // Caso não haja resultados
+                                                                echo '<tr><td colspan="2" style="text-align: center;">Nenhuma localidade encontrada.</td></tr>';
+                                                            }
+                                                            ?>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -167,54 +217,4 @@
         </div>
     <?php $cont++;
     } ?>
-</div>
-
-<div class="modal fade" id="modalLocalidades" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Localidades</h5>
-            </div>
-
-            <div class="modal-body">
-                <div class="card-body">
-                    <div class="col-12">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th style="text-align: center;">Cidade</th>
-                                    <th style="text-align: center;">Bairro</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                // Preparar e executar a consulta SQL usando PDO
-                                $localidades_query = "SELECT cidade, bairro FROM gpon_localidades WHERE pon_id = :pon_id AND active = 1";
-                                $stmt_localidades = $pdo->prepare($localidades_query);
-                                $stmt_localidades->bindParam(':pon_id', $pon_id);
-                                $stmt_localidades->execute();
-
-                                // Verificar se há resultados
-                                if ($stmt_localidades->rowCount() > 0) {
-                                    // Iterar pelos resultados e criar as linhas da tabela
-                                    while ($row = $stmt_localidades->fetch(PDO::FETCH_ASSOC)) {
-                                        echo '<tr>';
-                                        echo '<td style="text-align: center;">' . $row['cidade'] . '</td>';
-                                        echo '<td style="text-align: center;">' . $row['bairro'] . '</td>';
-                                        echo '</tr>';
-                                    }
-                                } else {
-                                    // Caso não haja resultados
-                                    echo '<tr><td colspan="2" style="text-align: center;">Nenhuma localidade encontrada.</td></tr>';
-                                }
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
