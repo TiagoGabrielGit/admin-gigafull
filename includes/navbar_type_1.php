@@ -175,6 +175,17 @@ require "validaRotina.php";
                     <?php } ?>
 
                 </ul>
+                <ul id="manutencaoProgramada-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                    <?php if ($c_nav_sub_manutencoes_programadas['c'] == 1) { ?>
+                        <li>
+                            <a href="/servicedesk/manutencao_programada/manutencoes_programadas/index.php">
+                                <i class="bi bi-circle"></i><span>Manutenções Programadas</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+                </ul>
             </li>
         <?php } ?>
 

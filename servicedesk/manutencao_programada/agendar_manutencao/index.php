@@ -40,7 +40,7 @@ if ($rowCount_permissions > 0) {
 
                             <br><br>
 
-                            <form method="POST" action="criar_manutencao_programada.php" class="row g-3">
+                            <form method="POST" action="processa/criar_manutencao_programada.php" class="row g-3">
                                 <div class="row">
                                     <div class="col-5">
                                         <label for="titulo" class="form-label">Titulo</label>
@@ -103,7 +103,7 @@ if ($rowCount_permissions > 0) {
                                                     ?>
                                                         <li>
                                                             <label class="form-check-label">
-                                                                <input class="form-check-input me-1" name="rotasDeFibra" type="checkbox">
+                                                                <input value="<?= $rota['id'] ?> class=" form-check-input me-1" name="rotasDeFibra[]" type="checkbox">
                                                                 <?= $rota['ponta_a'] . " <b> <> </b> " . $rota['ponta_b']; ?>
                                                             </label>
                                                         </li>
@@ -134,6 +134,7 @@ if ($rowCount_permissions > 0) {
                                                     ";
                                                     $r_query_olts = mysqli_query($mysqli, $query_olts);
                                                     while ($C_olts = $r_query_olts->fetch_array()) {
+                                                        $idsOLTs = $C_olts['idOLT'];
                                                     ?>
                                                         <div class="accordion-item">
                                                             <h2 class="accordion-header" id="heading<?= $contador ?>">
@@ -154,6 +155,8 @@ if ($rowCount_permissions > 0) {
                                                                         gpon_pon as gpp
                                                                         WHERE
                                                                         gpp.active = 1
+                                                                        and
+                                                                        olt_id = $idsOLTs
                                                                         ORDER BY
                                                                         gpp.slot ASC,
                                                                         gpp.pon ASC";
@@ -171,7 +174,7 @@ if ($rowCount_permissions > 0) {
                                                                         ?>
                                                                             <li>
                                                                                 <label class="form-check-label">
-                                                                                    <input class="form-check-input me-1" name="pons" type="checkbox">
+                                                                                    <input value="<?= $pon['id'] ?>" class="form-check-input me-1" name="pons[]" type="checkbox">
                                                                                     <?= "SLOT " . $pon['slot'] . " - PON " . $pon['pon']; ?>
                                                                                 </label>
                                                                             </li>

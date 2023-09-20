@@ -573,7 +573,7 @@ $c_nav_sub_incidentes_fechados = mysqli_fetch_assoc($r_nav_sub_inicidentes_fecha
 
 /////////////////////////////////////////
 
-//SUBMENU >> INCIDENTES FECHADOS
+//SUBMENU >> AGENDAR MANUTENÇÃO
 $nav_sub_agendar_manutencao = "SELECT
 count(*) as c
 FROM
@@ -589,3 +589,20 @@ ppsm.perfil_id = $perfil_id";
 
 $r_nav_sub_agendar_manutencao = mysqli_query($mysqli, $nav_sub_agendar_manutencao);
 $c_nav_sub_agendar_manutencao = mysqli_fetch_assoc($r_nav_sub_agendar_manutencao);
+
+//SUBMENU >> MANUTENÇÕES PROGRAMADAS
+$nav_sub_manutencoes_programadas = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '36'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_manutencoes_programadas = mysqli_query($mysqli, $nav_sub_manutencoes_programadas);
+$c_nav_sub_manutencoes_programadas = mysqli_fetch_assoc($r_nav_sub_manutencoes_programadas);

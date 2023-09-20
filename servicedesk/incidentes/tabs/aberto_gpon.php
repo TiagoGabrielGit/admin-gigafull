@@ -14,6 +14,7 @@
                 i.active as activeID,
                 i.pon_id as pon_id,
                 ic.classificacao as classificacao,
+                ic.descricao as descClassificacao,
                 ic.color as ClassColor,
                 i.previsaoNormalizacao as previsaoNormalizacao2,
                 it.type as tipo,
@@ -78,9 +79,9 @@
 
                             <?php
                             if ($campos['classificacao'] == NULL) { ?>
-                                <span class="btn btn-sm rounded-pill mb-1" style="background-color: <?= $campos['ClassColor'] ?>"><b>Não Classificado</b></span>
+                                <span title="<?= $campos['descClassificacao'] ?>" class="btn btn-sm rounded-pill mb-1" style="background-color: <?= $campos['ClassColor'] ?>"><b>Não Classificado</b></span>
                             <?php } else { ?>
-                                <span class="btn btn-sm rounded-pill mb-1" style="background-color: <?= $campos['ClassColor'] ?>"><b><?= $campos['classificacao'] ?></b></span>
+                                <span title="<?= $campos['descClassificacao'] ?>" class="btn btn-sm rounded-pill mb-1" style="background-color: <?= $campos['ClassColor'] ?>"><b><?= $campos['classificacao'] ?></b></span>
                             <?php } ?>
 
                             <?php
@@ -96,9 +97,9 @@
                             }
 
                             if ($campos['previsaoNormalizacao'] == NULL) { ?>
-                                <span class="btn btn-sm btn-<?= $colorPill ?> rounded-pill"><b>Sem Previsão</b></span>
+                                <span title="Previsão de Normalização" class="btn btn-sm btn-<?= $colorPill ?> rounded-pill"><b>Sem Previsão</b></span>
                             <?php } else { ?>
-                                <span class="btn btn-sm btn-<?= $colorPill ?> rounded-pill"><b><?= $campos['previsaoNormalizacao'] ?></b></span>
+                                <span title="Previsão de Normalização" class="btn btn-sm btn-<?= $colorPill ?> rounded-pill"><b><?= $campos['previsaoNormalizacao'] ?></b></span>
                             <?php } ?>
                             <!-- </div>-->
                         </span>

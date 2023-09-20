@@ -51,35 +51,68 @@ if ($rowCount_permissions_submenu > 0) {
     $nav_gpon = "active";
     $tab_backbone = "";
     $nav_backbone = "";
+    $tab_man_programada = "";
+    $nav_man_programada = "";
     $tab_outros = "";
     $nav_outros = "";
 
     $count_inc_gpon =
         "SELECT
-    count(id) as qtde
+    count(i.id) as qtde
     FROM
     incidentes as i
+    INNER JOIN gpon_olts o ON i.equipamento_id = o.equipamento_id
+    INNER JOIN gpon_olts_interessados oi ON o.id = oi.gpon_olt_id
     WHERE
     i.active = 1
+    and
+    oi.active = 1
+    and
+    oi.interessado_empresa_id = $empresaID
     and
     i.incident_type = 100";
 
     $r_inc_gpon = mysqli_query($mysqli, $count_inc_gpon);
     $c_inc_gpon = $r_inc_gpon->fetch_array();
 
-
     $count_inc_backb =
         "SELECT
-        count(id) as qtde
+        count(i.id) as qtde
         FROM
         incidentes as i
-        WHERE
-        i.active = 1
-        and
-        i.incident_type = 102";
+        INNER JOIN rotas_fibra as rf ON i.equipamento_id = rf.codigo
+        INNER JOIN rotas_fibras_interessados as rfi ON rf.id = rfi.rf_id
+        WHERE rfi.interessado_empresa_id =  $empresaID AND i.active = 1 AND rfi.active = 1 and i.incident_type = 102";
 
     $r_inc_backb = mysqli_query($mysqli, $count_inc_backb);
     $c_inc_backb = $r_inc_backb->fetch_array();
+
+    $count_man_prog_af_gpon =
+        "SELECT count(*) as qtde
+        FROM manutencao_programada as mp
+        LEFT JOIN manutencao_gpon as mg ON mg.manutencao_id = mp.id
+        LEFT JOIN gpon_pon as gp on gp.id = mg.pon_id
+        LEFT JOIN gpon_olts as go on go.id = gp.olt_id
+        LEFT JOIN gpon_olts_interessados as goi ON goi.gpon_olt_id = go.id
+        where mp.active = 1   and goi.interessado_empresa_id = 1 and goi.active = 1
+        GROUP BY mp.id
+        ";
+
+    $r_man_prog_af_gpon = mysqli_query($mysqli, $count_man_prog_af_gpon);
+    $c_man_prog_af_gpon = $r_man_prog_af_gpon->fetch_array();
+
+    $count_man_prog_af_backbone =
+        "SELECT count(*) as qtde
+    FROM
+    manutencao_programada as mp
+    LEFT JOIN manutencao_rotas_fibra as mrf ON mrf.manutencao_id = mp.id
+    LEFT JOIN rotas_fibras_interessados as rfi ON rfi.rf_id = mrf.rota_id
+    where
+    mp.active = 1  and rfi.interessado_empresa_id = 1  and rfi.active = 1 
+    GROUP BY mp.id";
+
+    $r_man_prog_af_backbone = mysqli_query($mysqli, $count_man_prog_af_backbone);
+    $c_man_prog_af_backbone = $r_man_prog_af_backbone->fetch_array();
 
     $count_inc_oth =
         "SELECT
@@ -130,7 +163,17 @@ if ($rowCount_permissions_submenu > 0) {
                                 </li>
 
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link <?= $nav_backbone ?>" id="outros-tab" data-bs-toggle="tab" data-bs-target="#outros" type="button" role="tab" aria-controls="outros" aria-selected="false">Outros
+                                    <button class="nav-link <?= $nav_man_programada ?>" id="man_programada-tab" data-bs-toggle="tab" data-bs-target="#man_programada" type="button" role="tab" aria-controls="man_programada" aria-selected="false">Manutenção Programada
+                                        <?php
+                                        if (isset($c_man_prog_af_gpon['qtde']) || isset($c_man_prog_af_backbone['qtde'])) {    ?>
+                                            <span class="badge bg-danger text-white"><i class="bi bi-exclamation-triangle"></i></span>
+                                        <?php } ?>
+                                    </button>
+                                </li>
+
+
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link <?= $nav_outros ?>" id="outros-tab" data-bs-toggle="tab" data-bs-target="#outros" type="button" role="tab" aria-controls="outros" aria-selected="false">Outros
                                         <?php
                                         if ($c_inc_oth['qtde'] > 0) {    ?>
                                             <span class="badge bg-danger text-white"><?= $c_inc_oth['qtde'] ?></span>
@@ -149,6 +192,12 @@ if ($rowCount_permissions_submenu > 0) {
                                 <div class="tab-pane fade <?= $tab_backbone ?>" id="backbone" role="tabpanel" aria-labelledby="backbone-tab">
                                     <?php
                                     require "tabs/aberto_backbone.php";
+                                    ?>
+                                </div>
+
+                                <div class="tab-pane fade <?= $tab_man_programada ?>" id="man_programada" role="tabpanel" aria-labelledby="man_programada-tab">
+                                    <?php
+                                    require "tabs/aberto_man_programada.php";
                                     ?>
                                 </div>
 
