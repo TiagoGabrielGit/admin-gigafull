@@ -147,6 +147,14 @@ require "validaRotina.php";
                         </li>
                     <?php } ?>
 
+                    <?php if ($c_nav_sub_novo_incidente['c'] == 1) { ?>
+                        <li>
+                            <a href="/servicedesk/incidentes/new_incident/index.php">
+                                <i class="bi bi-circle"></i><span>Novo Incidente</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
                     <?php if ($c_nav_sub_configuracoes_incidentes['c'] == 1) { ?>
                         <li>
                             <a href="/servicedesk/incidentes/configuracoes/index.php">

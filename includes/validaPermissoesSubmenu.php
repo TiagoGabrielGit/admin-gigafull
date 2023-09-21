@@ -606,3 +606,20 @@ ppsm.perfil_id = $perfil_id";
 
 $r_nav_sub_manutencoes_programadas = mysqli_query($mysqli, $nav_sub_manutencoes_programadas);
 $c_nav_sub_manutencoes_programadas = mysqli_fetch_assoc($r_nav_sub_manutencoes_programadas);
+
+//SUBMENU >> NOVO INCIDENTE
+$nav_sub_novo_incidente = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '37'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_novo_incidente = mysqli_query($mysqli, $nav_sub_novo_incidente);
+$c_nav_sub_novo_incidente = mysqli_fetch_assoc($r_nav_sub_novo_incidente);

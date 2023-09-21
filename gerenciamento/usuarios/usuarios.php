@@ -69,6 +69,7 @@ if ($rowCount_permissions_submenu > 0) {
                                         <th scope="col">Dashboard</th>
                                         <th scope="col">Perfil</th>
                                         <th scope="col">E-mail/Usuário</th>
+                                        <th scope="col">Último Login</th>
                                         <th scope="col">Ativo</th>
                                         <th style="text-align: center;" scope="col">Ativar/Inativar</th>
                                         <th style="text-align: center;" scope="col">Alterar Senha</th>
@@ -90,19 +91,10 @@ if ($rowCount_permissions_submenu > 0) {
                                             WHEN user.active = 1 THEN 'Ativado'
                                             WHEN user.active = 0 THEN 'Inativado'
                                         END AS active
-                                        FROM 
-                                        usuarios as user
-                                        LEFT JOIN                            
-                                        pessoas as pess
-                                        ON
-                                        pess.id = user.pessoa_id
-                                        LEFT JOIN
-                                        perfil as p
-                                        ON
-                                        p.id = user.perfil_id
-                                        ORDER BY
-                                        pess.nome ASC
-                                        ";
+                                        FROM usuarios as user
+                                        LEFT JOIN pessoas as pess ON pess.id = user.pessoa_id
+                                        LEFT JOIN perfil as p ON p.id = user.perfil_id
+                                        ORDER BY pess.nome ASC ";
 
                                     $resultado = mysqli_query($mysqli, $sql) or die("Erro ao retornar dados");
 
@@ -119,6 +111,23 @@ if ($rowCount_permissions_submenu > 0) {
                                             <td>Tipo <?= $campos['dashboard']; ?></td>
                                             <td><?= $campos['nome_perfil']; ?></td>
                                             <td><?= $campos['email']; ?></td>
+
+                                            <?php
+                                            $last_login =
+                                                "SELECT DATE_FORMAT(la.horario, '%d/%m/%Y %H:%i:%s') AS horario
+                                                FROM log_acesso as la
+                                                WHERE usuario_id = $id";
+                                            $r_last_login = mysqli_query($mysqli, $last_login) or die("Erro ao retornar dados");
+                                            $c_last_login = $r_last_login->fetch_array()
+                                            ?>
+                                            <td>
+                                                <?php
+                                                if (isset($c_last_login['horario'])) {
+                                                    echo $c_last_login['horario'];
+                                                } else {
+                                                    echo "Nunca logado";
+                                                }; ?></td>
+
                                             <td><?= $campos['active']; ?></td>
                                             <td style="text-align: center;">
                                                 <?php

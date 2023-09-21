@@ -16,6 +16,52 @@ require "../includes/menu.php";
             <div class="accordion" id="accordionExample">
 
               <div class="accordion-item">
+                <h2 class="accordion-header" id="heading10-6">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse10-6" aria-expanded="false" aria-controls="collapse10-6">
+                    Versão 10.6 - 21/09/2023
+                  </button>
+                </h2>
+                <div id="collapse10-6" class="accordion-collapse collapse" aria-labelledby="heading10-6" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Criar incidente manualmente;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criado o submenu id 37;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Recriar a pagina index e view de chamados;<br>
+                    # Notificação de incidentes a interessados;<br>
+                    # Criar dashboards;<br>
+                    # Resetar senha pelo acesso usuário;<br>
+                    # Invite Usuários;<br>
+                    # Revisar acesso a credenciais;<br>
+                    # Não permitir editar tipos de equipamentos default;<br>
+                    # Abertura de chamado através de incidentes;<br>
+                    # Vincular uma documentação à um tipo de incidente;<br>
+                    # Controlar espaço em disco em anexo/POPs;<br>
+                    # Envio de sugestões;<br>
+                    # Selecionar publico ou privado no relato avulso;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Energia POP;<br>
+                    # Atributos de equipamentos;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Notificaçãoes de novos incidentes e relatos;<br>
+                    # Vinculo de chamado a incidente;<br>
+                    # Anexo arquivos em chamados;<br>
+                    # Permissões em documentações;<br>
+                    # Mostrar LOG de alteração e criação de registros por usuário;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                    # Dependencia de chamados;<br>
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
                 <h2 class="accordion-header" id="heading10-5">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse10-5" aria-expanded="false" aria-controls="collapse10-5">
                     Versão 10.5 - 20/09/2023
@@ -30,7 +76,7 @@ require "../includes/menu.php";
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado o submenu id 36;<br>
                     # Criada a tabela "manutencao_programada";<br>
-                    # Criada a tabela "manuntencao_gpon";<br>
+                    # Criada a tabela "manutencao_gpon";<br>
                     # Criada a tabela "manutencao_rotas_fibra";<br>
 
                     <br><strong>Backlog</strong><br>
@@ -64,7 +110,6 @@ require "../includes/menu.php";
                   </div>
                 </div>
               </div>
-
 
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading10-4">
