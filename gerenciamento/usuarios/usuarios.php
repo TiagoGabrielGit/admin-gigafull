@@ -116,7 +116,9 @@ if ($rowCount_permissions_submenu > 0) {
                                             $last_login =
                                                 "SELECT DATE_FORMAT(la.horario, '%d/%m/%Y %H:%i:%s') AS horario
                                                 FROM log_acesso as la
-                                                WHERE usuario_id = $id";
+                                                WHERE usuario_id = $id
+                                                ORDER BY id desc
+                                                LIMIT 1";
                                             $r_last_login = mysqli_query($mysqli, $last_login) or die("Erro ao retornar dados");
                                             $c_last_login = $r_last_login->fetch_array()
                                             ?>

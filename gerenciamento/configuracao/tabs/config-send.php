@@ -211,6 +211,45 @@
                                 </select>
                             </div>
 
+                            <div class="form-check form-switch">
+
+                                <?php
+                                $sql_consulta_6 = "SELECT
+                                ne.notificacao_id as notificacao_id,
+                                ne.active as active,
+                                se.server as servidor,
+                                se.id as servidorID
+                                FROM
+                                notificacao_email as ne
+                                LEFT JOIN
+                                servermail as se
+                                ON
+                                se.id = ne.server_id
+                                WHERE
+                                ne.notificacao_id = 6";
+                                $stmt_consulta6 = $pdo->query($sql_consulta_6);
+                                $resultado_c6 = $stmt_consulta6->fetch(PDO::FETCH_ASSOC);
+
+                                // Verifica se está ativo e define o valor para a propriedade 'checked'
+                                $checked6 = ($resultado_c6['active'] == "1") ? 'checked' : '';
+                                if (empty($resultado_c6['servidor'])) {
+                                    $server_not6 = "<option selected disabled>Selecione um servidor de e-mail</option>";
+                                } else {
+                                    $c6_serverID = $resultado_c6['servidorID'];
+                                    $c6_servidor = $resultado_c6['servidor'];
+                                    $server_not6 = "<option value='$c6_serverID' selected>$c6_servidor</option>";
+                                }
+                                ?>
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked6" <?= $checked6; ?>>
+                                <label class="form-check-label" for="flexSwitchCheckChecked6">(6) Envio de e-mail de comunicação.</label>
+                                <select id="notificacao6_servidor" name="notificacao6_servidor" class="form-select form-select-sm" aria-label="Selecionar opção">
+                                    <?php
+                                    echo $server_not6;
+                                    foreach ($resultados as $row) : ?>
+                                        <option value="<?= $row['id']; ?>"><?= $row['server']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
                         </div>
                     </div>
 

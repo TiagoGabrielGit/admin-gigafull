@@ -1,0 +1,114 @@
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    require "../../conexoes/conexao_pdo.php";
+
+    // Consulta se o envio de e-mail está habilitado
+    $consulta_habilitado = "
+        SELECT
+            ne.active as active,
+            ne.server_id as server_id
+        FROM
+            notificacao_email as ne
+        WHERE
+            ne.notificacao_id = 6
+    ";
+
+    // Executa a consulta no banco de dados
+    $result_habilitado = $pdo->query($consulta_habilitado);
+    $c_habilitado = $result_habilitado->fetch(PDO::FETCH_ASSOC);
+    $active = $c_habilitado['active'];
+    $server_id = $c_habilitado['server_id'];
+
+    if ($active == 1) {
+        //$id_comunicacao = "7";
+        $id_comunicacao = $_POST['id_comunicacao'];
+
+        $infos_comunicacao =
+            "SELECT
+            msgEmail as mensagem
+            FROM comunicacao as c
+            WHERE
+            c.id = $id_comunicacao
+            ";
+        // Executa a consulta no banco de dados
+        $r_comunicacao = $pdo->query($infos_comunicacao);
+        $c_comunicacao = $r_comunicacao->fetch(PDO::FETCH_ASSOC);
+        $mensagem = $c_comunicacao['mensagem'];
+
+        $titulo = "Comunicado";
+
+        $lista_destinatarios =
+            "SELECT  en.midia as email
+            FROM comunicacao_destinatarios as cd
+            LEFT JOIN empresas_notificacao as en ON en.id = cd.empresa_notificacao_id
+            WHERE cd.comunicacao_id = $id_comunicacao and cd.active = 1";
+
+        // Executa a consulta no banco de dados
+        $result = $pdo->query($lista_destinatarios);
+
+        // Verifica se a consulta retornou algum resultado
+        if ($result->rowCount() > 0) {
+
+            // Array para armazenar os destinatários de e-mail
+            $destinatarios = array();
+
+            // Loop através dos resultados e exiba as informações
+            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                $email = $row['email'];
+                $destinatarios[] = $email;
+            }
+
+            //Assunto do email
+            $assunto = "SmartControl - Comunicacação";
+            $destinatarios_str = implode(', ', $destinatarios);
+
+            // Verificar se a solicitação foi feita via HTTPS
+            if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+                $protocol = 'https';
+            } else {
+                $protocol = 'http';
+            }
+
+            // Formar a URL completa com base no Document Root
+            $documentRoot = $_SERVER['DOCUMENT_ROOT'];
+            $relativePath = '/mail/sendmail_POST.php';
+
+            $url = $protocol . '://' . $_SERVER['HTTP_HOST'] . $relativePath;
+
+            // Dados a serem enviados
+            $data = array(
+                'destinatario' => $destinatarios_str,
+                'assunto' => $assunto,
+                'mensagem' => $mensagem,
+                'servidorID' => $server_id
+            );
+
+            // Inicializar a sessão cURL
+            $curl = curl_init();
+
+            // Configurar a requisição POST
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true); // Permitir redirecionamento
+
+            // Executar a requisição e obter a resposta
+            $response = curl_exec($curl);
+
+            // Verificar a resposta
+            if ($response === false) {
+                echo "Error: Erro ao enviar o e-mail.";
+            } else {
+                echo "Response:" . $response;
+            }
+
+            // Fechar a sessão cURL
+            curl_close($curl);
+        } else {
+            echo "Error: Nenhum resultado encontrado.";
+        }
+    } else {
+        echo "Error: O envio de e-mail não está habilitado.";
+    }
+}

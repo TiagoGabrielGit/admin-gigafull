@@ -573,6 +573,24 @@ $c_nav_sub_incidentes_fechados = mysqli_fetch_assoc($r_nav_sub_inicidentes_fecha
 
 /////////////////////////////////////////
 
+//SUBMENU >> COMUNICAR INCIDENTES
+$nav_sub_comunicar = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '34'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_sub_comunicar = mysqli_query($mysqli, $nav_sub_comunicar);
+$c_sub_comunicar = mysqli_fetch_assoc($r_sub_comunicar);
+
+
 //SUBMENU >> AGENDAR MANUTENÇÃO
 $nav_sub_agendar_manutencao = "SELECT
 count(*) as c
@@ -623,3 +641,20 @@ ppsm.perfil_id = $perfil_id";
 
 $r_nav_sub_novo_incidente = mysqli_query($mysqli, $nav_sub_novo_incidente);
 $c_nav_sub_novo_incidente = mysqli_fetch_assoc($r_nav_sub_novo_incidente);
+
+//SUBMENU >> INTEGRAÇÃO WR GATEWAY
+$nav_sub_wr_gateway = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '38'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_sub_wr_gateway = mysqli_query($mysqli, $nav_sub_wr_gateway);
+$c_sub_wr_gateway = mysqli_fetch_assoc($r_sub_wr_gateway);

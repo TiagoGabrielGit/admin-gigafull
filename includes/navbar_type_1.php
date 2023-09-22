@@ -124,6 +124,27 @@ require "validaRotina.php";
             </li>
         <?php } ?>
 
+
+        <?php if ($c_comunicacao['c'] == 1) { ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#comunicacao-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-layout-text-window-reverse"></i><span>Comunicação</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="comunicacao-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                    <?php if ($c_sub_comunicar['c'] == 1) { ?>
+                        <li>
+                            <a href="/comunicacao/comunicar/index.php">
+                                <i class="bi bi-circle"></i><span>Comunicar Incidentes</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+                </ul>
+            </li>
+        <?php } ?>
+
+
         <?php if ($c_nav_informativos['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#informativos-nav" data-bs-toggle="collapse" href="#">
@@ -433,7 +454,15 @@ require "validaRotina.php";
                         </li>
                     <?php } ?>
 
-                    <?php if ($c_nav_sub_changelog['c'] == 1) { ?>
+                    <?php if ($c_sub_wr_gateway['c'] == 1) { ?>
+                        <li>
+                            <a href="/sistema/integracao/wr_gateway/index.php">
+                                <i class="bi bi-circle"></i><span>Integração > WR Gateway</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+                    <?php if ($c_nav_sub_intZabbix['c'] == 1) { ?>
                         <li>
                             <a href="/sistema/integracao/zabbix/index.php">
                                 <i class="bi bi-circle"></i><span>Integração > Zabbix</span>
@@ -441,7 +470,7 @@ require "validaRotina.php";
                         </li>
                     <?php } ?>
 
-                    <?php if ($c_nav_sub_intZabbix['c'] == 1) { ?>
+                    <?php if ($c_nav_sub_logAdmin['c'] == 1) { ?>
                         <li>
                             <a href="/sistema/log_acesso/index.php">
                                 <i class="bi bi-circle"></i><span>LOG de acesso - Admin</span>

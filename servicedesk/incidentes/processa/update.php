@@ -72,7 +72,7 @@ $stmt2->bindValue(':valor4', $solicitante);
 if ($stmt2->execute()) {
     if ($zabbixEventID == null) {
         if ($comunicarInteressados == 1) {
-            header("Location: /servicedesk/incidentes/comunicaIncidente.php?$incidenteID");
+            header("Location: comunicaInteressados.php?incidenteID=$incidenteID");
             exit();
         } else {
             header("Location: /servicedesk/incidentes/view.php?id=$incidenteID");
@@ -121,7 +121,7 @@ if ($stmt2->execute()) {
             $api_response = curl_exec($ch);
             curl_close($ch);
             if ($comunicarInteressados == 1) {
-                header("Location: /servicedesk/incidentes/comunicaIncidente.php?$incidenteID");
+                header("Location: comunicaInteressados.php?incidenteID=$incidenteID");
                 exit();
             } else {
                 header("Location: /servicedesk/incidentes/view.php?id=$incidenteID");
@@ -129,7 +129,7 @@ if ($stmt2->execute()) {
             }
         } else {
             if ($comunicarInteressados == 1) {
-                header("Location: /servicedesk/incidentes/comunicaIncidente.php?$incidenteID");
+                header("Location: comunicaInteressados.php?incidenteID=$incidenteID");
                 exit();
             } else {
                 header("Location: /servicedesk/incidentes/view.php?id=$incidenteID");
