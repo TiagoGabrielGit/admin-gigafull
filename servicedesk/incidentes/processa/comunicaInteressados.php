@@ -41,7 +41,7 @@ if (isset($_SESSION['id'])) {
                 $resultadosInteressados = $stmtInteressados->fetchAll(PDO::FETCH_ASSOC);
 
                 // Inserir o registro na tabela comunicacao
-                $cria_comunicacao = "INSERT INTO comunicacao (usuario_criador, incidente_id, status) VALUES (:usuario_criador, :incidente_id, 1)";
+                $cria_comunicacao = "INSERT INTO comunicacao (usuario_criador, created, incidente_id, status) VALUES (:usuario_criador, NOW(), :incidente_id, 1)";
                 $stmtInsertComunicacao = $pdo->prepare($cria_comunicacao);
                 $stmtInsertComunicacao->bindParam(':usuario_criador', $uid, PDO::PARAM_INT);
                 $stmtInsertComunicacao->bindParam(':incidente_id', $idIncidente, PDO::PARAM_INT);

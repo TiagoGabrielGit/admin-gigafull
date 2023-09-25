@@ -658,3 +658,37 @@ ppsm.perfil_id = $perfil_id";
 
 $r_sub_wr_gateway = mysqli_query($mysqli, $nav_sub_wr_gateway);
 $c_sub_wr_gateway = mysqli_fetch_assoc($r_sub_wr_gateway);
+
+//SUBMENU >> GERENCIAR COMUNICADOS
+$nav_sub_gerenciar_comunicados = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '39'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_sub_gerenciar_comunicados = mysqli_query($mysqli, $nav_sub_gerenciar_comunicados);
+$c_sub_gerenciar_comunicados = mysqli_fetch_assoc($r_sub_gerenciar_comunicados);
+
+//SUBMENU >> TEMPLATES COMUNICACAO
+$nav_sub_templates_comunicacao = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '40'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_sub_templates_comunicacao = mysqli_query($mysqli, $nav_sub_templates_comunicacao);
+$c_sub_templates_comunicacao = mysqli_fetch_assoc($r_sub_templates_comunicacao);

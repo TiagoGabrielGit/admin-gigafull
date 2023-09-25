@@ -25,7 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $infos_comunicacao =
             "SELECT
-            msgEmail as mensagem
+            msgEmail as mensagem,
+            assuntoEmail as assunto
             FROM comunicacao as c
             WHERE
             c.id = $id_comunicacao
@@ -34,8 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $r_comunicacao = $pdo->query($infos_comunicacao);
         $c_comunicacao = $r_comunicacao->fetch(PDO::FETCH_ASSOC);
         $mensagem = $c_comunicacao['mensagem'];
-
-        $titulo = "Comunicado";
+        $assunto = $c_comunicacao['assunto'];
 
         $lista_destinatarios =
             "SELECT  en.midia as email
@@ -43,26 +43,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             LEFT JOIN empresas_notificacao as en ON en.id = cd.empresa_notificacao_id
             WHERE cd.comunicacao_id = $id_comunicacao and cd.active = 1";
 
-        // Executa a consulta no banco de dados
         $result = $pdo->query($lista_destinatarios);
 
-        // Verifica se a consulta retornou algum resultado
         if ($result->rowCount() > 0) {
 
-            // Array para armazenar os destinatários de e-mail
             $destinatarios = array();
 
-            // Loop através dos resultados e exiba as informações
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                 $email = $row['email'];
                 $destinatarios[] = $email;
             }
 
-            //Assunto do email
-            $assunto = "SmartControl - Comunicacação";
             $destinatarios_str = implode(', ', $destinatarios);
 
-            // Verificar se a solicitação foi feita via HTTPS
             if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
                 $protocol = 'https';
             } else {

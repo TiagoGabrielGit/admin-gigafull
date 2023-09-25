@@ -135,11 +135,26 @@ require "validaRotina.php";
                     <?php if ($c_sub_comunicar['c'] == 1) { ?>
                         <li>
                             <a href="/comunicacao/comunicar/index.php">
-                                <i class="bi bi-circle"></i><span>Comunicar Incidentes</span>
+                                <i class="bi bi-circle"></i><span>Nova Comunicação</span>
                             </a>
                         </li>
                     <?php } ?>
 
+                    <?php if ($c_sub_gerenciar_comunicados['c'] == 1) { ?>
+                        <li>
+                            <a href="/comunicacao/gerenciar_comunicados/index.php">
+                                <i class="bi bi-circle"></i><span>Gerenciar Comunicados</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+                    <?php if ($c_sub_templates_comunicacao['c'] == 1) { ?>
+                        <li>
+                            <a href="/comunicacao/templates/index.php">
+                                <i class="bi bi-circle"></i><span>Templates</span>
+                            </a>
+                        </li>
+                    <?php } ?>
                 </ul>
             </li>
         <?php } ?>

@@ -3,6 +3,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require "../../../conexoes/conexao_pdo.php";
     $idComunicacao = $_POST['idComunicacao'];
     $msgEmail = $_POST['msgEmail'];
+    $assuntoEmail = $_POST['assuntoEmail'];
 
 
 
@@ -14,12 +15,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 try {
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                    $sql = "UPDATE comunicacao SET msgEmail = :msgEmail, status = 1 WHERE id = :idComunicacao";
+                    $sql = "UPDATE comunicacao SET msgEmail = :msgEmail, assuntoEmail = :assuntoEmail, status = 1 WHERE id = :idComunicacao";
 
                     $stmt = $pdo->prepare($sql);
 
                     $stmt->bindParam(':idComunicacao', $idComunicacao, PDO::PARAM_INT);
                     $stmt->bindParam(':msgEmail', $msgEmail, PDO::PARAM_STR);
+                    $stmt->bindParam(':assuntoEmail', $assuntoEmail, PDO::PARAM_STR);
 
                     if ($stmt->execute()) {
                         $envia_notificacao = false;
@@ -35,12 +37,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 try {
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                    $sql = "UPDATE comunicacao SET msgEmail = :msgEmail, status = 0 WHERE id = :idComunicacao";
+                    $sql = "UPDATE comunicacao SET msgEmail = :msgEmail, assuntoEmail = :assuntoEmail, status = 2 WHERE id = :idComunicacao";
 
                     $stmt = $pdo->prepare($sql);
 
                     $stmt->bindParam(':idComunicacao', $idComunicacao, PDO::PARAM_INT);
                     $stmt->bindParam(':msgEmail', $msgEmail, PDO::PARAM_STR);
+                    $stmt->bindParam(':assuntoEmail', $assuntoEmail, PDO::PARAM_STR);
 
                     if ($stmt->execute()) {
                         $envia_notificacao = true;
