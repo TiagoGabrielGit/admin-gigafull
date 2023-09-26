@@ -63,14 +63,6 @@ if ($rowCount_permissions_submenu > 0) {
                                     </div>
                                 </div>
                                 <br>
-                                <div class="row">
-
-                                    <div class="col-12">
-                                        <label class="form-label" for="conteudo">Template</label>
-
-                                        <textarea id="conteudo" name="conteudo" class="form-control"><?= $template ?></textarea>
-                                    </div>
-                                </div>
                             </div>
                             <div class="col-lg-5">
                                 <div class="row">
@@ -106,6 +98,17 @@ if ($rowCount_permissions_submenu > 0) {
                                 </div>
                             </div>
                         </div>
+
+
+                        <div class="row">
+
+                            <div class="col-12">
+                                <label class="form-label" for="conteudo">Template</label>
+
+                                <textarea id="conteudo" name="conteudo" class="tinymce-editor"><?= $template ?></textarea>
+                            </div>
+                        </div>
+
                         <br><br>
                         <div class="col-12">
                             <div class="text-center">

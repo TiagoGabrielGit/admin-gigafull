@@ -13,7 +13,7 @@
         Desenvolvido por <a href="https://www.gigafull.com.br/">Gigafull Soluções Tecnológicas</a>
     </div>
     <div class="credits">
-        <a href="/sistema/changelog.php">Versão 10.8 </a> - Página Segura
+        <a href="/sistema/changelog.php">Versão 10.9 </a> - Página Segura
 
 
     </div>
@@ -27,6 +27,7 @@
 <script src="/assets/vendor/chart.js/chart.min.js"></script>
 <script src="/assets/vendor/echarts/echarts.min.js"></script>
 <script src="/assets/vendor/quill/quill.min.js"></script>
+
 <script src="/assets/vendor/simple-datatables/simple-datatables.js"></script>
 <script src="/assets/vendor/tinymce/tinymce.min.js"></script>
 <script src="/assets/vendor/php-email-form/validate.js"></script>

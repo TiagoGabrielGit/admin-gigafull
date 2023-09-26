@@ -7,7 +7,7 @@ if (isset($_SESSION['id'])) {
             $title = $_POST["title"];
             $tipo = $_POST["tipo"];
             $aplicado = $_POST["aplicado"];
-            $conteudo = $_POST["conteudo"]; // Você precisa ajustar isso para corresponder ao campo de texto do editor Quill
+            $conteudo = $_POST["editorContent"]; // Você precisa ajustar isso para corresponder ao campo de texto do editor Quill
 
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -28,8 +28,11 @@ if (isset($_SESSION['id'])) {
             header("Location: /comunicacao/templates/view.php?id=$ultimoIdInserido");
             exit();
         } catch (PDOException $e) {
-            header("Location: /comunicacao/templates/novo.php");
-            exit();
+            echo $_POST["editorContent"];
+            echo "Erro PDO: " . $e->getMessage();
+
+            //header("Location: /comunicacao/templates/novo.php");
+            //exit();
         }
     }
 }
