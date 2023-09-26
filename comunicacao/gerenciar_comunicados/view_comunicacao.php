@@ -31,9 +31,16 @@ if ($rowCount_permissions_submenu > 0) {
         "SELECT
 			c.id as id,
 			c.msgEmail as msgEmail,
-            C.status as status
-			FROM
-			comunicacao as c
+            C.status as status,
+            p.nome as nome,
+            CASE
+            WHEN status = 0 THEN 'Cancelada'
+                                                                WHEN status = 1 THEN 'Rascunho'
+                                                                WHEN status = 2 THEN 'Enviada'
+            END as status
+			FROM comunicacao as c
+            LEFT JOIN usuarios as u ON u.id = c.usuario_criador
+            LEFT JOIN pessoas as p ON u.pessoa_id = p.id
 			WHERE
 			c.id = :id";
     $r_comunicacao = $pdo->prepare($comunicacao);
@@ -45,6 +52,8 @@ if ($rowCount_permissions_submenu > 0) {
 
         if ($c_comunicacao !== false) {
             $msgEmail = $c_comunicacao['msgEmail'];
+            $status = $c_comunicacao['status'];
+            $criador = $c_comunicacao['nome'];
             $status = $c_comunicacao['status'];
         }
     }
@@ -67,6 +76,64 @@ if ($rowCount_permissions_submenu > 0) {
                                 ?>
                             </div>
                         </div>
+
+                        <div class="row">
+                            <div class="col-7">
+                                <label for="criador" class="form-label">Criador</label><br>
+                                <span><b><?= $criador ?></b></span>
+                            </div>
+                            <div class="col-4">
+                                <label for="criador" class="form-label">Status</label><br>
+                                <span><b><?= $status ?></b></span>
+                            </div>
+                        </div>
+                        <hr class="sidebar-divider">
+
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="destinatariosEmail" class="form-label">Enviado Para</label>
+
+                                <?php
+                                $destinatarios =
+                                    "SELECT e.fantasia, en.midia 
+                                    FROM comunicacao_destinatarios  as cd
+                                    LEFT JOIN empresas_notificacao as en ON en.id = cd.empresa_notificacao_id
+                                    LEFT JOIN empresas as e ON e.id = en.empresa_id
+                                    WHERE cd.comunicacao_id = :idComunicacao and cd.active = 1";
+
+                                $r_destinatarios = $pdo->prepare($destinatarios);
+                                $r_destinatarios->bindParam(':idComunicacao', $id, PDO::PARAM_INT); // Vincula o parâmetro :uid como um inteiro
+
+
+                                $r_destinatarios->execute();
+                                $c_destinatarios = $r_destinatarios->fetch(PDO::FETCH_ASSOC); ?>
+                                <ul>
+                                    <?php
+                                    while ($c_destinatarios = $r_destinatarios->fetch(PDO::FETCH_ASSOC)) {
+                                        $fantasia = $c_destinatarios['fantasia'];
+                                        $midia = $c_destinatarios['midia'];
+                                        echo "<li>Empresa: $fantasia - $midia</li>";
+                                    }
+                                    ?>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <br><br>
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-8">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <br>
+                                        <?= $msgEmail ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2"></div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
