@@ -18,7 +18,7 @@ require "../includes/menu.php";
             <div class="accordion-item">
                 <h2 class="accordion-header" id="heading10-9">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse10-9" aria-expanded="false" aria-controls="collapse10-9">
-                    Versão 10.9 - XX/09/2023
+                    Versão 10.9 - 26/09/2023
                   </button>
                 </h2>
                 <div id="collapse10-9" class="accordion-collapse collapse" aria-labelledby="heading10-9" data-bs-parent="#accordionExample">

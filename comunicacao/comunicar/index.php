@@ -38,7 +38,8 @@ if ($rowCount_permissions_submenu > 0) {
 		FROM
 		comunicacao as c
 		WHERE
-		c.id = :id";
+		c.id = :id
+		ORDER BY c.id DESC";
 
 		$r_com_aberta = $pdo->prepare($com_aberta);
 		$r_com_aberta->bindParam(':id', $idComunicacao, PDO::PARAM_INT); // Vincula o parâmetro :uid como um inteiro
@@ -57,7 +58,8 @@ if ($rowCount_permissions_submenu > 0) {
 			WHERE
 			c.usuario_criador = :uid
 			and
-			c.status = 1";
+			c.status = 1
+			ORDER BY c.id DESC";
 		$r_com_aberta = $pdo->prepare($com_aberta);
 		$r_com_aberta->bindParam(':uid', $uid, PDO::PARAM_INT); // Vincula o parâmetro :uid como um inteiro
 

@@ -20,7 +20,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $server_id = $c_habilitado['server_id'];
 
     if ($active == 1) {
-        //$id_comunicacao = "7";
         $id_comunicacao = $_POST['id_comunicacao'];
 
         $infos_comunicacao =
@@ -35,7 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $r_comunicacao = $pdo->query($infos_comunicacao);
         $c_comunicacao = $r_comunicacao->fetch(PDO::FETCH_ASSOC);
         $mensagem = $c_comunicacao['mensagem'];
-        $assunto = $c_comunicacao['assunto'];
 
         $lista_destinatarios =
             "SELECT  en.midia as email
@@ -46,7 +44,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $result = $pdo->query($lista_destinatarios);
 
         if ($result->rowCount() > 0) {
-
             $destinatarios = array();
 
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
@@ -68,6 +65,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $url = $protocol . '://' . $_SERVER['HTTP_HOST'] . $relativePath;
 
+            // Cabeçalhos MIME para indicar que o conteúdo é HTML
+            $headers = "MIME-Version: 1.0" . "\r\n";
+            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+
+            // Assunto do e-mail
+            $assunto = $c_comunicacao['assunto'];
+
             // Dados a serem enviados
             $data = array(
                 'destinatario' => $destinatarios_str,
@@ -85,7 +89,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true); // Permitir redirecionamento
-
+            curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/x-www-form-urlencoded'
+            ));
+            
             // Executar a requisição e obter a resposta
             $response = curl_exec($curl);
 
@@ -105,3 +112,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error: O envio de e-mail não está habilitado.";
     }
 }
+?>

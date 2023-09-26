@@ -332,4 +332,4 @@ if (empty($chamado['execucao'])) {
 
   <?php
   require "navbar_type_1.php";
-?>
+  ?>

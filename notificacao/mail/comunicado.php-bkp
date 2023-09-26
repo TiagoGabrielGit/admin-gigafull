@@ -25,7 +25,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $infos_comunicacao =
             "SELECT
-            msgEmail as mensagem
+            msgEmail as mensagem,
+            assuntoEmail as assunto
             FROM comunicacao as c
             WHERE
             c.id = $id_comunicacao
@@ -33,141 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Executa a consulta no banco de dados
         $r_comunicacao = $pdo->query($infos_comunicacao);
         $c_comunicacao = $r_comunicacao->fetch(PDO::FETCH_ASSOC);
-        //$mensagem = $c_comunicacao['mensagem'];
-
-
-$mensagem =
-"<!DOCTYPE html>
-<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
-<head>
-    <title></title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" type="text/css">
-    <style>* {box-sizing: border-box;}body {margin: 0;padding: 0;}a[x-apple-data-detectors] {color: inherit !important;text-decoration: inherit !important;}#MessageViewBody a {color: inherit;text-decoration: none;}p {line-height: inherit}.desktop_hide,.desktop_hide table {mso-hide: all;display: none;max-height: 0px;overflow: hidden;}.image_block img+div {display: none;}@media (max-width:700px) {.desktop_hide table.icons-inner {	display: inline-block !important;}.icons-inner {	text-align: center;}.icons-inner td {	margin: 0 auto;}.mobile_hide {	display: none;}.row-content {	width: 100% !important;}.stack .column {	width: 100%;	display: block;}.mobile_hide {	min-height: 0;	max-height: 0;	max-width: 0;	overflow: hidden;	font-size: 0px;}.desktop_hide,.desktop_hide table {	display: table !important;	max-height: none !important;}.row-1 .column-2 .block-1.heading_block h1 {	text-align: left !important;}.row-1 .column-2 .block-1.heading_block h1 {	font-size: 21px !important;}.row-1 .column-1 {	padding: 25px 40px 20px !important;}.row-1 .column-2 {	padding: 5px 40px 5px 0 !important;}}
-    </style>
-</head>
-<body style="background-color: #f7f7f7;margin-top: 30px ; margin: 0; padding: 0; -webkit-text-size-adjust: none; text-size-adjust: none;">
-    <table class="nl-container" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #f7f7f7;">
-        <tbody>
-            <tr>
-                <td>
-                    <table class="row row-1" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <table class="row-content" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; border-radius: 18px 18px 0 0; color: #000; width: 680px; margin: 0 auto;" width="680">
-                                        <tbody>
-                                            <tr>
-                                                <td class="column column-1" width="33.333333333333336%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 20px; padding-left: 40px; padding-right: 40px; padding-top: 20px; vertical-align: middle; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
-                                                    <table class="image_block block-1" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
-                                                        <tr>
-                                                            <td class="pad" style="width:100%;">
-                                                                <div class="alignment" align="center" style="line-height:10px"><img src="https://0810cdd75b.imgdist.com/public/users/Integrators/BeeProAgency/1050442_1035617/logo.svg" style="display: block; height: auto; border: 0; max-width: 64px; width: 100%;" width="64"></div>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                                <td class="column column-2" width="66.66666666666667%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 5px; padding-right: 40px; padding-top: 5px; vertical-align: middle; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
-                                                    <table class="heading_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
-                                                        <tr>
-                                                            <td class="pad">
-                                                                <h1 style="margin: 0; color: #535257; direction: ltr; font-family: Poppins, Arial, Helvetica, sans-serif; font-size: 38px; font-weight: 700; letter-spacing: normal; line-height: 120%; text-align: left; margin-top: 0; margin-bottom: 0;"><span class="tinyMce-placeholder">COMUNICADO</span></h1>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="row row-2" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; color: #000; width: 680px; margin: 0 auto;" width="680">
-                                        <tbody>
-                                            <tr>
-                                                <td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 40px; padding-left: 40px; padding-right: 40px; padding-top: 40px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
-                                                    <table class="paragraph_block block-1" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
-                                                        <tr>
-                                                            <td class="pad">
-                                                                <div style="color:#353d46;font-family:Poppins, Arial, Helvetica, sans-serif;font-size:16px;line-height:150%;text-align:left;mso-line-height-alt:24px;">
-                                                                    <p style="margin: 0; word-break: break-word;"><span>Ola!,</span><br><br>O seguinte protocolo foi aberto para dar tratativa ao incidente massivo</p>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="row row-3" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #fff; border-radius: 0; color: #000; width: 680px; margin: 0 auto;" width="680">
-                                        <tbody>
-                                            <tr>
-                                                <td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 5px; padding-top: 5px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
-                                                    <table class="paragraph_block block-1" width="100%" border="0" cellpadding="10" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
-                                                        <tr>
-                                                            <td class="pad">
-                                                                <div style="color:#b9bac0;direction:ltr;font-family:Poppins, Arial, Helvetica, sans-serif;font-size:13px;font-weight:700;letter-spacing:0px;line-height:120%;text-align:center;mso-line-height-alt:15.6px;">
-                                                                    <p style="margin: 0;">Este email foi enviado automaticamente. Por favor, não responda a este email.</p>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="row row-4" align="center" width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt;">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <table class="row-content stack" align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; background-color: #bcc1c2; border-radius: 0 0 18px 18px; color: #000; width: 680px; margin: 0 auto;" width="680">
-                                        <tbody>
-                                            <tr>
-                                                <td class="column column-1" width="100%" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; font-weight: 400; text-align: left; padding-bottom: 25px; padding-top: 25px; vertical-align: top; border-top: 0px; border-right: 0px; border-bottom: 0px; border-left: 0px;">
-                                                    <table class="paragraph_block block-1" width="100%" border="0" cellpadding="20" cellspacing="0" role="presentation" style="mso-table-lspace: 0pt; mso-table-rspace: 0pt; word-break: break-word;">
-                                                        <tr>
-                                                            <td class="pad">
-                                                                <div style="color:#fafafa;font-family:Poppins, Arial, Helvetica, sans-serif;font-size:10px;line-height:150%;text-align:center;mso-line-height-alt:15px;">
-                                                                    <p style="margin: 0; word-break: break-word;"><span><span>    &copy; Copyright <strong><span>Gigafull Soluções Tecnológicas</span></strong>. All Rights Reserved
-</span></span></p>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</body>
-</html>";
-
-        $titulo = "Comunicado";
+        $mensagem = nl2br($c_comunicacao['mensagem']);
 
         $lista_destinatarios =
             "SELECT  en.midia as email
@@ -175,26 +42,19 @@ $mensagem =
             LEFT JOIN empresas_notificacao as en ON en.id = cd.empresa_notificacao_id
             WHERE cd.comunicacao_id = $id_comunicacao and cd.active = 1";
 
-        // Executa a consulta no banco de dados
         $result = $pdo->query($lista_destinatarios);
 
-        // Verifica se a consulta retornou algum resultado
         if ($result->rowCount() > 0) {
 
-            // Array para armazenar os destinatários de e-mail
             $destinatarios = array();
 
-            // Loop através dos resultados e exiba as informações
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                 $email = $row['email'];
                 $destinatarios[] = $email;
             }
 
-            //Assunto do email
-            $assunto = "SmartControl - Comunicacação";
             $destinatarios_str = implode(', ', $destinatarios);
 
-            // Verificar se a solicitação foi feita via HTTPS
             if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
                 $protocol = 'https';
             } else {

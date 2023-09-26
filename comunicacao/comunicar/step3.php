@@ -21,9 +21,10 @@ if ($result_comunicacao !== false) {
 
 <div class="col-lg-12">
 	<div class="row">
-		<span>Destinatários</span>
-		<hr class="sidebar-divider">
 		<div class="col-lg-6">
+
+			<hr class="sidebar-divider">
+			<span><b>Destinatários</b></span><br><br>
 			<?php
 			$lista_email_dest =
 				"SELECT e.fantasia, en.midia, cd.id as idComDest
@@ -50,53 +51,57 @@ if ($result_comunicacao !== false) {
 				</div>
 			<?php endwhile; ?>
 		</div>
-	</div>
-</div>
-
-
-<?php
-if (isset($result['incidente_id'])) {
-	$id_incidente = $result['incidente_id'];
-	$sql_incidentes =
-		"SELECT equipamento_id, incident_type
+		<div class="col-lg-6">
+			<hr class="sidebar-divider">
+			<span><b>Pontos Afetados</b></span><br><br>
+			<?php
+			if (isset($result['incidente_id'])) {
+				$id_incidente = $result['incidente_id'];
+				$sql_incidentes =
+					"SELECT equipamento_id, incident_type
 											FROM incidentes
 											WHERE id = :id_incidente";
 
-	$r_incidente = $pdo->prepare($sql_incidentes); // Corrigido para usar $sql_incidentes
-	$r_incidente->bindParam(':id_incidente', $id_incidente, PDO::PARAM_INT);
+				$r_incidente = $pdo->prepare($sql_incidentes); // Corrigido para usar $sql_incidentes
+				$r_incidente->bindParam(':id_incidente', $id_incidente, PDO::PARAM_INT);
 
-	if ($r_incidente->execute()) {
-		$result_incidente = $r_incidente->fetch(PDO::FETCH_ASSOC);
+				if ($r_incidente->execute()) {
+					$result_incidente = $r_incidente->fetch(PDO::FETCH_ASSOC);
 
-		if ($result_incidente !== false && $result_incidente['incident_type'] == 100) {
-			$equipamento_id = $result_incidente['equipamento_id'];
+					if ($result_incidente !== false && $result_incidente['incident_type'] == 100) {
+						$equipamento_id = $result_incidente['equipamento_id'];
 
-			$sql_incidentes_pons =
-				"SELECT gpo.olt_name as olt, gpp.slot as slot, gpp.pon as pon, gpl.cidade as cidade, gpl.bairro as bairro
+						$sql_incidentes_pons =
+							"SELECT gpo.olt_name as olt, gpp.slot as slot, gpp.pon as pon, gpl.cidade as cidade, gpl.bairro as bairro
 												FROM incidentes as i
 												LEFT JOIN gpon_pon as gpp ON gpp.id = i.pon_id
 												LEFT JOIN gpon_localidades as gpl ON gpl.pon_id = i.pon_id
 												LEFT JOIN gpon_olts as gpo ON gpo.id = gpp.olt_id
 												WHERE i.equipamento_id = :equipamento_id and i.active = 1";
 
-			$r_incidentes_pons = $pdo->prepare($sql_incidentes_pons);
-			$r_incidentes_pons->bindParam(':equipamento_id', $equipamento_id, PDO::PARAM_INT);
+						$r_incidentes_pons = $pdo->prepare($sql_incidentes_pons);
+						$r_incidentes_pons->bindParam(':equipamento_id', $equipamento_id, PDO::PARAM_INT);
 
-			if ($r_incidentes_pons->execute()) {
-				while ($result_incidentes_pons = $r_incidentes_pons->fetch(PDO::FETCH_ASSOC)) {
-					$olt = $result_incidentes_pons['olt'];
-					$slot = $result_incidentes_pons['slot'];
-					$pon = $result_incidentes_pons['pon'];
-					$cidade = $result_incidentes_pons['cidade'];
-					$bairro = $result_incidentes_pons['bairro'];
+						if ($r_incidentes_pons->execute()) {
+							while ($result_incidentes_pons = $r_incidentes_pons->fetch(PDO::FETCH_ASSOC)) {
+								$olt = $result_incidentes_pons['olt'];
+								$slot = $result_incidentes_pons['slot'];
+								$pon = $result_incidentes_pons['pon'];
+								$cidade = $result_incidentes_pons['cidade'];
+								$bairro = $result_incidentes_pons['bairro'];
 
-					echo "Cidade: $cidade | Bairro: $bairro - OLT $olt - Slot $slot - PON $pon<br>";
+								echo "Cidade: $cidade | Bairro: $bairro - OLT $olt - Slot $slot - PON $pon<br>";
+							}
+						}
+					}
 				}
 			}
-		}
-	}
-}
-?>
+			?>
+		</div>
+	</div>
+</div>
+
+
 
 <form method="POST" action="processa/step3.php">
 	<input hidden readonly id="idComunicacao" name="idComunicacao" value="<?= $idComunicacao ?>"></input>
@@ -117,6 +122,7 @@ if (isset($result['incidente_id'])) {
 					<br><br>
 					<div class="row">
 						<div class="col-12">
+
 							<textarea id="msgEmail" name="msgEmail" class="tinymce-editor"><?= $templateEmail ?></textarea><!-- End TinyMCE Editor -->
 						</div>
 					</div>
@@ -134,7 +140,7 @@ if (isset($result['incidente_id'])) {
 		</style>
 
 		<div class="container">
-			<form method="POST" action="processa/step2.php">
+			<form method="POST" action="processa/step3.php">
 
 				<input readonly hidden id="idComunicacao" name="idComunicacao" value="<?= $idComunicacao ?>" />
 
