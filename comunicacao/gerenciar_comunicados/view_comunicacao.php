@@ -31,8 +31,9 @@ if ($rowCount_permissions_submenu > 0) {
         "SELECT
 			c.id as id,
 			c.msgEmail as msgEmail,
-            C.status as status,
+            c.status as status,
             p.nome as nome,
+            c.status as statusID,
             CASE
             WHEN status = 0 THEN 'Cancelada'
                                                                 WHEN status = 1 THEN 'Rascunho'
@@ -54,7 +55,7 @@ if ($rowCount_permissions_submenu > 0) {
             $msgEmail = $c_comunicacao['msgEmail'];
             $status = $c_comunicacao['status'];
             $criador = $c_comunicacao['nome'];
-            $status = $c_comunicacao['status'];
+            $statusID = $c_comunicacao['statusID'];
         }
     }
 ?>
@@ -70,7 +71,7 @@ if ($rowCount_permissions_submenu > 0) {
                             </div>
                             <div class="text-end">
                                 <?php
-                                if ($status == 1) { ?>
+                                if ($statusID == 1) { ?>
                                     <a href="/comunicacao/comunicar/index.php?<?= $id ?>" class="btn btn-sm btn-danger">Ir para Comunicado</a>
                                 <?php }
                                 ?>
@@ -91,7 +92,7 @@ if ($rowCount_permissions_submenu > 0) {
 
                         <div class="row">
                             <div class="col-lg-4">
-                                <label for="destinatariosEmail" class="form-label">Enviado Para</label>
+                                <label for="destinatariosEmail" class="form-label">Lista Destinatários</label>
 
                                 <?php
                                 $destinatarios =
@@ -106,15 +107,14 @@ if ($rowCount_permissions_submenu > 0) {
 
 
                                 $r_destinatarios->execute();
-                                $c_destinatarios = $r_destinatarios->fetch(PDO::FETCH_ASSOC); ?>
-                                <ul>
-                                    <?php
-                                    while ($c_destinatarios = $r_destinatarios->fetch(PDO::FETCH_ASSOC)) {
-                                        $fantasia = $c_destinatarios['fantasia'];
-                                        $midia = $c_destinatarios['midia'];
-                                        echo "<li>Empresa: $fantasia - $midia</li>";
-                                    }
-                                    ?>
+                                echo "<ul>";
+
+                                while ($c_destinatarios = $r_destinatarios->fetch(PDO::FETCH_ASSOC)) {
+                                    $fantasia = $c_destinatarios['fantasia'];
+                                    $midia = $c_destinatarios['midia'];
+                                    echo "<li>Empresa: $fantasia - $midia</li>";
+                                }
+                                ?>
                                 </ul>
                             </div>
                         </div>

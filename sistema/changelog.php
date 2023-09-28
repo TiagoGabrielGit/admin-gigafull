@@ -18,22 +18,24 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading11-0">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse11-0" aria-expanded="false" aria-controls="collapse11-0">
-                    Versão 11.0 - XX/09/2023
+                    Versão 11.0 - 28/09/2023
                   </button>
                 </h2>
                 <div id="collapse11-0" class="accordion-collapse collapse" aria-labelledby="heading11-0" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
+                    # Proteção da página chamados;<br>
+                    # Melhorias em dashboards;<br>
+                    # Ajustes para envio de email com cópia oculta;<br>
 
-                    <br><strong>Alterações banco de dados</strong><br>
-                    # Criado a tabela comunicacao_email_log;<br>
+                    <strong>Alterações banco de dados</strong><br>
 
                     <br><strong>Backlog</strong><br>
+                    # Envio comunicados sobre incidentes backbone;<br>
+                    # Envio comunicados sobre manutenção programada;<br>
                     # Recriar a pagina index e view de chamados;<br>
-                    # Criar dashboards;<br>
                     # Resetar senha pelo acesso usuário;<br>
-                    # Invite Usuários;<br>
                     # Revisar acesso a credenciais;<br>
                     # Não permitir editar tipos de equipamentos default;<br>
                     # Abertura de chamado através de incidentes;<br>
@@ -46,7 +48,6 @@ require "../includes/menu.php";
                     # Atributos de equipamentos;<br>
                     # Requisições de expediente atraves do acesso colaborador;<br>
                     # Integração para abrir chamado no Voalle;<br>
-                    # Notificaçãoes de novos incidentes e relatos;<br>
                     # Vinculo de chamado a incidente;<br>
                     # Anexo arquivos em chamados;<br>
                     # Permissões em documentações;<br>

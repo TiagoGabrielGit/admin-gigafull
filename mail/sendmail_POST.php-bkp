@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $destinatarios = explode(',', $destinatario);
 
                     foreach ($destinatarios as $destinatario) {
-                        $mail->addBCC(trim($destinatario));
+                        $mail->addAddress(trim($destinatario));
                     }
 
                     // Conteúdo do email

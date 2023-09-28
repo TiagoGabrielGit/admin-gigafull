@@ -3,12 +3,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     require "../../conexoes/conexao_pdo.php";
 
     // Consulta se o envio de e-mail está habilitado
-    $consulta_habilitado = "
-        SELECT
+    $consulta_habilitado =
+        "SELECT
             ne.active as active,
-            ne.server_id as server_id
-        FROM
-            notificacao_email as ne
+            ne.server_id as server_id,
+            sm.remetente as remetente
+        FROM notificacao_email as ne
+        LEFT JOIN servermail as sm ON ne.server_id = sm.id
         WHERE
             ne.notificacao_id = 6
     ";
@@ -18,6 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $c_habilitado = $result_habilitado->fetch(PDO::FETCH_ASSOC);
     $active = $c_habilitado['active'];
     $server_id = $c_habilitado['server_id'];
+    $remetente = $c_habilitado['remetente'];
+
 
     if ($active == 1) {
         $id_comunicacao = $_POST['id_comunicacao'];
@@ -66,8 +69,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $url = $protocol . '://' . $_SERVER['HTTP_HOST'] . $relativePath;
 
             // Cabeçalhos MIME para indicar que o conteúdo é HTML
-            $headers = "MIME-Version: 1.0" . "\r\n";
-            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+            $headers = "From: $remetente\r\n";
+            $headers .= "Bcc: " . implode(', ', $destinatarios) . "\r\n";
+            $headers .= "MIME-Version: 1.0\r\n";
+            $headers .= "Content-type: text/html; charset=UTF-8\r\n";
+
 
             // Assunto do e-mail
             $assunto = $c_comunicacao['assunto'];
@@ -92,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             curl_setopt($curl, CURLOPT_HTTPHEADER, array(
                 'Content-Type: application/x-www-form-urlencoded'
             ));
-            
+
             // Executar a requisição e obter a resposta
             $response = curl_exec($curl);
 
@@ -112,4 +118,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error: O envio de e-mail não está habilitado.";
     }
 }
-?>

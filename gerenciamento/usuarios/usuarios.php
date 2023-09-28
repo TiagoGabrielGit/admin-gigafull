@@ -51,8 +51,8 @@ if ($rowCount_permissions_submenu > 0) {
 
                                     <div class="col-lg-4" style="margin-top: 15px;">
                                         <button title="Novo usuário" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalNovoUser"><i class="bi bi-person-plus"></i></button>
-                                        <button title="Gerar invite" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalInvite"><i class="bi bi-send-plus"></i></button>
-                                        <a href="/gerenciamento/usuarios/invite_gerencia.php"> <button title="Gerenciar Invites" type="button" class="btn btn-success"><i class="bi bi-send-check"></i></button></a>
+                                        <!--<button title="Gerar invite" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalInvite"><i class="bi bi-send-plus"></i></button>
+                                        <a href="/gerenciamento/usuarios/invite_gerencia.php"> <button title="Gerenciar Invites" type="button" class="btn btn-success"><i class="bi bi-send-check"></i></button></a>-->
                                     </div>
 
                                 </div>

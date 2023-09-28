@@ -76,6 +76,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       $_SESSION['permissao_selecionar_atendente'] = $usuario['permissao_selecionar_atendente'];
       $_SESSION['permissao_privacidade_credenciais'] = $usuario['permissao_privacidade_credenciais'];
       $_SESSION['permissao_configuracoes_chamados'] = $usuario['permissao_configuracoes_chamados'];
+      $empresaID = $_SESSION['empresa_id'];
 
       $usuario_id = $_SESSION['id'];
       $ip_address = $_SESSION['ip_address'];
