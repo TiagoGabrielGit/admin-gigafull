@@ -56,7 +56,7 @@ if ($rowCount_permissions_menu > 0) {
                                     <div class="col-2">
                                         <div class="card">
                                             <!-- Basic Modal -->
-                                            <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
+                                            <button style="margin-top: 15px" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
                                                 Nova pessoa
                                             </button>
                                         </div>

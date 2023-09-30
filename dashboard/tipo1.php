@@ -2,7 +2,6 @@
 require "sql_dashboard_1.php";
 ?>
 
-
 <section class="section dashboard">
     <div class="row">
         <div class="col-lg-12">
@@ -232,7 +231,7 @@ require "sql_dashboard_1.php";
     </div>
 
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-7">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Reincidencia de Incidentes GPON Últimos 60d</h5>
@@ -270,79 +269,47 @@ require "sql_dashboard_1.php";
                 </div>
             </div>
         </div>
-        <div class="col-lg-4">
 
+        <div class="col-lg-5">
             <div class="card recent-sales overflow-auto">
                 <div class="card-body">
-                    <h5 class="card-title">Diretório Uploads (Max: 10Gb)</h5>
-                    <h1>
-                        <?php
-                        $folderPath = 'uploads/';
-
-                        // Calcula o tamanho ocupado pela pasta em bytes
-                        $totalSize = 0;
-
-                        $dirIterator = new RecursiveDirectoryIterator($folderPath);
-                        $iterator = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::SELF_FIRST);
-
-                        foreach ($iterator as $file) {
-                            if ($file->isFile()) {
-                                $totalSize += $file->getSize();
-                            }
-                        }
-
-                        // Converte para megabytes (MB) e arredonda para o valor mais próximo
-                        $usedSpaceMB = round($totalSize / (1024 * 1024));
-
-                        echo "{$usedSpaceMB}MB";
-                        ?>
-                    </h1>
+                    <h5 class="card-title">Últimos 30 chamados</h5>
+                    <table class="table table-striped" id="styleTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">Número</th>
+                                <th scope="col">Cliente</th>
+                                <th scope="col">Chamado</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            while ($campos_ultimos_30_chamados = $r_ultimos_30_chamados->fetch_array()) { ?>
+                                <tr onclick="location.href='/servicedesk/consultar_chamados/view.php?id=<?= $campos_ultimos_30_chamados['idChamado'] ?>'">
+                                    <td><?= $campos_ultimos_30_chamados['idChamado'] ?></th>
+                                    <td><?= $campos_ultimos_30_chamados['fantasia'] ?></td>
+                                    <td><?= $campos_ultimos_30_chamados['assuntoChamado'] ?></td>
+                                    <?php
+                                    $statusChamado = $campos_ultimos_30_chamados['statusChamado'];
+                                    if ($statusChamado == 1) { ?>
+                                        <td><span class="badge bg-success">Aberto</span></td>
+                                    <?php } else if ($statusChamado == 2) { ?>
+                                        <td><span class="badge bg-info">Andamento</span></td>
+                                    <?php } else if ($statusChamado == 3) { ?>
+                                        <td><span class="badge bg-secondary">Fechado</span></td>
+                                    <?php } ?>
+                                </tr>
+                            <?php
+                            } ?>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
+
     </div>
     <div class="row">
-        <div class="col-lg-7">
-            <div class="col-12">
-                <div class="card recent-sales overflow-auto">
-                    <div class="card-body">
-                        <h5 class="card-title">Últimos 30 chamados</h5>
-                        <table class="table table-striped" id="styleTable">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Número</th>
-                                    <th scope="col">Cliente</th>
-                                    <th scope="col">Tipo chamado</th>
-                                    <th scope="col">Chamado</th>
-                                    <th scope="col">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                while ($campos_ultimos_30_chamados = $r_ultimos_30_chamados->fetch_array()) { ?>
-                                    <tr onclick="location.href='/servicedesk/consultar_chamados/view.php?id=<?= $campos_ultimos_30_chamados['idChamado'] ?>'">
-                                        <td><?= $campos_ultimos_30_chamados['idChamado'] ?></th>
-                                        <td><?= $campos_ultimos_30_chamados['fantasia'] ?></td>
-                                        <td><?= $campos_ultimos_30_chamados['tipoChamado'] ?></td>
-                                        <td><?= $campos_ultimos_30_chamados['assuntoChamado'] ?></td>
-                                        <?php
-                                        $statusChamado = $campos_ultimos_30_chamados['statusChamado'];
-                                        if ($statusChamado == 1) { ?>
-                                            <td><span class="badge bg-success">Aberto</span></td>
-                                        <?php } else if ($statusChamado == 2) { ?>
-                                            <td><span class="badge bg-info">Andamento</span></td>
-                                        <?php } else if ($statusChamado == 3) { ?>
-                                            <td><span class="badge bg-secondary">Fechado</span></td>
-                                        <?php } ?>
-                                    </tr>
-                                <?php
-                                } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="col-lg-5">
             <div class="card recent-sales overflow-auto">
                 <div class="card-body">
@@ -403,11 +370,36 @@ require "sql_dashboard_1.php";
                     </table>
                 </div>
             </div>
+        </div>
+        <div class="col-lg-4">
 
+            <div class="card recent-sales overflow-auto">
+                <div class="card-body">
+                    <h5 class="card-title">Diretório Uploads (Max: 10Gb)</h5>
+                    <h1>
+                        <?php
+                        $folderPath = 'uploads/';
 
+                        // Calcula o tamanho ocupado pela pasta em bytes
+                        $totalSize = 0;
 
+                        $dirIterator = new RecursiveDirectoryIterator($folderPath);
+                        $iterator = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::SELF_FIRST);
 
+                        foreach ($iterator as $file) {
+                            if ($file->isFile()) {
+                                $totalSize += $file->getSize();
+                            }
+                        }
 
+                        // Converte para megabytes (MB) e arredonda para o valor mais próximo
+                        $usedSpaceMB = round($totalSize / (1024 * 1024));
+
+                        echo "{$usedSpaceMB}MB";
+                        ?>
+                    </h1>
+                </div>
+            </div>
         </div>
     </div>
 </section>

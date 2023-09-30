@@ -47,7 +47,7 @@ if ($rowCount_permissions > 0) {
     $stmtManutencao->bindParam(":idManutencao", $idManutencao, PDO::PARAM_INT);
     $stmtManutencao->execute();
     $manutencaoData = $stmtManutencao->fetch(PDO::FETCH_ASSOC);
-
+    $id = $manutencaoData['idManutencao'];
     $titulo = $manutencaoData['titulo'];
     $dataAgendamento = $manutencaoData['dataAgendamento'];
     $duracao = $manutencaoData['duracao'];
@@ -57,6 +57,13 @@ if ($rowCount_permissions > 0) {
 
 
 ?>
+
+    <style>
+        #tabelaLista:hover {
+            cursor: pointer;
+            background-color: #E0FFFF;
+        }
+    </style>
     <main id="main" class="main">
 
         <section class="section">
@@ -64,12 +71,37 @@ if ($rowCount_permissions > 0) {
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <h3 class="card-title">Manutenção Programada</h3>
 
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="text-left">
+                                        <h5 class="card-title">Manutenção Programada</h5>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="d-inline-block">
+                                            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#modalGPON">
+                                                GPON Afetados
+                                            </button>
+                                        </div>
+                                        <div class="d-inline-block">
+                                            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#modalRF">
+                                                Rotas Fibras Afetadas
+                                            </button>
+                                        </div>
+                                        <div class="d-inline-block">
+                                            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalComunicados">
+                                                Comunicados
+                                            </button>
+                                        </div>
+                                        <?php if ($status == 3) { ?>
+                                            <a href="/servicedesk/manutencao_programada/agendar_manutencao/index.php?id=<?= $id ?>" class="btn btn-sm btn-danger">Continuar Agendamento</a>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+
+                            </div>
                             <hr class="sidebar-divider">
-
-                            <br><br>
-
+                            <br>
                             <form method="POST" action="processa/atualizar_manutencao_programada.php" class="row g-3">
                                 <input name="idMP" id="idMP" readonly hidden value="<?= $idManutencao ?>"></input>
 
@@ -94,40 +126,96 @@ if ($rowCount_permissions > 0) {
                                             <option value="0" <?php if ($status == 0) echo ' selected="selected"'; ?>>Cancelada</option>
                                             <option value="1" <?php if ($status == 1) echo ' selected="selected"'; ?>>Programada</option>
                                             <option value="2" <?php if ($status == 2) echo ' selected="selected"'; ?>>Concluída</option>
+                                            <option disabled value="0" <?php if ($status == 3) echo ' selected="selected"'; ?>>Rascunho</option>
                                         </select>
-
                                     </div>
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-12">
                                         <label for="descricaoMP" class="form-label">Descrição</label>
                                         <textarea id="descricaoMP" name="descricaoMP" class="form-control" style="height: 100px"><?= $descricao ?></textarea>
                                     </div>
-
-                                    <div class="col-6">
-                                        <label for="mensagemMP" class="form-label">Mensagem</label>
-                                        <textarea id="mensagemMP" name="mensagemMP" class="form-control" style="height: 100px"><?= $mensagem ?></textarea>
+                                </div>
+                                <?php
+                                if ($status == 1) { ?>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-sm btn-danger">Salvar Alterações</button>
                                     </div>
-                                </div>
+                                <?php }
+                                ?>
 
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-sm btn-danger">Salvar Alterações</button>
-                                </div>
                             </form>
-                            <hr class="sidebar-divider">
+                        </div>
+                    </div>
+                </div>
 
-                            <li class="nav-heading" style="list-style: none;"><b>Pontos Afetados</b></li>
+            </div>
+        </section>
 
-                            <div class="row">
+    </main><!-- End #main -->
 
-                                <div class="col-lg-6">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Rotas de Fibra</h5>
-                                            <ul>
-                                                <?php
-                                                $rotas = "SELECT
+
+    <div class="modal fade" id="modalGPON" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">GPON Afetados</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="card-body">
+                        <ul>
+                            <?php
+                            $gpon = "SELECT
+                                                mg.id as idMan,
+                                                gp.slot as slot,
+                                                gp.pon as pon,
+                                                gpo.olt_name as olt_name
+                                                FROM manutencao_gpon as mg
+                                                LEFT JOIN gpon_pon as gp ON gp.id = mg.pon_id
+                                                LEFT JOIN gpon_olts as gpo ON gpo.id = gp.olt_id
+                                                WHERE
+                                                mg.manutencao_id = $idManutencao";
+
+                            try {
+                                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                                $stmt = $pdo->prepare($gpon);
+                                $stmt->execute();
+                                $pons = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            } catch (PDOException $e) {
+                                echo "Erro na consulta SQL: " . $e->getMessage();
+                            }
+
+                            foreach ($pons as $pon) :
+                            ?>
+                                <li>
+                                    <label class="form-check-label">
+                                        <?= "OLT " . $pon['olt_name'] . " (SLOT " . $pon['slot'] . " | PON " .  $pon['pon'] . ")" ?>
+                                    </label>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- End Basic Modal-->
+
+    <div class="modal fade" id="modalRF" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Rotas de Fibra Afetados</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="card-body">
+                        <ul>
+                            <?php
+                            $rotas = "SELECT
                                                 mrf.id as idMan,
                                                 rf.ponta_a as ponta_a,
                                                 rf.ponta_b as ponta_b
@@ -139,77 +227,111 @@ if ($rowCount_permissions > 0) {
                                                 WHERE
                                                 mrf.manutencao_id = $idManutencao";
 
-                                                try {
-                                                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                                                    $stmt = $pdo->prepare($rotas);
-                                                    $stmt->execute();
-                                                    $c_rotas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                                } catch (PDOException $e) {
-                                                    echo "Erro na consulta SQL: " . $e->getMessage();
-                                                }
+                            try {
+                                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                                $stmt = $pdo->prepare($rotas);
+                                $stmt->execute();
+                                $c_rotas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            } catch (PDOException $e) {
+                                echo "Erro na consulta SQL: " . $e->getMessage();
+                            }
 
-                                                foreach ($c_rotas as $rota) :
-                                                ?>
-                                                    <li>
-                                                        <label class="form-check-label">
-                                                            <?= $rota['ponta_a'] . " <> " .  $rota['ponta_b']  ?>
-                                                        </label>
-                                                    </li>
-                                                <?php endforeach; ?>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                            foreach ($c_rotas as $rota) :
+                            ?>
+                                <li>
+                                    <label class="form-check-label">
+                                        <?= $rota['ponta_a'] . " <> " .  $rota['ponta_b']  ?>
+                                    </label>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- End Basic Modal-->
 
-                                <div class="col-lg-6">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <h5 class="card-title">GPON</h5>
-                                            <ul>
-                                                <?php
-                                                $gpon = "SELECT
-                                                mg.id as idMan,
-                                                gp.slot as slot,
-                                                gp.pon as pon,
-                                                gpo.olt_name as olt_name
-                                                FROM manutencao_gpon as mg
-                                                LEFT JOIN gpon_pon as gp ON gp.id = mg.pon_id
-                                                LEFT JOIN gpon_olts as gpo ON gpo.id = gp.olt_id
-                                                WHERE
-                                                mg.manutencao_id = $idManutencao";
+    <div class="modal fade" id="modalComunicados" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Comunicados Enviados</h5>
 
-                                                try {
-                                                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                                                    $stmt = $pdo->prepare($gpon);
-                                                    $stmt->execute();
-                                                    $pons = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                                } catch (PDOException $e) {
-                                                    echo "Erro na consulta SQL: " . $e->getMessage();
-                                                }
+                    <form method="POST" action="processa/comunica_interessados.php" class="d-inline-block">
+                        <input value="<?= $id ?>" id="idMPG" name="idMPG" hidden readonly>
+                        <button type="submit" class="btn btn-sm btn-success">Enviar Comunicado</button>
+                    </form>
 
-                                                foreach ($pons as $pon) :
-                                                ?>
-                                                    <li>
-                                                        <label class="form-check-label">
-                                                            <?= "OLT " . $pon['olt_name'] . " (SLOT " . $pon['slot'] . " | PON " .  $pon['pon'] . ")" ?>
-                                                        </label>
-                                                    </li>
-                                                <?php endforeach; ?>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                </div>
+
+                <div class="modal-body">
+                    <div class="card-body">
+                        <?php
+                        $comunicados = "SELECT
+                   CASE
+                       WHEN ct.titulo IS NULL THEN 'Sem Template Vinculado'
+                       ELSE ct.titulo
+                   END as titulo,
+                   p.nome as usuario,
+                   c.id as idCom,
+                   DATE_FORMAT(c.created, '%d/%m/%Y %H:%i:%s') as criado,
+                   CASE
+                       WHEN status = 0 THEN 'Cancelada'
+                       WHEN status = 1 THEN 'Rascunho'
+                       WHEN status = 2 THEN 'Enviada'
+                   END as status
+               FROM comunicacao as c
+               LEFT JOIN usuarios as u ON u.id = c.usuario_criador
+               LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+               LEFT JOIN comunicacao_templates as ct ON ct.id = c.template_email
+               WHERE c.origem_id = $idManutencao
+               ORDER BY c.id desc
+               ";
+
+                        try {
+                            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                            $stmt = $pdo->prepare($comunicados);
+                            $stmt->execute();
+                            $c_comunicados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        } catch (PDOException $e) {
+                            echo "Erro na consulta SQL: " . $e->getMessage();
+                        }
+                        // Verifique se há resultados antes de criar a tabela
+                        if (!empty($c_comunicados)) {
+                            echo '<table class="table datatable">';
+                            echo '<thead>';
+                            echo '<tr>';
+                            echo '<th>Template</th>';
+                            echo '<th>Usuário</th>';
+                            echo '<th>Criado Em</th>';
+                            echo '<th>Status</th>';
+                            echo '</tr>';
+                            echo '</thead>';
+                            echo '<tbody>';
+
+                            foreach ($c_comunicados as $comunicado) { ?>
+                                <tr id="tabelaLista" onclick="location.href='/comunicacao/gerenciar_comunicados/view_comunicacao.php?id=<?= $comunicado['idCom'] ?>'">
+                                    <td><?= $comunicado['titulo'] ?></td>
+                                    <td><?= $comunicado['usuario'] ?></td>
+                                    <td><?= $comunicado['criado'] ?></td>
+                                    <td><?= $comunicado['status'] ?></td>
+                                </tr>
+                        <?php }
+
+                            echo '</tbody>';
+                            echo '</table>';
+                        } else {
+                            echo 'Nenhum resultado encontrado.';
+                        }
+                        ?>
                     </div>
                 </div>
 
             </div>
-        </section>
+        </div>
+    </div><!-- End Basic Modal-->
 
-    </main><!-- End #main -->
 <?php
-
 } else {
     require "../../../acesso_negado.php";
 }

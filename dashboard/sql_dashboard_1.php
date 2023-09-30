@@ -370,7 +370,7 @@ $r_man_prog_af_backbone = mysqli_query($mysqli, $count_man_prog_af_backbone);
 $c_man_prog_af_backbone = $r_man_prog_af_backbone->fetch_array();
 
 $incidentes_gpon_reincidentes =
-"SELECT gpo.olt_name, gpl.cidade, gpl.bairro, gop.slot, gop.pon, ic.classificacao, COUNT(*) AS quantidade_incidentes
+    "SELECT gpo.olt_name, gpl.cidade, gpl.bairro, gop.slot, gop.pon, ic.classificacao, COUNT(*) AS quantidade_incidentes
 FROM incidentes AS i
 LEFT JOIN gpon_pon AS gop ON gop.id = i.pon_id
 LEFT JOIN gpon_olts AS gpo ON gpo.id = gop.olt_id
@@ -382,7 +382,7 @@ AND i.pon_id IS NOT NULL
 AND gpl.active = 1
 AND goi.interessado_empresa_id = $empresaID
 GROUP BY gpo.olt_name, gpl.cidade, gpl.bairro, i.pon_id, i.classificacao
-HAVING quantidade_incidentes > 1
+HAVING quantidade_incidentes > 2
 ORDER BY quantidade_incidentes DESC";
 
 $r_incidentes_gpon_reincidentes = mysqli_query($mysqli, $incidentes_gpon_reincidentes);

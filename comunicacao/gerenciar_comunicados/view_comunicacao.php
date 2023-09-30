@@ -91,7 +91,7 @@ if ($rowCount_permissions_submenu > 0) {
                         <hr class="sidebar-divider">
 
                         <div class="row">
-                            <div class="col-lg-4">
+                            <div class="col-lg-12">
                                 <label for="destinatariosEmail" class="form-label">Lista Destinatários</label>
 
                                 <?php

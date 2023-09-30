@@ -26,12 +26,12 @@ $rowCount_permissions_submenu = $exec_permissions_submenu->rowCount();
 
 if ($rowCount_permissions_submenu > 0) {
 ?>
-<style>
-    #tabelaLista:hover {
-        cursor: pointer;
-        background-color: #E0FFFF;
-    }
-</style>
+    <style>
+        #tabelaLista:hover {
+            cursor: pointer;
+            background-color: #E0FFFF;
+        }
+    </style>
     <main id="main" class="main">
         <div class="pagetitle">
             <h1>Gerenciar Comunicações</h1>
@@ -54,6 +54,8 @@ if ($rowCount_permissions_submenu > 0) {
                                                             <tr>
                                                                 <th scope="col">ID</th>
                                                                 <th scope="col">Criador</th>
+                                                                <th scope="col">Origem</th>
+                                                                <th scope="col">Origem ID</th>
                                                                 <th scope="col">Criada</th>
                                                                 <th scope="col">Status</th>
                                                             </tr>
@@ -64,6 +66,12 @@ if ($rowCount_permissions_submenu > 0) {
                                                                 "SELECT
                                                                 c.id as id,
                                                                 p.nome as nome,
+                                                                c.origem_id as origem_id,
+                                                                CASE
+                                                                WHEN c.origem = 1 THEN 'Incidentes'
+                                                                WHEN c.origem = 2 THEN 'Manutenção Programada'
+                                                                WHEN c.origem = 3 THEN 'Manual'
+                                                                END as origem,
                                                                 DATE_FORMAT(created, '%d/%m/%Y %H:%i:%s') AS created,
                                                                 CASE
                                                                 WHEN status = 0 THEN 'Cancelada'
@@ -73,6 +81,7 @@ if ($rowCount_permissions_submenu > 0) {
                                                                 FROM comunicacao as c
                                                                 LEFT JOIN usuarios as u ON u.id = c.usuario_criador
                                                                 LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                                                                ORDER BY id desc
                                                                 ";
                                                             $r_comunicacoes = mysqli_query($mysqli, $lista_comunicacoes);
                                                             while ($c_comunicacoes = $r_comunicacoes->fetch_array()) {
@@ -81,6 +90,8 @@ if ($rowCount_permissions_submenu > 0) {
 
                                                                     <td><?= $c_comunicacoes['id']; ?></td>
                                                                     <td><?= $c_comunicacoes['nome']; ?></td>
+                                                                    <td><?= $c_comunicacoes['origem']; ?></td>
+                                                                    <td><?= $c_comunicacoes['origem_id']; ?></td>
                                                                     <td><?= $c_comunicacoes['created']; ?></td>
                                                                     <td><?= $c_comunicacoes['status']; ?></td>
 

@@ -25,16 +25,17 @@ $exec_permissions_submenu->execute();
 $rowCount_permissions_submenu = $exec_permissions_submenu->rowCount();
 
 if ($rowCount_permissions_submenu > 0) {
-
-
 	if (isset($_GET['id'])) {
+		//ABRE COMUNICAÇÃO SE O ID É PASSADO NA URL
 		$idComunicacao = $_GET['id'];
 
 		$com_aberta =
 			"SELECT
 		c.id as idComunicacao,
 		c.msgEmail as msgEmail,
-		c.step as step
+		c.step as step,
+		c.origem as origem,
+		c.origem_id as origem_id
 		FROM
 		comunicacao as c
 		WHERE
@@ -45,14 +46,19 @@ if ($rowCount_permissions_submenu > 0) {
 		$r_com_aberta->bindParam(':id', $idComunicacao, PDO::PARAM_INT); // Vincula o parâmetro :uid como um inteiro
 		$r_com_aberta->execute();
 		$msgEmail = $result['msgEmail'];
+		$origem = ($result['origem'] == 3) ? '%' : $result['origem'];
+		$origem_id = isset($result['origem_id']) ? $result['origem_id'] : "";
 	} else {
+		//ABRE COMUNICAÇÃO SE O  USUÁRIO TIVER UMA EM RASCUNHO
 		$com_aberta =
 			"SELECT
 			c.id as idComunicacao,
 			c.msgEmail as msgEmail,
 			c.assuntoEmail as assuntoEmail,
 			c.incidente_id as incidente_id,
-			c.step as step
+			c.step as step,
+			c.origem as origem,
+			c.origem_id as origem_id
 			FROM
 			comunicacao as c
 			WHERE
@@ -71,9 +77,12 @@ if ($rowCount_permissions_submenu > 0) {
 				$msgEmail = $result['msgEmail'];
 				$assuntoEmail = $result['assuntoEmail'];
 				$step = $result['step'];
+				$origem = ($result['origem'] == 3) ? '%' : $result['origem'];
+				//$origem_id = "83";
+				$origem_id = isset($result['origem_id']) ? $result['origem_id'] : "";
 			} else {
 				// Nenhuma comunicação em aberto foi encontrada, então crie uma nova.
-				$novaComunicacao = "INSERT INTO comunicacao (usuario_criador, created, status, step) VALUES (:uid, NOW(), 1, 1)";
+				$novaComunicacao = "INSERT INTO comunicacao (usuario_criador, created, status, step, origem) VALUES (:uid, NOW(), 1, 1, 3)";
 				$stmt = $pdo->prepare($novaComunicacao);
 				$stmt->bindParam(':uid', $uid);
 
@@ -82,10 +91,13 @@ if ($rowCount_permissions_submenu > 0) {
 					$step = "1";
 					$msgEmail = "";
 					$assuntoEmail = "";
+					$origem = "3";
 				}
 			}
 		}
 	}
+
+
 ?>
 
 	<main id="main" class="main">
@@ -94,6 +106,18 @@ if ($rowCount_permissions_submenu > 0) {
 				<div class="card">
 					<div class="card-body">
 						<h5 class="card-title">Comunicação <?= $idComunicacao ?> - Passo <?= $step ?></h5>
+						<span><b>
+								<?php
+								if ($origem == 1) {
+									echo "Incidentes";
+								} else if ($origem == 2) {
+									echo "Manutenção Programada";
+								} else if ($origem == 3) {
+									echo "Manual";
+								} else {
+									echo "Teste";
+								} ?></b>
+						</span>
 
 						<?php
 						if ($step == 1) {

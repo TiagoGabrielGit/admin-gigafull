@@ -39,11 +39,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     if ($stmt->execute()) {
                         header("Location: /comunicacao/comunicar/index.php");
                         exit();
-                        //$envia_notificacao = true;
                     } else {
                         header("Location: /comunicacao/comunicar/index.php");
                         exit();
-                        //$envia_notificacao = false;
                     }
                 } catch (PDOException $e) {
                     echo "Erro ao atualizar o status: " . $e->getMessage();

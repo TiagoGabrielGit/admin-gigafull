@@ -29,7 +29,12 @@ if ($rowCount_permissions > 0) {
 
 
 ?>
-
+    <style>
+        #tabelaLista:hover {
+            cursor: pointer;
+            background-color: #E0FFFF;
+        }
+    </style>
     <main id="main" class="main">
         <div class="pagetitle">
             <h1>Manutenções Programadas</h1>
@@ -47,7 +52,7 @@ if ($rowCount_permissions > 0) {
                                         <div class="row">
                                             <div class="col-lg-12">
                                                 <div class="row">
-                                                    <table class="table table-striped" id="styleTable">
+                                                    <table class="table datatable" id="styleTable">
                                                         <thead>
                                                             <tr>
                                                                 <th scope="col">Titulo</th>
@@ -65,6 +70,7 @@ if ($rowCount_permissions > 0) {
                                                                 DATE_FORMAT(mp.dataAgendamento, '%d/%m/%Y %H:%i') as dataAgendamento,
                                                                 mp.duracao as duracao,
                                                                 CASE
+                                                                WHEN active = 3 THEN 'Rascunho'
                                                                 WHEN active = 2 THEN 'Concluida'
                                                                 WHEN active = 1 THEN 'Programada'
                                                                 WHEN active = 0 THEN 'Cancelada'
@@ -75,8 +81,10 @@ if ($rowCount_permissions > 0) {
                                                             $r_manutencoes = mysqli_query($mysqli, $lista_manutencoes);
                                                             while ($c_manutencoes = $r_manutencoes->fetch_array()) {
                                                             ?>
-                                                                <tr>
-                                                                    <td><a href="view.php?id=<?= $c_manutencoes['idManutencaoProgramada']; ?>"><span style="color: red;"><?= $c_manutencoes['titulo']; ?></span></a></td>
+
+                                                                <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $c_manutencoes['idManutencaoProgramada'] ?>'">
+
+                                                                    <td><?= $c_manutencoes['titulo']; ?></td>
                                                                     <td><?= $c_manutencoes['dataAgendamento']; ?></td>
                                                                     <td><?= $c_manutencoes['duracao']; ?></td>
                                                                     <td><?= $c_manutencoes['status']; ?></td>

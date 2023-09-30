@@ -1,6 +1,7 @@
 <form method="POST" action="processa/step2.php">
     <input hidden readonly id="idComunicacao" name="idComunicacao" value="<?= $idComunicacao ?>"></input>
 
+
     <div class="row">
         <div class="col-lg-12">
             <div class="col-7">
@@ -22,9 +23,8 @@
 												WHEN ct.active = 0 THEN 'Inativo'
 											END as active
 										FROM comunicacao_templates as ct
-										WHERE ct.tipo = 1 AND ct.active = 1
+										WHERE ct.tipo = 1 AND aplicado LIKE '$origem' AND ct.active = 1 
 										ORDER BY ct.template ASC";
-
                     $r_sql = mysqli_query($mysqli, $sql);
 
                     while ($c_sql = $r_sql->fetch_array()) {
@@ -34,7 +34,6 @@
                 </select>
             </div>
             <hr class="sidebar-divider">
-
             <style>
                 .template-container {
                     width: 100%;

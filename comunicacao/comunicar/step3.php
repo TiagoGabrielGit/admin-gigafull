@@ -51,53 +51,137 @@ if ($result_comunicacao !== false) {
 				</div>
 			<?php endwhile; ?>
 		</div>
-		<div class="col-lg-6">
-			<hr class="sidebar-divider">
-			<span><b>Pontos Afetados</b></span><br><br>
-			<?php
-			if (isset($result['incidente_id'])) {
-				$id_incidente = $result['incidente_id'];
-				$sql_incidentes =
-					"SELECT equipamento_id, incident_type
+		<?php if ($origem == 1) { ?>
+			<div class="col-lg-6">
+				<hr class="sidebar-divider">
+				<span><b>Pontos Afetados</b></span><br><br>
+				<?php
+				if (isset($result['incidente_id'])) {
+					$id_incidente = $result['incidente_id'];
+					$sql_incidentes =
+						"SELECT equipamento_id, incident_type
 											FROM incidentes
 											WHERE id = :id_incidente";
 
-				$r_incidente = $pdo->prepare($sql_incidentes); // Corrigido para usar $sql_incidentes
-				$r_incidente->bindParam(':id_incidente', $id_incidente, PDO::PARAM_INT);
+					$r_incidente = $pdo->prepare($sql_incidentes); // Corrigido para usar $sql_incidentes
+					$r_incidente->bindParam(':id_incidente', $id_incidente, PDO::PARAM_INT);
 
-				if ($r_incidente->execute()) {
-					$result_incidente = $r_incidente->fetch(PDO::FETCH_ASSOC);
+					if ($r_incidente->execute()) {
+						$result_incidente = $r_incidente->fetch(PDO::FETCH_ASSOC);
 
-					if ($result_incidente !== false && $result_incidente['incident_type'] == 100) {
-						$equipamento_id = $result_incidente['equipamento_id'];
+						if ($result_incidente !== false && $result_incidente['incident_type'] == 100) {
+							$equipamento_id = $result_incidente['equipamento_id'];
 
-						$sql_incidentes_pons =
-							"SELECT gpo.olt_name as olt, gpp.slot as slot, gpp.pon as pon, gpl.cidade as cidade, gpl.bairro as bairro
+							$sql_incidentes_pons =
+								"SELECT gpo.olt_name as olt, gpp.slot as slot, gpp.pon as pon, gpl.cidade as cidade, gpl.bairro as bairro
 												FROM incidentes as i
 												LEFT JOIN gpon_pon as gpp ON gpp.id = i.pon_id
 												LEFT JOIN gpon_localidades as gpl ON gpl.pon_id = i.pon_id
 												LEFT JOIN gpon_olts as gpo ON gpo.id = gpp.olt_id
 												WHERE i.equipamento_id = :equipamento_id and i.active = 1";
 
-						$r_incidentes_pons = $pdo->prepare($sql_incidentes_pons);
-						$r_incidentes_pons->bindParam(':equipamento_id', $equipamento_id, PDO::PARAM_INT);
+							$r_incidentes_pons = $pdo->prepare($sql_incidentes_pons);
+							$r_incidentes_pons->bindParam(':equipamento_id', $equipamento_id, PDO::PARAM_INT);
 
-						if ($r_incidentes_pons->execute()) {
-							while ($result_incidentes_pons = $r_incidentes_pons->fetch(PDO::FETCH_ASSOC)) {
-								$olt = $result_incidentes_pons['olt'];
-								$slot = $result_incidentes_pons['slot'];
-								$pon = $result_incidentes_pons['pon'];
-								$cidade = $result_incidentes_pons['cidade'];
-								$bairro = $result_incidentes_pons['bairro'];
+							if ($r_incidentes_pons->execute()) {
+								while ($result_incidentes_pons = $r_incidentes_pons->fetch(PDO::FETCH_ASSOC)) {
+									$olt = $result_incidentes_pons['olt'];
+									$slot = $result_incidentes_pons['slot'];
+									$pon = $result_incidentes_pons['pon'];
+									$cidade = $result_incidentes_pons['cidade'];
+									$bairro = $result_incidentes_pons['bairro'];
 
-								echo "Cidade: $cidade | Bairro: $bairro - OLT $olt - Slot $slot - PON $pon<br>";
+									echo "Cidade: $cidade | Bairro: $bairro - OLT $olt - Slot $slot - PON $pon<br>";
+								}
 							}
 						}
 					}
 				}
-			}
-			?>
-		</div>
+				?>
+			</div>
+		<?php } else if ($origem == 2) { ?>
+			<div class="col-lg-6">
+				<h5 class="card-title">Rotas de Fibra</h5>
+				<ul>
+					<?php
+					$rotas = "SELECT
+                    mrf.id as idMan,
+                    rf.ponta_a as ponta_a,
+                    rf.ponta_b as ponta_b
+                    FROM
+                    manutencao_rotas_fibra as mrf
+                    LEFT JOIN
+                    rotas_fibra as rf
+                    ON rf.id = mrf.rota_id
+                    WHERE
+                    mrf.manutencao_id = $origem_id";
+
+					try {
+						$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+						$stmt = $pdo->prepare($rotas);
+						$stmt->execute();
+						$c_rotas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+					} catch (PDOException $e) {
+						echo "Erro na consulta SQL: " . $e->getMessage();
+					}
+
+					if (empty($c_rotas)) {
+						echo "Nenhuma rota de fibra selecionada.";
+					} else {
+						foreach ($c_rotas as $rota) :
+					?>
+							<li>
+								<label class="form-check-label">
+									<?= $rota['ponta_a'] . " <> " .  $rota['ponta_b']  ?>
+								</label>
+							</li>
+					<?php endforeach;
+					}
+					?>
+				</ul>
+
+				<h5 class="card-title">GPON</h5>
+				<ul>
+					<?php
+					$gpon = "SELECT
+                    mg.id as idMan,
+                    gp.slot as slot,
+                    gp.pon as pon,
+                    gpo.olt_name as olt_name,
+					gl.cidade as cidade,
+					gl.bairro as  bairro
+                    FROM manutencao_gpon as mg
+                    LEFT JOIN gpon_pon as gp ON gp.id = mg.pon_id
+                    LEFT JOIN gpon_olts as gpo ON gpo.id = gp.olt_id
+					LEFT JOIN gpon_localidades as gl ON gl.pon_id = mg.pon_id
+                    WHERE
+                    mg.manutencao_id = $origem_id";
+
+					try {
+						$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+						$stmt = $pdo->prepare($gpon);
+						$stmt->execute();
+						$pons = $stmt->fetchAll(PDO::FETCH_ASSOC);
+					} catch (PDOException $e) {
+						echo "Erro na consulta SQL: " . $e->getMessage();
+					}
+
+					if (empty($pons)) {
+						echo "Nenhuma PON selecionada.";
+					} else {
+						foreach ($pons as $pon) :
+					?>
+							<li>
+								<label class="form-check-label">
+									<?= "OLT " . $pon['olt_name'] . " (SLOT " . $pon['slot'] . " | PON " .  $pon['pon'] . ") - Cidade: " .  $pon['cidade'] . " | Bairro: " . $pon['bairro']?>
+								</label>
+							</li>
+					<?php endforeach;
+					}
+					?>
+				</ul>
+			</div>
+		<?php } ?>
 	</div>
 </div>
 
