@@ -104,6 +104,13 @@ if ($rowCount_permissions_submenu > 0) {
         $tipo = $campos['tipo'];
         $zabbixID = $campos['zabbixID'];
 ?>
+
+        <style>
+            #tabelaLista:hover {
+                cursor: pointer;
+                background-color: #E0FFFF;
+            }
+        </style>
         <main id="main" class="main">
             <div class="pagetitle">
                 <h1>Incidente #<?= $campos['idIncidente'] ?></h1>
@@ -126,7 +133,7 @@ if ($rowCount_permissions_submenu > 0) {
                                 <div class="row">
 
 
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-5">
                                         <div class="col-12">
                                             <br>
                                             <?php if ($campos['tipo'] <> 102) { ?>
@@ -194,7 +201,7 @@ if ($rowCount_permissions_submenu > 0) {
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-2">
+                                    <div class="col-lg-3">
                                         <div class="row">
                                             <div class="col-12" style="text-align: center;">
                                                 <br>
@@ -203,9 +210,13 @@ if ($rowCount_permissions_submenu > 0) {
                                                     <button style="margin-top: 15px" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalUpdate">
                                                         Atualizar
                                                     </button>
-                                                    <button style="margin-top: 15px" type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#modalInteressados">
-                                                        Interessados
-                                                    </button>
+                                                <?php
+                                                }
+                                                ?>
+
+                                                <?php
+                                                if ($campos['statusID'] == "1" && $campos['tipo'] == "100") { ?>
+                                                    <button style="margin-top: 15px" data-bs-toggle="modal" data-bs-target="#modalAnalisarGPON" id="buttonAnalisarGPON" class="btn btn-sm btn-danger" type="button">Analisar GPON</button>
                                                 <?php
                                                 }
                                                 ?>
@@ -215,8 +226,14 @@ if ($rowCount_permissions_submenu > 0) {
                                             <div class="col-12" style="text-align: center;">
                                                 <br>
                                                 <?php
-                                                if ($campos['statusID'] == "1" && $campos['tipo'] == "100") { ?>
-                                                    <button data-bs-toggle="modal" data-bs-target="#modalAnalisarGPON" id="buttonAnalisarGPON" class="btn btn-sm btn-danger" type="button">Analisar GPON</button>
+                                                if ($campos['statusID'] == "1") { ?>
+                                                    <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalComunicados">
+                                                        Comunicados
+                                                    </button>
+
+                                                    <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#modalInteressados">
+                                                        Interessados
+                                                    </button>
                                                 <?php
                                                 }
                                                 ?>
@@ -568,6 +585,85 @@ if ($rowCount_permissions_submenu > 0) {
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="modalComunicados" tabindex="-1">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Comunicados Enviados</h5>
+                        <?= $id_incidente ?>
+                        <form method="POST" action="/servicedesk/incidentes/processa/comunicaInteressados.php" class="d-inline-block">
+                            <input value="<?= $id_incidente ?>" id="icdID" name="icdID" hidden readonly>
+                            <button type="submit" class="btn btn-sm btn-success">Enviar Comunicado</button>
+                        </form>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="card-body">
+                            <?php
+                            $comunicados = "SELECT
+                   CASE
+                       WHEN ct.titulo IS NULL THEN 'Sem Template Vinculado'
+                       ELSE ct.titulo
+                   END as titulo,
+                   p.nome as usuario,
+                   c.id as idCom,
+                   DATE_FORMAT(c.created, '%d/%m/%Y %H:%i:%s') as criado,
+                   CASE
+                       WHEN status = 0 THEN 'Cancelada'
+                       WHEN status = 1 THEN 'Rascunho'
+                       WHEN status = 2 THEN 'Enviada'
+                   END as status
+               FROM comunicacao as c
+               LEFT JOIN usuarios as u ON u.id = c.usuario_criador
+               LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+               LEFT JOIN comunicacao_templates as ct ON ct.id = c.template_email
+               WHERE c.origem_id = $id_incidente
+               ORDER BY c.id desc
+               ";
+
+                            try {
+                                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                                $stmt = $pdo->prepare($comunicados);
+                                $stmt->execute();
+                                $c_comunicados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            } catch (PDOException $e) {
+                                echo "Erro na consulta SQL: " . $e->getMessage();
+                            }
+                            // Verifique se há resultados antes de criar a tabela
+                            if (!empty($c_comunicados)) {
+                                echo '<table class="table datatable">';
+                                echo '<thead>';
+                                echo '<tr>';
+                                echo '<th>Template</th>';
+                                echo '<th>Usuário</th>';
+                                echo '<th>Criado Em</th>';
+                                echo '<th>Status</th>';
+                                echo '</tr>';
+                                echo '</thead>';
+                                echo '<tbody>';
+
+                                foreach ($c_comunicados as $comunicado) { ?>
+                                    <tr id="tabelaLista" onclick="location.href='/comunicacao/gerenciar_comunicados/view_comunicacao.php?id=<?= $comunicado['idCom'] ?>'">
+                                        <td><?= $comunicado['titulo'] ?></td>
+                                        <td><?= $comunicado['usuario'] ?></td>
+                                        <td><?= $comunicado['criado'] ?></td>
+                                        <td><?= $comunicado['status'] ?></td>
+                                    </tr>
+                            <?php }
+
+                                echo '</tbody>';
+                                echo '</table>';
+                            } else {
+                                echo 'Nenhum resultado encontrado.';
+                            }
+                            ?>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div><!-- End Basic Modal-->
 
 <?php
     } else {

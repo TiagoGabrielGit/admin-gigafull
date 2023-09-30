@@ -123,7 +123,7 @@ order by mp.dataAgendamento asc
                                     <div class="card-body">
                                         <h5 class="card-title">GPON</h5>
                                         <ul>
-                                            <?php 
+                                            <?php
                                             $gpon = "SELECT
                                                 mg.id as idMan,
                                                 gp.slot as slot,
@@ -150,11 +150,11 @@ order by mp.dataAgendamento asc
                                             ?>
                                                 <li>
                                                     <label class="form-label">
-                                                        <?= "OLT " . $pon['olt_name'] . " (SLOT " . $pon['slot'] . " | PON " .  $pon['pon'] . ") $idPONManutencao" ?>
+                                                        <?= "OLT " . $pon['olt_name'] . " (SLOT " . $pon['slot'] . " | PON " .  $pon['pon'] . ")" ?>
                                                     </label>
 
-                                                    <button title="Localidades" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalLocalidadesMP<?= $contador ?>"><i class="bi bi-pin-map"></i></button>
-                                                    <div class="modal fade" id="modalLocalidadesMP<?= $contador ?>" tabindex="-1">
+                                                    <button title="Localidades" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalLocalidadesMP<?= $idPONManutencao ?>"><i class="bi bi-pin-map"></i></button>
+                                                    <div class="modal fade" id="modalLocalidadesMP<?= $idPONManutencao ?>" tabindex="-1">
                                                         <div class="modal-dialog modal-lg">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">

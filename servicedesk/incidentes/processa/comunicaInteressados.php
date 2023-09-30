@@ -3,9 +3,19 @@ session_start();
 if (isset($_SESSION['id'])) {
     $uid = $_SESSION['id'];
 
-    if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    if ($_SERVER["REQUEST_METHOD"] == "GET" || $_SERVER["REQUEST_METHOD"] == "POST") {
         require "../../../conexoes/conexao_pdo.php";
-        $idIncidente = $_GET['incidenteID'];
+
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $idIncidente = $_POST['icdID'];
+        }
+
+        if ($_SERVER["REQUEST_METHOD"] == "GET") {
+            $idIncidente = $_GET['incidenteID'];
+        }
+
+
 
         $sql = "SELECT i.incident_type as it FROM incidentes as i WHERE i.id = :incidenteID";
         $stmt = $pdo->prepare($sql);
