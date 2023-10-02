@@ -4,22 +4,6 @@
     }
 </script>
 
-
-<?php
-$credencialTipo = $_GET['tipo'];
-
-if ($credencialTipo == "E-mail") {
-    $credencialTipo = '1';
-} else if ($credencialTipo == "Equipamento") {
-    $credencialTipo = '2';
-} else if ($credencialTipo == "Portal") {
-    $credencialTipo = '3';
-} else if ($credencialTipo == "VM") {
-    $credencialTipo = '4';
-}
-?>
-
-
 <div class="modal fade" id="modalConfigPermissoes" tabindex="-1">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -82,7 +66,7 @@ if ($credencialTipo == "E-mail") {
 
                                                         if (empty($validacao_equipe['idPermissao'])) { ?>
                                                             <div class="form-check form-switch">
-                                                                <input onclick="addPermissaoEquipe(<?= $idEquipe ?>, '<?= $idCredencial ?>', '<?= $credencialTipo ?>')" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                                <input onclick="addPermissaoEquipe(<?= $idEquipe ?>, '<?= $idCredencial ?>', '3')" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
                                                                 <label class="form-check-label" for="flexSwitchCheckDefault"><?= $nomeEquipe ?></label>
                                                             </div>
                                                         <?php } else { ?>

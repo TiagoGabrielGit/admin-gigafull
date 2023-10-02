@@ -223,11 +223,11 @@
                                         $idSessao = $_SESSION['id'];
 
                                         if ($campos['idPrivacidade'] == '1') {
-                                            require "modalListaCredenciais.php";    //Apresenta se a privacidade for publico
+                                            require "lista_credenciais.php";    //Apresenta se a privacidade for publico
                                         } else if ($campos['usuarioCriador'] == $idSessao) {
-                                            require "modalListaCredenciais.php";    //Apresenta se o for do usuario criador
+                                            require "lista_credenciais.php";    //Apresenta se o for do usuario criador
                                         } else if ($campos['idPrivacidade'] == '3' && $campos['usuarioCriador'] == $idSessao) {
-                                            require "modalListaCredenciais.php";    //Apresenta se a privacidade for somente eu e o usuario criador é o usuario logado
+                                            require "lista_credenciais.php";    //Apresenta se a privacidade for somente eu e o usuario criador é o usuario logado
                                         } else if ($campos['idPrivacidade'] == '2') {
                                             $sql_check_permissao_equipe =
                                                 "SELECT
@@ -262,7 +262,7 @@
 
                                             if (empty($checkPermiUsuario) && empty($checkPermiEquipe)) {
                                             } else {
-                                                require "modalListaCredenciais.php"; //Apresenta se a privacidade for privada e der match em alguma equipe do usuario
+                                                require "lista_credenciais.php"; //Apresenta se a privacidade for privada e der match em alguma equipe do usuario
                                             }
                                         }
 

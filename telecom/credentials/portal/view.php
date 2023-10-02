@@ -1,146 +1,259 @@
 <?php
 require "../../../includes/menu.php";
 require "../../../conexoes/conexao.php";
+require "../../../conexoes/conexao_pdo.php";
 
-$id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-$tipo = filter_input(INPUT_GET, 'tipo');
+$menu_id = "16";
+$uid = $_SESSION['id'];
 
-require "sql_view.php";
+$permissions_menu =
+    "SELECT 
+	u.perfil_id
+FROM 
+	usuarios u
+JOIN 
+	perfil_permissoes_menu pp
+ON 
+	u.perfil_id = pp.perfil_id
+WHERE
+	u.id = $uid
+AND 
+	pp.url_menu = $menu_id";
 
-$tabela = "sql_credenciais_portal";
-$resultado = mysqli_query($mysqli, $$tabela);
-$row = mysqli_fetch_assoc($resultado);
+$exec_permissions_menu = $pdo->prepare($permissions_menu);
+$exec_permissions_menu->execute();
 
-if ($row['cred_priv'] == 1) {
-    $checkPublico = "checked";
-} else {
-    $checkPublico = "";
-}
+$rowCount_permissions_menu = $exec_permissions_menu->rowCount();
 
-if ($row['cred_priv'] == 2) {
-    $checkEquipe = "checked";
-    $aplicaButton = "<div class='col-4' style='text-align: left;'>
-        <a onclick='dadosCredencial(" . $row['cred_id'] . ")' data-bs-toggle='modal' data-bs-target='#modalConfigPermissoes'><input type='button' class='btn btn-outline-dark btn-sm' value='Configurar permissões'></input></a>
-    </div>";
-} else {
-    $checkEquipe = "";
-    $aplicaButton = "";
-}
+if ($rowCount_permissions_menu > 0) {
 
-if ($row['cred_priv'] == 3) {
-    $checkSomEu = "checked";
-} else {
-    $checkSomEu = "";
-} ?>
+    $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+    $tipo = filter_input(INPUT_GET, 'tipo');
 
-<main id="main" class="main">
 
-    <section class="section">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title"><?= $row['cred_descricao']; ?></h5>
+    $sql_credenciais_portal =
+        "SELECT
+        portal.id as cred_id,
+        portal.privacidade as cred_priv,
+        portal.portaldescricao as cred_descricao,
+        portal.paginaacesso as cred_portal,
+        portal.usuario_id as user_criador,
 
-                        <form id="editCredenciais" method="POST" class="row g-3">
+        portal.portalusuario as cred_usuario,
+        portal.portalsenha as cred_senha,
+        portal.tipo as cred_tipo,
+        portal.anotacao as anotacaoEmail,
+        emp.fantasia as emp_fantasia,
+        p.nome as nomeCriador
+        FROM
+        credenciais_portal as portal
+        LEFT JOIN
+        empresas as emp
+        ON
+        emp.id = portal.empresa_id
+        LEFT JOIN
+        usuarios as u
+        ON
+        u.id = portal.usuario_id
+        LEFT JOIN
+        pessoas as p
+        ON
+        u.pessoa_id = p.id
+        WHERE
+        portal.id = '$id'";
 
-                            <!-- APENSAS PARA PASSAR ID PARA O SQL -->
-                            <input hidden name="usuarioCriador" type="text" class="form-control" id="usuarioCriador" value="<?= $_SESSION['id']; ?>">
-                            <input hidden name="id" type="text" class="form-control" id="id" value="<?= $row['cred_id']; ?>">
-                            <input hidden name="IDTipo" type="text" class="form-control" id="IDTipo" value="<?= $row['cred_tipo'];  ?>">
-                            <!-- FIM -->
+    $resultado = mysqli_query($mysqli, $sql_credenciais_portal);
+    $row = mysqli_fetch_assoc($resultado);
+    $credencialTipo = $row['cred_tipo'];
 
-                            <div class="col-lg-8">
-                                <div class="row">
-                                    <div class="col-8">
-                                        <label for="editEmpresa" class="form-label">Empresa</label>
-                                        <input disabled name="editEmpresa" type="text" class="form-control" id="editEmpresa" value="<?= $row['emp_fantasia'];  ?>">
-                                    </div>
-                                </div>
+    if ($row['cred_priv'] == 1) {
+        require "view_liberado.php";
+    } else if ($row['user_criador'] == $_SESSION['id']) {
+        require "view_liberado.php";
+    } else if ($row['cred_priv'] == 2) {
+        $userId = $_SESSION['id'];
 
-                                <div class="col-4">
-                                    <label for="editDescricao" class="form-label">Descrição</label>
-                                    <input name="editDescricao" type="text" class="form-control" id="editDescricao" value="<?= $row['cred_descricao']; ?>">
-                                </div>
+        // Verificar se o equipamento está liberado para o usuário
+        $sql_check_perm_user = "SELECT * FROM credenciais_privacidade_usuario WHERE credencial_id = :id AND usuario_id = :userId";
+        $stmt_check_perm_user = $pdo->prepare($sql_check_perm_user);
+        $stmt_check_perm_user->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt_check_perm_user->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $stmt_check_perm_user->execute();
 
-                                <div class="row">
-                                    <div class="col-4">
-                                        <label for="editPagina" class="form-label">Página de Acesso</label>
-                                        <input name="editPagina" type="text" class="form-control" id="editPagina" value="<?= $row['cred_portal']; ?>">
-                                    </div>
+        // Verificar se o equipamento está liberado para alguma equipe do usuário
+        $sql_check_perm_equipe = "SELECT * FROM credenciais_privacidade_equipe WHERE credencial_id = :id AND equipe_id IN (SELECT equipe_id FROM equipes_integrantes WHERE integrante_id = :userId)";
+        $stmt_check_perm_equipe = $pdo->prepare($sql_check_perm_equipe);
+        $stmt_check_perm_equipe->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt_check_perm_equipe->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $stmt_check_perm_equipe->execute();
 
-                                    <div class="col-4">
-                                        <label for="editUsuario" class="form-label">Usuário</label>
-                                        <input name="editUsuario" type="text" class="form-control" id="editUsuario" value="<?= $row['cred_usuario']; ?>">
-                                    </div>
+        if ($stmt_check_perm_user->rowCount() > 0 || $stmt_check_perm_equipe->rowCount() > 0) {
+            require "view_liberado.php";
+        } else {
+            require "../../../acesso_negado.php";
+        }
+    } else {
+        require "../../../acesso_negado.php";
+    }
+?>
 
-                                    <div class="col-4">
-                                        <label for="editSenha" class="form-label">Senha</label>
-                                        <input name="editSenha" type="text" class="form-control" id="editSenha" value="<?= $row['cred_senha']; ?>">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="col-12">
-                                    <label for="editPrivacidade" class="form-label">Privacidade</label>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="editPrivacidade" id="editPrivacidade" value="1" <?= $checkPublico ?>>
-                                        <label class="form-check-label" for="editPrivacidade" value="1">Público</label>
-                                    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="editPrivacidade" id="editPrivacidade" value="2" <?= $checkEquipe ?>>
-                                        <label class="form-check-label" for="editPrivacidade" value="2">Privado</label>
-                                    </div>
 
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="editPrivacidade" id="editPrivacidade" value="3" <?= $checkSomEu ?>>
-                                        <label class="form-check-label" for="editPrivacidade" value="3">Somente criador</label>
-                                    </div>
-                                    <?= $aplicaButton ?>
-                                </div>
+    <script>
+        $(document).ready(function() {
 
-                                <div class="col-12">
-                                    <label for="nomeUsuarioCriador" class="form-label">Usuário Criador</label>
-                                    <input name="nomeUsuarioCriador" type="text" class="form-control" id="nomeUsuarioCriador" value="<?= $row['nomeCriador']; ?>" disabled>
-                                </div>
-                            </div>
+            $('#cadastroTipo').on('change', function() {
 
-                            <hr class="sidebar-divider">
+                var selectValor = '#' + $(this).val();
+                //alert(selectValor);
+                $('#formularioCredenciais').children('div').hide();
+                $('#formularioCredenciais').children(selectValor).show();
+                $(selectValor).children('div').show();
 
-                            <div class="col-12">
-                                <label for="anotacaoPortal" class="form-label">Anotações</label>
-                                <textarea id="anotacaoPortal" name="anotacaoPortal" class="form-control" maxlength="10000" rows="4"><?= $row['anotacaoEmail'] ?></textarea>
-                            </div>
+            })
+        })
+    </script>
 
-                            <hr class="sidebar-divider">
-
-                            <div class="col-4"></div>
-
-                            <div class="col-4" style="text-align: center;">
-                                <span id="msgEditar"></span>
-                                <!-- <div class="text-center"> -->
-                                <input id="btnSalvarEdit" name="btnSalvarEdit" type="button" value="Salvar" class="btn btn-danger"></input>
-                                <a href="/telecom/credentials/index.php"><input type="button" class="btn btn-secondary" value="Voltar"></input></a>
-                            </div>
-
-                            <div class="col-4" style="text-align: right;">
-                                <a onclick="return confirm('Tem certeza que deseja deletar este registro?')" href="processa/delete.php?id=<?= $id ?>&tipo=<?= $row['cred_tipo']; ?>"><input type="button" class="btn btn-warning" value="Excluir permanente"></input></a>
-
-                            </div>
-                        </form><!-- Vertical Form -->
-
+    <script>
+        $("#add-campo").click(function() {
+            $("#portal").append(`
+                    <br><br>
+    
+                    <hr class="sidebar-divider">
+    
+                    <div class="col-6" style="display: inline-block;">
+                    <label for="portalDescricao" class="form-label">Descrição</label>
+                    <input name="portalDescricao[]" type="text" class="form-control" id="portalDescricao" required>
                     </div>
-                </div>
-            </div>
+    
+                    <br>
+                 
+                    <div class="col-4" style="display: inline-block;">
+                    <label for="portalUsuarioSenha" class="form-label">Usuário</label>
+                    <input name="portalUsuario[]" type="text" class="form-control" id="portalUsuario" required>
+                    </div>
+    
+                    <div class="col-4" style="display: inline-block;">
+                    <label for="portalSenha" class="form-label">Senha</label>
+                    <input name="portalSenha[]" type="text" class="form-control" id="portalSenha" required>
+                    </div>
+    
+                    `);
+        });
+    </script>
 
-        </div>
-    </section>
 
-</main><!-- End #main -->
+    <script>
+        $("#cadastroEmpresa").change(function() {
+            var empresaSelecionada = $(this).children("option:selected").val();
+
+            $.ajax({
+                url: "/api/pesquisa_equipamentos_via_empresa.php",
+                method: "GET",
+                dataType: "HTML",
+                data: {
+                    id: empresaSelecionada
+                }
+            }).done(function(resposta) {
+                $("#equipamentoEquipamento").html(resposta);
+            }).fail(function(resposta) {
+                alert(resposta)
+            });
+        });
+    </script>
+
+
+    <script>
+        $("#cadastroEmpresa").change(function() {
+            var empresaSelecionada = $(this).children("option:selected").val();
+
+            $.ajax({
+                url: "/api/pesquisa_vms_via_empresa.php",
+                method: "GET",
+                dataType: "HTML",
+                data: {
+                    id: empresaSelecionada
+                }
+            }).done(function(resposta) {
+                $("#vmVm").html(resposta);
+            }).fail(function(resposta) {
+                alert(resposta)
+            });
+        });
+    </script>
+
+
+    <script>
+        $("#btnSalvar").click(function() {
+            var dados = $("#addCredenciais").serialize();
+
+            $.post("portal/processa/add.php", dados, function(retorna) {
+                $("#msg").slideDown('slow').html(retorna);
+
+                //Limpar os campos
+                $('#addCredenciais')[0].reset();
+
+                //Apresentar a mensagem leve
+                retirarMsg();
+            });
+        });
+
+        //Retirar a mensagem após 1700 milissegundos
+        function retirarMsg() {
+            setTimeout(function() {
+                $("#msg").slideUp('slow', function() {});
+            }, 1700);
+        }
+    </script>
+
+    <script>
+        $("#editEmpresa").change(function() {
+            var empresaSelecionada = $(this).children("option:selected").val();
+
+            $.ajax({
+                url: "/api/pesquisa_vms_via_empresa.php",
+                method: "GET",
+                dataType: "HTML",
+                data: {
+                    id: empresaSelecionada
+                }
+            }).done(function(resposta) {
+                $("#editVM").html(resposta);
+            }).fail(function(resposta) {
+                alert(resposta)
+            });
+        });
+    </script>
+
+    <script>
+        $("#btnSalvarEdit").click(function() {
+            var dados = $("#editCredenciais").serialize();
+
+            $.post("processa/edit.php", dados, function(retorna) {
+
+                $("#msg").slideDown('slow').html(retorna);
+
+                //Apresentar a mensagem leve
+                retirarMsg();
+            });
+        });
+
+        //Retirar a mensagem após 1700 milissegundos
+        function retirarMsg() {
+
+            setTimeout(function() {
+
+                location.reload();
+                $("#msg").slideUp('slow', function() {});
+
+            }, 1700);
+        }
+    </script>
 
 <?php
-require "includes/modal.php";
-require "includes/scripts.php";
-require "../../../includes/footer.php";
-?>
+} else {
+    require "../../acesso_negado.php";
+}
+require "../../../includes/securityfooter.php";

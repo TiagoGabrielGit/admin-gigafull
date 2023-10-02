@@ -80,43 +80,6 @@ WHERE
 credemail.id = '$id'
 ";
 
-
-$sql_credenciais_equipamento =
-"SELECT
-credequip.id as cred_id,
-credequip.privacidade as cred_priv,
-credequip.empresa_id as emp_id,
-credequip.tipo as cred_tipo,
-credequip.equipamentodescricao as cred_descricao,
-credequip.equipamentousuario as cred_usuario,
-credequip.equipamentosenha as cred_senha,
-credequip.equipamento_id as eqp_id,
-eqp.hostname as cred_hostname,
-eqp.ipaddress as cred_ip,
-emp.fantasia as emp_fantasia,
-p.nome as nomeCriador
-FROM
-credenciais_equipamento as credequip
-LEFT JOIN
-equipamentospop as eqp
-ON
-eqp.id = credequip.equipamento_id
-LEFT JOIN
-empresas as emp
-ON
-emp.id = credequip.empresa_id
-LEFT JOIN
-usuarios as u
-ON
-u.id = credequip.usuario_id
-LEFT JOIN
-pessoas as p
-ON
-u.pessoa_id = p.id
-WHERE
-credequip.id = '$id'
-";
-
 $sql_credenciais_portal =
 "SELECT
 portal.id as cred_id,

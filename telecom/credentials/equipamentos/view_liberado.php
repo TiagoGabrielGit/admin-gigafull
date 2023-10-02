@@ -134,7 +134,7 @@
                                 <a onclick="capturaDados(<?= $id ?>, '<?= $row['hostname']; ?>')" data-bs-toggle="modal" data-bs-target="#basicModalCredenciais"><input type="button" class="btn btn-info btn-sm" value="Visualizar credenciais"></input></a>
                                 <?php if ($row['privacidade'] == 2) : ?>
                                     <?php
-                                    
+
                                     if ($_SESSION['permissao_privacidade_credenciais'] == 1) { ?>
                                         <a onclick="configurarPrivacidade(<?= $id ?>)" data-bs-toggle="modal" data-bs-target="#modalConfigurarPrivacidade"><input type="button" class="btn btn-dark btn-sm" value="Configurar Privacidade"></input></a>
                                     <?php }
@@ -162,6 +162,82 @@
     function capturaDados(id, equipamento) {
         document.querySelector("#idEquipamentoModal").value = id;
         document.querySelector("#EquipamentoModal").value = equipamento;
+    }
+</script>
+
+<script>
+    function configurarPrivacidade(idEquipamento) {
+        document.querySelector("#idEquipamento").value = idEquipamento;
+    }
+</script>
+
+<script>
+    function addPermissaoEquipamentoEquipe(idEquipe, idEquipamento) {
+        $.ajax({
+            url: "processa/insert_permissao_equipamento_equipe.php",
+            method: "GET",
+            dataType: "HTML",
+            data: {
+                idEquipe: idEquipe,
+                idEquipamento: idEquipamento
+            }
+        })
+    }
+
+    function deletaPermissaoEquipamentoEquipe(idPermissaoEquipe) {
+        $.ajax({
+            url: "processa/deleta_permissao_equipamento_equipe.php",
+            method: "GET",
+            dataType: "HTML",
+            data: {
+                idPermissaoEquipe: idPermissaoEquipe
+            }
+        })
+    }
+
+    function addPermissaoEquipamentoUsuario(idUsuario, idEquipamento) {
+        $.ajax({
+            url: "processa/insert_permissao_equipamento_usuario.php",
+            method: "GET",
+            dataType: "HTML",
+            data: {
+                idUsuario: idUsuario,
+                idEquipamento: idEquipamento
+            }
+        })
+    }
+
+    function deletaPermissaoEquipamentoUsuario(idPermissaoUsuario) {
+        $.ajax({
+            url: "processa/deleta_permissao_equipamento_usuario.php",
+            method: "GET",
+            dataType: "HTML",
+            data: {
+                idPermissaoUsuario: idPermissaoUsuario
+            }
+        })
+    }
+</script>
+
+<script>
+    let inputIPView = document.querySelector("#inputIpAddress");
+    inputIPView.addEventListener("keydown", function(e) {
+        if (e.key >= "0" && e.key <= "9" || e.key == "." || e.key == "Backspace" || e.key == "CTRL" || e.key ==
+            "v" || e.key == "Delete" || e.key == "V" || e.key == "A" || e.key == "a" || e.key == "C" || e.key == "c"
+        ) {
+
+        } else {
+            e.preventDefault();
+        }
+    });
+</script>
+
+<script>
+    function AddSenhaEquipamento(id, nomeEq, idEmpresa) {
+        document.querySelector("#idSenha1").value = id;
+        document.querySelector("#idSenha2").value = id;
+        document.querySelector("#nomeEq").value = nomeEq;
+        document.querySelector("#idEmpresa1").value = idEmpresa;
     }
 </script>
 
@@ -238,13 +314,11 @@
                                         $idSessao = $_SESSION['id'];
 
                                         if ($campos['idPrivacidade'] == '1') {
-
-
-                                            require "modalListaCredenciais.php";    //Apresenta se a privacidade for publico
+                                            require "lista_credenciais.php";    //Apresenta se a privacidade for publico
                                         } else if ($campos['usuarioCriador'] == $idSessao) {
-                                            require "modalListaCredenciais.php";    //Apresenta se o for do usuario criador
+                                            require "lista_credenciais.php";    //Apresenta se o for do usuario criador
                                         } else if ($campos['idPrivacidade'] == '3' && $campos['usuarioCriador'] == $idSessao) {
-                                            require "modalListaCredenciais.php";    //Apresenta se a privacidade for somente eu e o usuario criador é o usuario logado
+                                            require "lista_credenciais.php";    //Apresenta se a privacidade for somente eu e o usuario criador é o usuario logado
                                         } else if ($campos['idPrivacidade'] == '2') {
                                             $sql_check_permissao_equipe =
                                                 "SELECT
@@ -279,7 +353,7 @@
 
                                             if (empty($checkPermiUsuario) && empty($checkPermiEquipe)) {
                                             } else {
-                                                require "modalListaCredenciais.php"; //Apresenta se a privacidade for privada e der match em alguma equipe do usuario
+                                                require "lista_credenciais.php"; //Apresenta se a privacidade for privada e der match em alguma equipe do usuario
                                             }
                                         }
 
@@ -294,28 +368,6 @@
         </div>
     </div>
 </div>
-
-<script>
-    let inputIPView = document.querySelector("#inputIpAddress");
-    inputIPView.addEventListener("keydown", function(e) {
-        if (e.key >= "0" && e.key <= "9" || e.key == "." || e.key == "Backspace" || e.key == "CTRL" || e.key ==
-            "v" || e.key == "Delete" || e.key == "V" || e.key == "A" || e.key == "a" || e.key == "C" || e.key == "c"
-        ) {
-
-        } else {
-            e.preventDefault();
-        }
-    });
-</script>
-
-
-
-<script>
-    function configurarPrivacidade(idEquipamento) {
-        document.querySelector("#idEquipamento").value = idEquipamento;
-    }
-</script>
-
 
 <div class="modal fade" id="modalConfigurarPrivacidade" tabindex="-1">
     <div class="modal-dialog modal-xl">
@@ -481,50 +533,86 @@
     </div>
 </div>
 
-<script>
-    function addPermissaoEquipamentoEquipe(idEquipe, idEquipamento) {
-        $.ajax({
-            url: "processa/insert_permissao_equipamento_equipe.php",
-            method: "GET",
-            dataType: "HTML",
-            data: {
-                idEquipe: idEquipe,
-                idEquipamento: idEquipamento
-            }
-        })
-    }
+<div class="modal fade" id="AddSenhaEquipamento" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Adicionar senha</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
 
-    function deletaPermissaoEquipamentoEquipe(idPermissaoEquipe) {
-        $.ajax({
-            url: "processa/deleta_permissao_equipamento_equipe.php",
-            method: "GET",
-            dataType: "HTML",
-            data: {
-                idPermissaoEquipe: idPermissaoEquipe
-            }
-        })
-    }
+                <div class="card">
+                    <div class="col-lg-12">
+                        <div class="card-body">
+                            <div class="row">
+                                <form id="cadastraSenhaEquipamento" method="POST" class="row g-3 needs-validation">
 
-    function addPermissaoEquipamentoUsuario(idUsuario, idEquipamento) {
-        $.ajax({
-            url: "processa/insert_permissao_equipamento_usuario.php",
-            method: "GET",
-            dataType: "HTML",
-            data: {
-                idUsuario: idUsuario,
-                idEquipamento: idEquipamento
-            }
-        })
-    }
+                                    <span id="msgAlertCad"></span>
 
-    function deletaPermissaoEquipamentoUsuario(idPermissaoUsuario) {
-        $.ajax({
-            url: "processa/deleta_permissao_equipamento_usuario.php",
-            method: "GET",
-            dataType: "HTML",
-            data: {
-                idPermissaoUsuario: idPermissaoUsuario
-            }
-        })
-    }
-</script>
+                                    <div class="col-3">
+                                        <label for="idSenha1" class="form-label">Equipamento ID</label>
+                                        <input type="Text" name="idSenha1" class="form-control" id="idSenha1" disabled>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <label for="nomeEq" class="form-label">Equipamento</label>
+                                        <input type="Text" name="nomeEq" class="form-control" id="nomeEq" disabled>
+                                    </div>
+
+                                    <input type="Text" name="idSenha2" class="form-control" id="idSenha2" hidden>
+                                    <input type="Text" name="idEmpresa1" class="form-control" id="idEmpresa1" hidden>
+
+
+                                    <div class="col-3">
+                                        <label for="cadastroPrivacidade" class="form-label">Privacidade*</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="cadastroPrivacidade" id="cadastroPrivacidade" value="1" checked="">
+                                            <label class="form-check-label" for="cadastroPrivacidade" value="1">Público</label>
+                                        </div>
+
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="cadastroPrivacidade" id="cadastroPrivacidade" value="2">
+                                            <label class="form-check-label" for="cadastroPrivacidade" value="2">Privado</label>
+                                        </div>
+
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="cadastroPrivacidade" id="cadastroPrivacidade" value="3">
+                                            <label class="form-check-label" for="cadastroPrivacidade" value="3">Somente eu</label>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-6" style="display: inline-block;">
+                                        <label for="equipamentoDescricao" class="form-label">Descrição</label>
+                                        <input name="equipamentoDescricao" type="text" class="form-control" id="equipamentoDescricao">
+                                    </div>
+
+                                    <div class="col-4" style="display: inline-block;"> </div>
+
+                                    <div class="col-4" style="display: inline-block;">
+                                        <label for="equipamentoUsuario" class="form-label">Usuário</label>
+                                        <input name="equipamentoUsuario" type="text" class="form-control" id="equipamentoUsuario">
+                                    </div>
+
+                                    <div class="col-4" style="display: inline-block;">
+                                        <label for="equipamentoSenha" class="form-label">Senha</label>
+                                        <input name="equipamentoSenha" type="text" class="form-control" id="equipamentoSenha">
+                                    </div>
+
+                                    <hr class="sidebar-divider">
+
+                                    <div class="text-center">
+                                        <input id="btnSalvar" name="btnSalvar" type="button" value="Salvar" class="btn btn-danger"></input>
+                                        <a href="/telecom/credentials/index.php"> <input type="button" value="Voltar" class="btn btn-secondary"></input></a>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,14 +3,39 @@ require "../../../includes/menu.php";
 require "../../../conexoes/conexao.php";
 require "../../../conexoes/conexao_pdo.php";
 require "../../../includes/remove_setas_number.php";
-require "sql.php";
+
+$menu_id = "16";
+$uid = $_SESSION['id'];
+
+$permissions_menu =
+    "SELECT 
+	u.perfil_id
+FROM 
+	usuarios u
+JOIN 
+	perfil_permissoes_menu pp
+ON 
+	u.perfil_id = pp.perfil_id
+WHERE
+	u.id = $uid
+AND 
+	pp.url_menu = $menu_id";
+
+$exec_permissions_menu = $pdo->prepare($permissions_menu);
+$exec_permissions_menu->execute();
+
+$rowCount_permissions_menu = $exec_permissions_menu->rowCount();
+
+if ($rowCount_permissions_menu > 0) {
+
+    require "sql.php";
 ?>
 
-<?php
-$id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+    <?php
+    $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
-$sql_sql_equipamentopop =
-    "SELECT
+    $sql_sql_equipamentopop =
+        "SELECT
 eqpop.id as id_equipamentoPop,
 eqpop.hostname as hostname,
 eqpop.pop_id as id_pop,
@@ -65,49 +90,50 @@ WHERE
 eqpop.id = '$id'
 ";
 
-$resultado = mysqli_query($mysqli, $sql_sql_equipamentopop);
-$row = mysqli_fetch_assoc($resultado);
+    $resultado = mysqli_query($mysqli, $sql_sql_equipamentopop);
+    $row = mysqli_fetch_assoc($resultado);
 
-$hostnameEquipamento = $row['hostname'];
-$privacidade = $row['privacidade'];
-$usuario_criador = $row['usuario_criador'];
+    $hostnameEquipamento = $row['hostname'];
+    $privacidade = $row['privacidade'];
+    $usuario_criador = $row['usuario_criador'];
 
-if ($privacidade == 1) {
-    require "view_liberado.php";
-} else if ($usuario_criador == $_SESSION['id']) {
-    require "view_liberado.php";
-} else if ($privacidade == 2) {
-
-    // Verificar se o equipamento está liberado para o usuário ou para a equipe do usuário
-    $userId = $_SESSION['id'];
-
-    // Verificar se o equipamento está liberado para o usuário
-    $sql_check_perm_user = "SELECT * FROM equipamentos_pop_privacidade_usuario WHERE equipamento_id = :id AND usuario_id = :userId";
-    $stmt_check_perm_user = $pdo->prepare($sql_check_perm_user);
-    $stmt_check_perm_user->bindParam(':id', $id, PDO::PARAM_INT);
-    $stmt_check_perm_user->bindParam(':userId', $userId, PDO::PARAM_INT);
-    $stmt_check_perm_user->execute();
-
-    // Verificar se o equipamento está liberado para alguma equipe do usuário
-    $sql_check_perm_equipe = "SELECT * FROM equipamentos_pop_privacidade_equipe WHERE equipamento_id = :id AND equipe_id IN (SELECT equipe_id FROM equipes_integrantes WHERE integrante_id = :userId)";
-    $stmt_check_perm_equipe = $pdo->prepare($sql_check_perm_equipe);
-    $stmt_check_perm_equipe->bindParam(':id', $id, PDO::PARAM_INT);
-    $stmt_check_perm_equipe->bindParam(':userId', $userId, PDO::PARAM_INT);
-    $stmt_check_perm_equipe->execute();
-
-    if ($stmt_check_perm_user->rowCount() > 0 || $stmt_check_perm_equipe->rowCount() > 0) {
+    if ($privacidade == 1) {
         require "view_liberado.php";
+    } else if ($usuario_criador == $_SESSION['id']) {
+        require "view_liberado.php";
+    } else if ($privacidade == 2) {
+
+        // Verificar se o equipamento está liberado para o usuário ou para a equipe do usuário
+        $userId = $_SESSION['id'];
+
+        // Verificar se o equipamento está liberado para o usuário
+        $sql_check_perm_user = "SELECT * FROM equipamentos_pop_privacidade_usuario WHERE equipamento_id = :id AND usuario_id = :userId";
+        $stmt_check_perm_user = $pdo->prepare($sql_check_perm_user);
+        $stmt_check_perm_user->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt_check_perm_user->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $stmt_check_perm_user->execute();
+
+        // Verificar se o equipamento está liberado para alguma equipe do usuário
+        $sql_check_perm_equipe = "SELECT * FROM equipamentos_pop_privacidade_equipe WHERE equipamento_id = :id AND equipe_id IN (SELECT equipe_id FROM equipes_integrantes WHERE integrante_id = :userId)";
+        $stmt_check_perm_equipe = $pdo->prepare($sql_check_perm_equipe);
+        $stmt_check_perm_equipe->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt_check_perm_equipe->bindParam(':userId', $userId, PDO::PARAM_INT);
+        $stmt_check_perm_equipe->execute();
+
+        if ($stmt_check_perm_user->rowCount() > 0 || $stmt_check_perm_equipe->rowCount() > 0) {
+            require "view_liberado.php";
+        } else {
+            require "../../../acesso_negado.php";
+        }
     } else {
         require "../../../acesso_negado.php";
     }
+    ?>
+    
+<?php
+    require "../../../scripts/equipamentosPop.php";
 } else {
     require "../../../acesso_negado.php";
 }
-?>
-
-<?php
-require "../../../includes/footer.php";
-require "modalSenhaEquipamento.php";
-require "../../../scripts/equipamentosPop.php";
-
+require "../../../includes/securityfooter.php";
 ?>

@@ -258,7 +258,7 @@
                 retirarMsg();
             } else {
                 var idRegistroCriado = retorna; // O ID do registro retornado pelo servidor
-                window.location.href = '/telecom/credentials/view.php?tipo=Equipamento&id=' + idRegistroCriado;
+                window.location.href = '/telecom/credentials/equipamentos/credenciais/view.php?id=' + idRegistroCriado;
             }
         });
     });

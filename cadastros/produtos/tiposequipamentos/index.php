@@ -1,6 +1,31 @@
 <?php
 require "../../../includes/menu.php";
 require "../../../conexoes/conexao.php";
+require "../../../conexoes/conexao_pdo.php";
+$uid = $_SESSION['id'];
+$menu_submenu_id = "10";
+
+
+$permissions =
+    "SELECT 
+	u.perfil_id
+FROM 
+	usuarios u
+JOIN 
+	perfil_permissoes_submenu pp
+ON 
+	u.perfil_id = pp.perfil_id
+WHERE
+	u.id = $uid
+AND 
+	pp.url_submenu = $menu_submenu_id";
+
+$exec_permissions = $pdo->prepare($permissions);
+$exec_permissions->execute();
+
+$rowCount_permissions = $exec_permissions->rowCount();
+
+if ($rowCount_permissions > 0) {
 ?>
 
 <style>
@@ -41,8 +66,8 @@ require "../../../conexoes/conexao.php";
                                 <div class="col-2">
                                     <div class="card">
                                         <!-- Basic Modal -->
-                                        <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
-                                            Novo tipo
+                                        <button style="margin-top: 15px" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
+                                            Novo Tipo
                                         </button>
                                     </div>
                                 </div>
@@ -64,8 +89,8 @@ require "../../../conexoes/conexao.php";
 
 
                                                         <div class="text-center">
-                                                            <button type="submit" class="btn btn-danger">Salvar</button>
-                                                            <button type="reset" class="btn btn-secondary">Limpar</button>
+                                                            <button type="submit" class="btn btn-sm btn-danger">Salvar</button>
+                                                            <button type="reset" class="btn btn-sm btn-secondary">Limpar</button>
                                                         </div>
                                                     </form><!-- Vertical Form -->
                                                 </div>
@@ -81,7 +106,7 @@ require "../../../conexoes/conexao.php";
                         <p>Listagem tipo de equipamentos</p>
 
                         <!-- Table with stripped rows -->
-                        <table class="table table-striped"> 
+                        <table class="table datatable"> 
                             <thead>
                                 <tr>
                                     <th scope="col">Tipo</th>
@@ -114,5 +139,7 @@ require "../../../conexoes/conexao.php";
 </main><!-- End #main -->
 
 <?php
-require "../../../includes/footer.php";
-?>
+} else {
+    require "../../../acesso_negado.php";
+}
+require "../../../includes/securityfooter.php"; ?>?>

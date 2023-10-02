@@ -42,7 +42,7 @@ while ($campos_portal = $resultado_portal->fetch_array()) {
         <!--Apresenta se a privacidade for publico-->
         <tr>
             <td style="text-align: center;">
-                <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=Portal"><?= $campos_portal['cred_desc']; ?></a>
+                <a style="color: red;" href="portal/view.php?id=<?= $id ?>"><?= $campos_portal['cred_desc']; ?></a>
             </td>
             <td style="text-align: center;"><?= $campos_portal['emp_fant'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_usuario'] ?></td>
@@ -52,7 +52,7 @@ while ($campos_portal = $resultado_portal->fetch_array()) {
         <!--Apresenta se o for do usuario criador-->
         <tr>
             <td style="text-align: center;">
-                <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=Portal"><?= $campos_portal['cred_desc']; ?></a>
+                <a style="color: red;" href="portal/view.php?id=<?= $id ?>"><?= $campos_portal['cred_desc']; ?></a>
             </td>
             <td style="text-align: center;"><?= $campos_portal['emp_fant'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_usuario'] ?></td>
@@ -62,7 +62,7 @@ while ($campos_portal = $resultado_portal->fetch_array()) {
         <!--Apresenta se a privacidade for somente eu e o usuario criador é o usuario logado-->
         <tr>
             <td style="text-align: center;">
-                <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=Portal"><?= $campos_portal['cred_desc']; ?></a>
+                <a style="color: red;" href="portal/view.php?id=<?= $id ?>"><?= $campos_portal['cred_desc']; ?></a>
             </td>
             <td style="text-align: center;"><?= $campos_portal['emp_fant'] ?></td>
             <td style="text-align: center;"><?= $campos_portal['cred_usuario'] ?></td>
@@ -104,7 +104,7 @@ while ($campos_portal = $resultado_portal->fetch_array()) {
         } else { ?>
             <tr>
                 <td style="text-align: center;">
-                    <a style="color: red;" href="portal/view.php?id=<?= $id ?>&tipo=Portal"><?= $campos_portal['cred_desc']; ?></a>
+                    <a style="color: red;" href="portal/view.php?id=<?= $id ?>"><?= $campos_portal['cred_desc']; ?></a>
                 </td>
                 <td style="text-align: center;"><?= $campos_portal['emp_fant'] ?></td>
                 <td style="text-align: center;"><?= $campos_portal['cred_usuario'] ?></td>

@@ -20,7 +20,7 @@ require "../../conexoes/conexao_pdo.php";
                             </div>
                             <div class="col-lg-3">
                                 <a href="document_criar.php">
-                                    <button style="margin-top: 15px" type="button" class="btn btn-danger">
+                                    <button style="margin-top: 15px" type="button" class="btn btn-sm btn-danger">
                                         Nova Documentação
                                     </button>
                                 </a>

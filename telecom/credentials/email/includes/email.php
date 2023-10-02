@@ -7,14 +7,9 @@
                     <div class="card-body">
                         <h5 class="card-title"><?= $row['cred_descricao']; ?></h5>
 
-                        <form id="editCredenciais" method="POST" class="row g-3">
+                        <form action="processa/editar.php" method="POST" class="row g-3">
 
-                            <!-- APENSAS PARA PASSAR ID PARA O SQL -->
-                            <input hidden name="usuarioCriador" type="text" class="form-control" id="usuarioCriador" value="<?= $_SESSION['id']; ?>">
                             <input hidden name="id" type="text" class="form-control" id="id" value="<?= $row['cred_id']; ?>">
-                            <input hidden name="IDEmpresa" type="text" class="form-control" id="IDEmpresa" value="<?= $row['emp_id'];  ?>">
-                            <input hidden name="IDTipo" type="text" class="form-control" id="IDTipo" value="<?= $row['cred_tipo'];  ?>">
-                            <!-- FIM -->
 
                             <span id="msg"></span>
 
@@ -65,7 +60,6 @@
                                 <input name="editDescricao" type="text" class="form-control" id="editDescricao" value="<?= $row['cred_descricao']; ?>">
                             </div>
 
-
                             <div class="col-4" style="display: inline-block;">
                                 <label for="editWebmail" class="form-label">Webmail</label>
                                 <input name="editWebmail" type="text" class="form-control" id="editWebmail" value="<?= $row['cred_webmail']; ?>">
@@ -94,16 +88,15 @@
                             <div class="col-4"></div>
 
                             <div class="col-4" style="text-align: center;">
-                                <!-- <div class="text-center"> -->
-                                <input id="btnSalvarEdit" name="btnSalvarEdit" type="button" value="Salvar" class="btn btn-danger"></input>
-                                <a href="/telecom/credentials/index.php"><input type="button" class="btn btn-secondary" value="Voltar"></input></a>
+                                <button class="btn btn-sm btn-danger" type="submit">Salvar Alterações</button>
+                                <a href="/telecom/credentials/index.php"><input type="button" class="btn btn-sm btn-secondary" value="Voltar"></input></a>
                             </div>
 
                             <div class="col-4" style="text-align: right;">
                                 <a onclick="return confirm('Tem certeza que deseja deletar este registro?')" href="processa/delete.php?id=<?= $id ?>&tipo=<?= $row['cred_tipo']; ?>"><input type="button" class="btn btn-warning" value="Excluir permanente"></input></a>
 
                             </div>
-                        </form><!-- Vertical Form -->
+                        </form>
 
                     </div>
                 </div>

@@ -42,7 +42,7 @@ while ($campos_email = $resultado_email->fetch_array()) {
         <!--Apresenta se a privacidade for publico-->
         <tr>
             <td style="text-align: center;">
-                <a style="color: red;" href="email/view.php?id=<?= $id ?>&tipo=E-mail"><?= $campos_email['cred_desc']; ?></a>
+                <a style="color: red;" href="email/view.php?id=<?= $id ?>"><?= $campos_email['cred_desc']; ?></a>
             </td>
             <td style="text-align: center;"><?= $campos_email['emp_fant'] ?></td>
             <td style="text-align: center;"><?= $campos_email['cred_usuario'] ?></td>
@@ -52,7 +52,7 @@ while ($campos_email = $resultado_email->fetch_array()) {
         <!--Apresenta se o for do usuario criador-->
         <tr>
             <td style="text-align: center;">
-                <a style="color: red;" href="email/view.php?id=<?= $id ?>&tipo=E-mail"><?= $campos_email['cred_desc']; ?></a>
+                <a style="color: red;" href="email/view.php?id=<?= $id ?>"><?= $campos_email['cred_desc']; ?></a>
             </td>
             <td style="text-align: center;"><?= $campos_email['emp_fant'] ?></td>
             <td style="text-align: center;"><?= $campos_email['cred_usuario'] ?></td>
@@ -63,7 +63,7 @@ while ($campos_email = $resultado_email->fetch_array()) {
         <tr>
             </td>
             <td style="text-align: center;">
-                <a style="color: red;" href="email/view.php?id=<?= $id ?>&tipo=E-mail"><?= $campos_email['cred_desc']; ?></a>
+                <a style="color: red;" href="email/view.php?id=<?= $id ?>"><?= $campos_email['cred_desc']; ?></a>
             </td>
             <td style="text-align: center;"><?= $campos_email['emp_fant'] ?></td>
             <td style="text-align: center;"><?= $campos_email['cred_usuario'] ?></td>
@@ -105,7 +105,7 @@ while ($campos_email = $resultado_email->fetch_array()) {
         } else { ?>
             <tr>
                 <td style="text-align: center;">
-                    <a style="color: red;" href="email/view.php?id=<?= $id ?>&tipo=E-mail"><?= $campos_email['cred_desc']; ?></a>
+                    <a style="color: red;" href="email/view.php?id=<?= $id ?>"><?= $campos_email['cred_desc']; ?></a>
                 </td>
                 <td style="text-align: center;"><?= $campos_email['emp_fant'] ?></td>
                 <td style="text-align: center;"><?= $campos_email['cred_usuario'] ?></td>

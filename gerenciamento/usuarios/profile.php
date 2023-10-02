@@ -4,49 +4,26 @@ require "../../includes/menu.php";
 $usuarioID = $_GET['id'];
 
 $sql_usuario =
-    "SELECT
-u.id as idUsuario,
+    "SELECT u.id as idUsuario,
 CASE
     WHEN u.notify_email = 1 THEN 'Ativado'
     WHEN u.notify_email = 0 THEN 'Inativado'
 END AS notify_email,
-u.tipo_usuario as tipoUsuario,
-p.nome as nome,
-p.email as email,
-pf.perfil as perfil,
-p.email as usuario,
-e.fantasia as empresa
-FROM
-usuarios as u
-LEFT JOIN
-pessoas as p
-ON
-p.id = u.pessoa_id
-LEFT JOIN
-perfil as pf
-ON
-pf.id = u.perfil_id
-LEFT JOIN
-empresas as e
-ON
-e.id = u.empresa_id
-WHERE
-u.id = $usuarioID";
+u.tipo_usuario as tipoUsuario, p.nome as nome, p.email as email, pf.perfil as perfil, p.email as usuario, e.fantasia as empresa, e.atributoEmpresaPropria as EmpresaPropria
+FROM usuarios as u
+LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+LEFT JOIN perfil as pf ON pf.id = u.perfil_id
+LEFT JOIN empresas as e ON e.id = u.empresa_id
+WHERE u.id = $usuarioID";
 
 $r_usuario = mysqli_query($mysqli, $sql_usuario);
 $campos = $r_usuario->fetch_array();
 
 $log_acesso =
-    "SELECT
-ip_address,
-horario,
-id
-FROM
-log_acesso
-WHERE
-usuario_id = $usuarioID
-ORDER BY
-horario DESC
+    "SELECT ip_address, horario, id
+FROM log_acesso
+WHERE usuario_id = $usuarioID
+ORDER BY horario DESC
 LIMIT 10";
 
 $r_log = mysqli_query($mysqli, $log_acesso);
@@ -97,6 +74,33 @@ if (empty($c_coordenador['coordenador'])) {
 } else {
     $coordenador = $c_coordenador['coordenador'];
 }
+
+if (isset($_GET['tab'])) {
+    if ($_GET['tab'] == "altPass") {
+        $nav_info = "";
+        $tab_info = "";
+        $nav_comp = "";
+        $tab_comp = "";
+        $nav_colab = "";
+        $tab_colab = "";
+        $nav_altPass = "active";
+        $tab_altPass = "show active";
+        $nav_log = "";
+        $tab_log = "";
+    }
+} else {
+    $nav_info = "active";
+    $tab_info = "show active";
+    $nav_comp = "";
+    $tab_comp = "";
+    $nav_colab = "";
+    $tab_colab = "";
+    $nav_altPass = "";
+    $tab_altPass = "";
+    $nav_log = "";
+    $tab_log = "";
+}
+
 ?>
 
 <main id="main" class="main">
@@ -116,37 +120,45 @@ if (empty($c_coordenador['coordenador'])) {
 
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="infos-tab" data-bs-toggle="tab" data-bs-target="#infos" type="button" role="tab" aria-controls="infos" aria-selected="true">Informações</button>
+                                    <button class="nav-link <?= $nav_info ?>" id="infos-tab" data-bs-toggle="tab" data-bs-target="#infos" type="button" role="tab" aria-controls="infos" aria-selected="true">Informações</button>
                                 </li>
-                                <?php if ($campos['tipoUsuario'] == 1) { ?>
+                                <?php if ($campos['EmpresaPropria'] == 1) { ?>
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="competencia-tab" data-bs-toggle="tab" data-bs-target="#competencia" type="button" role="tab" aria-controls="competencia" aria-selected="false" tabindex="-1">Competências</button>
+                                        <button class="nav-link <?= $nav_comp ?>" id="competencia-tab" data-bs-toggle="tab" data-bs-target="#competencia" type="button" role="tab" aria-controls="competencia" aria-selected="false" tabindex="-1">Competências</button>
                                     </li>
 
                                     <li class="nav-item" role="presentation">
-                                        <button class="nav-link" id="colaborador-tab" data-bs-toggle="tab" data-bs-target="#colaborador" type="button" role="tab" aria-controls="colaborador" aria-selected="false" tabindex="-1">Colaborador</button>
+                                        <button class="nav-link <?= $nav_colab ?>" id="colaborador-tab" data-bs-toggle="tab" data-bs-target="#colaborador" type="button" role="tab" aria-controls="colaborador" aria-selected="false" tabindex="-1">Colaborador</button>
                                     </li>
                                 <?php } ?>
 
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="log-tab" data-bs-toggle="tab" data-bs-target="#log" type="button" role="tab" aria-controls="log" aria-selected="false" tabindex="-1">LOGs Acesso</button>
+                                    <button class="nav-link <?= $nav_altPass ?>" id="senha-tab" data-bs-toggle="tab" data-bs-target="#senha" type="button" role="tab" aria-controls="senha" aria-selected="false" tabindex="-1">Alterar Senha</button>
+                                </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link <?= $nav_log ?>" id="log-tab" data-bs-toggle="tab" data-bs-target="#log" type="button" role="tab" aria-controls="log" aria-selected="false" tabindex="-1">LOGs Acesso</button>
                                 </li>
                             </ul>
                             <div class="tab-content pt-2" id="myTabContent">
-                                <div class="tab-pane fade show active" id="infos" role="tabpanel" aria-labelledby="infos-tab">
+                                <div class="tab-pane fade <?= $tab_info ?>" id="infos" role="tabpanel" aria-labelledby="infos-tab">
                                     <?php require "profile_tabs/infos.php" ?>
                                 </div>
-                                <?php if ($campos['tipoUsuario'] == 1) { ?>
-                                    <div class="tab-pane fade" id="competencia" role="tabpanel" aria-labelledby="competencia-tab">
+                                <?php if ($campos['EmpresaPropria'] == 1) { ?>
+                                    <div class="tab-pane fade <?= $tab_comp ?>" id="competencia" role="tabpanel" aria-labelledby="competencia-tab">
                                         <?php require "profile_tabs/competencia.php" ?>
                                     </div>
-                                    <div class="tab-pane fade" id="colaborador" role="tabpanel" aria-labelledby="colaborador-tab">
+                                    <div class="tab-pane fade <?= $tab_colab ?>" id="colaborador" role="tabpanel" aria-labelledby="colaborador-tab">
                                         <?php require "profile_tabs/colaborador.php" ?>
                                     </div>
 
                                 <?php } ?>
 
-                                <div class="tab-pane fade" id="log" role="tabpanel" aria-labelledby="log-tab">
+                                <div class="tab-pane fade <?= $tab_altPass ?>" id="senha" role="tabpanel" aria-labelledby="senha-tab">
+                                    <?php require "profile_tabs/altera_senha.php" ?>
+                                </div>
+
+                                <div class="tab-pane fade <?= $tab_log ?>" id="log" role="tabpanel" aria-labelledby="log-tab">
                                     <?php require "profile_tabs/logs.php" ?>
                                 </div>
                             </div><!-- End Default Tabs -->

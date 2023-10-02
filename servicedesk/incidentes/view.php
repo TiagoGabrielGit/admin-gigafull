@@ -380,6 +380,8 @@ if ($rowCount_permissions_submenu > 0) {
                                     ON
                                     e.id = goi.interessado_empresa_id
                                     WHERE
+                                    en.active = 1
+                                    and
                                     goi.active = 1
                                     and
                                     gpo.equipamento_id = $host_id";
@@ -417,6 +419,8 @@ if ($rowCount_permissions_submenu > 0) {
                                         ON
                                         e.id = rfi.interessado_empresa_id
                                         WHERE
+                                        en.active = 1
+                                        AND
                                         rfi.active = 1
                                         and
                                         rf.codigo = $host_id";
@@ -591,7 +595,6 @@ if ($rowCount_permissions_submenu > 0) {
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Comunicados Enviados</h5>
-                        <?= $id_incidente ?>
                         <form method="POST" action="/servicedesk/incidentes/processa/comunicaInteressados.php" class="d-inline-block">
                             <input value="<?= $id_incidente ?>" id="icdID" name="icdID" hidden readonly>
                             <button type="submit" class="btn btn-sm btn-success">Enviar Comunicado</button>

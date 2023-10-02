@@ -1,9 +1,5 @@
 <div class="accordion-item">
-    <h2 class="accordion-header" id="heading<?= $cont ?>">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $cont ?>" aria-expanded="false" aria-controls="collapse<?= $cont ?>">
-            <?= $campos['descricao'] ?>
-        </button>
-    </h2>
+    <h2 class="accordion-header" id="heading<?= $cont ?>"> <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $cont ?>" aria-expanded="false" aria-controls="collapse<?= $cont ?>"> <?= $campos['descricao'] ?> </button></h2>
     <div id="collapse<?= $cont ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $cont ?>" data-bs-parent="#accordionExample" style="">
         <div class="accordion-body">
             <div class="row justify-content-between">
@@ -12,7 +8,7 @@
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label"><strong>IP:</strong></label>
                         <div class="col-sm-5">
-                            <input id="ip-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['ip'] ?>" disabled>
+                            <input id="ip-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['ip'] ?>" readonly>
                         </div>
                         <div class="col-sm-3">
                             <button id="btn_ip-input<?= $id_credencial ?>" class="btn btn-secondary" onclick="copyToClipboard('ip-input<?= $id_credencial ?>')">Copiar</button>
@@ -23,7 +19,7 @@
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label"><strong>Privacidade:</strong></label>
                         <div class="col-sm-5">
-                            <input id="privacidade-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['privacidade'] ?>" disabled>
+                            <input id="privacidade-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['privacidade'] ?>" readonly>
                         </div>
                     </div>
 
@@ -31,18 +27,18 @@
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label"><strong>Usuário:</strong></label>
                         <div class="col-sm-5">
-                            <input id="usuario-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['vmuser'] ?>" disabled>
+                            <input id="usuario-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['eqpuser'] ?>" readonly>
                         </div>
                         <div class="col-sm-3">
                             <button id="btn_usuario-input<?= $id_credencial ?>" class="btn btn-secondary" onclick="copyToClipboard('usuario-input<?= $id_credencial ?>')">Copiar</button>
                             <button id="hbtn_usuario-input<?= $id_credencial ?>" class="btn btn-success" disabled hidden>Copiado</button>
                         </div>
                     </div>
-
+ 
                     <div class="row mb-3">
                         <label class="col-sm-4 col-form-label"><strong>Senha:</strong></label>
                         <div class="col-sm-5">
-                            <input id="senha-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['vmsenha'] ?>" disabled>
+                            <input id="senha-input<?= $id_credencial ?>" type="text" class="form-control" value="<?= $campos['eqpsenha'] ?>" readonly>
                         </div>
                         <div class="col-sm-3">
                             <button id="btn_senha-input<?= $id_credencial ?>" class="btn btn-secondary" onclick="copyToClipboard('senha-input<?= $id_credencial ?>')">Copiar</button>
@@ -51,7 +47,7 @@
                     </div>
                 </div>
                 <div class="col-3">
-                    <a href="/telecom/credentials/view.php?id=<?= $id_credencial ?>&tipo=VM" title="Editar">
+                    <a href="/telecom/credentials/equipamentos/credenciais/view.php?id=<?= $id_credencial ?>" title="Editar">
                         <button type="button" class="btn btn-warning">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wrench-adjustable-circle" viewBox="0 0 16 16">
                                 <path d="M12.496 8a4.491 4.491 0 0 1-1.703 3.526L9.497 8.5l2.959-1.11c.027.2.04.403.04.61Z"></path>
@@ -60,7 +56,7 @@
 
                         </button>
                     </a>
-                    <a href="/telecom/credentials/vm/processa/active.php?id=<?= $id_credencial ?>&parametro=0&idVM=<?= $id ?>" title="Inativar">
+                    <a href="/telecom/credentials/equipamentos/processa/active.php?id=<?= $id_credencial ?>&parametro=0&idEquipamento=<?= $id ?>" title="Inativar">
                         <button type="button" class="btn btn-danger">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-circle" viewBox="0 0 16 16">
                                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
