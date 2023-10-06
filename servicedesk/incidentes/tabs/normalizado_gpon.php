@@ -1,4 +1,77 @@
 <hr class="sidebar-divider">
+<div class="col-lg-12">
+    <!--<form method="POST" action="#">
+        <div class="row">
+            <div class="col-4">
+                <label for="filterClassificacaoGPON" class="form-label">Classificação</label>
+                <select id="filterClassificacaoGPON" name="filterClassificacaoGPON" class="form-control">
+                    <option value="" disabled selected>Selecione...</option>
+                    <?php
+                    // Configurações de conexão com o banco de dados (substitua pelas suas credenciais)
+                    $servername = "seu_servidor";
+                    $username = "seu_usuario";
+                    $password = "sua_senha";
+                    $dbname = "seu_banco_de_dados";
+
+                    try {
+                        // Cria uma nova conexão PDO
+
+                        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                        // Sua consulta SQL
+                        $sql_classificacao =
+                            "SELECT ic.classificacao
+                    FROM incidentes_classificacao as ic
+                    WHERE ic.active = 1
+                    ORDER BY ic.classificacao ASC";
+
+                        // Prepara a consulta
+                        $stmt = $conn->prepare($sql_classificacao);
+
+                        // Executa a consulta
+                        $stmt->execute();
+
+                        // Itera sobre os resultados e preenche as opções do select
+                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<option value="' . $row['classificacao'] . '">' . $row['classificacao'] . '</option>';
+                        }
+                    } catch (PDOException $e) {
+                        echo "Erro na conexão: " . $e->getMessage();
+                    }
+
+                    // Fecha a conexão com o banco de dados
+                    $conn = null;
+                    ?>
+                </select>
+            </div>
+            <div class="col-3">
+                <label class="form-label" for="filterComunicadoGPON">Comunicado Normalização</label>
+                <select name="filterComunicadoGPON" class="form-control" id="filterComunicadoGPON">
+                    <option value="" disabled selected>Selecione</option>
+                    <option value="0">Não Enviado</option>
+                    <option value="1">Enviado</option>
+                </select>
+            </div>
+            <div class="col-3">
+                <label for="filterLimiteGPON" class="form-label"> Limite de Busca</label>
+                <select id="filterLimiteGPON" name="filterLimiteGPON" class="form-control">
+                    <option selected value="100"> 100 Incidentes</option>
+                    <option value="10"> 10 Incidentes</option>
+                    <option value="50"> 50 Incidentes</option>
+                </select>
+            </div>
+            <div class="col-2">
+                <button style="margin-top:  35px;" type="submit" class="btn btn-sm btn-danger">Filtrar</button>
+            </div>
+        </div>
+    </form>-->
+</div>
+
+<?php
+$limite = isset($_POST['filterLimiteGPON']) ? $_POST['filterLimiteGPON'] : 5;
+?>
+
+<hr class="sidebar-divider">
 
 <div class="accordion" id="accordionFlushExample">
 
@@ -13,6 +86,7 @@
                 i.descricaoIncidente as descricaoIncidente,
                 i.active as activeID,
                 ic.classificacao as classificacao,
+                i.envio_com_normalizacao as envio_com_normalizacao,
                 ic.color as ClassColor,
                 i.pon_id as pon_id,
                 i.previsaoNormalizacao as previsaoNormalizacao2,
@@ -30,7 +104,7 @@
                 LEFT JOIN incidentes_types as it ON it.codigo = i.incident_type
                 WHERE oi.interessado_empresa_id = $empresaID AND i.active = 0 AND oi.active = 1
                 ORDER BY i.inicioIncidente DESC
-                LIMIT 100";
+                LIMIT $limite";
 
 
     $r_sql_incidentes = mysqli_query($mysqli, $sql_incidentes);
@@ -89,24 +163,25 @@
                             $currentDate = strtotime(date("Y-m-d H:i:s"));
                             $previsaoNormalizacao = strtotime($campos['previsaoNormalizacao2']);
 
-                            if ($campos['previsaoNormalizacao2'] === null) {
-                                $colorPill = "secondary";
-                            } else if ($previsaoNormalizacao < $currentDate) {
+                            if ($campos['envio_com_normalizacao'] == 1) {
+                                $colorPill = "success";
+                            } else {
                                 $colorPill = "danger";
-                            } else if ($previsaoNormalizacao > $currentDate) {
-                                $colorPill = "info";
                             }
 
-                            if ($campos['previsaoNormalizacao'] == NULL) { ?>
-                                <span class="btn btn-sm btn-<?= $colorPill ?> rounded-pill"><b>Sem Previsão</b></span>
+
+
+
+                            if ($campos['envio_com_normalizacao'] == 1) { ?>
+                                <span class="btn btn-sm btn-<?= $colorPill ?> rounded-pill"><b>Enviado</b></span>
                             <?php } else { ?>
-                                <span class="btn btn-sm btn-<?= $colorPill ?> rounded-pill"><b><?= $campos['previsaoNormalizacao'] ?></b></span>
+                                <span class="btn btn-sm btn-<?= $colorPill ?> rounded-pill"><b>Não Enviado</b></span>
                             <?php } ?>
-                            <!-- </div>-->
+
                         </span>
                     </div>
                 </button>
- 
+
             </h2>
             <div id="flush-collapse<?= $cont ?>" class="accordion-collapse collapse" aria-labelledby="flush-heading<?= $cont ?>" data-bs-parent="#accordionFlushExample">
                 <div class="accordion-body colorAccordion">
@@ -147,7 +222,7 @@
                         if ($permissaoGerenciar == 1) { ?>
                             <div class="col-2">
                                 <a href="/servicedesk/incidentes/view.php?id=<?= $id_incidente ?>" title="Visualizar">
-                                    <button type="button" class="btn btn-danger">
+                                    <button type="button" class="btn btn-sm btn-danger">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                             <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
                                             <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />

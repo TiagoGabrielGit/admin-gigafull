@@ -11,7 +11,7 @@
     Desenvolvido por <a href="https://www.gigafull.com.br/">Gigafull Soluções Tecnológicas</a>
   </div>
   <div class="credits">
-    <a href="/sistema/changelog.php">Versão 11.3</a>
+    <a href="/sistema/changelog.php">Versão 11.4</a>
   </div>
 </footer><!-- End Footer -->
 

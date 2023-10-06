@@ -108,7 +108,7 @@ if ($rowCount_permissions > 0) {
                                                             </div>
 
                                                             <div class="col-6">
-                                                                <label for="telefone" class="form-label">Tefone</label>
+                                                                <label for="telefone" class="form-label">Telefone</label>
                                                                 <input name="telefone" type="text" class="form-control" id="telefone">
                                                             </div>
 

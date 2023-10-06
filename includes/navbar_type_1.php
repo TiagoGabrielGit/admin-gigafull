@@ -199,6 +199,13 @@ require "validaRotina.php";
                         </li>
                     <?php } ?>
 
+                    <?php if ($c_nav_sub_iframe_incidentes['c'] == 1) { ?>
+                        <li>
+                            <a href="/servicedesk/incidentes/iframe/index.php">
+                                <i class="bi bi-circle"></i><span>Iframe</span>
+                            </a>
+                        </li>
+                    <?php } ?>
                 </ul>
             </li>
         <?php } ?>
@@ -498,4 +505,3 @@ require "validaRotina.php";
     </ul>
 
 </aside>
-

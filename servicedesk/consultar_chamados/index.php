@@ -378,8 +378,6 @@ u.id = '$id_usuario'
                                                                     p.id = u.pessoa_id
                                                                     WHERE
                                                                     u.active = 1
-                                                                    and
-                                                                    u.tipo_usuario = 1
                                                                     ORDER BY
                                                                     p.nome ASC";
 
@@ -422,14 +420,12 @@ u.id = '$id_usuario'
                                                                     p.nome as 'atendente'
                                                                     FROM
                                                                     usuarios as u
-                                                                    LEFT JOIN
-                                                                    pessoas as p
-                                                                    ON
-                                                                    p.id = u.pessoa_id
+                                                                    LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                                                                    LEFT JOIN empresas as e ON e.id = u.empresa_id
                                                                     WHERE
                                                                     u.active = 1
                                                                     and
-                                                                    u.tipo_usuario = 1
+                                                                    e.atributoEmpresaPropria = 1
                                                                     ORDER BY
                                                                     p.nome ASC";
 
