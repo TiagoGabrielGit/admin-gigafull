@@ -35,12 +35,7 @@ require "conexoes/conexao_pdo.php";
     $r_man_prog_menos_24h_backbone = mysqli_query($mysqli, $man_prog_menos_24h_backbone);
     $c_man_prog_menos_24h_backbone = $r_man_prog_menos_24h_backbone->fetch_array();
 
-    if (isset($c_man_prog_menos_24h_backbone['qtde']) || isset($c_man_prog_menos_24h_gpon['qtde'])) {
-        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
-        echo '<b>Existe uma manutenção programada com inicio previsto em menos de 24h.</b>';
-        //echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
-        echo '</div>';
-    }
+
 
     $man_prog_ocorrendo_gpon =
         "SELECT count(*) as qtde
@@ -67,7 +62,12 @@ require "conexoes/conexao_pdo.php";
 
     $r_man_prog_ocorrendo_backbone = mysqli_query($mysqli, $man_prog_ocorrendo_backbone);
     $c_man_prog_ocorrendo_backbone = $r_man_prog_ocorrendo_backbone->fetch_array();
-
+    if (isset($c_man_prog_menos_24h_backbone['qtde']) || isset($c_man_prog_menos_24h_gpon['qtde'])) {
+        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
+        echo '<b>Existe uma manutenção programada com inicio previsto em menos de 24h.</b>';
+        //echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+        echo '</div>';
+    } 
     if (isset($c_man_prog_ocorrendo_backbone['qtde']) || isset($c_man_prog_ocorrendo_gpon['qtde'])) {
         echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
         echo '<b>Existe uma manutenção programada ocorrendo.</b>';

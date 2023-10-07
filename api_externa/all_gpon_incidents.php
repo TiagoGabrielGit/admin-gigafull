@@ -12,7 +12,8 @@ try {
     $sql = "SELECT i.* , gp.cod_int
     FROM incidentes as i 
     LEFT JOIN gpon_pon as gp ON gp.id = i.pon_id
-    WHERE i.incident_type = 100 AND i.id = 10004 
+    WHERE i.incident_type = 100
+    ORDER BY i.id desc
     LIMIT 100";
     $stmt = $pdo->query($sql);
     $incidentes = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -23,7 +24,8 @@ try {
             "SELECT ic.classificacao, ir.horarioRelato, ir.previsaoNormalizacao
         FROM incidentes_relatos as ir
         LEFT JOIN incidentes_classificacao as ic ON ic.id = ir.classificacao
-        WHERE incidente_id = ?";
+        WHERE incidente_id = ?
+        ORDER BY ir.id desc";
         $stmt_relatos = $pdo->prepare($sql_relatos);
         $stmt_relatos->execute([$id_incidente]);
         $incidente['historico'] = $stmt_relatos->fetchAll(PDO::FETCH_ASSOC);

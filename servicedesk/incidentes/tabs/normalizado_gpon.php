@@ -4,6 +4,8 @@
 $classificacao_gpon = '%';
 $comunicado_gpon = '%';
 $limite = '15';
+$deInicioIncidente = '1900-08-29'; // Data de início desejada no formato 'Y-m-d'
+$ateInicioIncidente = '2500-10-15';    // Data de fim desejada no formato 'Y-m-d'
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filterClassificacaoGPON'])) {
@@ -16,6 +18,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filterComunicadoGPON'
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filterLimiteGPON'])) {
     $limite = $_POST['filterLimiteGPON'];
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deInicioIncidente']) && !empty($_POST['deInicioIncidente'])) {
+    $deInicioIncidente = $_POST['deInicioIncidente'];
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ateInicioIncidente']) && !empty($_POST['ateInicioIncidente'])) {
+    $ateInicioIncidente = $_POST['ateInicioIncidente'];
 }
 ?>
 
@@ -73,6 +83,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filterLimiteGPON'])) 
                 <button style="margin-top:  35px;" type="submit" class="btn btn-sm btn-danger">Filtrar</button>
             </div>
         </div>
+        <div class="row">
+            <div class="col-3">
+                <label for="deInicioIncidente">De - Início do Incidente</label>
+                <input type="date" name="deInicioIncidente" id="deInicioIncidente" class="form-control" value="<?= isset($_POST['deInicioIncidente']) ? $_POST['deInicioIncidente'] : ''; ?>">
+            </div>
+            <div class="col-3">
+                <label for="ateInicioIncidente">Até - Início do Incidente</label>
+                <input type="date" name="ateInicioIncidente" id="ateInicioIncidente" class="form-control" value="<?= isset($_POST['ateInicioIncidente']) ? $_POST['ateInicioIncidente'] : ''; ?>">
+            </div>
+        </div>
     </form>
 </div>
 
@@ -81,7 +101,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filterLimiteGPON'])) 
 <div class="accordion" id="accordionFlushExample">
 
     <?php
-
     $sql_incidentes =
         "SELECT
                 i.zabbix_event_id as zabbixID,
@@ -108,6 +127,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filterLimiteGPON'])) 
                 LEFT JOIN usuarios as u ON i.autor_id = u.id LEFT JOIN pessoas as p ON p.id = u.pessoa_id
                 LEFT JOIN incidentes_types as it ON it.codigo = i.incident_type
                 WHERE oi.interessado_empresa_id = $empresaID AND i.active = 0 AND oi.active = 1 AND i.classificacao LIKE '$classificacao_gpon' AND i.envio_com_normalizacao LIKE '$comunicado_gpon'
+
+                AND i.inicioIncidente >= '$deInicioIncidente'
+                AND i.inicioIncidente <= '$ateInicioIncidente'
+    
                 ORDER BY i.inicioIncidente DESC
                 LIMIT $limite";
 

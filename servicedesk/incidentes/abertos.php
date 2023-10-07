@@ -88,15 +88,17 @@ if ($rowCount_permissions_submenu > 0) {
     $c_inc_backb = $r_inc_backb->fetch_array();
 
     $count_man_prog_af_gpon =
-        "SELECT count(*) as qtde
+    "SELECT COUNT(*) as qtde
+    FROM (
+        SELECT mp.id
         FROM manutencao_programada as mp
         LEFT JOIN manutencao_gpon as mg ON mg.manutencao_id = mp.id
         LEFT JOIN gpon_pon as gp on gp.id = mg.pon_id
         LEFT JOIN gpon_olts as go on go.id = gp.olt_id
         LEFT JOIN gpon_olts_interessados as goi ON goi.gpon_olt_id = go.id
-        where mp.active = 1   and goi.interessado_empresa_id = $empresaID and goi.active = 1
+        WHERE mp.active = 1 AND goi.interessado_empresa_id = $empresaID AND goi.active = 1
         GROUP BY mp.id
-        ";
+    ) AS subquery;";
 
     $r_man_prog_af_gpon = mysqli_query($mysqli, $count_man_prog_af_gpon);
     $c_man_prog_af_gpon = $r_man_prog_af_gpon->fetch_array();

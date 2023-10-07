@@ -56,21 +56,38 @@ if ($classIncidente != NULL || $statusIncidente != NULL || $tipoIncidente != NUL
         }
     }
 
+    $sql .= "envio_com_normalizacao = :envio_com_normalizacao, ";
+    $params[':envio_com_normalizacao'] = '0';
+
     $sql = rtrim($sql, ", ") . " WHERE id = :id";
     $params[':id'] = $incidenteID;
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
 }
-$sql2 = "INSERT INTO incidentes_relatos (incidente_id, relato_autor, relato, horarioRelato, classificacao, previsaoNormalizacao) VALUES (:valor1, :valor4, :valor2, :valor3, :valor5, :valor6)";
+$sql2 = "INSERT INTO incidentes_relatos (incidente_id, relato_autor, relato, horarioRelato, classificacao, previsaoNormalizacao) VALUES (:valor1, :valor4, :valor2, :valor3, :classificacao, :previsaoNormalizacao)";
 $stmt2 = $pdo->prepare($sql2);
 
 $stmt2->bindValue(':valor1', $incidenteID);
 $stmt2->bindValue(':valor2', $relatoIncidente);
 $stmt2->bindValue(':valor3', $horaAtual);
 $stmt2->bindValue(':valor4', $solicitante);
-$stmt2->bindValue(':valor5', $classIncidente);
-$stmt2->bindValue(':valor6', $previsaoConclusao);
+$stmt2->bindValue(':classificacao', $classIncidente);
+if (isset($_POST['semPrevisao'])) {
+    $previsaoConclusao = null;
+    $stmt2->bindValue(':previsaoNormalizacao', $previsaoConclusao);
+} else {
+    if ($previsaoConclusao != null) {
+        $stmt2->bindValue(':previsaoNormalizacao', $previsaoConclusao);
+    } else {
+        $previsaoConclusao = null;
+        $stmt2->bindValue(':previsaoNormalizacao', $previsaoConclusao);
+    }
+}
+
+
+
+$stmt2->bindValue(':previsaoNormalizacao', $previsaoConclusao);
 
 if ($stmt2->execute()) {
     if ($zabbixEventID == null) {

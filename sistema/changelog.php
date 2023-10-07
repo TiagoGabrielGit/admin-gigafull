@@ -16,6 +16,52 @@ require "../includes/menu.php";
             <div class="accordion" id="accordionExample">
 
               <div class="accordion-item">
+                <h2 class="accordion-header" id="heading11-6">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse11-6" aria-expanded="false" aria-controls="collapse11-6">
+                    Versão 11.6 - 07/10/2023
+                  </button>
+                </h2>
+                <div id="collapse11-6" class="accordion-collapse collapse" aria-labelledby="heading11-6" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Correção no contador de MP;<br>
+                    # Indicador de MP na tela de iframe incidentes;<br>
+                    # Correção no filtro normalizados em iframe;<br>
+                    # Preencher com id 0 a coluna de envio de comiunicado normalizacao;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Envio comunicados normalização incidentes;<br>
+                    # Envio comunicados sobre incidentes backbone;<br>
+                    # Enter para login;<br>
+                    # Alternar tabs automanticamente no iframe incidentes;<br>
+                    # White-Label iframe incidentes;<br>
+                    # TABs permitidas no iframe incidentes;<br>
+                    # Remover PON/RF durante criação de MP;<br>
+                    # Vincular uma documentação à um tipo de incidente;<br>
+                    # Selecionar publico ou privado no relato avulso;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Energia POP;<br>
+                    # Atributos de equipamentos;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Anexo arquivos em chamados;<br>
+                    # Permissões em documentações;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                    # Dependencia de chamados;<br>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="accordion" id="accordionExample">
+
+              <div class="accordion-item">
                 <h2 class="accordion-header" id="heading11-5">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse11-5" aria-expanded="false" aria-controls="collapse11-5">
                     Versão 11.5 - 06/10/2023

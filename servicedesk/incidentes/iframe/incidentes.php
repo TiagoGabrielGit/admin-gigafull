@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta http-equiv="refresh" content="60"> <!-- Atualiza a página a cada 40 segundos -->
+    <meta http-equiv="refresh" content="10"> <!-- Atualiza a página a cada 40 segundos -->
 
     <title>SmartControl</title>
     <meta content="" name="description">
@@ -36,12 +36,44 @@
             /* Defina a quantidade de espaço desejada (20px no exemplo) */
         }
     </style>
+
+
+    <?php
+    session_start();
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['stateIncident'])) {
+        if ($_POST['stateIncident'] == 0) {
+            $_SESSION['stateIncident'] = 0; // Usar "=" para atribuir o valor
+        } else if ($_POST['stateIncident'] == 1) {
+            $_SESSION['stateIncident'] = 1; // Usar "=" para atribuir o valor
+        }
+    } else if (!isset($_SESSION['stateIncident'])) {
+        $_SESSION['stateIncident'] = 0; // Usar "=" para atribuir o valor
+
+    }
+    ?>
+
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title"></h5>
+                        <br>
+                        <?php
+                        if (isset($c_man_prog_menos_24h_backbone['qtde']) || isset($c_man_prog_menos_24h_gpon['qtde'])) {
+                            echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">';
+                            echo '<b>Existe uma manutenção programada com inicio previsto em menos de 24h.</b>';
+                            //echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                            echo '</div>';
+                        }
+
+                        if (isset($c_man_prog_ocorrendo_backbone['qtde']) || isset($c_man_prog_ocorrendo_gpon['qtde'])) {
+                            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
+                            echo '<b>Existe uma manutenção programada ocorrendo.</b>';
+                            //echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+                            echo '</div>';
+                        }
+                        ?>
+
                         <div class="row">
                             <div class="col-lg-9">
                                 <form method="POST" action="#">
@@ -49,8 +81,8 @@
                                         <div class="col-4">
                                             <label class="form-label" for="stateIncident">Status Incidente</label>
                                             <select id="stateIncident" name="stateIncident" class="form-select">
-                                                <option value="1" <?php if (isset($_POST['stateIncident']) && $_POST['stateIncident'] == '1') echo 'selected'; ?>>Normalizado</option>
-                                                <option value="0" <?php if (!isset($_POST['stateIncident']) || (isset($_POST['stateIncident']) && $_POST['stateIncident'] == '0')) echo 'selected'; ?>>Alarmando</option>
+                                                <option value="1" <?php if (isset($_SESSION['stateIncident']) && $_SESSION['stateIncident'] == '1') echo 'selected'; ?>>Normalizado</option>
+                                                <option value="0" <?php if (!isset($_SESSION['stateIncident']) || (isset($_SESSION['stateIncident']) && $_SESSION['stateIncident'] == '0')) echo 'selected'; ?>>Alarmando</option>
                                             </select>
                                         </div>
                                         <div class="col-4">
@@ -68,15 +100,6 @@
                             </div>
                         </div>
 
-                        <?php
-                        if (isset($_POST['stateIncident'])) {
-                            $stateIncident = $_POST['stateIncident'];
-                        } else {
-                            $stateIncident = "0";
-                        }
-
-                        ?>
-
                         <br><br>
                         <!-- Bordered Tabs Justified -->
                         <ul class="nav nav-tabs nav-tabs-bordered d-flex" id="borderedTabJustified" role="tablist">
@@ -84,7 +107,7 @@
 
                                 <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-home" type="button" role="tab" aria-controls="home" aria-selected="true">
                                     <?php
-                                    if ($c_inc_gpon['qtde'] > 0 && $stateIncident == 0) {    ?>
+                                    if ($c_inc_gpon['qtde'] > 0 && $_SESSION['stateIncident'] == 0) {    ?>
                                         <span class="badge bg-danger text-white"><?= $c_inc_gpon['qtde'] ?></span>
                                     <?php } ?>
                                     Incidentes GPON</button>
@@ -93,7 +116,7 @@
                             <li class="nav-item flex-fill" role="presentation">
                                 <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-contact" type="button" role="tab" aria-controls="contact" aria-selected="false">
                                     <?php
-                                    if ($c_inc_backb['qtde'] > 0 && $stateIncident == 0) {    ?>
+                                    if ($c_inc_backb['qtde'] > 0 && $_SESSION['stateIncident'] == 0) {    ?>
                                         <span class="badge bg-danger text-white"><?= $c_inc_backb['qtde'] ?></span>
                                     <?php } ?>
 
@@ -115,7 +138,7 @@
                         <div class="tab-content pt-2" id="borderedTabJustifiedContent">
                             <div class="tab-pane fade show active" id="bordered-justified-home" role="tabpanel" aria-labelledby="home-tab">
                                 <?php
-                                if ($stateIncident == 0) {
+                                if ($_SESSION['stateIncident'] == 0) {
                                     require "../tabs/aberto_gpon.php";
                                 } else {
                                     require "../tabs/normalizado_gpon.php";
@@ -123,7 +146,7 @@
                             </div>
                             <div class="tab-pane fade" id="bordered-justified-contact" role="tabpanel" aria-labelledby="contact-tab">
                                 <?php
-                                if ($stateIncident == 0) {
+                                if ($_SESSION['stateIncident'] == 0) {
                                     require "../tabs/aberto_backbone.php";
                                 } else {
                                     require "../tabs/normalizado_backbone.php";
@@ -133,7 +156,7 @@
                             <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel" aria-labelledby="profile-tab">
 
                                 <?php
-                                if ($stateIncident == 0) {
+                                if ($_SESSION['stateIncident'] == 0) {
                                     require "../tabs/aberto_man_programada.php";
                                 } ?>
 
@@ -167,44 +190,3 @@
 </body>
 
 </html>
-
-<script>
-    // Função para alternar as abas
-    function alternarAbas() {
-        let abas = document.querySelectorAll('.nav-link[data-bs-toggle="tab"]'); // Seleciona todas as abas
-        let abaAtiva = document.querySelector('.nav-link.active[data-bs-toggle="tab"]'); // Pega a aba ativa
-
-        let idAbaAtiva = abaAtiva.getAttribute('href'); // Pega o ID da aba ativa
-        let indexAbaAtiva = Array.from(abas).indexOf(abaAtiva); // Pega o índice da aba ativa
-
-        // Calcula o próximo índice da aba a ser ativada
-        let proximoIndex = (indexAbaAtiva + 1) % abas.length;
-
-        let proximaAba = abas[proximoIndex];
-        let idProximaAba = proximaAba.getAttribute('href');
-
-        // Remove a classe "active" da aba atual
-        abaAtiva.classList.remove('active');
-        // Adiciona a classe "active" à próxima aba
-        proximaAba.classList.add('active');
-
-        // Remove a classe "show" da aba atual
-        document.querySelector(idAbaAtiva).classList.remove('show', 'active');
-        // Adiciona a classe "show" à próxima aba
-        document.querySelector(idProximaAba).classList.add('show', 'active');
-
-        // Carrega o conteúdo da próxima aba
-        carregarConteudo(idProximaAba);
-    }
-
-    // Função para carregar o conteúdo da aba
-    function carregarConteudo(idAba) {
-        let conteudo = document.querySelector(idAba);
-        if (conteudo) {
-            // Coloque aqui a lógica para carregar o conteúdo da aba se necessário
-        }
-    }
-
-    // Chama a função para alternar as abas a cada 20 segundos
-    setInterval(alternarAbas, 20000); // 20000 milissegundos = 20 segundos
-</script>
