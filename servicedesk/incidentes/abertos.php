@@ -114,6 +114,9 @@ if ($rowCount_permissions_submenu > 0) {
     $r_man_prog_af_backbone = mysqli_query($mysqli, $count_man_prog_af_backbone);
     $c_man_prog_af_backbone = $r_man_prog_af_backbone->fetch_array();
 
+    $total_mp = (isset($c_man_prog_af_backbone['qtde']) && $c_man_prog_af_backbone['qtde'] > 0 ? $c_man_prog_af_backbone['qtde'] : 0) +
+        (isset($c_man_prog_af_gpon['qtde']) && $c_man_prog_af_gpon['qtde'] > 0 ? $c_man_prog_af_gpon['qtde'] : 0);
+
     $count_inc_oth =
         "SELECT
         count(id) as qtde
@@ -164,10 +167,13 @@ if ($rowCount_permissions_submenu > 0) {
 
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link <?= $nav_man_programada ?>" id="man_programada-tab" data-bs-toggle="tab" data-bs-target="#man_programada" type="button" role="tab" aria-controls="man_programada" aria-selected="false">Manutenção Programada
+
+
                                         <?php
-                                        if (isset($c_man_prog_af_gpon['qtde']) || isset($c_man_prog_af_backbone['qtde'])) {    ?>
-                                            <span class="badge bg-danger text-white"><i class="bi bi-exclamation-triangle"></i></span>
+                                        if ($total_mp > 0) {    ?>
+                                            <span class="badge bg-danger text-white"><?= $total_mp ?></span>
                                         <?php } ?>
+
                                     </button>
                                 </li>
 

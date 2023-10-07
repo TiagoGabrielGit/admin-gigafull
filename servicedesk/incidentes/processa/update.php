@@ -62,13 +62,16 @@ if ($classIncidente != NULL || $statusIncidente != NULL || $tipoIncidente != NUL
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
 }
-$sql2 = "INSERT INTO incidentes_relatos (incidente_id, relato_autor, relato, horarioRelato) VALUES (:valor1, :valor4, :valor2, :valor3)";
+$sql2 = "INSERT INTO incidentes_relatos (incidente_id, relato_autor, relato, horarioRelato, classificacao, previsaoNormalizacao) VALUES (:valor1, :valor4, :valor2, :valor3, :valor5, :valor6)";
 $stmt2 = $pdo->prepare($sql2);
 
 $stmt2->bindValue(':valor1', $incidenteID);
 $stmt2->bindValue(':valor2', $relatoIncidente);
 $stmt2->bindValue(':valor3', $horaAtual);
 $stmt2->bindValue(':valor4', $solicitante);
+$stmt2->bindValue(':valor5', $classIncidente);
+$stmt2->bindValue(':valor6', $previsaoConclusao);
+
 if ($stmt2->execute()) {
     if ($zabbixEventID == null) {
         if ($comunicarInteressados == 1) {

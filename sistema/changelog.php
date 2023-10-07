@@ -16,6 +16,58 @@ require "../includes/menu.php";
             <div class="accordion" id="accordionExample">
 
               <div class="accordion-item">
+                <h2 class="accordion-header" id="heading11-5">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse11-5" aria-expanded="false" aria-controls="collapse11-5">
+                    Versão 11.5 - 06/10/2023
+                  </button>
+                </h2>
+                <div id="collapse11-5" class="accordion-collapse collapse" aria-labelledby="heading11-5" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Filtros em incidentes normalizados;<br>
+                    # Reload iframe incidentes;<br>
+                    # Histórico de classificação em incidentes;<br>
+                    # Histórico de prazo normalização em incidentes;<br>
+                    # Retorno da classificação na API all_incidents;<br>
+                    # Retorno do prazo de normalização na API all_incidents;<br>
+                    # Retorno do cod_int da PON na API all_incidents;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criado a coluna classificacao na tabela incidentes_relatos;<br>
+                    # Criado a coluna previsaoNormalizacao na tabela incidentes_relatos;<br>
+
+                    <br><strong>Backlog</strong><br>
+
+
+                    # Enter para login;<br>
+                    # Alternar tabs automanticamente no iframe incidentes;<br>
+
+                    # White-Label iframe incidentes;<br>
+                    # TABs permitidas no iframe incidentes;<br>
+                    # Remover PON/RF durante criação de MP;<br>
+                    # Envio comunicados sobre incidentes backbone;<br>
+                    # Vincular uma documentação à um tipo de incidente;<br>
+                    # Selecionar publico ou privado no relato avulso;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Energia POP;<br>
+                    # Atributos de equipamentos;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Anexo arquivos em chamados;<br>
+                    # Permissões em documentações;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                    # Dependencia de chamados;<br>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion" id="accordionExample">
+
+              <div class="accordion-item">
                 <h2 class="accordion-header" id="heading11-4">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse11-4" aria-expanded="false" aria-controls="collapse11-4">
                     Versão 11.4 - 06/10/2023

@@ -1,75 +1,80 @@
 <hr class="sidebar-divider">
+
+<?php
+$classificacao_gpon = '%';
+$comunicado_gpon = '%';
+$limite = '15';
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filterClassificacaoGPON'])) {
+    $classificacao_gpon = $_POST['filterClassificacaoGPON'];
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filterComunicadoGPON'])) {
+    $comunicado_gpon = $_POST['filterComunicadoGPON'];
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filterLimiteGPON'])) {
+    $limite = $_POST['filterLimiteGPON'];
+}
+?>
+
 <div class="col-lg-12">
-    <!--<form method="POST" action="#">
+    <form method="POST" action="#">
         <div class="row">
             <div class="col-4">
                 <label for="filterClassificacaoGPON" class="form-label">Classificação</label>
-                <select id="filterClassificacaoGPON" name="filterClassificacaoGPON" class="form-control">
-                    <option value="" disabled selected>Selecione...</option>
+                <select id="filterClassificacaoGPON" name="filterClassificacaoGPON" class="form-select">
+                    <option value="%" <?php if (!isset($_POST['filterClassificacaoGPON']) || $_POST['filterClassificacaoGPON'] === '%') echo ' selected'; ?>>Todos</option>
                     <?php
-                    // Configurações de conexão com o banco de dados (substitua pelas suas credenciais)
-                    $servername = "seu_servidor";
-                    $username = "seu_usuario";
-                    $password = "sua_senha";
-                    $dbname = "seu_banco_de_dados";
-
                     try {
-                        // Cria uma nova conexão PDO
-
                         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-                        // Sua consulta SQL
                         $sql_classificacao =
-                            "SELECT ic.classificacao
-                    FROM incidentes_classificacao as ic
-                    WHERE ic.active = 1
-                    ORDER BY ic.classificacao ASC";
-
-                        // Prepara a consulta
-                        $stmt = $conn->prepare($sql_classificacao);
-
-                        // Executa a consulta
+                            "SELECT ic.id, ic.classificacao
+                            FROM incidentes_classificacao as ic
+                            WHERE ic.active = 1
+                            ORDER BY ic.classificacao ASC";
+                        $stmt = $pdo->prepare($sql_classificacao);
                         $stmt->execute();
-
-                        // Itera sobre os resultados e preenche as opções do select
                         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            echo '<option value="' . $row['classificacao'] . '">' . $row['classificacao'] . '</option>';
+                            $optionValue = $row['id'];
+                            $optionText = $row['classificacao'];
+                            $selected = (isset($_POST['filterClassificacaoGPON']) && $_POST['filterClassificacaoGPON'] == $optionValue) ? 'selected' : ''; // Verifica se esta opção deve ser selecionada
+                    ?>
+                            <option value="<?= $optionValue ?>" <?= $selected ?>><?= $optionText ?></option>
+                    <?php
                         }
                     } catch (PDOException $e) {
                         echo "Erro na conexão: " . $e->getMessage();
                     }
-
-                    // Fecha a conexão com o banco de dados
-                    $conn = null;
                     ?>
                 </select>
             </div>
             <div class="col-3">
                 <label class="form-label" for="filterComunicadoGPON">Comunicado Normalização</label>
-                <select name="filterComunicadoGPON" class="form-control" id="filterComunicadoGPON">
-                    <option value="" disabled selected>Selecione</option>
-                    <option value="0">Não Enviado</option>
-                    <option value="1">Enviado</option>
+                <select name="filterComunicadoGPON" class="form-select" id="filterComunicadoGPON">
+                    <option value="%" <?php if ($comunicado_gpon == '%') echo "selected"; ?>>Todos</option>
+                    <option value="0" <?php if ($comunicado_gpon == 0) echo "selected"; ?>>Não Enviado</option>
+                    <option value="1" <?php if ($comunicado_gpon == 1) echo "selected"; ?>>Enviado</option>
                 </select>
             </div>
+
             <div class="col-3">
                 <label for="filterLimiteGPON" class="form-label"> Limite de Busca</label>
-                <select id="filterLimiteGPON" name="filterLimiteGPON" class="form-control">
-                    <option selected value="100"> 100 Incidentes</option>
-                    <option value="10"> 10 Incidentes</option>
-                    <option value="50"> 50 Incidentes</option>
+                <select id="filterLimiteGPON" name="filterLimiteGPON" class="form-select">
+                    <option value="15" <?php if ($limite == 15) echo "selected"; ?>>15 Incidentes</option>
+                    <option value="50" <?php if ($limite == 50) echo "selected"; ?>>50 Incidentes</option>
+                    <option value="100" <?php if ($limite == 100) echo "selected"; ?>>100 Incidentes</option>
+
+
                 </select>
             </div>
             <div class="col-2">
                 <button style="margin-top:  35px;" type="submit" class="btn btn-sm btn-danger">Filtrar</button>
             </div>
         </div>
-    </form>-->
+    </form>
 </div>
-
-<?php
-$limite = isset($_POST['filterLimiteGPON']) ? $_POST['filterLimiteGPON'] : 5;
-?>
 
 <hr class="sidebar-divider">
 
@@ -102,7 +107,7 @@ $limite = isset($_POST['filterLimiteGPON']) ? $_POST['filterLimiteGPON'] : 5;
                 LEFT JOIN incidentes_classificacao as ic ON ic.id = i.classificacao
                 LEFT JOIN usuarios as u ON i.autor_id = u.id LEFT JOIN pessoas as p ON p.id = u.pessoa_id
                 LEFT JOIN incidentes_types as it ON it.codigo = i.incident_type
-                WHERE oi.interessado_empresa_id = $empresaID AND i.active = 0 AND oi.active = 1
+                WHERE oi.interessado_empresa_id = $empresaID AND i.active = 0 AND oi.active = 1 AND i.classificacao LIKE '$classificacao_gpon' AND i.envio_com_normalizacao LIKE '$comunicado_gpon'
                 ORDER BY i.inicioIncidente DESC
                 LIMIT $limite";
 

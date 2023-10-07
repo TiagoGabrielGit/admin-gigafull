@@ -27,7 +27,7 @@
                 ?>
                     <li>
                         <label class="form-check-label">
-                            <input value="<?= $rota['id'] ?> class=" form-check-input me-1" name="rotasDeFibra[]" type="checkbox">
+                            <input value="<?= $rota['id'] ?>" class=" form-check-input me-1" name="rotasDeFibra[]" type="checkbox">
                             <?= $rota['ponta_a'] . " <b> <> </b> " . $rota['ponta_b']; ?>
                         </label>
                     </li>

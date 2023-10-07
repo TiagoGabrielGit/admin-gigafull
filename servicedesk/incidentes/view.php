@@ -62,6 +62,7 @@ if ($rowCount_permissions_submenu > 0) {
             i.classificacao as idClassificacao,
             ic.classificacao as classificacao,
             i.descricaoIncidente as descricaoIncidente,
+            i.previsaoNormalizacao as prevNOR,
             CASE
             WHEN i.active = 1 THEN 'Incidente aberto'
             WHEN i.active = 0 THEN 'Normalizado'
@@ -103,6 +104,10 @@ if ($rowCount_permissions_submenu > 0) {
         $host_id = $campos['host_id'];
         $tipo = $campos['tipo'];
         $zabbixID = $campos['zabbixID'];
+        $idClassificacao = $campos['idClassificacao'];
+        $tipoIncidente = $campos['tipo'];
+        $statusID = $campos['statusID'];
+        $prevNOR = $campos['prevNOR'];
 ?>
 
         <style>
@@ -253,18 +258,16 @@ if ($rowCount_permissions_submenu > 0) {
                                     rnir.id as id_relato,
                                     rnir.relato as relato,
                                     rnir.relato_autor as autor_id,
+                                    date_format(rnir.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
+
+                                    ic.classificacao as classificacao,
                                     rni.zabbix_event_id as zabbixID,
                                     date_format(rnir.horarioRelato,'%H:%i:%s %d/%m/%Y') as horarioRelato
-                                FROM
-                                    incidentes_relatos as rnir
-                                LEFT JOIN
-                                    incidentes as rni
-                                ON
-                                    rni.id = rnir.incidente_id
-                                WHERE
-                                    rnir.incidente_id = $id_incidente
-                                ORDER BY
-                                    rnir.horarioRelato DESC
+                                FROM incidentes_relatos as rnir
+                                LEFT JOIN incidentes as rni ON rni.id = rnir.incidente_id
+                                LEFT JOIN incidentes_classificacao as ic ON ic.id = rnir.classificacao
+                                WHERE rnir.incidente_id = $id_incidente
+                                ORDER BY rnir.horarioRelato DESC
                                 ";
 
                                     $resultado_relatos = mysqli_query($mysqli, $sql_relatos_incidentes)  or die("Erro ao retornar dados");
@@ -277,12 +280,14 @@ if ($rowCount_permissions_submenu > 0) {
                                             <h2 class="accordion-header" id="flush-heading<?= $cont ?>"> <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<?= $cont ?>" aria-expanded="false" aria-controls="flush-collapse<?= $cont ?>">Relato #<?= $id_relato ?></button></h2>
                                             <div id="flush-collapse<?= $cont ?>" class="accordion-collapse collapse" aria-labelledby="flush-heading<?= $cont ?>" data-bs-parent="#accordionFlushExample">
                                                 <div class="accordion-body">
-                                                    <b>Horário Relato: </b> <?= $campos['horarioRelato'] ?><br>
-                                                    <b>Relator: </b> <?php if ($campos['autor_id'] == null) {
-                                                                            echo "Integração Zabbix";
-                                                                        } else {
-                                                                            $autor_id = $campos['autor_id'];
-                                                                            $sql_usuario = "SELECT
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                            <b>Horário Relato: </b> <?= $campos['horarioRelato'] ?><br>
+                                                            <b>Relator: </b> <?php if ($campos['autor_id'] == null) {
+                                                                                    echo "Integração Zabbix";
+                                                                                } else {
+                                                                                    $autor_id = $campos['autor_id'];
+                                                                                    $sql_usuario = "SELECT
                                                                     p.nome as nome_usuario
                                                                     FROM
                                                                     usuarios as u
@@ -294,10 +299,17 @@ if ($rowCount_permissions_submenu > 0) {
                                                                     u.id = $autor_id
                                                                     ";
 
-                                                                            $resultado_usuario = mysqli_query($mysqli, $sql_usuario);
-                                                                            $row_usuario = mysqli_fetch_assoc($resultado_usuario);
-                                                                            echo $row_usuario['nome_usuario'];
-                                                                        } ?> <br>
+                                                                                    $resultado_usuario = mysqli_query($mysqli, $sql_usuario);
+                                                                                    $row_usuario = mysqli_fetch_assoc($resultado_usuario);
+                                                                                    echo $row_usuario['nome_usuario'];
+                                                                                } ?> <br>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                            <b>Classificação:</b> <?= $campos['classificacao']; ?><br>
+                                                            <b>Previsão Normalização:</b> <?= $campos['previsaoNormalizacao']; ?><br>
+                                                        </div>
+                                                    </div>
+
                                                     <hr class="sidebar-divider">
                                                     <b>Descrição: </b> <br><?= nl2br($campos['relato']); ?>
                                                 </div>
@@ -476,38 +488,34 @@ if ($rowCount_permissions_submenu > 0) {
                                     <div class="col-5">
                                         <div class="col-12">
                                             <label for="classIncidente" class="form-label">Classificação</label>
-                                            <select id="classIncidente" name="classIncidente" class="form-select">
-                                                <option selected value="">Selecione</option>
-
+                                            <select id="classIncidente" name="classIncidente" class="form-select" required>
+                                                <option disabled value="">Selecione</option>
                                                 <?php
                                                 $sql_classificacao =
                                                     "SELECT
-                                                    ic.id as idClassificacao,
-                                                    ic.classificacao as classificacao
-                                                FROM
-                                                    incidentes_classificacao as ic
-                                                WHERE
-                                                    ic.active = 1
-                                                ORDER BY
-                                                    ic.classificacao ASC";
+                                                        ic.id as idClassificacao,
+                                                        ic.classificacao as classificacao
+                                                    FROM
+                                                        incidentes_classificacao as ic
+                                                    WHERE
+                                                        ic.active = 1
+                                                    ORDER BY
+                                                        ic.classificacao ASC";
 
                                                 $r_classificacao = mysqli_query($mysqli, $sql_classificacao);
                                                 while ($c_classificacao = mysqli_fetch_object($r_classificacao)) :
-                                                    echo "<option value='$c_classificacao->idClassificacao'> $c_classificacao->classificacao</option>";
+                                                    $selected = ($c_classificacao->idClassificacao == $idClassificacao) ? 'selected' : ''; // Verifica se a opção corresponde ao $idClassificacao
+                                                    echo "<option value='$c_classificacao->idClassificacao' $selected> $c_classificacao->classificacao</option>";
                                                 endwhile;
                                                 ?>
-
-
-
                                             </select>
                                         </div>
                                     </div>
 
                                     <div class="col-3">
                                         <label for="tipoIncidente" class="form-label">Tipo de Incidente</label>
-                                        <select id="tipoIncidente" name="tipoIncidente" class="form-select">
-                                            <option selected value="">Selecione</option>
-
+                                        <select id="tipoIncidente" name="tipoIncidente" class="form-select" required>
+                                            <option disabled value="">Selecione</option>
                                             <?php
                                             $sql_tipos =
                                                 "SELECT
@@ -522,23 +530,24 @@ if ($rowCount_permissions_submenu > 0) {
 
                                             $r_tipo = mysqli_query($mysqli, $sql_tipos);
                                             while ($c_tipo = mysqli_fetch_object($r_tipo)) :
-                                                echo "<option value='$c_tipo->idCodigo'> $c_tipo->tipo</option>";
+                                                $selected = ($c_tipo->idCodigo == $tipoIncidente) ? 'selected' : ''; // Verifica se a opção corresponde ao $tipoIncidente
+                                                echo "<option value='$c_tipo->idCodigo' $selected> $c_tipo->tipo</option>";
                                             endwhile;
                                             ?>
-
                                         </select>
                                     </div>
 
                                     <div class="col-4">
                                         <div class="col-12">
                                             <label for="statusIncidente" class="form-label">Status</label>
-                                            <select id="statusIncidente" name="statusIncidente" class="form-select">
-                                                <option selected value="">Selecione</option>
-                                                <option value="1">Aberto</option>
-                                                <option value="0">Fechado</option>
+                                            <select id="statusIncidente" name="statusIncidente" class="form-select" required>
+                                                <option disabled value="">Selecione</option>
+                                                <option value="1" <?php echo ($statusID == 1) ? 'selected' : ''; ?>>Aberto</option>
+                                                <option value="0" <?php echo ($statusID == 0) ? 'selected' : ''; ?>>Fechado</option>
                                             </select>
                                         </div>
                                     </div>
+
 
                                     <div class="col-5">
                                         <div class="col-12">
@@ -551,12 +560,12 @@ if ($rowCount_permissions_submenu > 0) {
                                         </div>
                                     </div>
 
-
-
                                     <div class="col-4">
                                         <label for="previsaoConclusao" class="form-label">Previsão de Conclusão</label>
-                                        <input name="previsaoConclusao" type="datetime-local" class="form-control" id="previsaoConclusao">
+                                        <input name="previsaoConclusao" type="datetime-local" class="form-control" id="previsaoConclusao" value="<?php if ($prevNOR !== null) : echo date('Y-m-d\TH:i', strtotime($prevNOR));
+                                                                                                                                                    endif;  ?>">
                                     </div>
+
 
                                     <div class="col-3 d-flex flex-column align-items-center">
                                         <div>

@@ -108,7 +108,7 @@ if ($rowCount_permissions > 0) {
                                 <div class="row">
                                     <div class="col-5">
                                         <label for="tituloMP" class="form-label">Titulo</label>
-                                        <input value="<?= $titulo ?>" name="tituloMP" type="text" class="form-control" id="tituloMP" required>
+                                        <input maxlength="100" value="<?= $titulo ?>" name="tituloMP" type="text" class="form-control" id="tituloMP" required>
                                     </div>
 
                                     <div class="col-3">
@@ -134,7 +134,7 @@ if ($rowCount_permissions > 0) {
                                 <div class="row">
                                     <div class="col-12">
                                         <label for="descricaoMP" class="form-label">Descrição</label>
-                                        <textarea id="descricaoMP" name="descricaoMP" class="form-control" style="height: 100px"><?= $descricao ?></textarea>
+                                        <textarea rows="10" maxlength="500" id="descricaoMP" name="descricaoMP" class="form-control" style="height: 100px"><?= $descricao ?></textarea>
                                     </div>
                                 </div>
                                 <?php

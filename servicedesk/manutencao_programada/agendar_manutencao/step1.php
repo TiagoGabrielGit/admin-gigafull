@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-5">
             <label for="titulo" class="form-label">Titulo</label>
-            <input value="<?= $titulo ?>" name="titulo" type="text" class="form-control" id="titulo" required>
+            <input maxlength="100" value="<?= $titulo ?>" name="titulo" type="text" class="form-control" id="titulo" required>
         </div>
 
         <div class="col-3">
@@ -25,7 +25,7 @@
     <div class="row">
         <div class="col-12">
             <label for="descricao" class="form-label">Descrição</label>
-            <textarea id="descricao" name="descricao" class="form-control" style="height: 100px" required><?= $descricao ?></textarea>
+            <textarea maxlength="500" id="descricao" name="descricao" class="form-control" style="height: 100px" required><?= $descricao ?></textarea>
         </div>
     </div>
     <hr class="sidebar-divider">
