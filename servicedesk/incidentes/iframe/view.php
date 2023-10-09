@@ -6,8 +6,9 @@ require "../../../conexoes/conexao_pdo.php"; // Certifique-se de que esta linha 
 require "../../../conexoes/conexao.php"; // Certifique-se de que esta linha está correta
 
 try {
-    $query_frame = "SELECT ii.id as id_iframe, ii.empresa_id as empresa_id
+    $query_frame = "SELECT ii.id as id_iframe, ii.empresa_id as empresa_id, e.atributoEmpresaPropria as empresaPropria
                     FROM incidentes_iframe as ii
+                    LEFT JOIN empresas as e ON e.id = ii.empresa_id
                     WHERE ii.active = 1 and ii.token = :token";
 
     $stmt = $pdo->prepare($query_frame);
@@ -17,6 +18,7 @@ try {
 
     if (!empty($result)) {
         $empresa_id = $result[0]['empresa_id'];
+        $empresaPropria = $result[0]['empresaPropria'];
         $id_iframe = $result[0]['id_iframe'];
         $empresaID = $empresa_id;
 
@@ -163,6 +165,15 @@ GROUP BY mp.id";
             $r_man_prog_ocorrendo_backbone = mysqli_query($mysqli, $man_prog_ocorrendo_backbone);
             $c_man_prog_ocorrendo_backbone = $r_man_prog_ocorrendo_backbone->fetch_array();
 
+            $count_inc_outros =
+                "SELECT
+    count(i.id) as qtde
+    FROM
+    incidentes as i
+    WHERE i.active = 1 and i.incident_type not in ('102', '100')";
+
+            $r_inc_outros = mysqli_query($mysqli, $count_inc_outros);
+            $c_inc_outros = $r_inc_outros->fetch_array();
 
 
             require "incidentes.php";

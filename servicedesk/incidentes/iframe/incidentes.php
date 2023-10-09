@@ -124,6 +124,19 @@
                             </li>
 
                             <li class="nav-item flex-fill" role="presentation">
+                                <button class="nav-link w-100" id="outros-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-outros" type="button" role="tab" aria-controls="outros" aria-selected="false">
+                                    <?php
+                                    if ($c_inc_outros['qtde'] > 0 && $_SESSION['stateIncident'] == 0) {
+                                        if ($empresaPropria == 1) { ?>
+
+                                            <span class="badge bg-danger text-white"><?= $c_inc_outros['qtde'] ?></span>
+                                    <?php }
+                                    } ?>
+
+                                    Incidentes Outros</button>
+                            </li>
+
+                            <li class="nav-item flex-fill" role="presentation">
                                 <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#bordered-justified-profile" type="button" role="tab" aria-controls="profile" aria-selected="false">
 
                                     <?php
@@ -153,6 +166,21 @@
                                 } ?>
 
                             </div>
+
+                            <div class="tab-pane fade" id="bordered-justified-outros" role="tabpanel" aria-labelledby="outros-tab">
+                                <?php
+                                if ($empresaPropria == 1) {
+                                    if ($_SESSION['stateIncident'] == 0) {
+                                        require "../tabs/aberto_outros.php";
+                                    } else {
+                                        require "../tabs/normalizado_outros.php";
+                                    }
+                                } else {
+                                    echo "Em Desenvolvimento";
+                                } ?>
+
+                            </div>
+
                             <div class="tab-pane fade" id="bordered-justified-profile" role="tabpanel" aria-labelledby="profile-tab">
 
                                 <?php
