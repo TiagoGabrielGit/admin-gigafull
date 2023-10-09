@@ -373,3 +373,12 @@ HAVING quantidade_incidentes > 2
 ORDER BY quantidade_incidentes DESC";
 
 $r_incidentes_gpon_reincidentes = mysqli_query($mysqli, $incidentes_gpon_reincidentes);
+
+
+$count_inc_outros =
+    "SELECT count(i.id) as qtde
+FROM incidentes as i
+WHERE i.active = 1 and i.incident_type NOT IN ('102', '100')";
+
+$r_inc_outros = mysqli_query($mysqli, $count_inc_outros);
+$c_inc_outros = $r_inc_outros->fetch_array();

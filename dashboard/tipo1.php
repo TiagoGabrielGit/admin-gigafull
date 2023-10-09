@@ -166,7 +166,13 @@ require "sql_dashboard_1.php";
                                         </div>
                                         <div class="ps-3 text-center">
                                             <h4>
-                                                <span>Em Desenvolvimento</span>
+                                                <a style="color: red;" href="/servicedesk/incidentes/abertos.php">
+                                                    <?php if ($c_inc_outros['qtde'] > 1) {
+                                                        echo $c_inc_outros['qtde'] . " Incidentes";
+                                                    } else {
+                                                        echo $c_inc_outros['qtde'] . " Incidente";
+                                                    } ?>
+                                                </a>
                                             </h4>
                                         </div>
                                     </div>

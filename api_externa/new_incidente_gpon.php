@@ -2,8 +2,6 @@
 require $_SERVER['DOCUMENT_ROOT'] . "/conexoes/conexao_pdo.php";
 require $_SERVER['DOCUMENT_ROOT'] . "/conexoes/conexao.php";
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-
     $descricaoIncidente = $_GET["descricaoIncidente"];
     $zabbixEventID = $_GET["eventID"];
     $incidentType =  $_GET["incidentType"];
@@ -56,8 +54,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         // O ID da PON não foi encontrado, execute o bloco 'else'
         $response['Retorno da Chamada'] = "PON não encontrada<br>";
     }
-} else {
-    $response['Retorno da Chamada'] =  "Método incorreto.";
-}
-
 echo json_encode($response);

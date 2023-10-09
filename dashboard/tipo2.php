@@ -65,7 +65,13 @@ require "sql_dashboard_2.php";
                                 </div>
                                 <div class="ps-3 text-center">
                                     <h4>
-                                        <span>Em Desenvolvimento</span>
+                                        <a style="color: red;" href="/servicedesk/incidentes/abertos.php">
+                                            <?php if ($c_inc_outros['qtde'] > 1) {
+                                                echo $c_inc_outros['qtde'] . " Incidentes";
+                                            } else {
+                                                echo $c_inc_outros['qtde'] . " Incidente";
+                                            } ?>
+                                        </a>
                                     </h4>
                                 </div>
                             </div>
@@ -82,19 +88,19 @@ require "sql_dashboard_2.php";
                                     <i class="bi bi-ticket"></i>
                                 </div>
                                 <div class="ps-3">
-                                            <h4>
-                                                <a style="color: red;" href="/servicedesk/incidentes/abertos.php">
-                                                        <?php
-                                                        if ($total_mp == 0) {
-                                                            echo "Nenhuma manutenção";
-                                                        } else if ($total_mp == 1) {
-                                                            echo "1 Manutenção";
-                                                        } else {
-                                                            echo $total_mp . " Manutenções";
-                                                        } ?>
-                                                </a>
-                                            </h4>
-                                        </div>
+                                    <h4>
+                                        <a style="color: red;" href="/servicedesk/incidentes/abertos.php">
+                                            <?php
+                                            if ($total_mp == 0) {
+                                                echo "Nenhuma manutenção";
+                                            } else if ($total_mp == 1) {
+                                                echo "1 Manutenção";
+                                            } else {
+                                                echo $total_mp . " Manutenções";
+                                            } ?>
+                                        </a>
+                                    </h4>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -133,7 +139,7 @@ require "sql_dashboard_2.php";
                                     <td><?= $c_incidentes_gpon_reincidentes['classificacao'] ?></td>
                                     <td><?= $c_incidentes_gpon_reincidentes['quantidade_incidentes'] ?></td>
 
-         
+
                                 </tr>
                             <?php
                             } ?>

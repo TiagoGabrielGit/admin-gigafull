@@ -108,7 +108,6 @@ require "../../includes/menu.php";
 
                         <div class="accordion" id="accordionExample">
 
-
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="headingIncidentes-4">
                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIncidentes-4" aria-expanded="false" aria-controls="collapseIncidentes-4">
@@ -160,6 +159,34 @@ require "../../includes/menu.php";
                                                 <b>Exemplo:</b><br>
                                                 https://smartcontrol.dominio.com.br/api_externa/new_incidente_gpon.php?eventID='1000'&descricaoIncidente='Rompimento na rede'&incidentType='100'&hostID='25'&gponPON='GPON 0/4/12'
 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingIncidentes-5">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseIncidentes-5" aria-expanded="false" aria-controls="collapseIncidentes-5">
+                                        Abertura de Incidente (Outros) - GET
+                                    </button>
+                                </h2>
+                                <div id="collapseIncidentes-5" class="accordion-collapse collapse" aria-labelledby="headingIncidentes-5" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <b>API:</b><br> /api_externa/new_incidente_other.php?eventID={id_evento}&descricaoIncidente={descricao_aleatorio}&incidentType={id_tipo_incidente}&hostID={id_host}<br><br>
+
+                                                <b>id_host:</b>
+                                                ID do Equipamento no SmartControl, ou '0' casa não exista.<br>
+                                                <b>descricao_aleatorio:</b>
+                                                Descrição do evento.<br>
+                                                <b>id_evento:</b>
+                                                ID do evento no sistema integrador.<br><br>
+
+                                                <b>Exemplo:</b><br>
+                                                https://smartcontrol.dominio.com.br/api_externa/new_incidente_other.php?eventID='1000'&descricaoIncidente='Falta de Energia da concessionária'&incidentType='id_tipo_incidente'&hostID='25'
                                             </div>
                                         </div>
                                     </div>
