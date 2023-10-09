@@ -3,7 +3,7 @@
         <h5 class="card-title">Tipos de Incidentes</h5>
     </div>
     <div class="col-lg-2" style="margin-top: 10px;">
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalCadastrarTipos">Cadastrar</button>
+        <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalCadastrarTipos">Cadastrar</button>
     </div>
 </div>
 
@@ -57,14 +57,14 @@ if (isset($_GET['error'])) {
                     while ($c_lista_tipos = $r_lista_tipos->fetch_array()) {
                     ?>
                         <tr>
-                            <td><?= $c_lista_tipos['tipo']; ?></td>
-                            <td><?= $c_lista_tipos['codigo']; ?></td>
-                            <td><?= $c_lista_tipos['active']; ?></td>
+                            <td style="vertical-align: middle;"><?= $c_lista_tipos['tipo']; ?></td>
+                            <td style="vertical-align: middle;"><?= $c_lista_tipos['codigo']; ?></td>
+                            <td style="vertical-align: middle;"><?= $c_lista_tipos['active']; ?></td>
 
-                            <td>
+                            <td style="vertical-align: middle;">
                                 <?php if ($c_lista_tipos['default'] == 0) { ?>
 
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalEditarTipo<?= $c_lista_tipos['id']; ?>">Editar</button>
+                                    <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalEditarTipo<?= $c_lista_tipos['id']; ?>">Editar</button>
 
                                     <div class="modal fade" id="modalEditarTipo<?= $c_lista_tipos['id']; ?>" tabindex="-1">
                                         <div class="modal-dialog modal-lg">
@@ -100,8 +100,8 @@ if (isset($_GET['error'])) {
 
                                                             <hr class="sidebar-divider">
                                                             <div class="text-center">
-                                                                <button type="submit" class="btn btn-danger">Salvar</button>
-                                                                <button type="reset" class="btn btn-secondary">Limpar</button>
+                                                                <button type="submit" class="btn btn-sm btn-danger">Salvar</button>
+                                                                <button type="reset" class="btn btn-sm btn-secondary">Limpar</button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -149,8 +149,8 @@ if (isset($_GET['error'])) {
                         <hr class="sidebar-divider">
 
                         <div class="text-center">
-                            <button type="submit" class="btn btn-danger">Salvar</button>
-                            <button type="reset" class="btn btn-secondary">Limpar</button>
+                            <button type="submit" class="btn btn-sm btn-danger">Salvar</button>
+                            <button type="reset" class="btn btn-sm btn-secondary">Limpar</button>
                         </div>
 
                     </form><!-- End Horizontal Form -->

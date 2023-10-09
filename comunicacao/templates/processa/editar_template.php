@@ -12,10 +12,11 @@ if (isset($_SESSION['id'])) {
             $tipo = $_POST["tipo"];
             $aplicado = $_POST["aplicado"];
             $conteudo = $_POST["conteudo"]; // Você precisa ajustar isso para corresponder ao campo de texto do editor
-
+            $comNormalizacao = $_POST["comNormalizacao"];
+            
             // Atualize os dados no banco de dados
             $sql_update = "UPDATE comunicacao_templates 
-                           SET titulo = :title, tipo = :tipo, aplicado = :aplicado, template = :conteudo
+                           SET titulo = :title, tipo = :tipo, aplicado = :aplicado, template = :conteudo, normalizacao = :normalizacao
                            WHERE id = :id";
 
             $stmt = $pdo->prepare($sql_update);
@@ -25,6 +26,7 @@ if (isset($_SESSION['id'])) {
             $stmt->bindParam(':tipo', $tipo);
             $stmt->bindParam(':aplicado', $aplicado);
             $stmt->bindParam(':conteudo', $conteudo);
+            $stmt->bindParam(':normalizacao', $comNormalizacao);
             $stmt->bindParam(':id', $id);
 
             // Execute a consulta de atualização

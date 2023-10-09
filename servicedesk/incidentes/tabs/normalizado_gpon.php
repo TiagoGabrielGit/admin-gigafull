@@ -201,9 +201,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ateInicioIncidente'])
 
 
                             if ($campos['envio_com_normalizacao'] == 1) { ?>
-                                <span class="btn btn-sm btn-<?= $colorPill ?> rounded-pill"><b>Enviado</b></span>
+                                <span title="Enviado comunicado de normalização para os interessados." class="btn btn-sm btn-<?= $colorPill ?> rounded-pill"><b>Enviado</b></span>
                             <?php } else { ?>
-                                <span class="btn btn-sm btn-<?= $colorPill ?> rounded-pill"><b>Não Enviado</b></span>
+                                <span title="Nenhum comunicado de normalização foi enviado para os interessados." class="btn btn-sm btn-<?= $colorPill ?> rounded-pill"><b>Não Enviado</b></span>
                             <?php } ?>
 
                         </span>

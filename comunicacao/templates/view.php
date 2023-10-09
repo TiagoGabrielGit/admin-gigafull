@@ -26,7 +26,12 @@ $rowCount_permissions_submenu = $exec_permissions_submenu->rowCount();
 
 if ($rowCount_permissions_submenu > 0) {
     $id = $_GET['id'];
-    $sql_template = "SELECT ct.titulo as titulo, ct.template as template, ct.active as active, ct.tipo as tipo, ct.aplicado as aplicado
+    $sql_template = "SELECT ct.titulo as titulo,
+     ct.template as template, 
+     ct.active as active, 
+     ct.tipo as tipo, 
+     ct.aplicado as aplicado,
+     ct.normalizacao as comNormalizacao
     FROM comunicacao_templates as ct
     WHERE ct.id = :id";
     $stmt = $pdo->prepare($sql_template);
@@ -40,6 +45,7 @@ if ($rowCount_permissions_submenu > 0) {
         $tipo = $result['tipo'];
         $aplicado = $result['aplicado'];
         $active = $result['active'];
+        $comNormalizacao = $result['comNormalizacao'];
     }
 ?>
 
@@ -93,6 +99,16 @@ if ($rowCount_permissions_submenu > 0) {
                                             <option value="" disabled selected>Selecione...</option>
                                             <option value="1" <?php if ($aplicado == 1) echo "selected"; ?>>Incidentes</option>
                                             <option value="2" <?php if ($aplicado == 2) echo "selected"; ?>>Manutenção Programada</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <label for="comNormalizacao" class="form-label">Comuicado de Normalização</label>
+                                        <select required id="comNormalizacao" name="comNormalizacao" class="form-select">
+                                            <option value="" disabled selected>Selecione...</option>
+                                            <option value="1" <?php if ($comNormalizacao == 1) echo "selected"; ?>>Sim</option>
+                                            <option value="0" <?php if ($comNormalizacao == 0) echo "selected"; ?>>Não</option>
                                         </select>
                                     </div>
                                 </div>

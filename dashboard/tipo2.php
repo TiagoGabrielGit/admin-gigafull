@@ -7,7 +7,7 @@ require "sql_dashboard_2.php";
         <div class="col-lg-12">
             <div class="row">
                 <div class="col-xxl-3 col-md-3">
-                    <div class="card info-card customers-card">
+                    <div class="card info-card customers-card text-center">
                         <div class="card-body">
                             <h4 class="card-title">Incidentes GPON</h4>
                             <div class="d-flex align-items-center">
@@ -32,7 +32,7 @@ require "sql_dashboard_2.php";
 
 
                 <div class="col-xxl-3 col-md-3">
-                    <div class="card info-card customers-card">
+                    <div class="card info-card customers-card text-center">
                         <div class="card-body">
                             <h5 class="card-title">Incidentes Backbone</h5>
                             <div class="d-flex align-items-center">
@@ -56,7 +56,7 @@ require "sql_dashboard_2.php";
                 </div>
 
                 <div class="col-xxl-3 col-md-3">
-                    <div class="card info-card customers-card">
+                    <div class="card info-card customers-card text-center">
                         <div class="card-body">
                             <h5 class="card-title">Incidentes Outros</h5>
                             <div class="d-flex align-items-center">
@@ -74,7 +74,7 @@ require "sql_dashboard_2.php";
                 </div>
 
                 <div class="col-xxl-3 col-md-3">
-                    <div class="card info-card customers-card">
+                    <div class="card info-card customers-card text-center">
                         <div class="card-body">
                             <h4 class="card-title">Manutenção Programada</h4>
                             <div class="d-flex align-items-center">

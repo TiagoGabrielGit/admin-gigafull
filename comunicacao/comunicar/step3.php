@@ -1,6 +1,6 @@
 <?php
 $dados_comunicacao =
-	"SELECT ct.titulo as titulo, ct.template
+	"SELECT ct.titulo as titulo, ct.template as template, ct.normalizacao as normalizacao
 FROM comunicacao as c
 LEFT JOIN comunicacao_templates as ct ON c.template_email = ct.id
 WHERE c.id = :idComunicacao
@@ -15,6 +15,7 @@ $result_comunicacao = $r_comunicacao->fetch(PDO::FETCH_ASSOC);
 if ($result_comunicacao !== false) {
 	$assuntoEmail = $result_comunicacao['titulo'];
 	$templateEmail = $result_comunicacao['template'];
+	$normalizacao = $result_comunicacao['normalizacao'];
 }
 ?>
 
@@ -63,7 +64,7 @@ if ($result_comunicacao !== false) {
 											FROM incidentes
 											WHERE id = :id_incidente";
 
-					$r_incidente = $pdo->prepare($sql_incidentes); // Corrigido para usar $sql_incidentes
+					$r_incidente = $pdo->prepare($sql_incidentes);
 					$r_incidente->bindParam(':id_incidente', $id_incidente, PDO::PARAM_INT);
 
 					if ($r_incidente->execute()) {
@@ -92,6 +93,28 @@ if ($result_comunicacao !== false) {
 									$bairro = $result_incidentes_pons['bairro'];
 
 									echo "Cidade: $cidade | Bairro: $bairro - OLT $olt - Slot $slot - PON $pon<br>";
+								}
+							}
+						}
+
+						if ($result_incidente !== false && $result_incidente['incident_type'] == 102) {
+							$equipamento_id = $result_incidente['equipamento_id'];
+
+							$sql_incidentes_rotas =
+								"SELECT rf.ponta_a as ponta_a, rf.ponta_b as ponta_b
+								FROM incidentes as i
+								LEFT JOIN rotas_fibra as rf ON rf.codigo = i.equipamento_id
+								WHERE i.equipamento_id = :equipamento_id and i.active = 1";
+
+							$r_incidentes_rotas = $pdo->prepare($sql_incidentes_rotas);
+							$r_incidentes_rotas->bindParam(':equipamento_id', $equipamento_id, PDO::PARAM_INT);
+
+							if ($r_incidentes_rotas->execute()) {
+								while ($result_incidentes_rotas = $r_incidentes_rotas->fetch(PDO::FETCH_ASSOC)) {
+									$ponta_a = $result_incidentes_rotas['ponta_a'];
+									$ponta_b = $result_incidentes_rotas['ponta_b'];
+
+									echo "Ponta A: $ponta_a <--> Ponta B: $ponta_b<br>";
 								}
 							}
 						}
@@ -173,7 +196,7 @@ if ($result_comunicacao !== false) {
 					?>
 							<li>
 								<label class="form-check-label">
-									<?= "OLT " . $pon['olt_name'] . " (SLOT " . $pon['slot'] . " | PON " .  $pon['pon'] . ") - Cidade: " .  $pon['cidade'] . " | Bairro: " . $pon['bairro']?>
+									<?= "OLT " . $pon['olt_name'] . " (SLOT " . $pon['slot'] . " | PON " .  $pon['pon'] . ") - Cidade: " .  $pon['cidade'] . " | Bairro: " . $pon['bairro'] ?>
 								</label>
 							</li>
 					<?php endforeach;
@@ -189,7 +212,7 @@ if ($result_comunicacao !== false) {
 
 <form method="POST" action="processa/step3.php">
 	<input hidden readonly id="idComunicacao" name="idComunicacao" value="<?= $idComunicacao ?>"></input>
-
+	<input hidden readonly id="normalizacao" name="normalizacao" value="<?= $normalizacao ?>"> </input>
 	<div class="row"> <!-- A -->
 		<div class="col-lg-12"> <!-- B -->
 

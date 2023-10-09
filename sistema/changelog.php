@@ -14,6 +14,53 @@ require "../includes/menu.php";
           <div class="card-body">
 
             <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading11-7">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse11-7" aria-expanded="false" aria-controls="collapse11-7">
+                    Versão 11.7 - 08/10/2023
+                  </button>
+                </h2>
+                <div id="collapse11-7" class="accordion-collapse collapse" aria-labelledby="heading11-7" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Envio comunicados normalização incidentes;<br>
+                    # Envio comunicados sobre incidentes backbone;<br>
+                    # Ajuste incidentes na dashboard;<br>
+                    # Ajustes API de incidentes;<br>
+                    # Ajustes documentação de API;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criado a coluna normalizacao na tabela comunicacao_templates;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Bloqueio API por IP;<br>
+                    # Causador Incidente;<br>
+                    # Incidentes Energia POP;<br>
+                    # Enter para login;<br>
+                    # Alternar tabs automanticamente no iframe incidentes;<br>
+                    # White-Label iframe incidentes;<br>
+                    # TABs permitidas no iframe incidentes;<br>
+                    # Remover PON/RF durante criação de MP;<br>
+                    # Vincular uma documentação à um tipo de incidente;<br>
+                    # Selecionar publico ou privado no relato avulso;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Energia POP;<br>
+                    # Atributos de equipamentos;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Anexo arquivos em chamados;<br>
+                    # Permissões em documentações;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                    # Dependencia de chamados;<br>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion" id="accordionExample">
 
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading11-6">
@@ -33,6 +80,7 @@ require "../includes/menu.php";
                     <br><strong>Alterações banco de dados</strong><br>
 
                     <br><strong>Backlog</strong><br>
+                    # Causador Incidente;<br>
                     # Envio comunicados normalização incidentes;<br>
                     # Envio comunicados sobre incidentes backbone;<br>
                     # Enter para login;<br>

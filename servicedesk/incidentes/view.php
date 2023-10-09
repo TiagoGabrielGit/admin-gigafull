@@ -55,6 +55,7 @@ if ($rowCount_permissions_submenu > 0) {
             i.zabbix_event_id as zabbixID,
             i.active as statusID,
             i.autor_id as autor_id,
+            i.envio_com_normalizacao as envio_com_normalizacao,
             i.incident_type as tipo,
             i.equipamento_id as host_id,
             it.type as tipoIncidente,
@@ -231,17 +232,23 @@ if ($rowCount_permissions_submenu > 0) {
                                             <div class="col-12" style="text-align: center;">
                                                 <br>
                                                 <?php
-                                                if ($campos['statusID'] == "1") { ?>
+                                                if ($campos['envio_com_normalizacao'] == "0") {
+                                                ?>
                                                     <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalComunicados">
                                                         Comunicados
                                                     </button>
+                                                <?php
+                                                }
 
+                                                if ($campos['statusID'] == "1") {
+                                                ?>
                                                     <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#modalInteressados">
                                                         Interessados
                                                     </button>
                                                 <?php
                                                 }
                                                 ?>
+
                                             </div>
                                         </div>
 

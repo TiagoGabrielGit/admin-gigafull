@@ -293,17 +293,6 @@ rop.parceiro_id";
 
 $r_onu_parceiro = mysqli_query($mysqli, $sql_onu_parceiro);
 
-//INCIDENTES
-$incidentes = "SELECT
-count(*) as qtde
-FROM
-incidentes as ri
-WHERE
-ri.active = 1";
-
-$r_incidentes = mysqli_query($mysqli, $incidentes);
-$c_incidentes = $r_incidentes->fetch_array();
-
 $count_inc_gpon =
     "SELECT
 count(i.id) as qtde
@@ -324,20 +313,11 @@ $r_inc_gpon = mysqli_query($mysqli, $count_inc_gpon);
 $c_inc_gpon = $r_inc_gpon->fetch_array();
 
 $count_inc_backbone =
-    "SELECT
-count(i.id) as qtde
-FROM
-incidentes as i
-INNER JOIN gpon_olts o ON i.equipamento_id = o.equipamento_id
-INNER JOIN gpon_olts_interessados oi ON o.id = oi.gpon_olt_id
-WHERE
-i.active = 1
-and
-oi.active = 1
-and
-oi.interessado_empresa_id = $empresaID
-and
-i.incident_type = 102";
+    "SELECT count(i.id) as qtde
+FROM incidentes as i
+LEFT JOIN rotas_fibra as rf ON i.equipamento_id = rf.codigo
+LEFT JOIN rotas_fibras_interessados as rfi ON rf.id = rfi.rf_id
+WHERE i.active = 1 and rfi.active = 1 and rfi.interessado_empresa_id = $empresaID and i.incident_type = 102";
 
 $r_inc_backbone = mysqli_query($mysqli, $count_inc_backbone);
 $c_inc_backbone = $r_inc_backbone->fetch_array();
@@ -352,12 +332,12 @@ LEFT JOIN gpon_olts_interessados as goi ON goi.gpon_olt_id = go.id
 where mp.active = 1   and goi.interessado_empresa_id = $empresaID and goi.active = 1
 GROUP BY mp.id
 ";
-
+ 
 $r_man_prog_af_gpon = mysqli_query($mysqli, $count_man_prog_af_gpon);
 $c_man_prog_af_gpon = $r_man_prog_af_gpon->fetch_array();
 
 $count_man_prog_af_backbone =
-    "SELECT count(*) as qtde
+"SELECT count(*) as qtde
 FROM
 manutencao_programada as mp
 LEFT JOIN manutencao_rotas_fibra as mrf ON mrf.manutencao_id = mp.id
@@ -368,6 +348,10 @@ GROUP BY mp.id";
 
 $r_man_prog_af_backbone = mysqli_query($mysqli, $count_man_prog_af_backbone);
 $c_man_prog_af_backbone = $r_man_prog_af_backbone->fetch_array();
+
+$total_mp = (isset($c_man_prog_af_backbone['qtde']) && $c_man_prog_af_backbone['qtde'] > 0 ? $c_man_prog_af_backbone['qtde'] : 0) +
+(isset($c_man_prog_af_gpon['qtde']) && $c_man_prog_af_gpon['qtde'] > 0 ? $c_man_prog_af_gpon['qtde'] : 0);
+
 
 $incidentes_gpon_reincidentes =
     "SELECT gpo.olt_name, gpl.cidade, gpl.bairro, gop.slot, gop.pon, ic.classificacao, COUNT(*) AS quantidade_incidentes

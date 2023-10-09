@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta http-equiv="refresh" content="10"> <!-- Atualiza a página a cada 40 segundos -->
+    <meta http-equiv="refresh" content="60"> <!-- Atualiza a página a cada 40 segundos -->
 
     <title>SmartControl</title>
     <meta content="" name="description">

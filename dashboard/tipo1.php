@@ -7,7 +7,7 @@ require "sql_dashboard_1.php";
         <div class="col-lg-12">
             <div class="row">
                 <div class="col-xxl-3 col-md-6">
-                    <div class="card info-card sales-card">
+                    <div class="card info-card sales-card text-center">
                         <div class="card-body">
                             <h4 class="card-title">Abertos</h4>
                             <div class="d-flex align-items-center">
@@ -40,7 +40,7 @@ require "sql_dashboard_1.php";
                     </div>
                 </div>
                 <div class="col-xxl-3 col-md-6">
-                    <div class="card info-card revenue-card">
+                    <div class="card info-card revenue-card text-center">
                         <div class="card-body">
                             <h5 class="card-title">Chamados sem atendente</h5>
                             <div class="d-flex align-items-center">
@@ -72,7 +72,7 @@ require "sql_dashboard_1.php";
                     </div>
                 </div>
                 <div class="col-xxl-3 col-md-6">
-                    <div class="card info-card customers-card">
+                    <div class="card info-card customers-card text-center">
                         <div class="card-body">
                             <h5 class="card-title">Meus chamados</h5>
                             <div class="d-flex align-items-center">
@@ -102,39 +102,13 @@ require "sql_dashboard_1.php";
                         </div>
                     </div>
                 </div>
-                <div class="col-xxl-3 col-md-6">
-                    <div class="card info-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Incidentes</h5>
-                            <div class="d-flex align-items-center">
-                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-ticket-detailed"></i>
-                                </div>
-                                <div class="ps-3">
-                                    <h4>
-                                        <a style="color: red;" href="/servicedesk/incidentes/abertos.php">
-                                            <?= $c_incidentes['qtde'] ?>
-                                            <?php
-                                            if ($c_incidentes['qtde'] < 2) {
-                                                echo "<span>Incidente</span>";
-                                            } else {
-                                                echo "<span>Incidentes</span>";
-                                            }
-                                            ?>
-                                        </a>
-                                    </h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="row">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-xxl-3 col-md-3">
-                            <div class="card info-card customers-card">
+                            <div class="card info-card customers-card text-center">
                                 <div class="card-body">
                                     <h4 class="card-title">Incidentes GPON</h4>
                                     <div class="d-flex align-items-center">
@@ -159,7 +133,7 @@ require "sql_dashboard_1.php";
 
 
                         <div class="col-xxl-3 col-md-3">
-                            <div class="card info-card customers-card">
+                            <div class="card info-card customers-card text-center">
                                 <div class="card-body">
                                     <h5 class="card-title">Incidentes Backbone</h5>
                                     <div class="d-flex align-items-center">
@@ -183,7 +157,7 @@ require "sql_dashboard_1.php";
                         </div>
 
                         <div class="col-xxl-3 col-md-3">
-                            <div class="card info-card customers-card">
+                            <div class="card info-card customers-card text-center">
                                 <div class="card-body">
                                     <h5 class="card-title">Incidentes Outros</h5>
                                     <div class="d-flex align-items-center">
@@ -201,22 +175,22 @@ require "sql_dashboard_1.php";
                         </div>
 
                         <div class="col-xxl-3 col-md-3">
-                            <div class="card info-card customers-card">
+                            <div class="card info-card customers-card text-center">
                                 <div class="card-body">
                                     <h4 class="card-title">Manutenção Programada</h4>
                                     <div class="d-flex align-items-center">
-                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                            <i class="bi bi-ticket"></i>
-                                        </div>
+                                       
                                         <div class="ps-3">
                                             <h4>
                                                 <a style="color: red;" href="/servicedesk/incidentes/abertos.php">
-                                                    <?php
-                                                    if (isset($c_man_prog_af_gpon['qtde']) || isset($c_man_prog_af_backbone['qtde'])) {    ?>
-                                                        <span>Consulte Manutenções</span>
-                                                    <?php } else { ?>
-                                                        <span>Sem Manutenções</span>
-                                                    <?php } ?>
+                                                        <?php
+                                                        if ($total_mp == 0) {
+                                                            echo "Nenhuma manutenção";
+                                                        } else if ($total_mp == 1) {
+                                                            echo "1 Manutenção";
+                                                        } else {
+                                                            echo $total_mp . " Manutenções";
+                                                        } ?>
                                                 </a>
                                             </h4>
                                         </div>

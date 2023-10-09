@@ -8,17 +8,21 @@ if (isset($_SESSION['id'])) {
             $tipo = $_POST["tipo"];
             $aplicado = $_POST["aplicado"];
             $conteudo = $_POST["editorContent"]; // Você precisa ajustar isso para corresponder ao campo de texto do editor Quill
+            $comNormalizacao = $_POST["comNormalizacao"];
+
+
 
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
             // Prepare a consulta SQL
-            $stmt = $pdo->prepare("INSERT INTO comunicacao_templates (titulo, tipo, aplicado, template, `default`, active) VALUES (:title, :tipo, :aplicado, :conteudo, '0', '1')");
+            $stmt = $pdo->prepare("INSERT INTO comunicacao_templates (titulo, tipo, aplicado, template, `default`, active, normalizacao) VALUES (:title, :tipo, :aplicado, :conteudo, '0', '1', :normalizacao)");
 
             // Associe os valores do formulário aos parâmetros da consulta
             $stmt->bindParam(':title', $title);
             $stmt->bindParam(':tipo', $tipo);
             $stmt->bindParam(':aplicado', $aplicado);
             $stmt->bindParam(':conteudo', $conteudo);
+            $stmt->bindParam(':normalizacao', $comNormalizacao);
 
             // Execute a consulta
             $stmt->execute();

@@ -1,5 +1,6 @@
 <?php
 require "../../../includes/menu.php";
+require "../../../includes/remove_setas_number.php";
 $usuarioID = $_SESSION['id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {

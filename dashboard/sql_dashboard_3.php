@@ -40,20 +40,11 @@ $r_inc_gpon = mysqli_query($mysqli, $count_inc_gpon);
 $c_inc_gpon = $r_inc_gpon->fetch_array();
 
 $count_inc_backbone =
-    "SELECT
-count(i.id) as qtde
-FROM
-incidentes as i
-INNER JOIN gpon_olts o ON i.equipamento_id = o.equipamento_id
-INNER JOIN gpon_olts_interessados oi ON o.id = oi.gpon_olt_id
-WHERE
-i.active = 1
-and
-oi.active = 1
-and
-oi.interessado_empresa_id = $empresaID
-and
-i.incident_type = 102";
+    "SELECT count(i.id) as qtde
+FROM incidentes as i
+LEFT JOIN rotas_fibra as rf ON i.equipamento_id = rf.codigo
+LEFT JOIN rotas_fibras_interessados as rfi ON rf.id = rfi.rf_id
+WHERE i.active = 1 and rfi.active = 1 and rfi.interessado_empresa_id = $empresaID and i.incident_type = 102";
 
 $r_inc_backbone = mysqli_query($mysqli, $count_inc_backbone);
 $c_inc_backbone = $r_inc_backbone->fetch_array();

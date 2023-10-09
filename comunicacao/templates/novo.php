@@ -66,6 +66,16 @@ if ($rowCount_permissions_submenu > 0) {
                                                 <option value="2">Manutenção Programada</option>
                                             </select>
                                         </div>
+
+                                        <div class="col-12">
+                                            <label for="comNormalizacao" class="form-label">Comuicado de Normalização</label>
+                                            <select required id="comNormalizacao" name="comNormalizacao" class="form-select">
+                                                <option value="" disabled selected>Selecione...</option>
+                                                <option value="1">Sim</option>
+                                                <option value="0">Não</option>
+                                            </select>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
