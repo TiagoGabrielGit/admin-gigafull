@@ -85,11 +85,13 @@ require "sql_dashboard_3.php";
                                     <h4>
                                         <a style="color: red;" href="/servicedesk/incidentes/abertos.php">
                                             <?php
-                                            if (isset($c_man_prog_af_gpon['qtde']) || isset($c_man_prog_af_backbone['qtde'])) {    ?>
-                                                <span>Consulte Manutenções</span>
-                                            <?php } else { ?>
-                                                <span>Sem Manutenções</span>
-                                            <?php } ?>
+                                            if ($total_mp == 0) {
+                                                echo "Nenhuma manutenção";
+                                            } else if ($total_mp == 1) {
+                                                echo "1 Manutenção";
+                                            } else {
+                                                echo $total_mp . " Manutenções";
+                                            } ?>
                                         </a>
                                     </h4>
                                 </div>

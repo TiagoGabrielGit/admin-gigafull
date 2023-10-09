@@ -82,17 +82,19 @@ require "sql_dashboard_2.php";
                                     <i class="bi bi-ticket"></i>
                                 </div>
                                 <div class="ps-3">
-                                    <h4>
-                                        <a style="color: red;" href="/servicedesk/incidentes/abertos.php">
-                                            <?php
-                                            if (isset($c_man_prog_af_gpon['qtde']) || isset($c_man_prog_af_backbone['qtde'])) {    ?>
-                                                <span>Consulte Manutenções</span>
-                                            <?php } else { ?>
-                                                <span>Sem Manutenções</span>
-                                            <?php } ?>
-                                        </a>
-                                    </h4>
-                                </div>
+                                            <h4>
+                                                <a style="color: red;" href="/servicedesk/incidentes/abertos.php">
+                                                        <?php
+                                                        if ($total_mp == 0) {
+                                                            echo "Nenhuma manutenção";
+                                                        } else if ($total_mp == 1) {
+                                                            echo "1 Manutenção";
+                                                        } else {
+                                                            echo $total_mp . " Manutenções";
+                                                        } ?>
+                                                </a>
+                                            </h4>
+                                        </div>
                             </div>
                         </div>
                     </div>
@@ -102,7 +104,7 @@ require "sql_dashboard_2.php";
     </div>
 
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-7">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Reincidencia de Incidentes GPON Últimos 60d</h5>

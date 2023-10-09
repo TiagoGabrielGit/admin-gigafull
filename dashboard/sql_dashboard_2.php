@@ -49,22 +49,25 @@ WHERE i.active = 1 and rfi.active = 1 and rfi.interessado_empresa_id = $empresaI
 $r_inc_backbone = mysqli_query($mysqli, $count_inc_backbone);
 $c_inc_backbone = $r_inc_backbone->fetch_array();
 
-$count_man_prog_af_gpon =
-    "SELECT count(*) as qtde
-FROM manutencao_programada as mp
-LEFT JOIN manutencao_gpon as mg ON mg.manutencao_id = mp.id
-LEFT JOIN gpon_pon as gp on gp.id = mg.pon_id
-LEFT JOIN gpon_olts as go on go.id = gp.olt_id
-LEFT JOIN gpon_olts_interessados as goi ON goi.gpon_olt_id = go.id
-where mp.active = 1   and goi.interessado_empresa_id = $empresaID and goi.active = 1
-GROUP BY mp.id
+$count_man_prog_af_gpon = 
+    "SELECT COUNT(*) as qtde
+    FROM (
+        SELECT mp.id
+        FROM manutencao_programada as mp
+        LEFT JOIN manutencao_gpon as mg ON mg.manutencao_id = mp.id
+        LEFT JOIN gpon_pon as gp on gp.id = mg.pon_id
+        LEFT JOIN gpon_olts as go on go.id = gp.olt_id
+        LEFT JOIN gpon_olts_interessados as goi ON goi.gpon_olt_id = go.id
+        WHERE mp.active = 1 AND goi.interessado_empresa_id = $empresaID AND goi.active = 1
+        GROUP BY mp.id
+    ) AS subquery;
 ";
-
+ 
 $r_man_prog_af_gpon = mysqli_query($mysqli, $count_man_prog_af_gpon);
 $c_man_prog_af_gpon = $r_man_prog_af_gpon->fetch_array();
 
 $count_man_prog_af_backbone =
-    "SELECT count(*) as qtde
+"SELECT count(*) as qtde
 FROM
 manutencao_programada as mp
 LEFT JOIN manutencao_rotas_fibra as mrf ON mrf.manutencao_id = mp.id
@@ -75,6 +78,9 @@ GROUP BY mp.id";
 
 $r_man_prog_af_backbone = mysqli_query($mysqli, $count_man_prog_af_backbone);
 $c_man_prog_af_backbone = $r_man_prog_af_backbone->fetch_array();
+
+$total_mp = (isset($c_man_prog_af_backbone['qtde']) && $c_man_prog_af_backbone['qtde'] > 0 ? $c_man_prog_af_backbone['qtde'] : 0) +
+(isset($c_man_prog_af_gpon['qtde']) && $c_man_prog_af_gpon['qtde'] > 0 ? $c_man_prog_af_gpon['qtde'] : 0);
 
 
 $incidentes_gpon_reincidentes =
