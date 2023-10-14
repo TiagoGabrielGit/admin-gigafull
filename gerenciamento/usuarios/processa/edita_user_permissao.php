@@ -23,7 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             permissao_selecionar_atendente = :permissaoSelecionaAtendente,
             permissao_configuracoes_chamados = :permissaoAlterarConfiguracoes,
             permissao_privacidade_credenciais = :permissaoPrivacidadeCredenciais,
-            permissao_gerenciar_incidentes = :permissaoGerenciarIncidentes
+            permissao_gerenciar_incidentes = :permissaoGerenciarIncidentes,
+            permissao_protocolo_erp = :permissao_protocolo_erp
             WHERE id = :permissionIdUser";
 
         // Preparar a declaração SQL
@@ -48,7 +49,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':permissaoAlterarConfiguracoes', $_POST['permissaoAlterarConfiguracoes']);
         $stmt->bindParam(':permissaoPrivacidadeCredenciais', $_POST['permissaoPrivacidadeCredenciais']);
         $stmt->bindParam(':permissaoGerenciarIncidentes', $_POST['permissaoGerenciarIncidentes']);
+        $stmt->bindParam(':permissao_protocolo_erp', $_POST['permissaoProtocoloERP']);
+
         $stmt->bindParam(':permissionIdUser', $_POST['permissionIdUser']);
+
+        
 
         $stmt->execute();
 

@@ -314,6 +314,15 @@ require "validaRotina.php";
                     <?php } ?>
                 </ul>
                 <ul id="rede-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <?php if ($c_nav_sub_importCTO['c'] == 1) { ?>
+                        <li>
+                            <a href="/rede/importacao_ctos/index.php">
+                                <i class="bi bi-circle"></i><span>Importar CTO</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+                </ul>
+                <ul id="rede-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <?php if ($c_nav_sub_rotasFibra['c'] == 1) { ?>
                         <li>
                             <a href="/rede/rotas_de_fibra/index.php">
@@ -496,6 +505,41 @@ require "validaRotina.php";
                         <li>
                             <a href="/sistema/log_acesso/index.php">
                                 <i class="bi bi-circle"></i><span>LOG de acesso - Admin</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+                </ul>
+            </li>
+        <?php } ?>
+
+        <?php if ($c_nav_integracao['c'] == 1) { ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#integracao-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-info-circle"></i><span>Integrações</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="integracao-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                    <?php if ($c_sub_voalle['c'] == 1) { ?>
+                        <li>
+                            <a href="/integracao/voalle/index.php">
+                                <i class="bi bi-circle"></i><span>Voalle</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+
+                    <?php if ($c_sub_wr_gateway['c'] == 1) { ?>
+                        <li>
+                            <a href="/integracao/wr_gateway/index.php">
+                                <i class="bi bi-circle"></i><span>WR Gateway</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+                    <?php if ($c_nav_sub_intZabbix['c'] == 1) { ?>
+                        <li>
+                            <a href="/integracao/zabbix/index.php">
+                                <i class="bi bi-circle"></i><span>Zabbix</span>
                             </a>
                         </li>
                     <?php } ?>

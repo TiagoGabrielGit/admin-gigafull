@@ -35,7 +35,12 @@ if ($rowCount_permissions_submenu > 0) {
     CASE
     WHEN ii.active = 1 THEN 'Ativo'
     WHEN ii.active = 0 THEN 'Inativo'
-    END AS active
+    END AS active,
+CASE
+WHEN ii.protocoloERP = 1 THEN 'Ativo'
+    WHEN ii.protocoloERP = 0 THEN 'Inativo'
+END AS protocoloERP
+
     FROM incidentes_iframe as ii
     LEFT JOIN empresas as e ON e.id = ii.empresa_id
     WHERE ii.id = $id";
@@ -72,7 +77,12 @@ if ($rowCount_permissions_submenu > 0) {
                                                 <label for="status" class="form-label">Status</label>
                                                 <input disabled readonly value="<?= $c_sql['active'] ?>" class="form-control"></input>
                                             </div>
-                                            <div class="col-3"></div>
+
+                                            <div class="col-3">
+                                                <label for="protocoloERP" class="form-label">Consulta Protocolo ERP</label>
+                                                <input disabled readonly value="<?= $c_sql['protocoloERP'] ?>" class="form-control"></input>
+                                            </div>
+
                                             <div class="col-2">
                                                 <?php
                                                 if ($c_sql['active'] == "Ativo") { ?>
@@ -80,7 +90,14 @@ if ($rowCount_permissions_submenu > 0) {
                                                 <?php } else {
                                                 }
                                                 ?>
-
+                                                <br> <br>
+                                                <?php
+                                                if ($c_sql['protocoloERP'] == "Ativo") { ?>
+                                                    <a href='processa/desabilitar_protocolo.php?id=<?= $id ?>' class='btn btn-sm btn-danger'>Desabilitar Protocolo </a>
+                                                <?php } else if ($c_sql['protocoloERP'] == "Inativo") { ?>
+                                                    <a href='processa/habilitar_protocolo.php?id=<?= $id ?>' class='btn btn-sm btn-danger'>Habilitar Protocolo </a>
+                                                <?php }
+                                                ?>
 
                                             </div>
                                         </div>

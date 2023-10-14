@@ -373,6 +373,15 @@
                 </select>
             </div>
 
+            <label for="permissaoProtocoloERP" class="col-sm-4 col-form-label">Permite Visualizar Protocolo do ERP</label>
+            <div class="col-sm-6">
+                <select name="permissaoProtocoloERP" id="permissaoProtocoloERP" class="form-select" required>
+                    <option disabled value="" <?php echo ($campos['permissao_protocolo_erp'] === null) ? 'selected' : ''; ?>>Selecione uma opção</option>
+                    <option value="1" <?php echo ($campos['permissao_protocolo_erp'] == 1) ? 'selected' : ''; ?>>Sim</option>
+                    <option value="0" <?php echo ($campos['permissao_protocolo_erp'] == 0) ? 'selected' : ''; ?>>Não</option>
+                </select>
+            </div>
+
         </div>
     </div>
 

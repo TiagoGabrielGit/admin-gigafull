@@ -54,6 +54,7 @@ if ($rowCount_permissions > 0) {
 
         // Obtém o resultado da consulta como um array associativo
         $pon = $stmt->fetch(PDO::FETCH_ASSOC);
+        $codIntPON = $pon['codigo'];
     } catch (PDOException $e) {
         echo "Erro na consulta: " . $e->getMessage();
     }
@@ -126,43 +127,46 @@ if ($rowCount_permissions > 0) {
                         </div>
 
                         <div class="card-body">
-                            <h5 class="card-title">Localidades Atendidas</h5>
+                            <div class="row">
 
-                            <form method="POST" action="processa/adicionar_localidades.php" class="row g-3">
-                                <hr class="sidebar-divider">
+                                <div class="col-lg-6">
+                                    <h5 class="card-title">Localidades Atendidas</h5>
 
-                                <input id="loc_idPON" name="loc_idPON" readonly hidden value="<?= $idPON ?>"></input>
+                                    <form method="POST" action="processa/adicionar_localidades.php" class="row g-3">
+                                        <hr class="sidebar-divider">
 
-                                <div class="row">
-                                    <div class="col-4">
-                                        <label for="cidade" class="form-label">Cidade</label>
-                                        <input required id="cidade" name="cidade" class="form-control"></input>
-                                    </div>
+                                        <input id="loc_idPON" name="loc_idPON" readonly hidden value="<?= $idPON ?>"></input>
 
-                                    <div class="col-4">
-                                        <label for="bairro" class="form-label">Bairro</label>
-                                        <input required id="bairro" name="bairro" class="form-control"></input>
-                                    </div>
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label for="cidade" class="form-label">Cidade</label>
+                                                <input required id="cidade" name="cidade" class="form-control"></input>
+                                            </div>
 
-                                    <div class="col-4">
-                                        <button style="margin-top: 35px;" type="submit" class="btn btn-sm btn-danger">Adicionar</button>
-                                    </div>
-                                </div>
-                            </form>
-                            <hr class="sidebar-divider">
+                                            <div class="col-4">
+                                                <label for="bairro" class="form-label">Bairro</label>
+                                                <input required id="bairro" name="bairro" class="form-control"></input>
+                                            </div>
 
-                            <table class="table datatable">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Cidade</th>
-                                        <th scope="col">Bairro</th>
-                                        <th scope="col"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    $localidades =
-                                        "SELECT
+                                            <div class="col-4">
+                                                <button style="margin-top: 35px;" type="submit" class="btn btn-sm btn-danger">Adicionar</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <hr class="sidebar-divider">
+
+                                    <table class="table datatable">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Cidade</th>
+                                                <th scope="col">Bairro</th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $localidades =
+                                                "SELECT
                                         gpl.id as idLocalidade,
                                         gpl.cidade as cidade,
                                         gpl.bairro as bairro
@@ -173,26 +177,62 @@ if ($rowCount_permissions > 0) {
                                         and
                                         gpl.pon_id = $idPON
                                         ";
-                                    $r_localidades = mysqli_query($mysqli, $localidades) or die("Erro ao retornar dados");
-                                    while ($c_localidades = $r_localidades->fetch_array()) {
-                                        $idLocalidade = $c_localidades['idLocalidade'];
-                                    ?>
-                                        <tr id="tabelaLista">
-                                            <td><?= $c_localidades['cidade'] ?></td>
-                                            <td><?= $c_localidades['bairro'] ?></td>
-                                            <td>
-                                                <form method="POST" action="processa/excluir_localidade.php">
-                                                    <input hidden readonly id="locPONID" name="locPONID" value="<?= $idPON ?>"></input>
+                                            $r_localidades = mysqli_query($mysqli, $localidades) or die("Erro ao retornar dados");
+                                            while ($c_localidades = $r_localidades->fetch_array()) {
+                                                $idLocalidade = $c_localidades['idLocalidade'];
+                                            ?>
+                                                <tr id="tabelaLista">
+                                                    <td><?= $c_localidades['cidade'] ?></td>
+                                                    <td><?= $c_localidades['bairro'] ?></td>
+                                                    <td>
+                                                        <form method="POST" action="processa/excluir_localidade.php">
+                                                            <input hidden readonly id="locPONID" name="locPONID" value="<?= $idPON ?>"></input>
 
-                                                    <input hidden readonly id="locID" name="locID" value="<?= $idLocalidade ?>"></input>
-                                                    <button class="btn btn-sm btn-danger">Excluir</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    <?php } ?>
-                                </tbody>
-                            </table>
+                                                            <input hidden readonly id="locID" name="locID" value="<?= $idLocalidade ?>"></input>
+                                                            <button class="btn btn-sm btn-danger">Excluir</button>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h5 class="card-title">CTOs da PON</h5>
 
+                                    <table class="table datatable">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Caixa</th>
+                                                <th scope="col">Latitude</th>
+                                                <th scope="col">Longitude</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $query_ctos =
+                                                "SELECT *
+                                        FROM gpon_ctos as gc
+                                        WHERE gc.paintegration_code =  $codIntPON";
+                                            $r_ctos = mysqli_query($mysqli, $query_ctos) or die("Erro ao retornar dados");
+                                            while ($c_ctos = $r_ctos->fetch_array()) {
+                                                $caixa = $c_ctos['title'];
+                                                $lat = $c_ctos['lat'];
+                                                $lng = $c_ctos['lng'];
+
+                                            ?>
+                                                <tr>
+                                                    <td><?= $caixa ?></td>
+                                                    <td><?= $lat ?></td>
+                                                    <td><?= $lng ?></td>
+
+                                                </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

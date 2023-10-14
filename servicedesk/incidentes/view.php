@@ -2,6 +2,7 @@
 require "../../includes/menu.php";
 require "../../conexoes/conexao.php";
 require "../../conexoes/conexao_pdo.php";
+require "../../includes/remove_setas_number.php";
 
 $submenu_id = "22";
 $uid = $_SESSION['id'];
@@ -58,6 +59,7 @@ if ($rowCount_permissions_submenu > 0) {
             i.envio_com_normalizacao as envio_com_normalizacao,
             i.incident_type as tipo,
             i.equipamento_id as host_id,
+            i.protocolo_erp as protocoloERP,
             it.type as tipoIncidente,
             eqpop.hostname as equipamento,
             i.classificacao as idClassificacao,
@@ -103,6 +105,7 @@ if ($rowCount_permissions_submenu > 0) {
         $campos = mysqli_fetch_assoc($r_sql_incidente);
         $descIncidente = $campos['descricaoIncidente'];
         $host_id = $campos['host_id'];
+        $protocoloERP = $campos['protocoloERP'];
         $tipo = $campos['tipo'];
         $zabbixID = $campos['zabbixID'];
         $idClassificacao = $campos['idClassificacao'];
@@ -465,7 +468,7 @@ if ($rowCount_permissions_submenu > 0) {
         </div>
 
         <div class="modal fade" id="modalUpdate" tabindex="-1">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Update Incidente</h5>
@@ -483,11 +486,13 @@ if ($rowCount_permissions_submenu > 0) {
                                 <input hidden id="zabbixEventID" name="zabbixEventID" value="<?= $zabbixID ?>"></input>
 
                                 <div class="row">
-                                    <div class="col-12">
-                                        <div class="col-12">
-                                            <label for="descIncidente" class="form-label">Descrição</label>
-                                            <input value="<?= $descIncidente ?>" id="descIncidente" name="descIncidente" class="form-control" required></input>
-                                        </div>
+                                    <div class="col-9">
+                                        <label for="descIncidente" class="form-label">Descrição</label>
+                                        <input value="<?= $descIncidente ?>" id="descIncidente" name="descIncidente" class="form-control" required></input>
+                                    </div>
+                                    <div class="col-3">
+                                        <label for="protocoloERP" class="form-label">Protocolo ERP</label>
+                                        <input type="number" value="<?= $protocoloERP ?>" id="protocoloERP" name="protocoloERP" class="form-control"></input>
                                     </div>
                                 </div>
                                 <br>

@@ -11,8 +11,8 @@ if (isset($_SESSION['id'])) {
         }
         return $senha;
     }
-
-    require "../../../../conexoes/conexao_pdo.php";
+    require "../../../conexoes/conexao_pdo.php";
+    
     try {
 
         $novaSenha = gerarSenhaAleatoria(8);
@@ -50,11 +50,11 @@ if (isset($_SESSION['id'])) {
 
         if ($apiResponse === FALSE) {
             $_SESSION['apiResponse'] =  curl_error($ch);
-            header("Location: /sistema/integracao/wr_gateway/index.php");
+            header("Location: /integracao/wr_gateway/index.php");
             exit();
         } else {
             $_SESSION['apiResponse'] =  $apiResponse;
-            header("Location: /sistema/integracao/wr_gateway/index.php");
+            header("Location: /integracao/wr_gateway/index.php");
             exit();
         }
 

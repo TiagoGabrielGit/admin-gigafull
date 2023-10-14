@@ -710,3 +710,35 @@ ppsm.perfil_id = $perfil_id";
 $r_nav_sub_iframe_incidentes = mysqli_query($mysqli, $nav_sub_iframe_incidentes);
 $c_nav_sub_iframe_incidentes = mysqli_fetch_assoc($r_nav_sub_iframe_incidentes);
 
+$nav_sub_voalle = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '42'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_sub_voalle = mysqli_query($mysqli, $nav_sub_voalle);
+$c_sub_voalle = mysqli_fetch_assoc($r_sub_voalle);
+
+$nav_importCTO = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '43'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_sub_importCTO = mysqli_query($mysqli, $nav_importCTO);
+$c_nav_sub_importCTO = mysqli_fetch_assoc($r_sub_importCTO);
+

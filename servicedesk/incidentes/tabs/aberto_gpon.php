@@ -12,6 +12,7 @@
                 i.equipamento_id,
                 i.descricaoIncidente as descricaoIncidente,
                 i.active as activeID,
+                i.protocolo_erp as protocoloERP,
                 i.pon_id as pon_id,
                 ic.classificacao as classificacao,
                 ic.descricao as descClassificacao,
@@ -73,7 +74,8 @@
                             </b> <br>
                             &nbsp; &nbsp; &nbsp; &nbsp; <?= $campos['descricaoIncidente'] ?>
                             <br><br>
-                            <b>&nbsp; &nbsp; &nbsp; &nbsp;Tempo total incidente: </b><?= $campos['tempoIncidente']; ?>
+                            <b>&nbsp; &nbsp; &nbsp; &nbsp;Tempo total incidente: </b><?= $campos['tempoIncidente']; ?> <?= (!empty($campos['protocoloERP'])) ? '- <b> Protocolo ERP: </b> ' . $campos['protocoloERP'] : '' ?>
+
                         </span>
                         <span class="text-end">
 
@@ -128,6 +130,7 @@
                             } else {
                                 echo $campos['classificacao'];
                             } ?> <br>
+                            <b>Protocolo ERP: </b> <?= $campos['protocoloERP'] ?> <br>
 
                         </div>
                         <div class="col-5">
@@ -158,9 +161,23 @@
                                 <br>
                             <?php
                             } ?>
+                            <div class="row">
 
-                            <div class="col-12">
-                                <button title="Localidades" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalLocalidades<?= $cont ?>"><i class="bi bi-pin-map"></i></button>
+                                <div class="col-2">
+                                    <button title="Localidades" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalLocalidades<?= $cont ?>"><i class="bi bi-pin-map"></i></button>
+                                </div>
+                                <div class="col-1">
+                                </div>
+                                <?php
+                                if (isset($permissaoProtocoloERP) == 1 && !empty($campos['protocoloERP']) || isset($protocoloERP) && $protocoloERP == 1) { ?>
+                                    <div class="col-2">
+                                        <form method="POST" action="/servicedesk/incidentes/protocolo_erp.php">
+                                            <input hidden readonly id="protocoloERP" name="protocoloERP" value="<?= $campos['protocoloERP'] ?>">
+                                            <button title="Solicitação ERP" type="submit" class="btn btn-sm btn-info"><i class="bi bi-box-arrow-right"></i></button>
+                                        </form>
+                                    </div>
+
+                                <?php } ?>
                             </div>
                             <div class="modal fade" id="modalLocalidades<?= $cont ?>" tabindex="-1">
                                 <div class="modal-dialog modal-lg">
@@ -209,8 +226,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </div>

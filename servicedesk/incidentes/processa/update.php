@@ -9,6 +9,7 @@ $previsaoConclusao = isset($_POST['previsaoConclusao']) ? $_POST['previsaoConclu
 $tipoIncidente = isset($_POST['tipoIncidente']) ? $_POST['tipoIncidente'] : null;
 $relatoIncidente = isset($_POST['relatoIncidente']) ? $_POST['relatoIncidente'] : null;
 $zabbixEventID = isset($_POST['zabbixEventID']) ? $_POST['zabbixEventID'] : null;
+$protocoloERP = isset($_POST['protocoloERP']) ? $_POST['protocoloERP'] : null;
 $comunicarInteressados = $_POST['comunicarInteressados'];
 $descIncidente = $_POST['descIncidente'];
 
@@ -27,6 +28,11 @@ if ($classIncidente != NULL || $statusIncidente != NULL || $tipoIncidente != NUL
     if ($tipoIncidente != null) {
         $sql .= "incident_type = :tipoIncidente, ";
         $params[':tipoIncidente'] = $tipoIncidente;
+    }
+
+    if ($protocoloERP != null) {
+        $sql .= "protocolo_erp = :protocoloERP, ";
+        $params[':protocoloERP'] = $protocoloERP;
     }
 
     if ($descIncidente != null) {

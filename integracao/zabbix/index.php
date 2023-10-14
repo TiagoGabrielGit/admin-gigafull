@@ -1,6 +1,6 @@
 <?php
-require "../../../includes/menu.php";
-require "../../../conexoes/conexao_pdo.php";
+require "../../includes/menu.php";
+require "../../conexoes/conexao_pdo.php";
 
 
 $submenu_id = "31";
@@ -89,7 +89,7 @@ iz.id = 1
 
 <?php
 } else {
-    require "../../../acesso_negado.php";
+    require "../../acesso_negado.php";
 }
-require "../../../includes/securityfooter.php";
+require "../../includes/securityfooter.php";
 ?>

@@ -83,7 +83,7 @@ if ($chamado['data_prevista_conclusao'] === null) {
                     </div>
                     <div class="col-lg-3">
                         <a href="index.php">
-                            <button style="margin-top: 15px" type="button" class="btn btn-danger">
+                            <button style="margin-top: 15px" type="button" class="btn btn-sm btn-danger">
                                 Listagem Chamados
                             </button>
                         </a>

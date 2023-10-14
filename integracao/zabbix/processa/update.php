@@ -1,6 +1,6 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    require "../../../../conexoes/conexao_pdo.php";
+    require "../../../conexoes/conexao_pdo.php";
 
     $tokenAPI = $_POST["tokenAPI"];
     $statusIntegracao = $_POST["statusIntegracao"];
@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $stmt->execute();
 
-        header("Location: /sistema/integracao/zabbix/index.php");
+        header("Location: /integracao/zabbix/index.php");
         exit();
     } catch (PDOException $e) {
         echo "Erro na atualização: " . $e->getMessage();
@@ -32,6 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pdo = null;
 } else {
     // Se o formulário não foi enviado corretamente, redirecione de volta para a página do formulário
-    header("Location: /sistema/integracao/zabbix/index.php");
+    header("Location: /integracao/zabbix/index.php");
     exit();
 }

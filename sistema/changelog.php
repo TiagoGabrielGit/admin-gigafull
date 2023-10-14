@@ -15,6 +15,60 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
               <div class="accordion-item">
+                <h2 class="accordion-header" id="heading11-9">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse11-9" aria-expanded="false" aria-controls="collapse11-9">
+                    Versão 11.9 - 14/10/2023
+                  </button>
+                </h2>
+                <div id="collapse11-9" class="accordion-collapse collapse" aria-labelledby="heading11-9" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Leitura relatos protocolo Voalle;<br>
+                    # Importação de CTOs;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criado o id 23 na tabela menu;<br>
+                    # Editado o menu dos submenu 31 e 38;<br>
+                    # Criado o submenu id 42;<br>
+                    # Criado a tabela integracao_voalle;<br>
+                    # Criado coluna permissao_protocolo_erp na tabela usuarios;<br>
+                    # Criado a tabela gpon_ctos;<br>
+                    # Criado o submenu id 43;<br>
+                    # Editado a tabela incidentes_iframe;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Pesquisa MP Concluidas através da data;<br>
+                    # Horario fim de relato;<br>
+                    # Aceite Manutenção Programada;<br>
+                    # Bloqueio API por IP;<br>
+                    # Causador Incidente;<br>
+                    # Enter para login;<br>
+                    # Alternar tabs automanticamente no iframe incidentes;<br>
+                    # White-Label iframe incidentes;<br>
+                    # TABs permitidas no iframe incidentes;<br>
+                    # Remover PON/RF durante criação de MP;<br>
+                    # Vincular uma documentação à um tipo de incidente;<br>
+                    # Selecionar publico ou privado no relato avulso;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Energia POP;<br>
+                    # Atributos de equipamentos;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Anexo arquivos em chamados;<br>
+                    # Permissões em documentações;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                    # Dependencia de chamados;<br>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
                 <h2 class="accordion-header" id="heading11-8">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse11-8" aria-expanded="false" aria-controls="collapse11-8">
                     Versão 11.8 - 08/10/2023
@@ -29,6 +83,7 @@ require "../includes/menu.php";
                     <br><strong>Alterações banco de dados</strong><br>
 
                     <br><strong>Backlog</strong><br>
+                    # Horario fim de relato;<br>
                     # Aceite Manutenção Programada;<br>
                     # Bloqueio API por IP;<br>
                     # Causador Incidente;<br>

@@ -31,21 +31,22 @@ if ($rowCount_permissions_submenu > 0) {
     $dados_usuario =
         "SELECT
     u.empresa_id as empresaID,
-    u.permissao_gerenciar_incidentes as permissaoGerenciar
-    FROM
-    usuarios as u
-    LEFT JOIN
-    redeneutra_parceiro as rnp
-    ON
-    rnp.empresa_id = u.empresa_id
-    WHERE
-    u.id =   $uid
+    u.permissao_gerenciar_incidentes as permissaoGerenciar,
+    u.permissao_protocolo_erp as permissaoProtocoloERP,
+    e.atributoEmpresaPropria  as atributoEmpresaPropria
+    FROM usuarios as u
+    LEFT JOIN empresas as e ON e.id = u.empresa_id
+    LEFT JOIN redeneutra_parceiro as rnp ON rnp.empresa_id = u.empresa_id
+    WHERE u.id =   $uid
 ";
 
     $r_dados_usuario = mysqli_query($mysqli, $dados_usuario);
     $c_dados_usuario = $r_dados_usuario->fetch_array();
     $empresaID = $c_dados_usuario['empresaID'];
+    $empresaPropria = $c_dados_usuario['atributoEmpresaPropria'];
+
     $permissaoGerenciar = $c_dados_usuario['permissaoGerenciar'];
+    $permissaoProtocoloERP = $c_dados_usuario['permissaoProtocoloERP'];
 
     $tab_gpon = "show active";
     $nav_gpon = "active";
@@ -182,10 +183,11 @@ if ($rowCount_permissions_submenu > 0) {
 
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link <?= $nav_outros ?>" id="outros-tab" data-bs-toggle="tab" data-bs-target="#outros" type="button" role="tab" aria-controls="outros" aria-selected="false">Outros
-                                        <?php
+                                        <?php 
+                                        if ($empresaPropria == 1) {
                                         if ($c_inc_oth['qtde'] > 0) {    ?>
                                             <span class="badge bg-danger text-white"><?= $c_inc_oth['qtde'] ?></span>
-                                        <?php } ?>
+                                        <?php }} ?>
                                     </button>
                                 </li>
                             </ul>

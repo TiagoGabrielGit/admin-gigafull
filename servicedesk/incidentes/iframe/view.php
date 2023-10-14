@@ -6,7 +6,7 @@ require "../../../conexoes/conexao_pdo.php"; // Certifique-se de que esta linha 
 require "../../../conexoes/conexao.php"; // Certifique-se de que esta linha está correta
 
 try {
-    $query_frame = "SELECT ii.id as id_iframe, ii.empresa_id as empresa_id, e.atributoEmpresaPropria as empresaPropria
+    $query_frame = "SELECT ii.id as id_iframe, ii.empresa_id as empresa_id, e.atributoEmpresaPropria as empresaPropria, ii.protocoloERP as protocoloERP
                     FROM incidentes_iframe as ii
                     LEFT JOIN empresas as e ON e.id = ii.empresa_id
                     WHERE ii.active = 1 and ii.token = :token";
@@ -21,7 +21,9 @@ try {
         $empresaPropria = $result[0]['empresaPropria'];
         $id_iframe = $result[0]['id_iframe'];
         $empresaID = $empresa_id;
+        $protocoloERP = $result[0]['protocoloERP'];
 
+        
         $all_open =
             "SELECT count(*) as qtde
         FROM incidentes_iframe_ip_address as iiip

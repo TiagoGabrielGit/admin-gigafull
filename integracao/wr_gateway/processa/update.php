@@ -4,7 +4,7 @@ session_start();
 if ($_SESSION['id']) {
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        require "../../../../conexoes/conexao_pdo.php";
+        require "../../../conexoes/conexao_pdo.php";
 
         // Dados do formulário
         // Dados do formulário
@@ -32,13 +32,13 @@ if ($_SESSION['id']) {
 
             $stmt->execute();
 
-            header("Location: /sistema/integracao/wr_gateway/index.php");
+            header("Location: /integracao/wr_gateway/index.php");
             exit();
         } catch (PDOException $e) {
             echo "Erro: " . $e->getMessage();
         }
     } else {
-        header("Location: /sistema/integracao/wr_gateway/index.php");
+        header("Location: /integracao/wr_gateway/index.php");
         exit();
     }
 }

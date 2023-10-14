@@ -1,7 +1,7 @@
 <?php
-require "../../../includes/menu.php";
-require "../../../conexoes/conexao_pdo.php";
-require "../../../includes/remove_setas_number.php";
+require "../../includes/menu.php";
+require "../../conexoes/conexao_pdo.php";
+require "../../includes/remove_setas_number.php";
 
 $submenu_id = "38";
 $uid = $_SESSION['id'];
@@ -166,7 +166,7 @@ iwg.id = 1
 
 <?php
 } else {
-    require "../../../acesso_negado.php";
+    require "../../acesso_negado.php";
 }
-require "../../../includes/securityfooter.php";
+require "../../includes/securityfooter.php";
 ?>
