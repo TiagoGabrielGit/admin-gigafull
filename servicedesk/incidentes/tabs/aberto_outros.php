@@ -62,7 +62,7 @@ try {
 
                 $r_host = mysqli_query($mysqli, $sql_host);
                 $c_host = $r_host->fetch_array();
-                $identificacao = "EQUIPAMENTO: " . $c_host['identificacao'];
+                $identificacao = $c_host['identificacao'];
 
             ?>
 

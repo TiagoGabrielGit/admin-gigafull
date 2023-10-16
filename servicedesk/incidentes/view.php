@@ -138,10 +138,7 @@ if ($rowCount_permissions_submenu > 0) {
                                     <hr class="sidebar-divider">
                                 </div>
 
-
                                 <div class="row">
-
-
                                     <div class="col-lg-5">
                                         <div class="col-12">
                                             <br>
@@ -171,7 +168,6 @@ if ($rowCount_permissions_submenu > 0) {
                                                                             $row_usuario = mysqli_fetch_assoc($resultado_usuario);
                                                                             echo $row_usuario['nome_usuario'];
                                                                         } ?><br>
-
 
                                             <b>Tipo de Incidente: </b>
                                             <?php
@@ -216,9 +212,10 @@ if ($rowCount_permissions_submenu > 0) {
                                                 <br>
                                                 <?php
                                                 if ($campos['statusID'] == "1") { ?>
-                                                    <button style="margin-top: 15px" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalUpdate">
-                                                        Atualizar
-                                                    </button>
+                                                    <form method="POST" action="atualiza_incidente.php">
+                                                        <input hidden readonly value="<?= $campos['idIncidente'] ?>" name="idIncidente" id="idIncidente">
+                                                        <button style="margin-top: 15px" class="btn btn-sm btn-danger" type="submit">Atualizar</button>
+                                                    </form>
                                                 <?php
                                                 }
                                                 ?>
@@ -254,9 +251,7 @@ if ($rowCount_permissions_submenu > 0) {
 
                                             </div>
                                         </div>
-
                                     </div>
-
                                 </div>
 
                                 <hr class="sidebar-divider">
@@ -461,150 +456,6 @@ if ($rowCount_permissions_submenu > 0) {
 
                             </div>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="modalUpdate" tabindex="-1">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Update Incidente</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="card-body">
-                            <form action="processa/update.php" method="POST" class="row g-3">
-
-                                <span id="msg"></span>
-
-                                <input hidden id="incidenteID" name="incidenteID" value="<?= $id_incidente ?>"></input>
-                                <input hidden id="solicitante" name="solicitante" value="<?= $usuarioID ?>"></input>
-                                <input hidden id="zabbixEventID" name="zabbixEventID" value="<?= $zabbixID ?>"></input>
-
-                                <div class="row">
-                                    <div class="col-9">
-                                        <label for="descIncidente" class="form-label">Descrição</label>
-                                        <input value="<?= $descIncidente ?>" id="descIncidente" name="descIncidente" class="form-control" required></input>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="protocoloERP" class="form-label">Protocolo ERP</label>
-                                        <input type="number" value="<?= $protocoloERP ?>" id="protocoloERP" name="protocoloERP" class="form-control"></input>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-5">
-                                        <div class="col-12">
-                                            <label for="classIncidente" class="form-label">Classificação</label>
-                                            <select id="classIncidente" name="classIncidente" class="form-select" required>
-                                                <option disabled value="">Selecione</option>
-                                                <?php
-                                                $sql_classificacao =
-                                                    "SELECT
-                                                        ic.id as idClassificacao,
-                                                        ic.classificacao as classificacao
-                                                    FROM
-                                                        incidentes_classificacao as ic
-                                                    WHERE
-                                                        ic.active = 1
-                                                    ORDER BY
-                                                        ic.classificacao ASC";
-
-                                                $r_classificacao = mysqli_query($mysqli, $sql_classificacao);
-                                                while ($c_classificacao = mysqli_fetch_object($r_classificacao)) :
-                                                    $selected = ($c_classificacao->idClassificacao == $idClassificacao) ? 'selected' : ''; // Verifica se a opção corresponde ao $idClassificacao
-                                                    echo "<option value='$c_classificacao->idClassificacao' $selected> $c_classificacao->classificacao</option>";
-                                                endwhile;
-                                                ?>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-3">
-                                        <label for="tipoIncidente" class="form-label">Tipo de Incidente</label>
-                                        <select id="tipoIncidente" name="tipoIncidente" class="form-select" required>
-                                            <option disabled value="">Selecione</option>
-                                            <?php
-                                            $sql_tipos =
-                                                "SELECT
-                                                    it.codigo as idCodigo,
-                                                    it.type as tipo
-                                                FROM
-                                                    incidentes_types as it
-                                                WHERE
-                                                    it.active = 1
-                                                ORDER BY
-                                                    it.type ASC";
-
-                                            $r_tipo = mysqli_query($mysqli, $sql_tipos);
-                                            while ($c_tipo = mysqli_fetch_object($r_tipo)) :
-                                                $selected = ($c_tipo->idCodigo == $tipoIncidente) ? 'selected' : ''; // Verifica se a opção corresponde ao $tipoIncidente
-                                                echo "<option value='$c_tipo->idCodigo' $selected> $c_tipo->tipo</option>";
-                                            endwhile;
-                                            ?>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <div class="col-12">
-                                            <label for="statusIncidente" class="form-label">Status</label>
-                                            <select id="statusIncidente" name="statusIncidente" class="form-select" required>
-                                                <option disabled value="">Selecione</option>
-                                                <option value="1" <?php echo ($statusID == 1) ? 'selected' : ''; ?>>Aberto</option>
-                                                <option value="0" <?php echo ($statusID == 0) ? 'selected' : ''; ?>>Fechado</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-5">
-                                        <div class="col-12">
-                                            <label for="comunicarInteressados" class="form-label">Comunicar Interessados</label>
-                                            <select id="comunicarInteressados" name="comunicarInteressados" class="form-select" required>
-                                                <option disabled selected value="">Selecione</option>
-                                                <option value="1">Sim</option>
-                                                <option value="0">Não</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label for="previsaoConclusao" class="form-label">Previsão de Conclusão</label>
-                                        <input name="previsaoConclusao" type="datetime-local" class="form-control" id="previsaoConclusao" value="<?php if ($prevNOR !== null) : echo date('Y-m-d\TH:i', strtotime($prevNOR));
-                                                                                                                                                    endif;  ?>">
-                                    </div>
-
-
-                                    <div class="col-3 d-flex flex-column align-items-center">
-                                        <div>
-                                            <label for="semPrevisao" class="form-label">Sem Previsão</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="semPrevisao" name="semPrevisao">
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="col-12">
-                                    <label for="relatoIncidente" class="form-label">Relato</label>
-                                    <textarea id="relatoIncidente" name="relatoIncidente" class="form-control" maxlength="500" rows="5" required></textarea>
-                                </div>
-
-                                <hr class="sidebar-divider">
-
-                                <div class="col-4"></div>
-
-                                <div class="col-4" style="text-align: center;">
-                                    <button class="btn btn-danger" type="submit">Atualizar</button>
-                                </div>
-
-                                <div class="col-4"></div>
-                            </form><!-- End Horizontal Form -->
                         </div>
                     </div>
                 </div>
