@@ -102,6 +102,30 @@ require "sql_dashboard_1.php";
                         </div>
                     </div>
                 </div>
+                <div class="col-xxl-3 col-md-3">
+                    <div class="card info-card customers-card text-center">
+                        <div class="card-body">
+                            <h4 class="card-title">Manutenção Programada</h4>
+                            <div class="d-flex align-items-center">
+
+                                <div class="ps-3">
+                                    <h4>
+                                        <a style="color: red;" href="/servicedesk/incidentes/abertos.php">
+                                            <?php
+                                            if ($total_mp == 0) {
+                                                echo "Nenhuma manutenção";
+                                            } else if ($total_mp == 1) {
+                                                echo "1 Manutenção";
+                                            } else {
+                                                echo $total_mp . " Manutenções";
+                                            } ?>
+                                        </a>
+                                    </h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="row">
@@ -183,24 +207,29 @@ require "sql_dashboard_1.php";
                         <div class="col-xxl-3 col-md-3">
                             <div class="card info-card customers-card text-center">
                                 <div class="card-body">
-                                    <h4 class="card-title">Manutenção Programada</h4>
-                                    <div class="d-flex align-items-center">
-                                       
-                                        <div class="ps-3">
-                                            <h4>
-                                                <a style="color: red;" href="/servicedesk/incidentes/abertos.php">
-                                                        <?php
-                                                        if ($total_mp == 0) {
-                                                            echo "Nenhuma manutenção";
-                                                        } else if ($total_mp == 1) {
-                                                            echo "1 Manutenção";
-                                                        } else {
-                                                            echo $total_mp . " Manutenções";
-                                                        } ?>
-                                                </a>
-                                            </h4>
-                                        </div>
-                                    </div>
+                                    <h5 class="card-title">Diretório Uploads (Max: 10Gb)</h5>
+                                    <h1>
+                                        <?php
+                                        $folderPath = 'uploads/';
+
+                                        // Calcula o tamanho ocupado pela pasta em bytes
+                                        $totalSize = 0;
+
+                                        $dirIterator = new RecursiveDirectoryIterator($folderPath);
+                                        $iterator = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::SELF_FIRST);
+
+                                        foreach ($iterator as $file) {
+                                            if ($file->isFile()) {
+                                                $totalSize += $file->getSize();
+                                            }
+                                        }
+
+                                        // Converte para megabytes (MB) e arredonda para o valor mais próximo
+                                        $usedSpaceMB = round($totalSize / (1024 * 1024));
+
+                                        echo "{$usedSpaceMB}MB";
+                                        ?>
+                                    </h1>
                                 </div>
                             </div>
                         </div>
@@ -209,104 +238,101 @@ require "sql_dashboard_1.php";
             </div>
         </div>
     </div>
+    <div class="col-lg-12">
 
-    <div class="row">
-        <div class="col-lg-7">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Reincidencia de Incidentes GPON Últimos 60d</h5>
-                    <table class="table table-striped" id="styleTable">
-                        <thead>
-                            <tr>
-                                <th scope="col">OLT</th>
-                                <th scope="col">Cidade</th>
-                                <th scope="col">Bairro</th>
-                                <th scope="col">SLOT</th>
-                                <th scope="col">PON</th>
-                                <th scope="col">Classificação</th>
-                                <th scope="col">Quantidade</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            while ($c_incidentes_gpon_reincidentes = $r_incidentes_gpon_reincidentes->fetch_array()) { ?>
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Reincidencia de Incidentes GPON Últimos 60d</h5>
+                        <table class="table table-striped" id="styleTable">
+                            <thead>
                                 <tr>
-                                    <td><?= $c_incidentes_gpon_reincidentes['olt_name'] ?></th>
-                                    <td><?= $c_incidentes_gpon_reincidentes['cidade'] ?></td>
-                                    <td><?= $c_incidentes_gpon_reincidentes['bairro'] ?></td>
-                                    <td><?= $c_incidentes_gpon_reincidentes['slot'] ?></td>
-                                    <td><?= $c_incidentes_gpon_reincidentes['pon'] ?></td>
-                                    <td><?= $c_incidentes_gpon_reincidentes['classificacao'] ?></td>
-                                    <td><?= $c_incidentes_gpon_reincidentes['quantidade_incidentes'] ?></td>
-
+                                    <th scope="col">OLT</th>
+                                    <th scope="col">Cidade</th>
+                                    <th scope="col">Bairro</th>
+                                    <th scope="col">SLOT</th>
+                                    <th scope="col">PON</th>
+                                    <th scope="col">Classificação</th>
+                                    <th scope="col">Quantidade</th>
 
                                 </tr>
-                            <?php
-                            } ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php
+                                while ($c_incidentes_gpon_reincidentes = $r_incidentes_gpon_reincidentes->fetch_array()) { ?>
+                                    <tr>
+                                        <td><?= $c_incidentes_gpon_reincidentes['olt_name'] ?></th>
+                                        <td><?= $c_incidentes_gpon_reincidentes['cidade'] ?></td>
+                                        <td><?= $c_incidentes_gpon_reincidentes['bairro'] ?></td>
+                                        <td><?= $c_incidentes_gpon_reincidentes['slot'] ?></td>
+                                        <td><?= $c_incidentes_gpon_reincidentes['pon'] ?></td>
+                                        <td><?= $c_incidentes_gpon_reincidentes['classificacao'] ?></td>
+                                        <td><?= $c_incidentes_gpon_reincidentes['quantidade_incidentes'] ?></td>
+
+
+                                    </tr>
+                                <?php
+                                } ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-lg-5">
-            <div class="card recent-sales overflow-auto">
-                <div class="card-body">
-                    <h5 class="card-title">Últimos 30 chamados</h5>
-                    <table class="table table-striped" id="styleTable">
-                        <thead>
-                            <tr>
-                                <th scope="col">Número</th>
-                                <th scope="col">Cliente</th>
-                                <th scope="col">Chamado</th>
-                                <th scope="col">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            while ($campos_ultimos_30_chamados = $r_ultimos_30_chamados->fetch_array()) { ?>
-                                <tr onclick="location.href='/servicedesk/consultar_chamados/view.php?id=<?= $campos_ultimos_30_chamados['idChamado'] ?>'">
-                                    <td><?= $campos_ultimos_30_chamados['idChamado'] ?></th>
-                                    <td><?= $campos_ultimos_30_chamados['fantasia'] ?></td>
-                                    <td><?= $campos_ultimos_30_chamados['assuntoChamado'] ?></td>
-                                    <?php
-                                    $statusChamado = $campos_ultimos_30_chamados['statusChamado'];
-                                    if ($statusChamado == 1) { ?>
-                                        <td><span class="badge bg-success">Aberto</span></td>
-                                    <?php } else if ($statusChamado == 2) { ?>
-                                        <td><span class="badge bg-info">Andamento</span></td>
-                                    <?php } else if ($statusChamado == 3) { ?>
-                                        <td><span class="badge bg-secondary">Fechado</span></td>
-                                    <?php } ?>
+            <div class="col-lg-5">
+                <div class="card recent-sales overflow-auto">
+                    <div class="card-body">
+                        <h5 class="card-title">Últimos 15 chamados</h5>
+                        <table class="table table-striped" id="styleTable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Número</th>
+                                    <th scope="col">Cliente</th>
+                                    <th scope="col">Chamado</th>
+                                    <th scope="col">Status</th>
                                 </tr>
-                            <?php
-                            } ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php
+                                while ($campos_ultimos_30_chamados = $r_ultimos_30_chamados->fetch_array()) { ?>
+                                    <tr onclick="location.href='/servicedesk/consultar_chamados/view.php?id=<?= $campos_ultimos_30_chamados['idChamado'] ?>'">
+                                        <td><?= $campos_ultimos_30_chamados['idChamado'] ?></th>
+                                        <td><?= $campos_ultimos_30_chamados['fantasia'] ?></td>
+                                        <td><?= $campos_ultimos_30_chamados['assuntoChamado'] ?></td>
+                                        <?php
+                                        $statusChamado = $campos_ultimos_30_chamados['statusChamado'];
+                                        if ($statusChamado == 1) { ?>
+                                            <td><span class="badge bg-success">Aberto</span></td>
+                                        <?php } else if ($statusChamado == 2) { ?>
+                                            <td><span class="badge bg-info">Andamento</span></td>
+                                        <?php } else if ($statusChamado == 3) { ?>
+                                            <td><span class="badge bg-secondary">Fechado</span></td>
+                                        <?php } ?>
+                                    </tr>
+                                <?php
+                                } ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-    </div>
-    <div class="row">
-        <div class="col-lg-5">
-            <div class="card recent-sales overflow-auto">
-                <div class="card-body">
-                    <h5 class="card-title">POPs Atividades</h5>
-                    <table class="table table-striped" id="styleTable">
-                        <thead>
-                            <tr>
-                                <th scope="col">POP</th>
-                                <th scope="col">Atividade</th>
-                                <th scope="col">Data</th>
-                                <th scope="col">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php try {
-                                // Prepara a consulta SQL para buscar as atividades agendadas dos POPs
-                                $stmt = $pdo->prepare("SELECT 
+                <div class="card recent-sales overflow-auto">
+                    <div class="card-body">
+                        <h5 class="card-title">POPs Atividades </h5>
+                        <table class="table table-striped" id="styleTable">
+                            <thead>
+                                <tr>
+                                    <th scope="col">POP</th>
+                                    <th scope="col">Atividade</th>
+                                    <th scope="col">Data</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php try {
+                                    // Prepara a consulta SQL para buscar as atividades agendadas dos POPs
+                                    $stmt = $pdo->prepare("SELECT 
                                 CASE
                                 WHEN pap.status = 1 THEN 'Programada'
                                 END as status,
@@ -325,59 +351,31 @@ require "sql_dashboard_1.php";
                                     p.id = pap.pop_id
                                 WHERE
                                     pap.status = 1
-                                ORDER BY pap.date ASC");
+                                ORDER BY pap.date ASC
+                                LIMIT 15");
 
-                                // Executa a consulta
-                                $stmt->execute();
+                                    // Executa a consulta
+                                    $stmt->execute();
 
-                                // Obtém os resultados da consulta
-                                $atividades = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                    // Obtém os resultados da consulta
+                                    $atividades = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                                // Exibe os resultados na tabela
-                                foreach ($atividades as $atividade) {
-                                    echo '<tr>';
+                                    // Exibe os resultados na tabela
+                                    foreach ($atividades as $atividade) {
+                                        echo '<tr>';
 
-                                    echo '<td>' . $atividade['pop'] . '</td>';
-                                    echo '<td>' . $atividade['atividade'] . '</td>';
-                                    echo '<td>' . $atividade['data_programada'] . '</td>';
-                                    echo '<td>' . $atividade['status'] . '</td>';
-                                    echo '</tr>';
-                                }
-                            } catch (PDOException $e) {
-                                echo "Erro ao buscar as atividades agendadas: " . $e->getMessage();
-                            } ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-
-            <div class="card recent-sales overflow-auto">
-                <div class="card-body">
-                    <h5 class="card-title">Diretório Uploads (Max: 10Gb)</h5>
-                    <h1>
-                        <?php
-                        $folderPath = 'uploads/';
-
-                        // Calcula o tamanho ocupado pela pasta em bytes
-                        $totalSize = 0;
-
-                        $dirIterator = new RecursiveDirectoryIterator($folderPath);
-                        $iterator = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::SELF_FIRST);
-
-                        foreach ($iterator as $file) {
-                            if ($file->isFile()) {
-                                $totalSize += $file->getSize();
-                            }
-                        }
-
-                        // Converte para megabytes (MB) e arredonda para o valor mais próximo
-                        $usedSpaceMB = round($totalSize / (1024 * 1024));
-
-                        echo "{$usedSpaceMB}MB";
-                        ?>
-                    </h1>
+                                        echo '<td>' . $atividade['pop'] . '</td>';
+                                        echo '<td>' . $atividade['atividade'] . '</td>';
+                                        echo '<td>' . $atividade['data_programada'] . '</td>';
+                                        echo '<td>' . $atividade['status'] . '</td>';
+                                        echo '</tr>';
+                                    }
+                                } catch (PDOException $e) {
+                                    echo "Erro ao buscar as atividades agendadas: " . $e->getMessage();
+                                } ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

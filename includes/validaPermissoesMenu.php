@@ -413,3 +413,21 @@ ppm.perfil_id = $perfil_id";
 $r_nav_integracao = mysqli_query($mysqli, $nav_integracao);
 $c_nav_integracao = mysqli_fetch_assoc($r_nav_integracao);
 /////////////////////////////////////////
+
+//MENU >> INTEGRACAO
+$nav_gerenciamento_api = "SELECT
+count(*) as c
+FROM
+url_menu as um
+LEFT JOIN
+perfil_permissoes_menu as ppm
+ON
+ppm.url_menu = um.id
+WHERE
+um.id = '24'
+and
+ppm.perfil_id = $perfil_id";
+
+$r_nav_gerenciamento_api = mysqli_query($mysqli, $nav_gerenciamento_api);
+$c_nav_gerenciamento_api = mysqli_fetch_assoc($r_nav_gerenciamento_api);
+/////////////////////////////////////////

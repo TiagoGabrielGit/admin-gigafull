@@ -15,6 +15,60 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
               <div class="accordion-item">
+                <h2 class="accordion-header" id="heading12-1">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse12-1" aria-expanded="false" aria-controls="collapse12-1">
+                    Versão 12.1 - 07/11/2023
+                  </button>
+                </h2>
+                <div id="collapse12-1" class="accordion-collapse collapse" aria-labelledby="heading12-1" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Bloqueio API por IP;<br>
+                    # Cadastro de Responsáveis Aceite MP;<br>
+                    # Melhorias em chamados;<br>
+                    
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criado o menu id 24;<br>
+                    # Criada a tabela api;<br>
+                    # Criada a tabela api_externa_ip;<br>
+                    # Criado a coluna responsavel_name na tabela manutencao_programada;<br>
+                    # Criado a coluna responsavel_contato na tabela manutencao_programada;<br>
+                    # Criada a tabela manutencao_programada_responsaveis_aceite;<br>
+                    # Criado submenu id 44;<br>
+                    # Criado notificação mail id 7;<br>
+                    # Criado a coluna date_send na tabela manutencao_programada_aprovacao;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Pesquisa MP Concluidas através da data;<br>
+                    # Envio de Aceite Manutenção Programada;<br>
+                    # Anexos em chamados;<br>
+                    # Causador Incidente;<br>
+                    # Enter para login;<br>
+                    # Alternar tabs automanticamente no iframe incidentes;<br>
+                    # White-Label iframe incidentes;<br>
+                    # TABs permitidas no iframe incidentes;<br>
+                    # Remover PON/RF durante criação de MP;<br>
+                    # Vincular uma documentação à um tipo de incidente;<br>
+                    # Selecionar publico ou privado no relato avulso;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Energia POP;<br>
+                    # Atributos de equipamentos;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Anexo arquivos em chamados;<br>
+                    # Permissões em documentações;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                    # Dependencia de chamados;<br>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
                 <h2 class="accordion-header" id="heading12-0">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse12-0" aria-expanded="false" aria-controls="collapse12-0">
                     Versão 12.0 - 15/10/2023
@@ -30,6 +84,7 @@ require "../includes/menu.php";
                     # Criada a tabela incidentes_ctos;<br>
 
                     <br><strong>Backlog</strong><br>
+                    # Responsável MP;<br>
                     # Pesquisa MP Concluidas através da data;<br>
                     # Horario fim de relato;<br>
                     # Aceite Manutenção Programada;<br>

@@ -6,6 +6,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $dataAgendamento = $_POST['dataAgendamento'];
     $duracao = $_POST['duracao'];
     $descricao = $_POST['descricao'];
+    $responsavel_name = $_POST['responsavel_name'];
+    $responsavel_contato = $_POST['responsavel_contato'];
 
     if (isset($_POST['acao'])) {
         $acao = $_POST['acao'];
@@ -15,15 +17,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 try {
                     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                    $sql = "UPDATE manutencao_programada SET titulo = :titulo, dataAgendamento = :dataAgendamento, duracao = :duracao, descricao = :descricao,  active = 3 WHERE id = :idMP";
+                    $sql = "UPDATE manutencao_programada SET titulo = :titulo, dataAgendamento = :dataAgendamento, duracao = :duracao, descricao = :descricao, responsavel_name = :responsavel_name, responsavel_contato = :responsavel_contato,  active = 3 WHERE id = :idMP";
 
                     $stmt = $pdo->prepare($sql);
 
                     $stmt->bindParam(':idMP', $idMP, PDO::PARAM_INT);
-                    $stmt->bindParam(':titulo', $titulo, PDO::PARAM_STR); // Suponha que 'titulo' seja uma string (VARCHAR)
-                    $stmt->bindParam(':dataAgendamento', $dataAgendamento, PDO::PARAM_STR); // Suponha que 'dataAgendamento' seja uma string (VARCHAR) contendo uma data
-                    $stmt->bindParam(':duracao', $duracao, PDO::PARAM_INT); // Se 'duracao' for um número inteiro
-                    $stmt->bindParam(':descricao', $descricao, PDO::PARAM_STR); // Suponha que 'descricao' seja uma string (TEXT ou VARCHAR)
+                    $stmt->bindParam(':titulo', $titulo, PDO::PARAM_STR);
+                    $stmt->bindParam(':dataAgendamento', $dataAgendamento, PDO::PARAM_STR);
+                    $stmt->bindParam(':duracao', $duracao, PDO::PARAM_INT);
+                    $stmt->bindParam(':descricao', $descricao, PDO::PARAM_STR);
+                    $stmt->bindParam(':responsavel_name', $responsavel_name, PDO::PARAM_STR);
+                    $stmt->bindParam(':responsavel_contato', $responsavel_contato, PDO::PARAM_STR);
 
 
                     if ($stmt->execute()) {

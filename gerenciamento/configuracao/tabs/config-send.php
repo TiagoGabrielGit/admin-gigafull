@@ -250,6 +250,46 @@
                                     <?php endforeach; ?>
                                 </select>
                             </div>
+
+                            <div class="form-check form-switch">
+
+                                <?php
+                                $sql_consulta_7 = "SELECT
+                                ne.notificacao_id as notificacao_id,
+                                ne.active as active,
+                                se.server as servidor,
+                                se.id as servidorID
+                                FROM
+                                notificacao_email as ne
+                                LEFT JOIN
+                                servermail as se
+                                ON
+                                se.id = ne.server_id
+                                WHERE
+                                ne.notificacao_id = 7";
+                                $stmt_consulta7 = $pdo->query($sql_consulta_7);
+                                $resultado_c7 = $stmt_consulta7->fetch(PDO::FETCH_ASSOC);
+
+                                // Verifica se está ativo e define o valor para a propriedade 'checked'
+                                $checked7 = ($resultado_c7['active'] == "1") ? 'checked' : '';
+                                if (empty($resultado_c7['servidor'])) {
+                                    $server_not7 = "<option selected disabled>Selecione um servidor de e-mail</option>";
+                                } else {
+                                    $c7_serverID = $resultado_c7['servidorID'];
+                                    $c7_servidor = $resultado_c7['servidor'];
+                                    $server_not7 = "<option value='$c7_serverID' selected>$c7_servidor</option>";
+                                }
+                                ?>
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked7" <?= $checked7; ?>>
+                                <label class="form-check-label" for="flexSwitchCheckChecked7">(7) Envio de e-mail de aprovação de Manutenção Programada.</label>
+                                <select id="notificacao7_servidor" name="notificacao7_servidor" class="form-select form-select-sm" aria-label="Selecionar opção">
+                                    <?php
+                                    echo $server_not7;
+                                    foreach ($resultados as $row) : ?>
+                                        <option value="<?= $row['id']; ?>"><?= $row['server']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
                         </div>
                     </div>
 

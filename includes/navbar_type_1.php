@@ -235,7 +235,16 @@ require "validaRotina.php";
                             </a>
                         </li>
                     <?php } ?>
+                </ul>
+                <ul id="manutencaoProgramada-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
+                    <?php if ($c_nav_sub_responsaveis_aceite['c'] == 1) { ?>
+                        <li>
+                            <a href="/servicedesk/manutencao_programada/responsaveis_aceite/index.php">
+                                <i class="bi bi-circle"></i><span>Responsáveis por Aceite</span>
+                            </a>
+                        </li>
+                    <?php } ?>
                 </ul>
             </li>
         <?php } ?>
@@ -438,6 +447,15 @@ require "validaRotina.php";
             </li>
         <?php } ?>
 
+        <?php if ($c_nav_gerenciamento_api['c'] == 1) { ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/gerenciamento_api/index.php">
+                    <i class="bi bi-gear"></i>
+                    <span>Gerenciamento de API</span>
+                </a>
+            </li>
+        <?php } ?>
+
         <?php if ($c_nav_relatorio['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#relatorio-nav" data-bs-toggle="collapse" href="#">
@@ -485,21 +503,6 @@ require "validaRotina.php";
                         </li>
                     <?php } ?>
 
-                    <?php if ($c_sub_wr_gateway['c'] == 1) { ?>
-                        <li>
-                            <a href="/sistema/integracao/wr_gateway/index.php">
-                                <i class="bi bi-circle"></i><span>Integração > WR Gateway</span>
-                            </a>
-                        </li>
-                    <?php } ?>
-
-                    <?php if ($c_nav_sub_intZabbix['c'] == 1) { ?>
-                        <li>
-                            <a href="/sistema/integracao/zabbix/index.php">
-                                <i class="bi bi-circle"></i><span>Integração > Zabbix</span>
-                            </a>
-                        </li>
-                    <?php } ?>
 
                     <?php if ($c_nav_sub_logAdmin['c'] == 1) { ?>
                         <li>

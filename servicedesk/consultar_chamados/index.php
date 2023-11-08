@@ -6,18 +6,10 @@ $menu_id = "4";
 $uid = $_SESSION['id'];
 
 $permissions_menu =
-    "SELECT 
-	u.perfil_id
-FROM 
-	usuarios u
-JOIN 
-	perfil_permissoes_menu pp
-ON 
-	u.perfil_id = pp.perfil_id
-WHERE
-	u.id = $uid
-AND 
-	pp.url_menu = $menu_id";
+    "SELECT u.perfil_id
+    FROM usuarios u
+    JOIN perfil_permissoes_menu pp ON u.perfil_id = pp.perfil_id
+    WHERE u.id = $uid AND pp.url_menu = $menu_id";
 
 $exec_permissions_menu = $pdo->prepare($permissions_menu);
 $exec_permissions_menu->execute();
@@ -29,14 +21,9 @@ if ($rowCount_permissions_menu > 0) {
     $id_usuario = $_SESSION['id'];
     $s_empresaID = $_SESSION['empresa_id'];
     $sql_captura_id_pessoa =
-        "SELECT
-u.pessoa_id as pessoaID,
-u.tipo_usuario as tipoUsuario
-FROM
-usuarios as u
-WHERE
-u.id = '$id_usuario'
-";
+        "SELECT u.pessoa_id as pessoaID, u.tipo_usuario as tipoUsuario
+        FROM usuarios as u
+        WHERE u.id = '$id_usuario'";
 
     $result_cap_pessoa = mysqli_query($mysqli, $sql_captura_id_pessoa);
     $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
@@ -46,16 +33,25 @@ u.id = '$id_usuario'
 
     if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
-        if ($_POST['ordenarChamados'] == 1) {
-            $ordenarChamadosSelecionado  = "ch.status_id = 3, ch.data_abertura DESC";
-        } else if ($_POST['ordenarChamados'] == 2) {
+        if (isset($_POST['ordenarChamados'])) {
+            if ($_POST['ordenarChamados'] == 1) {
+                $ordenarChamadosSelecionado  = "ch.status_id = 3, ch.data_abertura DESC";
+            } else if ($_POST['ordenarChamados'] == 2) {
+                $ordenarChamadosSelecionado  = "ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
+            } else {
+                $ordenarChamadosSelecionado  = "ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
+            }
+        } else{
             $ordenarChamadosSelecionado  = "ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
-        } else {
-            $ordenarChamadosSelecionado  = "ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
+
         }
 
-        if ($_POST['atendentePesquisa'] != '%') {
-            $atendentePesquisa = $_POST['atendentePesquisa'];
+        if (isset($_POST['atendentePesquisa'])) {
+            if ($_POST['atendentePesquisa'] != '%') {
+                $atendentePesquisa = $_POST['atendentePesquisa'];
+            } else {
+                $atendentePesquisa = "%";
+            }
         } else {
             $atendentePesquisa = "%";
         }
@@ -66,8 +62,13 @@ u.id = '$id_usuario'
             $whereAtendente = "AND ch.atendente_id LIKE '$atendentePesquisa'";
         }
 
-        if (!empty($_POST['empresaPesquisa'])) {
-            $empresa_id = $_POST['empresaPesquisa'];
+
+        if (isset($_POST['empresaPesquisa'])) {
+            if (!empty($_POST['empresaPesquisa'])) {
+                $empresa_id = $_POST['empresaPesquisa'];
+            } else {
+                $empresa_id = "%";
+            }
         } else {
             $empresa_id = "%";
         }
@@ -115,18 +116,19 @@ u.id = '$id_usuario'
     u.tipo_usuario as tipoUsuario,
     u.empresa_id as empresa_id,
     u.permissao_chamado as permissao_abrir_chamado,
-    u.permissao_visualiza_chamado as permissao_visualiza_chamado
-    FROM
-    usuarios as u
-    WHERE
-    u.id = '$id_usuario'
-    ";
+    u.permissao_visualiza_chamado as permissao_visualiza_chamado,
+    e.atributoEmpresaPropria as atributoEmpresaPropria
+    FROM usuarios as u
+    LEFT JOIN empresas as e ON u.empresa_id = e.id
+    WHERE u.id = '$id_usuario'";
 
     $result_cap_pessoa = mysqli_query($mysqli, $sql_captura_id_pessoa);
     $pessoaID = mysqli_fetch_assoc($result_cap_pessoa);
     $permissao_abrir_chamado = $pessoaID['permissao_abrir_chamado'];
     $permissao_visualiza_chamado = $pessoaID['permissao_visualiza_chamado'];
     $empresa_usuario = $pessoaID['empresa_id'];
+    $atributoEmpresaPropria = $pessoaID['atributoEmpresaPropria'];
+
 
 ?>
 
@@ -195,7 +197,7 @@ u.id = '$id_usuario'
                                     <div class="col-9"></div>
                                     <div class="col-3">
                                         <div class="card">
-                                            <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
+                                            <button style="margin-top: 15px" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
                                                 Abrir novo chamado
                                             </button>
                                         </div>
@@ -523,9 +525,9 @@ u.id = '$id_usuario'
                                                                     </div>
                                                                 </div>
 
-                                                                <button id="btnAbrirChamado" class="btn btn-danger" type="submit">Abrir Chamado</button>
+                                                                <button id="btnAbrirChamado" class="btn btn-sm btn-danger" type="submit">Abrir Chamado</button>
 
-                                                                <a href="/servicedesk/consultar_chamados/index.php"> <input id="btnVoltar" type="button" value="Voltar" class="btn btn-secondary"></input></a>
+                                                                <a href="/servicedesk/consultar_chamados/index.php"> <input id="btnVoltar" type="button" value="Voltar" class="btn btn-sm btn-secondary"></input></a>
                                                             </div>
 
                                                             <div class="col-4"></div>
@@ -539,78 +541,62 @@ u.id = '$id_usuario'
                             </div>
 
                             <form method="POST" action="#" class="row g-3">
+                                <?php if ($atributoEmpresaPropria == 1) { ?>
+                                    <div class="col-lg-12 row">
+                                        <div class="col-4">
+                                            <label for="empresaPesquisa" class="form-label">Empresa</label>
+                                            <select id="empresaPesquisa" name="empresaPesquisa" class="form-select">
+                                                <option selected value="%">Todas</option>
+                                                <?php
+                                                $resultado = mysqli_query($mysqli, $sql_lista_empresas);
+                                                while ($empresa = mysqli_fetch_object($resultado)) :
+                                                    echo "<option value='$empresa->id_empresa'> $empresa->fantasia_empresa</option>";
+                                                endwhile;
+                                                if ($_SERVER["REQUEST_METHOD"] == 'POST') :
+                                                ?>
+                                                    <script>
+                                                        let nomeEmpresa = '<?= $_POST['empresaPesquisa']; ?>'
+                                                        if (nomeEmpresa == '%') {} else {
+                                                            document.querySelector("#empresaPesquisa").value = nomeEmpresa
+                                                        }
+                                                    </script>
+                                                <?php
+                                                endif;
+                                                ?>
+                                            </select>
+                                        </div>
 
-                                <div class="col-lg-12 row">
-                                    <div class="col-4">
-                                        <label for="empresaPesquisa" class="form-label">Empresa</label>
-                                        <select id="empresaPesquisa" name="empresaPesquisa" class="form-select">
-                                            <option selected value="%">Todas</option>
-                                            <?php
-                                            $resultado = mysqli_query($mysqli, $sql_lista_empresas);
-                                            while ($empresa = mysqli_fetch_object($resultado)) :
-                                                echo "<option value='$empresa->id_empresa'> $empresa->fantasia_empresa</option>";
-                                            endwhile;
-                                            if ($_SERVER["REQUEST_METHOD"] == 'POST') :
-                                            ?>
-                                                <script>
-                                                    let nomeEmpresa = '<?= $_POST['empresaPesquisa']; ?>'
-                                                    if (nomeEmpresa == '%') {} else {
-                                                        document.querySelector("#empresaPesquisa").value = nomeEmpresa
+                                        <div class="col-4">
+
+                                            <label for="atendentePesquisa" class="form-label">Atendente</label>
+                                            <select id="atendentePesquisa" name="atendentePesquisa" class="form-select">
+                                                <option value="%">Todos</option>
+                                                <?php
+                                                $resultado = mysqli_query($mysqli, $sql_lista_atendentes);
+                                                while ($atendente = mysqli_fetch_object($resultado)) {
+                                                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                                                        $atdPesquisa = $_POST['atendentePesquisa'];
+                                                    } else {
+                                                        $atdPesquisa = "";
                                                     }
-                                                </script>
-                                            <?php
-                                            endif;
-                                            ?>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-4">
-
-                                        <label for="atendentePesquisa" class="form-label">Atendente</label>
-                                        <select id="atendentePesquisa" name="atendentePesquisa" class="form-select">
-                                            <option value="%">Todos</option>
-                                            <?php
-                                            $resultado = mysqli_query($mysqli, $sql_lista_atendentes);
-                                            while ($atendente = mysqli_fetch_object($resultado)) {
-                                                if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                                    $atdPesquisa = $_POST['atendentePesquisa'];
-                                                } else {
-                                                    $atdPesquisa = "";
+                                                    $selected = ($atdPesquisa == $atendente->id) ? 'selected' : '';
+                                                    echo "<option value='$atendente->id' $selected> $atendente->nome</option>";
                                                 }
-                                                $selected = ($atdPesquisa == $atendente->id) ? 'selected' : '';
-                                                echo "<option value='$atendente->id' $selected> $atendente->nome</option>";
-                                            }
-                                            ?>
-                                        </select>
+                                                ?>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <label for="ordenarChamados" class="form-label">Ordenar</label>
+                                            <select name="ordenarChamados" id="ordenarChamados" class="form-select">
+                                                <option value="1" <?php echo ($ordenarChamadosSelecionado == 'chamado') ? 'selected' : ''; ?>>Por Chamados</option>
+                                                <option value="2" <?php echo ($ordenarChamadosSelecionado == 'prioridade') ? 'selected' : ''; ?>>Por Prioridade</option>
+                                            </select>
+                                        </div>
+
                                     </div>
+                                <?php } ?>
 
-
-                                    <div class="col-4">
-                                        <label for="statusChamado" class="form-label">Status</label>
-                                        <select id="statusChamado" name="statusChamado" class="form-select">
-
-                                            <option selected value="LIKE '%'">Todos</option>
-                                            <?php
-                                            $resultado = mysqli_query($mysqli, $sql_status_chamados);
-                                            while ($status = mysqli_fetch_object($resultado)) :
-                                                echo "<option value='LIKE $status->id'> $status->status</option>";
-                                            endwhile;
-                                            ?>
-                                            <option value="!= 3">Não Fechados</option>
-                                            <?php if ($_SERVER["REQUEST_METHOD"] == 'POST') : ?>
-                                                <script>
-                                                    let statusChamado = '<?= $_POST['statusChamado']; ?>'
-                                                    if (statusChamado == "LIKE '%'") {} else {
-                                                        document.querySelector("#statusChamado").value = statusChamado
-                                                    }
-                                                </script>
-                                            <?php
-                                            endif;
-                                            ?>
-
-                                        </select>
-                                    </div>
-                                </div>
                                 <div class="col-lg-12 row">
                                     <div class="col-2">
                                         <label for="numChamadoPesquisa" class="form-label">Nº Chamado</label>
@@ -643,18 +629,36 @@ u.id = '$id_usuario'
                                         endif;
                                         ?>
                                     </div>
+                                    <div class="col-4">
+                                        <label for="statusChamado" class="form-label">Status</label>
+                                        <select id="statusChamado" name="statusChamado" class="form-select">
 
-                                    <div class="col-5">
-                                        <label for="ordenarChamados" class="form-label">Ordenar</label>
-                                        <select name="ordenarChamados" id="ordenarChamados" class="form-select">
-                                            <option value="1" <?php echo ($ordenarChamadosSelecionado == 'chamado') ? 'selected' : ''; ?>>Por Chamados</option>
-                                            <option value="2" <?php echo ($ordenarChamadosSelecionado == 'prioridade') ? 'selected' : ''; ?>>Por Prioridade</option>
+                                            <option selected value="LIKE '%'">Todos</option>
+                                            <?php
+                                            $resultado = mysqli_query($mysqli, $sql_status_chamados);
+                                            while ($status = mysqli_fetch_object($resultado)) :
+                                                echo "<option value='LIKE $status->id'> $status->status</option>";
+                                            endwhile;
+                                            ?>
+                                            <option value="!= 3">Não Fechados</option>
+                                            <?php if ($_SERVER["REQUEST_METHOD"] == 'POST') : ?>
+                                                <script>
+                                                    let statusChamado = '<?= $_POST['statusChamado']; ?>'
+                                                    if (statusChamado == "LIKE '%'") {} else {
+                                                        document.querySelector("#statusChamado").value = statusChamado
+                                                    }
+                                                </script>
+                                            <?php
+                                            endif;
+                                            ?>
+
                                         </select>
                                     </div>
 
+
                                 </div>
                                 <div class="col-6">
-                                    <button style="margin-top: 30px; " type="submit" class="btn btn-danger">Filtrar</button>
+                                    <button style="margin-top: 30px; " type="submit" class="btn btn-sm btn-danger">Filtrar</button>
                                 </div>
 
                             </form>
@@ -989,7 +993,7 @@ u.id = '$id_usuario'
                                                         Empresa: <?= $campos['fantasia']; ?><br>
                                                         Atendente: <?= $atendente ?>
                                                         <br>
-                                                        <?php if (isset($campos['prioridade'])) { ?>
+                                                        <?php if (isset($campos['prioridade']) && $atributoEmpresaPropria == 1) { ?>
                                                             <span class="badge bg-warning  text-dark">Prioridade: <?= $campos['prioridade'] ?></span>
                                                         <?php } ?>
 
@@ -1008,19 +1012,21 @@ u.id = '$id_usuario'
                                                     $r_valida_competencia = mysqli_query($mysqli, $valida_competencia);
                                                     $c_valida_competencia = $r_valida_competencia->fetch_assoc();
 
-                                                    echo '<span class="text-end">';
-                                                    if ($campos['data_prevista_conclusao'] === null || $campos['id_status'] == 3) {
-                                                    } else { ?>
-                                                        <span title="Data prevista de conclusão" class="btn btn-small btn-<?= $colorPill ?> rounded-pill"><?= date('d/m/Y H:i', strtotime($campos['data_prevista_conclusao'])) ?></span>
+                                                    if ($atributoEmpresaPropria == 1) {
+                                                        echo '<span class="text-end">';
+                                                        if ($campos['data_prevista_conclusao'] === null || $campos['id_status'] == 3) {
+                                                        } else { ?>
+                                                            <span title="Data prevista de conclusão" class="btn btn-small btn-<?= $colorPill ?> rounded-pill"><?= date('d/m/Y H:i', strtotime($campos['data_prevista_conclusao'])) ?></span>
                                                     <?php }
-                                                    if ($c_valida_competencia) {
-                                                        // O usuário tem todas as competências necessárias
-                                                        echo '<span class="btn btn-small btn-secondary rounded-pill">Qualificado</span>';
-                                                    } else {
-                                                        // O usuário não tem todas as competências necessárias
-                                                        echo '<span class="text-end"><span class="btn btn-small btn-success rounded-pill">Qualificado</span>';
+                                                        if ($c_valida_competencia) {
+                                                            // O usuário tem todas as competências necessárias
+                                                            echo '<span class="btn btn-small btn-secondary rounded-pill">Qualificado</span>';
+                                                        } else {
+                                                            // O usuário não tem todas as competências necessárias
+                                                            echo '<span class="text-end"><span class="btn btn-small btn-success rounded-pill">Qualificado</span>';
+                                                        }
+                                                        echo '</span>';
                                                     }
-                                                    echo '</span>';
                                                     ?>
                                                 </div>
                                             </button>

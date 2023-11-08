@@ -2,6 +2,23 @@
 require "../../includes/menu.php";
 require "sql.php";
 require "../../conexoes/conexao_pdo.php";
+
+
+$menu_id = "6";
+$uid = $_SESSION['id'];
+
+$permissions_menu =
+    "SELECT u.perfil_id
+    FROM usuarios u
+    JOIN perfil_permissoes_menu pp ON u.perfil_id = pp.perfil_id 
+    WHERE u.id = $uid AND pp.url_menu = $menu_id";
+
+$exec_permissions_menu = $pdo->prepare($permissions_menu);
+$exec_permissions_menu->execute();
+
+$rowCount_permissions_menu = $exec_permissions_menu->rowCount();
+
+if ($rowCount_permissions_menu > 0) {
 ?>
 
 <main id="main" class="main">
@@ -190,5 +207,8 @@ require "../../conexoes/conexao_pdo.php";
 
 <?php
 require "js.php";
-require "../../includes/footer.php";
+} else {
+    require "../../acesso_negado.php";
+}
+require "../../includes/securityfooter.php";
 ?>

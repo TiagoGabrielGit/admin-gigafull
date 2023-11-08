@@ -81,9 +81,8 @@ if ($rowCount_permissions > 0) {
                                                                 manutencao_programada as mp
                                                                 LEFT JOIN usuarios as u ON mp.usuario_criador = u.id
                                                                 LEFT JOIN pessoas as p ON p.id = u.pessoa_id
-                                                                ORDER BY mp.dataAgendamento desc
+                                                                ORDER BY mp.dataAgendamento desc";
 
-                                                                ";
                                                             $r_manutencoes = mysqli_query($mysqli, $lista_manutencoes);
                                                             while ($c_manutencoes = $r_manutencoes->fetch_array()) {
                                                             ?>

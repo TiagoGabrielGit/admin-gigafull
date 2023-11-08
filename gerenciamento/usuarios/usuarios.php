@@ -31,7 +31,12 @@ $rowCount_permissions_submenu = $exec_permissions_submenu->rowCount();
 if ($rowCount_permissions_submenu > 0) {
 
 ?>
-
+    <style>
+        #tabelaLista:hover {
+            cursor: pointer;
+            background-color: #E0FFFF;
+        }
+    </style>
     <main id="main" class="main">
 
         <div class="pagetitle">
@@ -62,10 +67,11 @@ if ($rowCount_permissions_submenu > 0) {
                             <p>Listagem usuários</p>
 
                             <!-- Table with stripped rows -->
-                            <table class="table table-striped" id="styleTable">
+                            <table class="table datatable" id="styleTable">
                                 <thead>
                                     <tr>
                                         <th scope="col">Nome</th>
+                                        <th scope="col">Empresa</th>
                                         <th scope="col">Dashboard</th>
                                         <th scope="col">Perfil</th>
                                         <th scope="col">E-mail/Usuário</th>
@@ -83,6 +89,7 @@ if ($rowCount_permissions_submenu > 0) {
                                         "SELECT 
                                         user.id as id,
                                         pess.nome as nome,
+                                        e.fantasia as empresa,
                                         user.dashboard as dashboard,
                                         pess.email as email,
                                         user.senha as senha,
@@ -94,6 +101,7 @@ if ($rowCount_permissions_submenu > 0) {
                                         FROM usuarios as user
                                         LEFT JOIN pessoas as pess ON pess.id = user.pessoa_id
                                         LEFT JOIN perfil as p ON p.id = user.perfil_id
+                                        LEFT JOIN empresas as e ON e.id = user.empresa_id
                                         ORDER BY pess.nome ASC ";
 
                                     $resultado = mysqli_query($mysqli, $sql) or die("Erro ao retornar dados");
@@ -107,6 +115,7 @@ if ($rowCount_permissions_submenu > 0) {
                                             <td style="text-align: center;">
                                                 <a style="color: red;" href="view.php?id=<?= $campos['id'] ?>"><?= $campos['nome']; ?></a>
                                             </td>
+                                            <td><?= $campos['empresa']; ?></td>
 
                                             <td>Tipo <?= $campos['dashboard']; ?></td>
                                             <td><?= $campos['nome_perfil']; ?></td>

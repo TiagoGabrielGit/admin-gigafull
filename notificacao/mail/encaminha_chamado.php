@@ -1,6 +1,6 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    require "../../conexoes/conexao_pdo.php";
+    require "../../conexoes/conexao_pdo.php"; 
 
     // Consulta se o envio de e-mail está habilitado
     $consulta_habilitado = "

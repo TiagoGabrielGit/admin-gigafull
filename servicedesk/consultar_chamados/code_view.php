@@ -195,17 +195,21 @@ if ($chamado['data_prevista_conclusao'] === null) {
                                         <button title="Configurações do Chamado" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalConfiguracoesChamados"><i class="bi bi-gear"></i></button>
                                     <?php } ?>
 
-                                    <?php if ($c_valida_competencia == null) { ?>
-                                        <button title="Qualificado para atender" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalQualificacao"><i class="bi bi-award"></i></button>
-                                    <?php } else { ?>
-                                        <button title="Não qualificado para atender" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalQualificacao"><i class="bi bi-award"></i></button>
-                                    <?php  }
-                                    ?>
-                                    <button title="Gerar relatório do chamado" type="button" class="btn btn-info">
-                                        <a href="/tcpdf/export/relatorio_chamados.php?id=<?= $id_chamado ?>" target="_blank">
-                                            <i class="bi bi-cloud-download"></i>
-                                        </a>
-                                    </button>
+
+                                    <?php if ($atributoEmpresaPropria == 1) { ?>
+                                        <?php if ($c_valida_competencia == null) { ?>
+                                            <button title="Qualificado para atender" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalQualificacao"><i class="bi bi-award"></i></button>
+                                        <?php } else { ?>
+                                            <button title="Não qualificado para atender" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalQualificacao"><i class="bi bi-award"></i></button>
+                                        <?php  }
+                                        ?>
+                                        <button title="Gerar relatório do chamado" type="button" class="btn btn-info">
+                                            <a href="/tcpdf/export/relatorio_chamados.php?id=<?= $id_chamado ?>" target="_blank">
+                                                <i class="bi bi-cloud-download"></i>
+                                            </a>
+                                        </button>
+
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>
@@ -332,43 +336,45 @@ if ($chamado['data_prevista_conclusao'] === null) {
                     $resultado_relatos = mysqli_query($mysqli, $sql_relatos)  or die("Erro ao retornar dados");
                     $cont = 1;
                     while ($campos = $resultado_relatos->fetch_array()) {
-                        $id_relato = $campos['id_relato'];
-                        $tempoAtendimento = gmdate("H:i:s", $campos['seconds_worked']);
-                        $private = $campos['privacidade'];
+                        if ($atributoEmpresaPropria == 1 || ($atributoEmpresaPropria == 0 & $campos['privacidade'] == 1)) {
+                            $id_relato = $campos['id_relato'];
+                            $tempoAtendimento = gmdate("H:i:s", $campos['seconds_worked']);
+                            $private = $campos['privacidade'];
                     ?>
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-heading<?= $cont ?>">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<?= $cont ?>" aria-expanded="false" aria-controls="flush-collapse<?= $cont ?>">
-                                    <div class="d-flex justify-content-between align-items-center w-100">
-                                        <span class="text-left">
-                                            Relato #<?= $id_relato ?> - <?= $campos['relatante']; ?>
-                                        </span>
-                                        <span class="text-end">
-                                            <?= $campos['inicio']; ?>
-                                        </span>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-heading<?= $cont ?>">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<?= $cont ?>" aria-expanded="false" aria-controls="flush-collapse<?= $cont ?>">
+                                        <div class="d-flex justify-content-between align-items-center w-100">
+                                            <span class="text-left">
+                                                Relato #<?= $id_relato ?> - <?= $campos['relatante']; ?>
+                                            </span>
+                                            <span class="text-end">
+                                                <?= $campos['inicio']; ?>
+                                            </span>
+                                        </div>
+                                    </button>
+                                </h2>
+                                <div id="flush-collapse<?= $cont ?>" class="accordion-collapse collapse" aria-labelledby="flush-heading<?= $cont ?>" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        <b>Relatante: </b> <?= $campos['relatante']; ?> <br>
+                                        <b>Período: </b> <?= $campos['inicio']; ?> à <?= $campos['final']; ?><br>
+                                        <b>Tempo de atendimento: </b> <?= $tempoAtendimento ?><br>
+                                        <b>Privacidade: </b> <?php
+                                                                if ($private == 1) {
+                                                                    echo "Público";
+                                                                } else {
+                                                                    echo "Privado";
+                                                                };
+
+                                                                ?><br>
+                                        <hr class="sidebar-divider">
+
+                                        <b>Descrição: </b> <br><?= nl2br($campos['relato']); ?>
                                     </div>
-                                </button>
-                            </h2>
-                            <div id="flush-collapse<?= $cont ?>" class="accordion-collapse collapse" aria-labelledby="flush-heading<?= $cont ?>" data-bs-parent="#accordionFlushExample">
-                                <div class="accordion-body">
-                                    <b>Relatante: </b> <?= $campos['relatante']; ?> <br>
-                                    <b>Período: </b> <?= $campos['inicio']; ?> à <?= $campos['final']; ?><br>
-                                    <b>Tempo de atendimento: </b> <?= $tempoAtendimento ?><br>
-                                    <b>Privacidade: </b> <?php
-                                                            if ($private == 1) {
-                                                                echo "Público";
-                                                            } else {
-                                                                echo "Privado";
-                                                            };
-
-                                                            ?><br>
-                                    <hr class="sidebar-divider">
-
-                                    <b>Descrição: </b> <br><?= nl2br($campos['relato']); ?>
                                 </div>
                             </div>
-                        </div>
                     <?php $cont++;
+                        }
                     } ?>
                 </div>
             </div>

@@ -154,7 +154,7 @@ if ($permissao_visualiza_chamado == 1) {
         e.id = 1
         ORDER BY
         c.id DESC
-        LIMIT 30
+        LIMIT 15
         ";
 } else if ($permissao_visualiza_chamado == 2) {
     $sql_ultimos_30_chamados =    "SELECT
@@ -190,7 +190,7 @@ if ($permissao_visualiza_chamado == 1) {
                                 )
                                 ORDER BY
                                 ch.data_abertura DESC
-                                LIMIT 30";
+                                LIMIT 15";
 } else if ($permissao_visualiza_chamado == 3) {
     //ÚLTIMOD 30 CHAMADOS
     $sql_ultimos_30_chamados =
@@ -212,7 +212,7 @@ if ($permissao_visualiza_chamado == 1) {
         c.tipochamado_id = tc.id
         ORDER BY
         c.id DESC
-        LIMIT 30
+        LIMIT 15
         ";
 }
 
@@ -370,7 +370,8 @@ AND gpl.active = 1
 AND goi.interessado_empresa_id = $empresaID
 GROUP BY gpo.olt_name, gpl.cidade, gpl.bairro, i.pon_id, i.classificacao
 HAVING quantidade_incidentes > 2
-ORDER BY quantidade_incidentes DESC";
+ORDER BY quantidade_incidentes DESC
+LIMIT 35";
 
 $r_incidentes_gpon_reincidentes = mysqli_query($mysqli, $incidentes_gpon_reincidentes);
 

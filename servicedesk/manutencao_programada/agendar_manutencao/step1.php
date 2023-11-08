@@ -21,7 +21,18 @@
             <input value="<?= $duracao ?>" name="duracao" type="number" class="form-control" id="duracao" required>
         </div>
     </div>
-
+    <br><br>
+    <div class="row">
+        <div class="col-5">
+            <label for="responsavel_name" class="form-label">Responsável pela Manutenção</label>
+            <input maxlength="150" value="<?= $responsavel_name ?>" name="responsavel_name" type="text" class="form-control" id="responsavel_name" required>
+        </div>
+        <div class="col-3">
+            <label for="responsavel_contato" class="form-label">Contato do Responspável pela Manutenção</label>
+            <input name="responsavel_contato" value="<?= $responsavel_contato ?>" type="text" class="form-control" id="celular" required>
+        </div>
+    </div>
+    <br><br>
     <div class="row">
         <div class="col-12">
             <label for="descricao" class="form-label">Descrição</label>

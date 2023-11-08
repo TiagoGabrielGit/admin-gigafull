@@ -8,6 +8,8 @@
 mp.id as idMP,
 mp.titulo as titulo,
 mp.descricao as descricao,
+mp.responsavel_name as responsavel_name,
+mp.responsavel_contato as responsavel_contato,
 mp.duracao as duracao,
 DATE_FORMAT(mp.dataAgendamento, '%d/%m/%Y %H:%i') as dataAgendamento
 FROM manutencao_programada as mp
@@ -47,6 +49,9 @@ order by mp.dataAgendamento asc
             $descricao = $c_manutencao_programada['descricao'];
             $duracao = $c_manutencao_programada['duracao'];
             $dataAgendamento = $c_manutencao_programada['dataAgendamento'];
+            $responsavel_name = $c_manutencao_programada['responsavel_name'];
+            $responsavel_contato = $c_manutencao_programada['responsavel_contato'];
+
 
     ?>
 
@@ -68,6 +73,7 @@ order by mp.dataAgendamento asc
                                 </b> <br>
                                 &nbsp; &nbsp; &nbsp; &nbsp; <?= $descricao ?>
                                 <br><br>
+                                <b>&nbsp; &nbsp; &nbsp; &nbsp;Responsável: </b><?= $responsavel_name . " &nbsp; <b>Contato:</b> " . $responsavel_contato ?><br>
                                 <b>&nbsp; &nbsp; &nbsp; &nbsp;Data Agendamento: </b><?= $dataAgendamento ?>
                                 <b>&nbsp; &nbsp; &nbsp; &nbsp;Tempo Estimado: </b><?= $duracao ?> hora/s
 

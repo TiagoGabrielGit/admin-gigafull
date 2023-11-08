@@ -16,18 +16,10 @@ u.empresa_id as idEmpresa,
 u.empresa_id as empresa_id,
 u.tipo_usuario as tipoUsuario,
 u.permissao_visualiza_chamado as permissao_visualiza_chamado,
-
-rnp.id as idParceiro
-FROM
-usuarios as u
-LEFT JOIN
-redeneutra_parceiro as rnp
-ON
-rnp.empresa_id = u.empresa_id
-WHERE
-u.active = 1
-and
-u.id = $id_usuario";
+e.atributoEmpresaPropria as atributoEmpresaPropria
+FROM usuarios as u
+LEFT JOIN empresas as e ON e.id = u.empresa_id
+WHERE u.active = 1 and u.id = $id_usuario";
 
 $r_dados_usuario = mysqli_query($mysqli, $sql_captura_dados_usuario);
 $c_dados_usuario = mysqli_fetch_assoc($r_dados_usuario);
@@ -35,10 +27,13 @@ $idUsuario = $c_dados_usuario['idUsuario'];
 $idPessoa = $c_dados_usuario['idPessoa'];
 $pessoaID = $c_dados_usuario['idPessoa'];
 $idEmpresa = $c_dados_usuario['idEmpresa'];
-$idParceiro = $c_dados_usuario['idParceiro'];
+//$idParceiro = $c_dados_usuario['idParceiro'];
 $tipoUsuario = $c_dados_usuario['tipoUsuario'];
 $permissao_visualiza_chamado = $c_dados_usuario['permissao_visualiza_chamado'];
 $empresa_usuario = $c_dados_usuario['empresa_id'];
+$atributoEmpresaPropria = $c_dados_usuario['atributoEmpresaPropria'];
+
+
 
 $resut_chamado1 = mysqli_query($mysqli, $sql_chamado1);
 $chamado = mysqli_fetch_assoc($resut_chamado1);

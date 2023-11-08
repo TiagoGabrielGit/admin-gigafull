@@ -30,7 +30,7 @@ if ($rowCount_permissions_submenu > 0) {
         //VALIDA SE FOI PASSADO ALGUM ID NA URL DA PAGINA
         $idMP = $_GET['id'];
         $sql_mp =
-            "SELECT mp.step as step, mp.titulo as titulo, mp.dataAgendamento as dataAgendamento, mp.duracao as duracao, mp.descricao as descricao
+            "SELECT mp.step as step, mp.titulo as titulo, mp.dataAgendamento as dataAgendamento, mp.duracao as duracao, mp.descricao as descricao, mp.responsavel_contato as responsavel_contato, mp.responsavel_name as responsavel_name
             FROM
             manutencao_programada as mp
             WHERE
@@ -46,9 +46,13 @@ if ($rowCount_permissions_submenu > 0) {
         $dataAgendamento = $result['dataAgendamento'];
         $duracao = $result['duracao'];
         $descricao = $result['descricao'];
+        $responsavel_name = $result['responsavel_name'];
+        $responsavel_contato = $result['responsavel_contato'];
+
+        
     } else {
         $verifica_mp_rascunho =
-            "SELECT mp.id as idMP, mp.step as step, mp.titulo as titulo, mp.dataAgendamento as dataAgendamento, mp.duracao as duracao, mp.descricao as descricao
+            "SELECT mp.id as idMP, mp.step as step, mp.titulo as titulo, mp.dataAgendamento as dataAgendamento, mp.duracao as duracao, mp.descricao as descricao, mp.responsavel_name as responsavel_name, mp.responsavel_contato as responsavel_contato
         FROM
         manutencao_programada as mp
         WHERE
@@ -70,6 +74,8 @@ if ($rowCount_permissions_submenu > 0) {
                 $dataAgendamento = $c_mp_rascunho['dataAgendamento'];
                 $duracao = $c_mp_rascunho['duracao'];
                 $descricao = $c_mp_rascunho['descricao'];
+                $responsavel_name = $c_mp_rascunho['responsavel_name'];
+                $responsavel_contato = $c_mp_rascunho['responsavel_contato'];
             } else {
                 //CRIA UMA NOVA MANUTENCAO 
                 $novaMP =
@@ -84,6 +90,8 @@ if ($rowCount_permissions_submenu > 0) {
                     $dataAgendamento = "";
                     $duracao = "";
                     $descricao = "";
+                    $responsavel_name = "";
+                    $responsavel_contato = "";
                 }
             }
         }
@@ -115,6 +123,16 @@ if ($rowCount_permissions_submenu > 0) {
             </div>
         </section>
     </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('#celular').inputmask('(99) 99999-9999');
+        });
+    </script>
 
 <?php
 } else {

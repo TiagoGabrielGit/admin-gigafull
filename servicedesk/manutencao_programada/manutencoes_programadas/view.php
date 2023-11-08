@@ -7,18 +7,10 @@ $uid = $_SESSION['id'];
 $submenu_id = "36";
 
 $permissions =
-    "SELECT 
-	u.perfil_id
-FROM 
-	usuarios u
-JOIN 
-	perfil_permissoes_submenu pp
-ON 
-	u.perfil_id = pp.perfil_id
-WHERE
-	u.id = $uid
-AND 
-	pp.url_submenu = $submenu_id";
+    "SELECT u.perfil_id
+    FROM usuarios u
+    JOIN perfil_permissoes_submenu pp ON u.perfil_id = pp.perfil_id
+    WHERE u.id = $uid AND pp.url_submenu = $submenu_id";
 
 $exec_permissions = $pdo->prepare($permissions);
 $exec_permissions->execute();
@@ -26,9 +18,7 @@ $exec_permissions->execute();
 $rowCount_permissions = $exec_permissions->rowCount();
 
 if ($rowCount_permissions > 0) {
-
     $idManutencao = $_GET['id'];
-
     $queryManutencao = "SELECT
     mp.id as idManutencao,
     mp.titulo as titulo,
@@ -36,7 +26,9 @@ if ($rowCount_permissions > 0) {
     mp.duracao as duracao,
     mp.descricao as descricao,
     mp.mensagem as mensagem,
-    mp.active as status
+    mp.active as status,
+    mp.responsavel_name as responsavel_name,
+    mp.responsavel_contato as responsavel_contato
     FROM
     manutencao_programada as mp
     WHERE 
@@ -54,6 +46,8 @@ if ($rowCount_permissions > 0) {
     $descricao = $manutencaoData['descricao'];
     $mensagem = $manutencaoData['mensagem'];
     $status = $manutencaoData['status'];
+    $responsavel_name = $manutencaoData['responsavel_name'];
+    $responsavel_contato = $manutencaoData['responsavel_contato'];
 
 
 ?>
@@ -78,6 +72,11 @@ if ($rowCount_permissions > 0) {
                                         <h5 class="card-title">Manutenção Programada</h5>
                                     </div>
                                     <div class="text-end">
+                                        <div class="d-inline-block">
+                                            <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalAprovacao">
+                                                Aprovação
+                                            </button>
+                                        </div>
                                         <div class="d-inline-block">
                                             <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#modalGPON">
                                                 GPON Afetados
@@ -130,7 +129,18 @@ if ($rowCount_permissions > 0) {
                                         </select>
                                     </div>
                                 </div>
-
+                                <br><br>
+                                <div class="row">
+                                    <div class="col-5">
+                                        <label for="responsavel_name" class="form-label">Responsável pela Manutenção</label>
+                                        <input maxlength="150" value="<?= $responsavel_name ?>" name="responsavel_name" type="text" class="form-control" id="responsavel_name" required>
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="responsavel_contato" class="form-label">Contato do Responspável pela Manutenção</label>
+                                        <input name="responsavel_contato" value="<?= $responsavel_contato ?>" type="text" class="form-control" id="celular" required>
+                                    </div>
+                                </div>
+                                <br><br>
                                 <div class="row">
                                     <div class="col-12">
                                         <label for="descricaoMP" class="form-label">Descrição</label>
@@ -154,7 +164,15 @@ if ($rowCount_permissions > 0) {
         </section>
 
     </main><!-- End #main -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
 
+
+    <script>
+        $(document).ready(function() {
+            $('#celular').inputmask('(99) 99999-9999');
+        });
+    </script>
 
     <div class="modal fade" id="modalGPON" tabindex="-1">
         <div class="modal-dialog modal-xl">
@@ -201,7 +219,7 @@ if ($rowCount_permissions > 0) {
                 </div>
             </div>
         </div>
-    </div><!-- End Basic Modal-->
+    </div>
 
     <div class="modal fade" id="modalRF" tabindex="-1">
         <div class="modal-dialog modal-xl">
@@ -249,7 +267,7 @@ if ($rowCount_permissions > 0) {
                 </div>
             </div>
         </div>
-    </div><!-- End Basic Modal-->
+    </div>
 
     <div class="modal fade" id="modalComunicados" tabindex="-1">
         <div class="modal-dialog modal-xl">
@@ -329,7 +347,117 @@ if ($rowCount_permissions > 0) {
 
             </div>
         </div>
-    </div><!-- End Basic Modal-->
+    </div>
+
+    <div class="modal fade" id="modalAprovacao" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Aprovação</h5>
+                    <?php if($status == 1) {?>
+                    <form method="POST" action="/notificacao/mail/envia_aprovacao_mp.php" class="d-inline-block" id="aprovacaoForm">
+                        <input value="<?= $id ?>" id="aprovacao_id_mp" name="aprovacao_id_mp" hidden readonly>
+                        <button type="button" id="enviarSolicitacao" class="btn btn-sm btn-success">Enviar Solicitação de Aprovação</button>
+                        <button type="button" id="loadingButton" class="btn btn-sm btn-info" style="display: none;" disabled>Carregando...</button>
+                    </form>
+                    <?php } ?>
+                </div>
+
+                <script>
+                    document.getElementById('enviarSolicitacao').addEventListener('click', function() {
+                        // Oculta o botão original e exibe o botão de carregamento
+                        document.getElementById('enviarSolicitacao').style.display = 'none';
+                        document.getElementById('loadingButton').style.display = 'inline-block';
+
+                        var form = document.getElementById('aprovacaoForm');
+                        var formData = new FormData(form);
+
+                        var xhr = new XMLHttpRequest();
+
+                        xhr.open('POST', '/notificacao/mail/envia_aprovacao_mp.php', true);
+                        xhr.onload = function() {
+                            if (xhr.status >= 200 && xhr.status < 300) {
+                                // A resposta foi bem-sucedida, exiba a resposta no elemento de alerta
+                                document.getElementById('resposta').classList.remove('d-none');
+                                document.getElementById('resposta').innerHTML = 'Envio realizado com sucesso!';
+                            } else {
+                                // A resposta não foi bem-sucedida; lide com o erro, se necessário.
+                                console.error('Erro ao enviar solicitação de aprovação.');
+                            }
+
+                            // Oculta o botão de carregamento e exibe o botão original novamente
+                            document.getElementById('loadingButton').style.display = 'none';
+                            document.getElementById('enviarSolicitacao').style.display = 'inline-block';
+                        };
+
+                        xhr.send(formData);
+                    });
+                </script>
+
+
+
+
+                <div class="modal-body">
+                    <div class="card-body">
+
+                        <div id="resposta" class="alert alert-warning alert-dismissible fade show d-none" role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+
+
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="text-align:  center;">Nome</th>
+                                    <th style="text-align:  center;">E-mail</th>
+                                    <th style="text-align:  center;">Data Envio</th>
+                                    <th style="text-align:  center;">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $solicitacoes_enviadas =
+                                    "SELECT mpa.id as id, mpra.email, mpra.nome as nome, mpa.status as statusID,
+                                    CASE
+                                    WHEN mpa.status = 1 THEN 'Aguardando Aprovação'
+                                    END as status,
+                                    DATE_FORMAT(mpa.date_send, '%d/%m/%Y %H:%i') as data_envio
+                                        FROM manutencao_programada_aprovacao as mpa
+                                        LEFT JOIN manutencao_programada_responsaveis_aceite as mpra ON mpra.id = mpa.contato_id
+                                        WHERE mpa.id_manutencao = :id_manutencao
+                                        ORDER BY mpra.nome ASC";
+
+                                $stmt = $pdo->prepare($solicitacoes_enviadas);
+                                $stmt->bindParam(':id_manutencao', $idManutencao);
+                                $stmt->execute();
+                                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                if (count($results) > 0) {
+                                    foreach ($results as $row) {
+                                        if ($row['statusID'] == 1) {
+                                            $bgCollor = "warning";
+                                        }
+                                ?>
+
+                                        <tr>
+                                            <td style="text-align:  center;"><?= $row['nome'] ?></td>
+                                            <td style="text-align:  center;"><?= $row['email'] ?></td>
+                                            <td style="text-align:  center;"><?= $row['data_envio'] ?></td>
+                                            <td style="text-align:  center;"><span class="badge bg-<?= $bgCollor ?>"><?= $row['status'] ?></span></td>
+                                        </tr>
+                                <?php }
+                                } else {
+                                    echo '<tr><td colspan="4">Nenhum resultado encontrado.</td></tr>';
+                                }
+                                ?>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <?php
 } else {
