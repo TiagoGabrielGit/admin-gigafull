@@ -853,7 +853,7 @@ try {
                         <input id="uploadChamadoID" name="uploadChamadoID" value="<?= $id_chamado ?>" hidden readonly></input>
                         <div class="col-lg-12 row">
                             <div class="col-8">
-                                <input required class="form-control" type="file" name="fileInput" id="fileInput" multiple>
+                                <input title="Permitido: jpg, jpeg, png, txt, pdf" required class="form-control" type="file" name="fileInput" id="fileInput" multiple>
                             </div>
                             <div class="col-4" style="margin-top: 5px;">
                                 <button class="btn btn-sm btn-danger" type="submit">Enviar</button>
@@ -861,12 +861,12 @@ try {
                         </div>
                     </form>
                 <?php }
-                $targetDirectory = '../../../uploads/chamados/chamado' . $id_chamado . '/';
+                $targetDirectory = '../../uploads/chamados/chamado' . $id_chamado . '/';
 
                 if (file_exists($targetDirectory)) {
                     $files = scandir($targetDirectory);
                     if ($files !== false) {
-                        echo '<ul>';
+                        echo '<br><ul>';
                         foreach ($files as $file) {
                             if ($file != '.' && $file != '..') {
                                 // Exiba os arquivos como links para download

@@ -27,7 +27,8 @@ require "../includes/menu.php";
                     # Bloqueio API por IP;<br>
                     # Cadastro de Responsáveis Aceite MP;<br>
                     # Melhorias em chamados;<br>
-                    
+                    # Anexos em chamados;<br>
+
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado o menu id 24;<br>
                     # Criada a tabela api;<br>
@@ -42,8 +43,7 @@ require "../includes/menu.php";
 
                     <br><strong>Backlog</strong><br>
                     # Pesquisa MP Concluidas através da data;<br>
-                    # Envio de Aceite Manutenção Programada;<br>
-                    # Anexos em chamados;<br>
+                    # Página de aceite MP;<br>
                     # Causador Incidente;<br>
                     # Enter para login;<br>
                     # Alternar tabs automanticamente no iframe incidentes;<br>
@@ -57,7 +57,6 @@ require "../includes/menu.php";
                     # Atributos de equipamentos;<br>
                     # Requisições de expediente atraves do acesso colaborador;<br>
                     # Integração para abrir chamado no Voalle;<br>
-                    # Anexo arquivos em chamados;<br>
                     # Permissões em documentações;<br>
                     # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
                     # Pautas e ATAs de Reunião;<br>
