@@ -15,23 +15,17 @@ if (isset($_SESSION['id'])) {
 
         // Verifique se o arquivo é uma imagem, arquivo de texto ou PDF (adapte as verificações de tipo conforme necessário)
         $fileType = pathinfo($targetPath, PATHINFO_EXTENSION);
-        $allowedTypes = array('jpg', 'jpeg', 'png', 'gif', 'txt', 'pdf');
+        $allowedTypes = array('jpg', 'jpeg', 'png', 'txt', 'pdf');
 
         if (in_array($fileType, $allowedTypes)) {
             if (move_uploaded_file($uploadedFile['tmp_name'], $targetPath)) {
-                // Upload bem-sucedido
-                echo "Arquivo enviado com sucesso: $fileName";
+                header("Location: /servicedesk/consultar_chamados/view.php?id=$chamadoID");
+                exit;
             } else {
-                // Falha no upload
-                echo "Falha ao fazer o upload de $fileName.";
-            }
+                header("Location: /servicedesk/consultar_chamados/view.php?id=$chamadoID");
+                exit;            }
         } else {
-            // Tipo de arquivo não permitido
-            echo "Tipo de arquivo não permitido: $fileName.";
-        }
-
-        // Aqui você pode salvar os detalhes do arquivo no banco de dados se desejar
-        // Por exemplo, insira os detalhes do arquivo na tabela de anexos relacionados ao chamado
+            header("Location: /servicedesk/consultar_chamados/view.php?id=$chamadoID");
+            exit;        }
     }
 }
-?>

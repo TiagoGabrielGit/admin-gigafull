@@ -848,20 +848,38 @@ try {
             </div>
 
             <div class="modal-body">
-                <form action="processa/upload.php" method="POST" id="uploadForm" enctype="multipart/form-data">
-                    <input id="uploadChamadoID" name="uploadChamadoID" value="<?= $id_chamado ?>" hidden readonly></input>
-                    <div class="col-lg-12 row">
-                        <div class="col-8">
-                            <input required class="form-control" type="file" name="fileInput" id="fileInput" multiple>
+                <?php if ($chamado['status'] != "Fechado") { ?>
+                    <form action="processa/upload.php" method="POST" id="uploadForm" enctype="multipart/form-data">
+                        <input id="uploadChamadoID" name="uploadChamadoID" value="<?= $id_chamado ?>" hidden readonly></input>
+                        <div class="col-lg-12 row">
+                            <div class="col-8">
+                                <input required class="form-control" type="file" name="fileInput" id="fileInput" multiple>
+                            </div>
+                            <div class="col-4" style="margin-top: 5px;">
+                                <button class="btn btn-sm btn-danger" type="submit">Enviar</button>
+                            </div>
                         </div>
-                        <div class="col-4" style="margin-top: 5px;">
-                            <button class="btn btn-sm btn-danger" type="submit">Enviar</button>
-                        </div>
-                    </div>
-                </form>
-                <ul id="attachmentList">
-                    <!-- Lista de anexos será exibida aqui -->
-                </ul>
+                    </form>
+                <?php }
+                $targetDirectory = '../../../uploads/chamados/chamado' . $id_chamado . '/';
+
+                if (file_exists($targetDirectory)) {
+                    $files = scandir($targetDirectory);
+                    if ($files !== false) {
+                        echo '<ul>';
+                        foreach ($files as $file) {
+                            if ($file != '.' && $file != '..') {
+                                // Exiba os arquivos como links para download
+                                echo '<li><a href="' . $targetDirectory . $file . '" target="_blank">' . $file . '</a></li>';
+                            }
+                        }
+                        echo '</ul>';
+                    } else {
+                        echo '<br>Nenhum arquivo encontrado.';
+                    }
+                } else {
+                    echo '<br>Nenhum arquivo encontrado.';
+                } ?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
