@@ -210,6 +210,9 @@ if ($chamado['data_prevista_conclusao'] === null) {
                                         </button>
 
                                     <?php } ?>
+
+                                    <button title="Anexos" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalAnexos"><i class="bi bi-paperclip"></i></button>
+
                                 </div>
                             </div>
                         </div>
@@ -835,6 +838,38 @@ try {
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modalAnexos" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Anexos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form action="processa/upload.php" method="POST" id="uploadForm" enctype="multipart/form-data">
+                    <input id="uploadChamadoID" name="uploadChamadoID" value="<?= $id_chamado ?>" hidden readonly></input>
+                    <div class="col-lg-12 row">
+                        <div class="col-8">
+                            <input required class="form-control" type="file" name="fileInput" id="fileInput" multiple>
+                        </div>
+                        <div class="col-4" style="margin-top: 5px;">
+                            <button class="btn btn-sm btn-danger" type="submit">Enviar</button>
+                        </div>
+                    </div>
+                </form>
+                <ul id="attachmentList">
+                    <!-- Lista de anexos será exibida aqui -->
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <?php
 require "scripts/js_smart.php";

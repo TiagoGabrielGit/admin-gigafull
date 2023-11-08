@@ -35,6 +35,7 @@ require "../includes/menu.php";
                     # Criado a coluna responsavel_name na tabela manutencao_programada;<br>
                     # Criado a coluna responsavel_contato na tabela manutencao_programada;<br>
                     # Criada a tabela manutencao_programada_responsaveis_aceite;<br>
+                    # Criada a tabela manutencao_programada_aprovacao;<br>
                     # Criado submenu id 44;<br>
                     # Criado notificação mail id 7;<br>
                     # Criado a coluna date_send na tabela manutencao_programada_aprovacao;<br>

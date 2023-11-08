@@ -1,0 +1,37 @@
+<?php
+session_start();
+
+if (isset($_SESSION['id'])) {
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $chamadoID = $_POST['uploadChamadoID'];
+        $targetDirectory = '../../../uploads/chamados/chamado' . $chamadoID . '/'; // Diretório de destino
+        if (!file_exists($targetDirectory)) {
+            mkdir($targetDirectory, 0755, true); // Crie o diretório se não existir
+        }
+
+        $uploadedFile = $_FILES['fileInput']; // Arquivo enviado
+        $fileName = $uploadedFile['name'];
+        $targetPath = $targetDirectory . $fileName; // Caminho completo para o arquivo de destino
+
+        // Verifique se o arquivo é uma imagem, arquivo de texto ou PDF (adapte as verificações de tipo conforme necessário)
+        $fileType = pathinfo($targetPath, PATHINFO_EXTENSION);
+        $allowedTypes = array('jpg', 'jpeg', 'png', 'gif', 'txt', 'pdf');
+
+        if (in_array($fileType, $allowedTypes)) {
+            if (move_uploaded_file($uploadedFile['tmp_name'], $targetPath)) {
+                // Upload bem-sucedido
+                echo "Arquivo enviado com sucesso: $fileName";
+            } else {
+                // Falha no upload
+                echo "Falha ao fazer o upload de $fileName.";
+            }
+        } else {
+            // Tipo de arquivo não permitido
+            echo "Tipo de arquivo não permitido: $fileName.";
+        }
+
+        // Aqui você pode salvar os detalhes do arquivo no banco de dados se desejar
+        // Por exemplo, insira os detalhes do arquivo na tabela de anexos relacionados ao chamado
+    }
+}
+?>
