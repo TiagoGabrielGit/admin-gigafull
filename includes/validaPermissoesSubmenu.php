@@ -758,3 +758,51 @@ ppsm.perfil_id = $perfil_id";
 $r_sub_responsaveis_aceite = mysqli_query($mysqli, $nav_responsaveis_aceite);
 $c_nav_sub_responsaveis_aceite = mysqli_fetch_assoc($r_sub_responsaveis_aceite);
 
+
+$nav_produtos_ecommerce = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '45'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_sub_produtos_ecommerce = mysqli_query($mysqli, $nav_produtos_ecommerce);
+$c_nav_sub_produtos_ecommerce = mysqli_fetch_assoc($r_sub_produtos_ecommerce);
+
+$nav_ecommerce_venda = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '46'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_sub_ecommerce_venda = mysqli_query($mysqli, $nav_ecommerce_venda);
+$c_nav_sub_ecommerce_venda = mysqli_fetch_assoc($r_sub_ecommerce_venda);
+
+$nav_ecommerce_pedidos = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '47'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_sub_ecommerce_pedidos = mysqli_query($mysqli, $nav_ecommerce_pedidos);
+$c_nav_sub_ecommerce_pedidos = mysqli_fetch_assoc($r_sub_ecommerce_pedidos);

@@ -43,9 +43,11 @@ WHERE api_id = 2 and ip = :ip";
             $incidentes = array_map(function ($incidente) use ($pdo) {
                 $id_incidente = $incidente['id'];
                 $sql_relatos =
-                    "SELECT ic.classificacao, ir.horarioRelato, ir.previsaoNormalizacao
+                    "SELECT ir.id, p.nome as usuario, LEFT(ir.relato, 100) as relato_limit_100_caracteres, ic.classificacao, ir.horarioRelato, ir.previsaoNormalizacao
         FROM incidentes_relatos as ir
         LEFT JOIN incidentes_classificacao as ic ON ic.id = ir.classificacao
+        LEFT JOIN usuarios as u ON u.id = ir.relato_autor
+        LEFT JOIN pessoas as p ON p.id = u.pessoa_id
         WHERE incidente_id = ?
         ORDER BY ir.id desc";
                 $stmt_relatos = $pdo->prepare($sql_relatos);

@@ -1,0 +1,51 @@
+{
+   "name": "telegram-bot-php/core",
+   "description": "A PHP library that makes using Telegram Bot API much easier.",
+   "keywords": [
+      "telegram",
+      "bot",
+      "core",
+      "php"
+   ],
+   "license": "MIT",
+   "homepage": "https://github.com/telegram-bot-php/core",
+   "support": {
+      "issues": "https://github.com/telegram-bot-php/core/issues",
+      "source": "https://github.com/telegram-bot-php/core"
+   },
+   "authors": [
+      {
+         "name": "Shahrad Elahi",
+         "email": "shahrad@litehex.com",
+         "role": "developer"
+      }
+   ],
+   "minimum-stability": "dev",
+   "prefer-stable": true,
+   "require": {
+      "php": ">=8.0",
+      "ext-json": "*",
+      "ext-curl": "*",
+      "ext-mbstring": "*",
+      "symfony/dotenv": "^v6.1.0",
+      "shahradelahi/easy-http": "^v1.2.0"
+   },
+   "require-dev": {
+      "phpunit/phpunit": "^9.5.20",
+      "psr/log": "^1.1|^2.0|^3.0"
+   },
+   "autoload": {
+      "psr-4": {
+         "TelegramBot\\": "src/"
+      }
+   },
+   "autoload-dev": {
+      "psr-4": {
+         "TelegramBotTest\\": "tests/"
+      }
+   },
+   "scripts": {
+      "install-dependencies": "composer install --prefer-source",
+      "phpunit-test": "vendor/bin/phpunit --colors=always --configuration phpunit.xml"
+   }
+}

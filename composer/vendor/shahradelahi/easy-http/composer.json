@@ -1,0 +1,43 @@
+{
+   "name": "shahradelahi/easy-http",
+   "description": "A Easy HTTP Client library for PHP",
+   "keywords": ["http", "client", "curl", "websoket", "php"],
+   "minimum-stability": "stable",
+   "homepage": "https://github.com/shahradelahi/easy-http",
+   "license": "MIT",
+   "support": {
+	  "issues": "https://github.com/shahradelahi/easy-http/issues",
+	  "source": "https://github.com/shahradelahi/easy-http"
+   },
+   "authors": [
+	  {
+		 "name": "Shahrad Elahi",
+		 "email": "shahrad@litehex.com",
+		 "role": "developer"
+	  },
+	  {
+		 "name": "Arthur Kushman",
+		 "email": "arthurkushman@gmail.com",
+		 "role": "advisor"
+	  }
+   ],
+   "require": {
+	  "php": ">=8.0",
+	  "ext-json": "*",
+	  "ext-curl": "*",
+	  "ext-pcntl": "*"
+   },
+   "require-dev": {
+	  "phpunit/phpunit": "^9.5.20"
+   },
+   "autoload": {
+	  "psr-4": {
+		 "EasyHttp\\": "src/"
+	  }
+   },
+   "autoload-dev": {
+	  "psr-4": {
+		 "EasyHttp\\Test\\": "tests/Unit/"
+	  }
+   }
+}

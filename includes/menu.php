@@ -2,9 +2,12 @@
 session_start();
 // Verifica se existe os dados da sessão de login
 if (!isset($_SESSION["id"])) {
-  // Usuário não logado! Redireciona para a página de login
-  header("Location: /login.php");
-  exit;
+    // Salvar a URL da página atual para redirecionamento após o login
+    $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
+
+    // Redirecionar para a página de login
+    header("Location: /login.php");
+    exit();
 }
 $nome = $_SESSION['nome'];
 $id = $_SESSION['id'];

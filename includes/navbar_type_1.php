@@ -48,6 +48,47 @@ require "validaRotina.php";
             </li>
         <?php } ?>
 
+
+        <?php if ($c_ecommerce['c'] == 1) { ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#ecommerce-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-layout-text-window-reverse"></i><span>E-commerce</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="ecommerce-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                    <?php if ($c_nav_sub_produtos_ecommerce['c'] == 1) { ?>
+                        <li>
+                            <a href="/ecommerce/produtos_ecommerce/index.php">
+                                <i class="bi bi-circle"></i><span>Produtos (e-commerce)</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+                    <?php if ($c_nav_sub_ecommerce_venda['c'] == 1) { ?>
+                        <li>
+                            <a href="/ecommerce/venda/index.php">
+                                <i class="bi bi-circle"></i><span>Novo Pedido</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+                    <?php if ($c_nav_sub_ecommerce_pedidos['c'] == 1) { ?>
+                        <li>
+                            <a href="/ecommerce/pedidos/index.php">
+                                <i class="bi bi-circle"></i><span>Pedidos</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+
+                </ul>
+            </li>
+        <?php } ?>
+
+
+
+
+
         <?php if ($c_valida_cadastros['c'] > 0) { ?>
             <li class="nav-heading">Cadastros</li>
         <?php } ?>
@@ -74,6 +115,8 @@ require "validaRotina.php";
                             </a>
                         </li>
                     <?php } ?>
+
+
 
                     <?php if ($c_nav_sub_servicos['c'] == 1) { ?>
                         <li>

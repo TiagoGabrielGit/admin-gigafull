@@ -1,0 +1,11 @@
+{
+    "name": "root/composer",
+    "autoload": {
+        "psr-4": {
+            "Root\\Composer\\": "src/"
+        }
+    },
+    "require": {
+        "telegram-bot-php/core": "^1.0"
+    }
+}

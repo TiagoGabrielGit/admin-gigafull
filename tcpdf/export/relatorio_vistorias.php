@@ -15,7 +15,7 @@ $idPOP = $_GET['id'];
 try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $stmt = $pdo->prepare('SELECT p.pop AS pop, pa.city AS cidade, pa.street AS rua, pa.number AS numero,  pmc.melhoria_conhecida as melhoria_conhecida
+    $stmt = $pdo->prepare('SELECT p.pop AS pop, pa.city AS cidade, pa.street AS rua, pa.number AS numero
         FROM pop AS p
         LEFT JOIN pop_address AS pa ON pa.pop_id = p.id
         LEFT JOIN pop_melhorias_conhecidas as pmc ON pmc.pop_id = p.id
@@ -29,8 +29,17 @@ try {
     $popCidade = $row['cidade'];
     $popRua = $row['rua'];
     $numero = $row['numero'];
-    $melhoria_conhecida = $row['melhoria_conhecida'];
 
+    $stmtMelhoriasConhecidas = $pdo->prepare('SELECT pmc.melhoria_conhecida as melhoria_conhecida
+    FROM pop AS p
+    LEFT JOIN pop_address AS pa ON pa.pop_id = p.id
+    LEFT JOIN pop_melhorias_conhecidas as pmc ON pmc.pop_id = p.id
+    WHERE p.id = :id');
+
+    $stmtMelhoriasConhecidas->bindParam(':id', $idPOP, PDO::PARAM_INT);
+    $stmtMelhoriasConhecidas->execute();
+
+    $melhoria_conhecida = $stmtMelhoriasConhecidas->fetchAll(PDO::FETCH_ASSOC);
 
     $stmtEquipamentos = $pdo->prepare('SELECT 
         ep.hostname as "hostname",
@@ -316,7 +325,16 @@ try {
     $pdf->Cell(40, 10, 'Melhorias Conhecidas do POP:');
     $pdf->SetXY(10, $alturaEquipamentos + 20);
     $pdf->SetFont('helvetica', '', 12);
-    $pdf->MultiCell(180, 10, $melhoria_conhecida, 0, 'L');
+
+    // Transforme o array em uma string antes de passar para MultiCell
+    $melhoriasConhecidasText = '';
+    foreach ($melhoria_conhecida as $item) {
+        $melhoriasConhecidasText .= $item['melhoria_conhecida'] . "\n";
+    }
+
+    $pdf->MultiCell(180, 10, $melhoriasConhecidasText, 0, 'L');
+
+
 
 
     $pdf->SetFont('helvetica', 'B', 12);
@@ -327,7 +345,7 @@ try {
         $pdf->Line(10, $pdf->GetY(), 190, $pdf->GetY()); // Desenha uma linha horizontal
         $pdf->SetXY(10, $pdf->GetY() + $lineSpacing); // Move para a próxima linha com o espaçamento desejado
     }
-    
+
 
     // Gere o arquivo PDF
     $pdf->Output('vistoria.pdf', 'I');
