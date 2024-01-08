@@ -22,7 +22,7 @@ $sql_produtos = "SELECT pe.id, pe.descricao, pe.lucro, pec.custo, (pec.custo * (
 $stmt_produtos = $pdo->query($sql_produtos);
 $produtos = $stmt_produtos->fetchAll(PDO::FETCH_ASSOC);
 
-$sql_produtos_pedido = "SELECT pe.descricao, ep.quantidade, ep.subtotal, ep.valor_unitario,
+$sql_produtos_pedido = "SELECT pe.descricao, ep.id, ep.quantidade, ep.subtotal, ep.valor_unitario,
                         CASE
                         WHEN pe.unidade = 1 THEN 'Metros'
                         WHEN pe.unidade = 2 THEN 'Unidade'
@@ -209,6 +209,9 @@ $produtos_pedido = $stmt_produtos_pedido->fetchAll(PDO::FETCH_ASSOC);
                                         <td style="text-align: center;"><?= $produto['quantidade'] ?></td>
                                         <td style="text-align: center;">R$ <?= $valor_unitario ?></td>
                                         <td style="text-align: center;">R$ <?= $subtotal ?></td>
+                                        <td style="text-align: center;">
+                                            <button class="btn btn-sm btn-secondary rounded-pill btn-remover-produto" data-produto-id="<?= $produto['id'] ?>">Remover</button>
+                                        </td>
                                     </tr>
                                 <?php }
                                 ?>
@@ -259,6 +262,26 @@ $produtos_pedido = $stmt_produtos_pedido->fetchAll(PDO::FETCH_ASSOC);
 </main>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.btn-remover-produto').click(function() {
+            var produtoId = $(this).data('produto-id');
+
+            // Exibir mensagem de confirmação
+            var confirmacao = confirm("Tem certeza de que deseja remover este produto da lista?");
+
+            // Se o usuário confirmar, realizar a remoção
+            if (confirmacao) {
+                // Aqui você pode fazer uma chamada AJAX para remover o produto do banco de dados
+                // ou realizar outras ações necessárias
+                // Por exemplo, você pode redirecionar para uma página PHP que trata a remoção
+                window.location.href = 'processa/remover_produto.php?produto_id=' + produtoId;
+            }
+        });
+    });
+</script>
+
+
 <script>
     $(document).ready(function() {
         // Quando o valor do select produto mudar

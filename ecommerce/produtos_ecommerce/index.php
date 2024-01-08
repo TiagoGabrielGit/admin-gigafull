@@ -106,12 +106,10 @@ try {
                                                     // Custos encontrados, calcular o valor de venda
                                                     $custo_principal = $resultado_custo['custo'];
                                                     $valor_venda = number_format($custo_principal * (1 + ($lucro / 100)), 2, ',', '.');
-
-                                                    // Faça o que precisar com o $valor_venda
                                                 } else {
                                                     // Caso não haja custo principal encontrado
-                                                    echo "Custo principal não encontrado para o produto ID: $id";
-                                                } ?>
+                                                    $valor_venda = "0,00";
+                                                }  ?>
 
                                                 <tr id="tabelaLista" onclick="location.href='view_produtos.php?id=<?= $c_produtos['id'] ?>'">
                                                     <td style="text-align: center;"><?= $c_produtos['id']; ?></td>

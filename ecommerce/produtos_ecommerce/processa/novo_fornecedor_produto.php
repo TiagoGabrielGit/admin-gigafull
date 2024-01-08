@@ -38,7 +38,7 @@ try {
             $produto_id = $_POST['produto_id'];
             $fornecedor_id = $_POST['fornecedor'];
             $custo = $_POST['custo'];
-            $codigo_fornecedor = $_POST['codigo_fornecedor'];
+            $codigo_fornecedor = isset($_POST['codigo_fornecedor']) ? $_POST['codigo_fornecedor'] : null;
 
             try {
                 // Insira os dados na tabela produtos_ecommerce_custos
@@ -47,7 +47,12 @@ try {
                 $stmt_inserir_custo->bindParam(':produto_id', $produto_id, PDO::PARAM_INT);
                 $stmt_inserir_custo->bindParam(':fornecedor_id', $fornecedor_id, PDO::PARAM_INT);
                 $stmt_inserir_custo->bindParam(':custo', $custo, PDO::PARAM_STR);
-                $stmt_inserir_custo->bindParam(':cod_produto', $codigo_fornecedor, PDO::PARAM_STR);
+      // Verifica se o código do produto não está vazio antes de vinculá-lo
+      if ($codigo_fornecedor !== null) {
+        $stmt_inserir_custo->bindParam(':cod_produto', $codigo_fornecedor, PDO::PARAM_STR);
+    } else {
+        $stmt_inserir_custo->bindValue(':cod_produto', null, PDO::PARAM_NULL);
+    }
 
 
                 $stmt_inserir_custo->execute();
