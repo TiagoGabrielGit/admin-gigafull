@@ -73,17 +73,21 @@ try {
                                                 $pedido_id = $c_pedidos['id'];
 
                                                 // Consulta para obter o valor subtotal
-                                                $stmt_subtotal = $pdo->prepare("SELECT SUM(epp.subtotal) as subtotal FROM ecommerce_pedido_produto as epp WHERE epp.pedido_id = ?");
+                                                $stmt_subtotal = $pdo->prepare("SELECT SUM(epp.subtotal) as subtotal, ep.valor_desconto, ep.mao_de_obra FROM ecommerce_pedido_produto as epp LEFT JOIN ecommerce_pedido as ep ON ep.id = epp.pedido_id WHERE epp.pedido_id = ?");
                                                 $stmt_subtotal->execute([$pedido_id]);
                                                 $result_subtotal = $stmt_subtotal->fetch(PDO::FETCH_ASSOC);
                                                 $valor_subtotal = $result_subtotal['subtotal'];
+                                                $valor_desconto = $result_subtotal['valor_desconto'];
+                                                $mao_de_obra = $result_subtotal['mao_de_obra'];
+                                                $valor_final = (($valor_subtotal + $mao_de_obra) - $valor_desconto);
+                                                $valor_final = (number_format($valor_final, 2, ',', '.'));
                                         ?>
 
                                                 <tr id="tabelaLista" onclick="location.href='/ecommerce/venda/pedido.php?pedido_id=<?= $c_pedidos['id'] ?>'">
                                                     <td style="text-align: center;"><?= $c_pedidos['id']; ?></td>
                                                     <td><?= $c_pedidos['fantasia']; ?></td>
                                                     <td style="text-align: center;"><?= $c_pedidos['date']; ?></td>
-                                                    <td style="text-align: center;">R$ <?= number_format($valor_subtotal, 2, ',', '.'); ?></td>
+                                                    <td style="text-align: center;">R$ <?= $valor_final ?></td>
                                                     <td style="text-align: center;"><?= $c_pedidos['status']; ?></td>
 
                                                 </tr>

@@ -1,7 +1,7 @@
 <?php
 require "../../includes/menu.php";
 require "../../conexoes/conexao_pdo.php";
-
+require "../../includes/remove_setas_number.php";
 $pedido_id = $_GET['pedido_id'];
 
 // Obter a lista de clientes disponíveis no banco de dados
@@ -46,9 +46,10 @@ $produtos_pedido = $stmt_produtos_pedido->fetchAll(PDO::FETCH_ASSOC);
                 <div class="card">
                     <div class="card-body">
                         <br>
-                        <div class="pagetitle">
-                            <h1>Dados do Pedido</h1>
-                        </div><!-- End Page Title -->
+                        <div class="pagetitle d-flex justify-content-between align-items-center">
+                            <h1 class="mb-0">Dados do Pedido</h1>
+                            <button class="btn btn-primary" onclick="window.open('/tcpdf/export/pedido.php?id=<?= $pedido_id ?>', '_blank')">Gerar PDF do Pedido</button>
+                        </div>
 
                         <div class="col-1">
                             <label class="form-label">Nº Pedido:</label>
@@ -227,33 +228,190 @@ $produtos_pedido = $stmt_produtos_pedido->fetchAll(PDO::FETCH_ASSOC);
                     <div class="card-body">
                         <br>
                         <div class="pagetitle">
-                            <h1>Informações do Pedido</h1>
-                        </div><!-- End Page Title -->
+                            <h1>Informações de Pagamento</h1>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <form action="processa/atualiza_infos_pagamentos.php" method="POST">
+                                    <input readonly hidden id="id_pedido_infs_pgto" name="id_pedido_infs_pgto" value="<?= $pedido_id ?>">
+                                    <div class="row mb-3">
+                                        <label for="tipo_pagamento" class="col-sm-4 col-form-label">Forma Pagamento:</label>
+                                        <div class="col-sm-7">
+                                            <select id="tipo_pagamento" name="tipo_pagamento" class="form-select" aria-label="Default select example">
+                                                <option value="" disabled selected="">Selecione a forma de pagamento</option>
+                                                <option value="1">Boleto</option>
+                                                <option value="2">Cartão de Crédito</option>
+                                                <option value="3">Dinheiro</option>
+                                                <option value="4">PIX</option>
+                                                <option value="5">Tranferência</option>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                        <div class="container mt-6">
-                            <div class="row justify-content-end">
-                                <div class="col-6 text-right">
+                                    <div class="row mb-3">
+                                        <label for="parcelamento" class="col-sm-4 col-form-label">Condição Pagamento:</label>
+                                        <div class="col-sm-7">
+                                            <select id="parcelamento" name="parcelamento" class="form-select" aria-label="Default select example">
+                                                <option value="" disabled selected="">Selecione a Condição</option>
+                                                <option value="100">À Vista</option>
+                                                <option value="1">1x (30 dias) </option>
+                                                <option value="2">2x (30/60 dias)</option>
+                                                <option value="3">3x (30/60/90 dias)</option>
+                                                <option value="4">4x (30/60/90/120 dias)</option>
+                                                <option value="5">5x (30/60/90/120/150 dias)</option>
+                                                <option value="6">6x (30/60/90/120/150/180 dias)</option>
+                                                <option value="7">7x (30/60/90/120/150/180/... dias)</option>
+                                                <option value="8">8x (30/60/90/120/150/180/... dias) </option>
+                                                <option value="9">9x (30/60/90/120/150/180/... dias) </option>
+                                                <option value="10">10x (30/60/90/120/150/180/... dias) </option>
+                                                <option value="11">11x (30/60/90/120/150/180/... dias) </option>
+                                                <option value="12">12x (30/60/90/120/150/180/... dias) </option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label for="mao_de_obra" class="col-form-label">Mão de Obra (R$)</label>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <div class="input-group">
+                                                <span class="input-group-text">R$</span>
+                                                <input style="text-align: center;" name="mao_de_obra" type="number" class="form-control" id="mao_de_obra">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label for="valor_desconto" class="col-form-label">Desconto (R$)</label>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <div class="input-group">
+                                                <span class="input-group-text">R$</span>
+                                                <input style="text-align: center;" name="valor_desconto" type="number" class="form-control" id="valor_desconto">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="col-12 text-center">
+                                        <button type="submit" class="btn btn-sm btn-info">Salvar Informações</button>
+                                    </div>
+                                </form>
+
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="col-12">
                                     <?php
-                                    $sql_total_pedido = "SELECT SUM(epp.subtotal) as total_pedido
-                                FROM ecommerce_pedido_produto as epp
-                                WHERE epp.pedido_id = $pedido_id";
+                                    // Consulta para obter o Tipo de Pagamento, Parcelamento e Desconto
+                                    $sql_info_pedido = "SELECT mao_de_obra, tipo_pagamento, parcelamento, valor_desconto FROM ecommerce_pedido WHERE id = $pedido_id";
+                                    $stmt_info_pedido = $pdo->query($sql_info_pedido);
+                                    $resultado_info_pedido = $stmt_info_pedido->fetch(PDO::FETCH_ASSOC);
 
-                                    // Executar a consulta
+                                    if ($resultado_info_pedido) {
+                                        $valor_tipo_pagamento = $resultado_info_pedido['tipo_pagamento'];
+                                        $valor_parcelamento = $resultado_info_pedido['parcelamento'];
+                                        $valor_desconto = $resultado_info_pedido['valor_desconto'];
+                                        $mao_de_obra = $resultado_info_pedido['mao_de_obra'];
+
+                                        switch ($valor_tipo_pagamento) {
+                                            case 1:
+                                                echo "<p style='text-align: right;' class='card-text'>Forma Pagamento: Boleto</p>";
+                                                break;
+                                            case 2:
+                                                echo "<p style='text-align: right;' class='card-text'>Forma Pagamento: Cartão de Crédito</p>";
+                                                break;
+                                            case 3:
+                                                echo "<p style='text-align: right;' class='card-text'>Forma Pagamento: Dinheiro</p>";
+                                                break;
+                                            case 4:
+                                                echo "<p style='text-align: right;' class='card-text'>Forma Pagamento: PIX</p>";
+                                                break;
+                                            case 5:
+                                                echo "<p style='text-align: right;' class='card-text'>Forma Pagamento: Transferência</p>";
+                                                break;
+                                            default:
+                                                echo "<p style='text-align: right;' class='card-text'>Forma Pagamento: Não Definido</p>";
+                                                break;
+                                        }
+
+
+                                        switch ($valor_parcelamento) {
+                                            case 100:
+                                                echo "<p style='text-align: right;' class='card-text'>Condição: À Vista</p>";
+                                                break;
+                                            case 1:
+                                                echo "<p style='text-align: right;' class='card-text'>Condição: 1x (30 dias)</p>";
+                                                break;
+                                            case 2:
+                                                echo "<p style='text-align: right;' class='card-text'>Condição: 2x (30/60 dias)</p>";
+                                                break;
+                                            case 3:
+                                                echo "<p style='text-align: right;' class='card-text'>Condição: 3x (30/60/90 dias)</p>";
+                                                break;
+                                            case 4:
+                                                echo "<p style='text-align: right;' class='card-text'>Condição: 4x (30/60/90/120 dias)</p>";
+                                                break;
+                                            case 5:
+                                                echo "<p style='text-align: right;' class='card-text'>Condição: 5x (30/60/90/120/150 dias)</p>";
+                                                break;
+                                            case 6:
+                                                echo "<p style='text-align: right;' class='card-text'>Condição: 6x (30/60/90/120/150/180 dias)</p>";
+                                                break;
+                                            case 7:
+                                                echo "<p style='text-align: right;' class='card-text'>Condição: 7x (30/60/90/120/150/180/... dias)</p>";
+                                                break;
+                                            case 8:
+                                                echo "<p style='text-align: right;' class='card-text'>Condição: 8x (30/60/90/120/150/180/... dias)</p>";
+                                                break;
+                                            case 9:
+                                                echo "<p style='text-align: right;' class='card-text'>Condição: 9x (30/60/90/120/150/180/... dias)</p>";
+                                                break;
+                                            case 10:
+                                                echo "<p style='text-align: right;' class='card-text'>Condição: 10x (30/60/90/120/150/180/... dias)</p>";
+                                                break;
+                                            case 11:
+                                                echo "<p style='text-align: right;' class='card-text'>Condição: 11x (30/60/90/120/150/180/... dias)</p>";
+                                                break;
+                                            case 12:
+                                                echo "<p style='text-align: right;' class='card-text'>Condição: 12x (30/60/90/120/150/180/... dias)</p>";
+                                                break;
+                                            default:
+                                                echo "<p style='text-align: right;' class='card-text'>Condição: Não Definido</p>";
+                                                break;
+                                        }
+
+                                        echo "<p style='text-align: right;' class='card-text'>Mão de Obra: R$ " . number_format($mao_de_obra, 2, ',', '.') . "</p>";
+                                        echo "<p style='text-align: right;' class='card-text'>Desconto: R$ " . number_format($valor_desconto, 2, ',', '.') . "</p>";
+                                    } else {
+                                        echo "<p style='text-align: right;' class='card-text'>Informações do pedido não encontradas.</p>";
+                                    }
+                                    ?>
+                                </div>
+                                <br>
+                                <div class="col-12">
+                                    <?php
+                                    $sql_total_pedido = "SELECT SUM(epp.subtotal) as total_pedido FROM ecommerce_pedido_produto as epp WHERE epp.pedido_id = $pedido_id";
                                     $stmt_total_pedido = $pdo->query($sql_total_pedido);
                                     $resultado_total_pedido = $stmt_total_pedido->fetch(PDO::FETCH_ASSOC);
 
-                                    // Verificar se há resultados
                                     if ($resultado_total_pedido && isset($resultado_total_pedido['total_pedido'])) {
-                                        $total_pedido = number_format($resultado_total_pedido['total_pedido'], 2, ',', '.');
-                                        echo "<h3>Total do Pedido: R$ $total_pedido</h3>";
+
+                                        $valor_final = (($resultado_total_pedido['total_pedido'] + $mao_de_obra) - $valor_desconto);
+
+                                        $total_pedido = number_format($valor_final, 2, ',', '.');
+
+                                        echo "<h4 style='text-align: right;'><b>Total do Pedido: R$ $total_pedido</b></h4>";
                                     } else {
-                                        echo "<h3>Total do Pedido: R$ 0,00</h3>";
+                                        echo "<h4 style='text-align: right;'><b>Total do Pedido: R$ 0,00</b></h4>";
                                     }
                                     ?>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
