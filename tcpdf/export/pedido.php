@@ -1,4 +1,5 @@
 <?php
+ob_start(); // Início do buffer de saída
 session_start();
 if (!isset($_SESSION["id"])) {
     header("Location: /login.php");
@@ -213,14 +214,16 @@ try {
     $totalSubtotal = $result['total_subtotal'];
     $valorDesconto = $row['valor_desconto'];
     if (is_null($valorDesconto)) {
-        $valorDesconto = "-";
+        $valorDesconto = "0";
+        $valorDesconto_formatado = "0,00";
     } else {
         $valorDesconto_formatado = number_format($valorDesconto, 2, ',', '.');
     }
 
     $mao_de_obra = $row['mao_de_obra'];
     if (is_null($mao_de_obra)) {
-        $mao_de_obra = "-";
+        $mao_de_obra = "0";
+        $mao_de_obra_formatado = "0,00";
     } else {
         $mao_de_obra_formatado = number_format($mao_de_obra, 2, ',', '.');
     }
@@ -240,6 +243,8 @@ try {
 
     // Gere o arquivo PDF
     $nome_arquivo = "pedido_$pedido_id.pdf";
+    ob_end_clean(); // Limpeza do buffer de saída antes de enviar o PDF
+
     $pdf->Output($nome_arquivo, 'I');
 } catch (PDOException $e) {
     echo 'Connection failed: ' . $e->getMessage();

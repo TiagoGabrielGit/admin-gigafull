@@ -49,6 +49,7 @@ $produtos_pedido = $stmt_produtos_pedido->fetchAll(PDO::FETCH_ASSOC);
                         <div class="pagetitle d-flex justify-content-between align-items-center">
                             <h1 class="mb-0">Dados do Pedido</h1>
                             <button class="btn btn-primary" onclick="window.open('/tcpdf/export/pedido.php?id=<?= $pedido_id ?>', '_blank')">Gerar PDF do Pedido</button>
+
                         </div>
 
                         <div class="col-1">
@@ -155,13 +156,16 @@ $produtos_pedido = $stmt_produtos_pedido->fetchAll(PDO::FETCH_ASSOC);
                                     <select class="form-select" id="produto" name="produto" required>
                                         <option value="" disabled selected>Selecione um produto</option>
                                         <?php foreach ($produtos as $produto) :
-                                            $valor_unitario = number_format($produto['valor_unitario'], 2, ',', '.');
-                                        ?>
-                                            <option value="<?php echo $produto['id']; ?>" data-valor-unitario="<?= $valor_unitario ?>"><?php echo $produto['descricao']; ?></option>
+                                            $preco_custo = number_format($produto['custo'], 2, ',', '.');
+                                            $valor_unitario = number_format($produto['valor_unitario'], 2, ',', '.'); ?>
+                                            <option value="<?php echo $produto['id']; ?>" data-valor-unitario="<?= $valor_unitario ?>" data-preco-custo="<?= $preco_custo ?>">
+                                                <?php echo $produto['descricao']; ?>
+                                            </option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
 
+                                <input hidden readonly id="preco_custo" name="preco_custo" value="">
 
                                 <div class="text-right col-2"> <!-- Divida a largura da tela ao meio para os elementos à direita -->
                                     <label for="valor_unitario" class="col-sm-12 col-form-label">Valor Unitário (R$)</label>
@@ -227,9 +231,19 @@ $produtos_pedido = $stmt_produtos_pedido->fetchAll(PDO::FETCH_ASSOC);
                 <div class="card">
                     <div class="card-body">
                         <br>
-                        <div class="pagetitle">
-                            <h1>Informações de Pagamento</h1>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="pagetitle">
+                                    <h1>Informações de Pagamento</h1>
+                                </div>
+                            </div>
+                            <div class="col-6 text-end">
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#modalRelatorioFinanceiro">
+                                    Relatório Financeiro
+                                </button>
+                            </div>
                         </div>
+
                         <br>
                         <div class="row">
                             <div class="col-lg-6">
@@ -394,21 +408,25 @@ $produtos_pedido = $stmt_produtos_pedido->fetchAll(PDO::FETCH_ASSOC);
                                 <br>
                                 <div class="col-12">
                                     <?php
-                                    $sql_total_pedido = "SELECT SUM(epp.subtotal) as total_pedido FROM ecommerce_pedido_produto as epp WHERE epp.pedido_id = $pedido_id";
+                                    $sql_total_pedido = "SELECT SUM(epp.subtotal) as total_pedido, SUM(epp.custo_total) as custo_total FROM ecommerce_pedido_produto as epp WHERE epp.pedido_id = $pedido_id";
                                     $stmt_total_pedido = $pdo->query($sql_total_pedido);
                                     $resultado_total_pedido = $stmt_total_pedido->fetch(PDO::FETCH_ASSOC);
 
                                     if ($resultado_total_pedido && isset($resultado_total_pedido['total_pedido'])) {
-
+                                        $valor_produtos = $resultado_total_pedido['total_pedido'];
                                         $valor_final = (($resultado_total_pedido['total_pedido'] + $mao_de_obra) - $valor_desconto);
+                                        $custo_total = $resultado_total_pedido['custo_total'];
 
-                                        $total_pedido = number_format($valor_final, 2, ',', '.');
+                                        $valor_produtos_form = number_format($valor_produtos, 2, ',', '.');
+                                        $custo_total_form = number_format($custo_total, 2, ',', '.');
+                                        $total_pedido_form = number_format($valor_final, 2, ',', '.');
 
-                                        echo "<h4 style='text-align: right;'><b>Total do Pedido: R$ $total_pedido</b></h4>";
+                                        echo "<h4 style='text-align: right;'><b>Total do Pedido: R$ $total_pedido_form</b></h4>";
                                     } else {
                                         echo "<h4 style='text-align: right;'><b>Total do Pedido: R$ 0,00</b></h4>";
                                     }
                                     ?>
+
                                 </div>
                             </div>
                         </div>
@@ -418,6 +436,40 @@ $produtos_pedido = $stmt_produtos_pedido->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </section>
 </main>
+
+<div class="modal fade" id="modalRelatorioFinanceiro" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Relatório Financeiro</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <?php
+                $lucro_produtos = ($valor_produtos - $custo_total);
+                $lucro_produtos_form = number_format($lucro_produtos, 2, ',', '.');
+                $mao_de_obra_form = number_format($mao_de_obra, 2, ',', '.');
+                $valor_desconto_form = number_format($valor_desconto, 2, ',', '.');
+                $lucro_total = (($lucro_produtos + $mao_de_obra) - $valor_desconto);
+                $lucro_total_form = number_format($lucro_total, 2, ',', '.');
+
+                ?>
+                <p>Custo Total de Produtos: R$ <?= $custo_total_form ?></p>
+                <p>Total de Produtos: R$ <?= $valor_produtos_form ?></p>
+                <p>Lucro Produtos: R$ <?= $lucro_produtos_form ?></p>
+                <br>
+                <p>Mão de Obra: R$ <?= $mao_de_obra_form ?> </p>
+                <p>Desconto: R$ <?= $valor_desconto_form ?></p>
+                <p>Lucro Total: R$ <?= $lucro_total_form ?></p>
+                <p>Total do Pedido: R$ <?= $total_pedido_form ?></p>
+            </div>
+            <div class="modal-footer">
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
@@ -449,6 +501,19 @@ $produtos_pedido = $stmt_produtos_pedido->fetchAll(PDO::FETCH_ASSOC);
 
             // Definir o valor unitário no campo valor_unitario
             $("#valor_unitario").val(valorUnitario);
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Quando o valor do select produto mudar
+        $("#produto").change(function() {
+            // Obter o valor do custo associado ao produto selecionado
+            var precoCusto = $(this).find("option:selected").data("preco-custo");
+
+            // Definir o valor do custo no campo preco_custo
+            $("#preco_custo").val(precoCusto);
         });
     });
 </script>
