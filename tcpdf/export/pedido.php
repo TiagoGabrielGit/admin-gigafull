@@ -24,7 +24,7 @@ try {
     $email = $dados_empresa['email'];
     $cnpj = $dados_empresa['cnpj'];
 
-    $stmt = $pdo->prepare('SELECT ep.mao_de_obra, ep.valor_desconto, ep.tipo_pagamento, DATE_FORMAT(ep.date, "%d/%m/%Y") as date, ep.parcelamento, e.fantasia, e.cnpj, e.email, ca.cep, ca.street, ca.neighborhood, ca.city, ca.state, ca.number, ca.complement
+    $stmt = $pdo->prepare('SELECT ep.information, ep.mao_de_obra, ep.valor_desconto, ep.tipo_pagamento, DATE_FORMAT(ep.date, "%d/%m/%Y") as date, ep.parcelamento, e.fantasia, e.cnpj, e.email, ca.cep, ca.street, ca.neighborhood, ca.city, ca.state, ca.number, ca.complement
         FROM ecommerce_pedido AS ep
         LEFT JOIN empresas as e ON e.id = ep.cliente_id
         LEFT JOIN company_address as ca ON e.id = ca.company_id
@@ -163,6 +163,22 @@ try {
 
     $pdf->SetLineWidth(0.2);
     $pdf->Line(10, $pdf->GetY(), $pdf->getPageWidth() - 10, $pdf->GetY());
+
+    $pdf->Ln(3);
+    // Imprimir o campo "information"
+    $pdf->SetFont('helvetica', 'B', 10);
+    $pdf->Cell(0, 5, 'Informações do Pedido: ', 0, 1, 'L');
+    $pdf->SetFont('helvetica', '', 10);
+    // Convertendo quebras de linha para <br>
+    $information_formatted = nl2br($row['information']);
+    // Escrever o HTML no PDF
+    $pdf->writeHTML($information_formatted, true, false, true, false, '');
+
+    $pdf->Ln(3);
+
+    $pdf->SetLineWidth(0.2);
+    $pdf->Line(10, $pdf->GetY(), $pdf->getPageWidth() - 10, $pdf->GetY());
+
 
     $pdf->Ln(5);
 

@@ -10,7 +10,7 @@ if (isset($_SESSION['id'])) {
         // Verificar se o cliente foi selecionado
         if ($clienteID) {
             // Insira o pedido na tabela ecommerce_pedido
-            $sql_inserir_pedido = "INSERT INTO ecommerce_pedido (cliente_id, date, status) VALUES (:cliente_id, NOW(), 0)";
+            $sql_inserir_pedido = "INSERT INTO ecommerce_pedido (cliente_id, date, status, archived) VALUES (:cliente_id, NOW(), 0, 0)";
             $stmt_inserir_pedido = $pdo->prepare($sql_inserir_pedido);
             $stmt_inserir_pedido->bindParam(":cliente_id", $clienteID);
 

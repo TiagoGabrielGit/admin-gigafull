@@ -6,7 +6,7 @@ require "../../conexoes/conexao_pdo.php";
 $sql_clientes = "SELECT e.id, e.fantasia FROM empresas as e WHERE e.atributoCliente = 1 ORDER BY e.fantasia ASC"; // Substitua pela sua consulta SQL real
 $stmt_clientes = $pdo->query($sql_clientes);
 $clientes = $stmt_clientes->fetchAll(PDO::FETCH_ASSOC);
-
+ 
 // Obter a lista de produtos disponíveis no banco de dados
 $sql_produtos = "SELECT pe.id, pe.descricao FROM ecommerce_produtos as pe WHERE pe.active = 1 ORDER BY pe.descricao ASC"; // Substitua pela sua consulta SQL real
 $stmt_produtos = $pdo->query($sql_produtos);
@@ -23,6 +23,7 @@ $produtos = $stmt_produtos->fetchAll(PDO::FETCH_ASSOC);
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
+       
                     <div class="card-body">
                         <br>
                         <form method="POST" action="processa/dados_pedido.php">

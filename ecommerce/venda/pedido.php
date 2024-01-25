@@ -5,7 +5,7 @@ require "../../includes/remove_setas_number.php";
 $pedido_id = $_GET['pedido_id'];
 
 // Obter a lista de clientes disponíveis no banco de dados
-$sql_cliente = "SELECT ep.status, ep.date_entrega, ep.date, e.id, e.fantasia, e.cnpj, ca.street, ca.number, ca.city, ca.state, ca.neighborhood, ca.complement, ca.cep 
+$sql_cliente = "SELECT ep.status, ep.information, ep.archived, ep.date_entrega, ep.date, e.id, e.fantasia, e.cnpj, ca.street, ca.number, ca.city, ca.state, ca.neighborhood, ca.complement, ca.cep 
 FROM ecommerce_pedido as ep
 LEFT JOIN empresas as e ON e.id = ep.cliente_id
 LEFT JOIN company_address AS ca ON ca.company_id = e.id
@@ -57,48 +57,55 @@ $produtos_pedido = $stmt_produtos_pedido->fetchAll(PDO::FETCH_ASSOC);
                             <input style="text-align: center;" value="<?= $pedido_id ?>" class="form-control" disabled>
                         </div>
                         <br>
-                        <div class="row">
-                            <div class="col-lg-7">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <label class="form-label" for="cliente"><strong>Cliente:</strong> <?= $cliente['fantasia'] ?></label>
+                        <form action="processa/atualiza_dados_pedido.php" method="POST">
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label class="form-label" for="cliente"><strong>Cliente:</strong> <?= $cliente['fantasia'] ?></label>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" for="cnpj"><strong>CNPJ:</strong> <?= $cliente['cnpj'] ?></label>
+                                        </div>
                                     </div>
-                                    <div class="col-6">
-                                        <label class="form-label" for="cnpj"><strong>CNPJ:</strong> <?= $cliente['cnpj'] ?></label>
+
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <label class="form-label" for="endereco"><strong>Endereço:</strong> <?= $cliente['street'] ?></label>
+                                        </div>
+                                        <div class="col-3">
+                                            <label class="form-label" for="numero"><strong>Número:</strong> <?= $cliente['number'] ?></label>
+                                        </div>
+                                        <div class="col-4">
+                                            <label class="form-label" for="cep"><strong>CEP:</strong> <?= $cliente['cep'] ?></label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <label class="form-label" for="bairro"><strong>Bairro:</strong> <?= $cliente['neighborhood'] ?></label>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <label class="form-label" for="complemento"><strong>Complemento:</strong> <?= $cliente['complement'] ?></label>
+
+                                        </div>
+
+                                        <div class="col-4">
+                                            <label class="form-label" for="city"><strong>Cidade:</strong> <?= $cliente['city'] ?></label>
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+                                    <div class="row">
+                                        <label class="form-label" for="information"><b>Informações</b></label>
+                                        <textarea id="information" name="information" class="form-control" style="height: 100px; resize: none;" rows="4"><?= $cliente['information'] ?></textarea>
                                     </div>
                                 </div>
-
-                                <br>
-
-                                <div class="row">
-                                    <div class="col-5">
-                                        <label class="form-label" for="endereco"><strong>Endereço:</strong> <?= $cliente['street'] ?></label>
-                                    </div>
-                                    <div class="col-3">
-                                        <label class="form-label" for="numero"><strong>Número:</strong> <?= $cliente['number'] ?></label>
-                                    </div>
-                                    <div class="col-4">
-                                        <label class="form-label" for="cep"><strong>CEP:</strong> <?= $cliente['cep'] ?></label>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-4">
-                                        <label class="form-label" for="bairro"><strong>Bairro:</strong> <?= $cliente['neighborhood'] ?></label>
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label" for="complemento"><strong>Complemento:</strong> <?= $cliente['complement'] ?></label>
-
-                                    </div>
-
-                                    <div class="col-4">
-                                        <label class="form-label" for="city"><strong>Cidade:</strong> <?= $cliente['city'] ?></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-5">
-                                <form action="processa/atualiza_dados_pedido.php" method="POST">
+                                <div class="col-lg-5">
                                     <input hidden readonly id="atualiza_pedido_id" name="atualiza_pedido_id" value="<?= $pedido_id ?>">
 
                                     <div class="row mb-3">
@@ -129,12 +136,19 @@ $produtos_pedido = $stmt_produtos_pedido->fetchAll(PDO::FETCH_ASSOC);
                                         </div>
                                     </div>
 
+                                    <div class="row mb-3">
+                                        <label for="archived" class="col-sm-4 col-form-label"><strong>Arquivado</strong></label>
+                                        <div class="col-sm-8">
+                                            <input class="form-check-input" type="checkbox" id="archived" name="archived" <?php echo ($cliente['archived'] == 1) ? 'checked=""' : ''; ?>>
+                                        </div>
+                                    </div>
+
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-sm btn-info">Salvar Modificações</button>
                                     </div>
-                                </form>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -8,13 +8,19 @@ if (isset($_SESSION['id'])) {
         $dataPedido = $_POST["data_pedido"];
         $statusPedido = $_POST["status_pedido"];
         $dataEntrega = $_POST["data_entrega"];
+        $archived = isset($_POST["archived"]) ? 1 : 0;
+        $information = $_POST["information"];
 
-        $stmt = $pdo->prepare("UPDATE ecommerce_pedido SET date = :dataPedido, status = :statusPedido, date_entrega = :dataEntrega WHERE id = :pedidoId");
+
+        $stmt = $pdo->prepare("UPDATE ecommerce_pedido SET information = :information, archived = :archived, date = :dataPedido, status = :statusPedido, date_entrega = :dataEntrega WHERE id = :pedidoId");
 
         $stmt->bindParam(':dataPedido', $dataPedido);
         $stmt->bindParam(':statusPedido', $statusPedido);
         $stmt->bindParam(':dataEntrega', $dataEntrega);
         $stmt->bindParam(':pedidoId', $pedido_id);
+        $stmt->bindParam(':archived', $archived);
+        $stmt->bindParam(':information', $information);
+
 
         $stmt->execute();
 
