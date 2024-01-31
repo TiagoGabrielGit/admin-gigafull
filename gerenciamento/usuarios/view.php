@@ -30,11 +30,12 @@ if ($rowCount_permissions_submenu > 0) {
 
     $sql_usuario =
         "SELECT 
-user.id as id,
+user.id as id, 
 pess.nome as nome,
 pess.email as email,
 user.senha as senha,
 user.perfil_id as idPerfil,
+user.mobile as mobile,
 user.dashboard as dashboard,
 user.permissao_chamado as 'permissao_abertura_chamado',
 user.permissao_visualiza_chamado as 'permissao_visualiza_chamado',

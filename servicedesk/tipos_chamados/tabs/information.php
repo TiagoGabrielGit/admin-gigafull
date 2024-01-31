@@ -55,6 +55,21 @@
                     <input value="<?= $c_tipo_chamado['tempo_entrega'] ?>" type="number" placeholder="Tempo mínimo para entrega (em horas)" class="form-control" name="tempoEntrega" id="tempoEntrega" min="0">
                 </div>
             </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-5 col-form-label">Permite abertura via mobile</label>
+                <div class="col-sm-2">
+                    <select name="selectMobile" id="selectMobile" class="form-select" aria-label="Default select example">
+                        <option value="1" <?= ($c_tipo_chamado['mobile'] == "1") ? "selected" : "" ?>>Sim</option>
+                        <option value="0" <?= ($c_tipo_chamado['mobile'] != "1") ? "selected" : "" ?>>Não</option>
+                    </select>
+
+                </div>
+
+                <div id="campoEntrega" class="col-sm-5" style="display: none;">
+                    <input value="<?= $c_tipo_chamado['tempo_entrega'] ?>" type="number" placeholder="Tempo mínimo para entrega (em horas)" class="form-control" name="tempoEntrega" id="tempoEntrega" min="0">
+                </div>
+            </div>
         </div>
 
         <hr class="sidebar-divider">
@@ -63,8 +78,8 @@
         </div>
 
         <div class="text-center">
-            <input id="btnEditar" name="btnEditar" type="button" value="Salvar Alterações" class="btn btn-danger"></input>
-            <input type="button" value="Voltar" onClick="history.go(-1)" class="btn btn-secondary">
+            <input id="btnEditar" name="btnEditar" type="button" value="Salvar Alterações" class="btn btn-sm btn-danger"></input>
+            <input type="button" value="Voltar" onClick="history.go(-1)" class="btn btn-sm btn-secondary">
         </div>
     </form><!-- End Multi Columns Form -->
 </div>

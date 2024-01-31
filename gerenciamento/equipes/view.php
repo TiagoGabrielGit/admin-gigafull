@@ -115,7 +115,7 @@ if ($statusEquipe  == 'Ativo') {
 
                                                     while ($nao_integrantes = $result_n_int->fetch_array()) {
                                                         $usuarioID = $nao_integrantes['usuarioID'];
-                                                        $nomePessoa = $nao_integrantes['nomePessoa'];?>
+                                                        $nomePessoa = $nao_integrantes['nomePessoa']; ?>
                                                         <div class="form-check form-switch">
                                                             <input onclick="AddIntegrante(<?= $id_equipe ?>, '<?= $usuarioID ?>', '<?= $nameEquipe ?>', '<?= $nomePessoa ?>')" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" data-bs-toggle="modal" data-bs-target="#modalConfirm">
                                                             <label class="form-check-label" for="flexSwitchCheckDefault"><?= $nomePessoa ?></label>
@@ -187,7 +187,7 @@ if ($statusEquipe  == 'Ativo') {
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h5 class="card-title">Chamados Permitidos Abertura</h5>
+                                        <h5 class="card-title">Chamados Permitidos Abertura via Control</h5>
                                         <form>
                                             <div class="row mb-4">
                                                 <?php
@@ -241,6 +241,43 @@ if ($statusEquipe  == 'Ativo') {
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Chamados Permitidos Abertura via Mobile</h5>
+                                        <div class="row mb-4">
+                                            <?php
+                                            $chamados_mobile =
+                                                "SELECT tc.id as idTipoChamado, tc.tipo as tipoChamado
+                                                FROM tipos_chamados as tc
+                                                WHERE tc.active = 1 and mobile = 1
+                                                ORDER BY tc.tipo ASC";
+                                            $r_chamados_mobile = mysqli_query($mysqli, $chamados_mobile);
+                                            while ($c_chamados_mobile = mysqli_fetch_assoc($r_chamados_mobile)) {
+                                                $idTipoChamado_mobile = $c_chamados_mobile['idTipoChamado'];
+                                                $tipoChamado_mobile = $c_chamados_mobile['tipoChamado'];
+
+                                                // Verifica se há registro no banco de dados para este tipo de chamado e equipe
+                                                $query_verificar_registro = "SELECT COUNT(*) AS total FROM chamados_autorizados_mobile_by_equipe WHERE tipo_id = $idTipoChamado_mobile AND equipe_id = $id_equipe";
+                                                $resultado_verificar = mysqli_query($mysqli, $query_verificar_registro);
+                                                $registro_existente = mysqli_fetch_assoc($resultado_verificar)['total'];
+
+                                                // Verifica se o checkbox deve estar marcado inicialmente
+                                                $checkbox_marcado = $registro_existente > 0 ? 'checked' : '';
+                                            ?>
+                                                <div class="col-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input chamado-mobile-checkbox" type="checkbox" id="chamadoMobile<?= $idTipoChamado_mobile ?>" data-tipo-id="<?= $idTipoChamado_mobile ?>" data-equipe-id="<?= $id_equipe ?>" <?= $checkbox_marcado ?>>
+                                                        <label class="form-check-label" for="chamadoMobile<?= $idTipoChamado_mobile ?>"><?= $c_chamados_mobile['tipoChamado'] ?></label>
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -249,8 +286,64 @@ if ($statusEquipe  == 'Ativo') {
         </div>
     </section>
 
-</main><!-- End #main -->
+</main>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.chamado-mobile-checkbox').click(function () {
+            var tipo_id = $(this).data('tipo-id');
+            var equipe_id = $(this).data('equipe-id');
+            var isChecked = $(this).prop('checked');
+
+            if (isChecked) {
+                if (confirm('Tem certeza que deseja permitir este chamado?')) {
+                    // Se o usuário confirmar, envie uma solicitação AJAX para o script PHP
+                    $.ajax({
+                        type: 'POST',
+                        url: 'processa/permitirChamadoMobile.php',
+                        data: {tipo_id: tipo_id, equipe_id: equipe_id},
+                        success: function (response) {
+                            // Exibir mensagem de sucesso ou redirecionar para outra página
+                            alert('Chamado permitido com sucesso!');
+                            window.location.href = '/gerenciamento/equipes/view.php?id=' + equipe_id;
+                        },
+                        error: function (xhr, status, error) {
+                            // Lidar com erros
+                            alert('Erro ao permitir chamado: ' + error);
+                        }
+                    });
+                } else {
+                    // Se o usuário cancelar, desmarque o checkbox
+                    $(this).prop('checked', false);
+                }
+            } else {
+                if (confirm('Tem certeza que deseja desabilitar este chamado?')) {
+                    // Se o usuário confirmar, envie uma solicitação AJAX para o script PHP
+                    $.ajax({
+                        type: 'POST',
+                        url: 'processa/despermitirChamadoMobile.php',
+                        data: {tipo_id: tipo_id, equipe_id: equipe_id},
+                        success: function (response) {
+                            // Exibir mensagem de sucesso ou redirecionar para outra página
+                            alert('Chamado desabilitado com sucesso!');
+                            window.location.href = '/gerenciamento/equipes/view.php?id=' + equipe_id;
+                        },
+                        error: function (xhr, status, error) {
+                            // Lidar com erros
+                            alert('Erro ao desabilitar chamado: ' + error);
+                        }
+                    });
+                } else {
+                    // Se o usuário cancelar, marque o checkbox novamente
+                    $(this).prop('checked', true);
+                }
+            }
+        });
+    });
+</script>
 
 <?php
 require "confirmEdit.php";

@@ -14,7 +14,9 @@ tc.permite_data_entrega as permite_data_entrega,
 CASE
     WHEN tc.active = 1 THEN 'Ativado'
     WHEN tc.active = 0 THEN 'Inativado'
-END as ativo_tipo
+END as ativo_tipo,
+tc.mobile,
+tc.mascara
 FROM
 tipos_chamados as tc
 WHERE
@@ -47,8 +49,13 @@ if ($c_tipo_chamado['ativo_tipo'] == "Ativado") {
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link active" id="dados-tab" data-bs-toggle="tab" data-bs-target="#dados" type="button" role="tab" aria-controls="dados" aria-selected="true">Informações</button>
                                         </li>
+
                                         <li class="nav-item" role="presentation">
                                             <button class="nav-link" id="competencia-tab" data-bs-toggle="tab" data-bs-target="#competencia" type="button" role="tab" aria-controls="competencia" aria-selected="true">Competência</button>
+                                        </li>
+
+                                        <li class="nav-item" role="presentation">
+                                            <button class="nav-link" id="mascara-tab" data-bs-toggle="tab" data-bs-target="#mascara" type="button" role="tab" aria-controls="mascara" aria-selected="true">Mascara</button>
                                         </li>
                                     </ul>
 
@@ -59,6 +66,11 @@ if ($c_tipo_chamado['ativo_tipo'] == "Ativado") {
 
                                         <div class="tab-pane fade" id="competencia" role="tabpanel" aria-labelledby="competencia-tab">
                                             <?php require "tabs/competencias.php" ?>
+                                        </div>
+
+
+                                        <div class="tab-pane fade" id="mascara" role="tabpanel" aria-labelledby="mascara-tab">
+                                            <?php require "tabs/mascara.php" ?>
                                         </div>
                                     </div><!-- End Default Tabs -->
                                 </div>

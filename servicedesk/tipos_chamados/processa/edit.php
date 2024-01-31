@@ -5,7 +5,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		!isset($_POST['selectEntrega']) || $_POST['selectEntrega'] === '' ||
 		!isset($_POST['id']) || $_POST['id'] === '' ||
 		!isset($_POST['tipoChamadoEdit']) || $_POST['tipoChamadoEdit'] === '' ||
-		!isset($_POST['situacao']) || $_POST['situacao'] === ''
+		!isset($_POST['situacao']) || $_POST['situacao'] === '' ||
+		!isset($_POST['selectMobile']) || $_POST['selectMobile'] === ''
+
 	) {
 		echo "<p style='color:red;'>Dados obrigatórios não preenchidos¹.</p>";
 	} else {
@@ -14,6 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$tipo = $_POST['tipoChamadoEdit'];
 		$situacao = $_POST['situacao'];
 		$permite_data_entrega = $_POST['selectEntrega'];
+		$mobile = $_POST['selectMobile'];
 
 		if ($permite_data_entrega == 1) {
 			$horas_prazo_entrega = $_POST['tempoEntrega'];
@@ -27,9 +30,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 					'active' => $situacao,
 					'permite_data_entrega' => $permite_data_entrega,
 					'horas_prazo_entrega' => $horas_prazo_entrega,
+					'mobile' => $mobile,
+
 				];
 
-				$sql = "UPDATE tipos_chamados SET permite_data_entrega=:permite_data_entrega, horas_prazo_entrega=:horas_prazo_entrega, tipo=:tipo, active=:active WHERE id=:id";
+				$sql = "UPDATE tipos_chamados SET mobile=:mobile, permite_data_entrega=:permite_data_entrega, horas_prazo_entrega=:horas_prazo_entrega, tipo=:tipo, active=:active WHERE id=:id";
 				$stmt1 = $pdo->prepare($sql);
 
 				if ($stmt1->execute($data)) {
@@ -47,9 +52,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				'active' => $situacao,
 				'permite_data_entrega' => $permite_data_entrega,
 				'horas_prazo_entrega' => $horas_prazo_entrega,
+				'mobile' => $mobile,
+
 			];
 
-			$sql = "UPDATE tipos_chamados SET permite_data_entrega=:permite_data_entrega, horas_prazo_entrega=:horas_prazo_entrega, tipo=:tipo, active=:active WHERE id=:id";
+			$sql = "UPDATE tipos_chamados SET mobile=:mobile, permite_data_entrega=:permite_data_entrega, horas_prazo_entrega=:horas_prazo_entrega, tipo=:tipo, active=:active WHERE id=:id";
 			$stmt1 = $pdo->prepare($sql);
 
 			if ($stmt1->execute($data)) {

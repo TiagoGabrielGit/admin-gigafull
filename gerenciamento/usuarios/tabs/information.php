@@ -139,6 +139,18 @@ if (isset($_SESSION['temp_password'])) {
                                 <option value="2" <?php echo ($campos['dashboard'] == 2) ? 'selected' : ''; ?>>Tipo 2</option>
                                 <option value="3" <?php echo ($campos['dashboard'] == 3) ? 'selected' : ''; ?>>Tipo 3</option>
 
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="mobile" class="form-label">Acesso Mobile</label>
+                            <select name="mobile" id="mobile" class="form-select" required>
+
+                                <option disabled value="" <?php echo ($campos['mobile'] === null) ? 'selected' : ''; ?>>Selecione uma opção</option>
+                                <option value="1" <?php echo ($campos['mobile'] == 1) ? 'selected' : ''; ?>>Sim</option>
+                                <option value="0" <?php echo ($campos['mobile'] == 0) ? 'selected' : ''; ?>>Não</option>
 
                             </select>
                         </div>
@@ -150,7 +162,7 @@ if (isset($_SESSION['temp_password'])) {
     </div>
     <hr class="sidebar-divider">
     <div class="col-12" style="text-align: center;">
-        <button class="btn btn-danger" type="submit">Aplicar Alterações</button>
-        <a class="btn btn-secondary" href="/gerenciamento/usuarios/usuarios.php">Voltar</a>
+        <button class="btn btn-sm btn-danger" type="submit">Aplicar Alterações</button>
+        <a class="btn btn-sm btn-secondary" href="/gerenciamento/usuarios/usuarios.php">Voltar</a>
     </div>
 </form>
