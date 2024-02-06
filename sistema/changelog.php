@@ -25,12 +25,13 @@ require "../includes/menu.php";
 
                     <br><strong>Melhorias</strong><br>
                     # Chamado do tipo aferição;<br>
+                    # Criado botão de aferição no chamado;<br>
 
-                    
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado coluna 'afericao' na tabela 'tipos de chamados';<br>
                     # Alterado o type da coluna relato_inicial na tabela 'chamados';<br>
                     # Criado tabela 'afericao';<br>
+                    # Criado o id 48 na tabela de submenu;<br>
 
                     <br><strong>Backlog</strong><br>
                     # Pesquisa MP Concluidas através da data;<br>

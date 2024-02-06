@@ -108,8 +108,10 @@ if ($rowCount_permissions > 0) {
                                             }
                                             ?>
                                         </td>
-                                        <td style="text-align: center;"><button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal<?= $id ?>">
-                                                Mais Informações </button></td>
+                                        <td style="text-align: center;">
+
+                                            <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal<?= $id ?>">Mais Informações </button>
+                                        </td>
                                     </tr>
 
 
@@ -137,6 +139,7 @@ if ($rowCount_permissions > 0) {
                                             </div>
                                         </div>
                                     </div><!-- End Basic Modal-->
+
                                 <?php endforeach; ?>
                             </tbody>
                         </table>

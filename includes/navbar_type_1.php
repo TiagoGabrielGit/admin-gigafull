@@ -365,11 +365,22 @@ require "validaRotina.php";
                         </li>
                     <?php } ?>
                 </ul>
+
+                <ul id="rede-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <?php if ($c_nav_sub_ctos['c'] == 1) { ?>
+                        <li>
+                            <a href="/rede/ctos/index.php">
+                                <i class="bi bi-circle"></i><span>CTOs</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+                </ul>
+
                 <ul id="rede-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <?php if ($c_nav_sub_importCTO['c'] == 1) { ?>
                         <li>
                             <a href="/rede/importacao_ctos/index.php">
-                                <i class="bi bi-circle"></i><span>Importar CTO</span>
+                                <i class="bi bi-circle"></i><span>Importação CTOs</span>
                             </a>
                         </li>
                     <?php } ?>

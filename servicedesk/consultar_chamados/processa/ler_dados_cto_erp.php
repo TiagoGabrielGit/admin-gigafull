@@ -15,7 +15,9 @@ if (isset($_SESSION['id'])) {
         $nbintegration_stmt->bindParam(':id', $cto_id);
         $nbintegration_stmt->execute();
         $nbintegration_result = $nbintegration_stmt->fetchAll(PDO::FETCH_ASSOC);
-        $nbintegration = $nbintegration_result['nbintegration_code'];
+        $first_result = reset($nbintegration_result);
+        $nbintegration = $first_result['nbintegration_code'];
+
 
         $query_ocupacao = "SELECT
           autport.port as porta,
@@ -38,11 +40,24 @@ if (isset($_SESSION['id'])) {
         $ocupacao_result = $ocupacao_stmt->fetchAll(PDO::FETCH_ASSOC);
 
         // Formata o resultado da consulta de ocupação
-        $ocupacao_formatted = '';
+        $ocupacao_formatted = '<br>';
         foreach ($ocupacao_result as $row) {
             $ocupacao_formatted .= "{$row['porta']} - {$row['user']} {$row['blocked_description']}<br>";
         }
-        echo $ocupacao_formatted;
+        $data_hora_atual = date('d/m/Y H:i');
+
+        $ocupacao_formatted .= "<br> Leitura realizada em: " . $data_hora_atual;
+
+        $query_update_afericao = "UPDATE afericao SET crm_pos_afericao = :crm_pos_afericao WHERE chamado_id = :chamado_id";
+        $stmt_update_afericao = $pdo->prepare($query_update_afericao);
+        $valores_update_afericao = array(':crm_pos_afericao' => $ocupacao_formatted, ':chamado_id' => $chamado_id);
+        if ($stmt_update_afericao->execute($valores_update_afericao)) {
+            header("Location: /servicedesk/consultar_chamados/view.php?id=$chamado_id");
+            exit;
+        } else {
+            header("Location: /servicedesk/consultar_chamados/view.php?id=$chamado_id");
+            exit;
+        }
     } else {
         header("Location: /servicedesk/consultar_chamados/view.php?id=$chamado_id");
         exit;

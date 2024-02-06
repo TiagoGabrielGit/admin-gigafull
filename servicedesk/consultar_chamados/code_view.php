@@ -895,8 +895,10 @@ try {
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"><b>INFORMAÇÕES DA AFERIÇÃO</b></h5>
+           
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
 
             <div class="modal-body">
                 <div class="col-12">
@@ -985,18 +987,20 @@ try {
 
                                         <?php if ($status == 1) {
 
-                                            if (!empty($relato)) {
+                                            if (!empty($crm_pos_afericao)) {
 
                                         ?>
-                                                <form>
+                                                <form method="POST" action="processa/status_afericao.php">
+
+                                                    <input id="chamado_id_update_status" name="chamado_id_update_status" hidden readonly value="<?= $id_chamado ?>">
                                                     <div class="12">
-                                                        <textarea placeholder="Digite um relato" class="form-control" rows="2" style="resize: none;" required></textarea>
+                                                        <textarea placeholder="Digite um relato" class="form-control" rows="2" style="resize: none;" id="relato_status" name="relato_status" required></textarea>
                                                     </div>
                                                     <br>
                                                     <div class="row">
                                                         <div class="col-lg-6">
                                                             <div class="col-12">
-                                                                <select class="form-select" name="status">
+                                                                <select class="form-select" name="status_afericao" id="status_afericao">
                                                                     <option value="1" <?php if ($status == 1) echo "selected"; ?>>Em análise</option>
                                                                     <option value="2" <?php if ($status == 2) echo "selected"; ?>>Negada</option>
                                                                     <option value="3" <?php if ($status == 3) echo "selected"; ?>>Realizada</option>
