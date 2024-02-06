@@ -16,7 +16,8 @@ CASE
     WHEN tc.active = 0 THEN 'Inativado'
 END as ativo_tipo,
 tc.mobile,
-tc.mascara
+tc.mascara,
+tc.afericao
 FROM
 tipos_chamados as tc
 WHERE

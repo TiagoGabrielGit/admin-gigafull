@@ -65,9 +65,16 @@
                     </select>
 
                 </div>
+            </div>
+            
+            <div class="row mb-3">
+                <label class="col-sm-5 col-form-label">Chamado do tipo aferição de CTO</label>
+                <div class="col-sm-2">
+                    <select name="selectAfericao" id="selectAfericao" class="form-select" aria-label="Default select example">
+                        <option value="1" <?= ($c_tipo_chamado['afericao'] == "1") ? "selected" : "" ?>>Sim</option>
+                        <option value="0" <?= ($c_tipo_chamado['afericao'] != "1") ? "selected" : "" ?>>Não</option>
+                    </select>
 
-                <div id="campoEntrega" class="col-sm-5" style="display: none;">
-                    <input value="<?= $c_tipo_chamado['tempo_entrega'] ?>" type="number" placeholder="Tempo mínimo para entrega (em horas)" class="form-control" name="tempoEntrega" id="tempoEntrega" min="0">
                 </div>
             </div>
         </div>

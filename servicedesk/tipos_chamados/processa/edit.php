@@ -6,7 +6,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		!isset($_POST['id']) || $_POST['id'] === '' ||
 		!isset($_POST['tipoChamadoEdit']) || $_POST['tipoChamadoEdit'] === '' ||
 		!isset($_POST['situacao']) || $_POST['situacao'] === '' ||
-		!isset($_POST['selectMobile']) || $_POST['selectMobile'] === ''
+		!isset($_POST['selectMobile']) || $_POST['selectMobile'] === '' ||
+		!isset($_POST['selectAfericao']) || $_POST['selectAfericao'] === ''
 
 	) {
 		echo "<p style='color:red;'>Dados obrigatórios não preenchidos¹.</p>";
@@ -17,6 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		$situacao = $_POST['situacao'];
 		$permite_data_entrega = $_POST['selectEntrega'];
 		$mobile = $_POST['selectMobile'];
+		$selectAfericao = $_POST['selectAfericao'];
 
 		if ($permite_data_entrega == 1) {
 			$horas_prazo_entrega = $_POST['tempoEntrega'];
@@ -31,16 +33,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 					'permite_data_entrega' => $permite_data_entrega,
 					'horas_prazo_entrega' => $horas_prazo_entrega,
 					'mobile' => $mobile,
+					'selectAfericao' => $selectAfericao,
 
 				];
 
-				$sql = "UPDATE tipos_chamados SET mobile=:mobile, permite_data_entrega=:permite_data_entrega, horas_prazo_entrega=:horas_prazo_entrega, tipo=:tipo, active=:active WHERE id=:id";
+				$sql = "UPDATE tipos_chamados SET afericao=:selectAfericao, mobile=:mobile, permite_data_entrega=:permite_data_entrega, horas_prazo_entrega=:horas_prazo_entrega, tipo=:tipo, active=:active WHERE id=:id";
 				$stmt1 = $pdo->prepare($sql);
 
 				if ($stmt1->execute($data)) {
 					echo "<p style='color:green;'>Editado com sucesso!</p>";
 				} else {
-					echo "<p style='color:red;'>Error: . $stmt->error</p>";
+					echo "<p style='color:red;'>Error: " . implode(" - ", $stmt1->errorInfo()) . "</p>";
 				}
 			}
 		} else {
@@ -53,16 +56,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				'permite_data_entrega' => $permite_data_entrega,
 				'horas_prazo_entrega' => $horas_prazo_entrega,
 				'mobile' => $mobile,
+				'selectAfericao' => $selectAfericao,
+
 
 			];
 
-			$sql = "UPDATE tipos_chamados SET mobile=:mobile, permite_data_entrega=:permite_data_entrega, horas_prazo_entrega=:horas_prazo_entrega, tipo=:tipo, active=:active WHERE id=:id";
+			$sql = "UPDATE tipos_chamados SET afericao=:selectAfericao, mobile=:mobile, permite_data_entrega=:permite_data_entrega, horas_prazo_entrega=:horas_prazo_entrega, tipo=:tipo, active=:active WHERE id=:id";
 			$stmt1 = $pdo->prepare($sql);
 
 			if ($stmt1->execute($data)) {
 				echo "<p style='color:green;'>Editado com sucesso!</p>";
 			} else {
-				echo "<p style='color:red;'>Error: . $stmt->error</p>";
+				echo "<p style='color:red;'>Error: " . implode(" - ", $stmt1->errorInfo()) . "</p>";
 			}
 		}
 	}
