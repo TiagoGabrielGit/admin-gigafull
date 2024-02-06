@@ -15,19 +15,24 @@ if (isset($_SESSION['id'])) {
                 $stmt_update_afericao->bindParam(':relato', $relato);
                 $stmt_update_afericao->bindParam(':chamado_id', $chamado_id);
                 if ($stmt_update_afericao->execute()) {
-                    echo "Status e relato atualizados com sucesso na tabela afericao.";
+                    header("Location: /servicedesk/consultar_chamados/view.php?id=$chamado_id");
+                    exit;
                 } else {
-                    echo "Erro ao atualizar status e relato na tabela afericao.";
+                    header("Location: /servicedesk/consultar_chamados/view.php?id=$chamado_id");
+                    exit;
                 }
             } else {
-                echo "O campo relato é obrigatório.";
+                header("Location: /servicedesk/consultar_chamados/view.php?id=$chamado_id");
+                exit;
             }
         } else {
-            echo "O ID do chamado não foi enviado.";
+            header("Location: /servicedesk/consultar_chamados/view.php?id=$chamado_id");
+            exit;
         }
     } else {
-        echo "A sessão não está iniciada ou o ID do usuário não está definido.";
+        echo "Este arquivo só pode ser acessado via método POST.";
     }
 } else {
-    echo "Este arquivo só pode ser acessado via método POST.";
+    header("/index.php");
+    exit;
 }

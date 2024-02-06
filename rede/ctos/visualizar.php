@@ -108,6 +108,7 @@ if ($rowCount_permissions > 0) {
                                                             $crm_pos_afericao = $row['crm_pos_afericao'];
                                                             $status = $row['status'];
                                                             $relato = $row['relato'];
+                                                            $chamado_id = $row['chamado_id'];
                                                         }
                                                         ?>
 
@@ -209,6 +210,9 @@ if ($rowCount_permissions > 0) {
 
                                             </div>
                                             <div class="modal-footer">
+
+                                                <a href="/servicedesk/consultar_chamados/view.php?id=<?= $chamado_id ?>" class="btn btn-warning">Ir para o chamado</a>
+
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                                             </div>
                                         </div>
