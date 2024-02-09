@@ -13,6 +13,50 @@ require "../includes/menu.php";
         <div class="card">
           <div class="card-body">
 
+
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading12-8">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse12-8" aria-expanded="false" aria-controls="collapse12-8">
+                    Versão 12.8 - XX/01/2024
+                  </button>
+                </h2>
+                <div id="collapse12-8" class="accordion-collapse collapse" aria-labelledby="heading12-8" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criado coluna 'solicitante_equipe_id' na 'tabela chamados';<br>
+                    # Alterado coluna url do id 4 na tabela url_menu;<br>
+                    # Criado id 49 e 50 na tabela url_submenu;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Pesquisa MP Concluidas através da data;<br>
+                    # Página de aceite MP;<br>
+                    # Causador Incidente;<br>
+                    # Enter para login;<br>
+                    # Alternar tabs automanticamente no iframe incidentes;<br>
+                    # White-Label iframe incidentes;<br>
+                    # TABs permitidas no iframe incidentes;<br>
+                    # Remover PON/RF durante criação de MP;<br>
+                    # Vincular uma documentação à um tipo de incidente;<br>
+                    # Selecionar publico ou privado no relato avulso;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Energia POP;<br>
+                    # Atributos de equipamentos;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Permissões em documentações;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                    # Dependencia de chamados;<br>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="accordion" id="accordionExample">
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading12-7">

@@ -149,12 +149,29 @@ require "validaRotina.php";
             <li class="nav-heading">Service Desk</li>
         <?php } ?>
 
-        <?php if ($c_nav_chamados['c'] == 1) { ?>
+        <?php if ($c_comunicacao['c'] == 1) { ?>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="/servicedesk/consultar_chamados/index.php?pagina=1">
-                    <i class="bi bi-file-text"></i>
-                    <span>Chamados</span>
+                <a class="nav-link collapsed" data-bs-target="#chamados-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-layout-text-window-reverse"></i><span>Chamados</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
+                <ul id="chamados-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                    <?php if ($c_sub_novo_chamado['c'] == 1) { ?>
+                        <li>
+                            <a href="/servicedesk/novo_chamado/index.php">
+                                <i class="bi bi-circle"></i><span>Novo Chamado</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+                    <?php if ($c_sub_consultar_chamado['c'] == 1) { ?>
+                        <li>
+                            <a href="/servicedesk/consultar_chamados/index.php">
+                                <i class="bi bi-circle"></i><span>Consultar Chamados</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+                </ul>
             </li>
         <?php } ?>
 

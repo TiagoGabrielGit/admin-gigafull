@@ -74,9 +74,14 @@ p.id = $idPerfil
                                         <hr class="sidebar-divider">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <span><b>Menus</b></span>
+                                                <span>
+                                                    <b>
+                                                        <h3>Menus</h3>
+                                                    </b>
+                                                </span>
                                             </div>
                                         </div>
+                                        <br>
                                         <div class="col-lg-12">
                                             <div class="row">
                                                 <?php
@@ -129,9 +134,14 @@ p.id = $idPerfil
 
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <span><b>Submenu</b></span>
+                                                <span>
+                                                    <b>
+                                                        <h3>SUBMENU</h3>
+                                                    </b>
+                                                </span>
                                             </div>
                                         </div>
+                                        <br>
 
                                         <div class="row">
                                             <div class="col-lg-3">
@@ -341,7 +351,11 @@ p.id = $idPerfil
                                                 <?php }
                                                 } ?>
                                             </div>
+                                        </div>
 
+                                        <br>
+
+                                        <div class="row">
                                             <div class="col-lg-3">
                                                 <div class="col-12">
                                                     <span><b>Manutenção Programada</b></span>
@@ -393,8 +407,7 @@ p.id = $idPerfil
                                                 <?php }
                                                 } ?>
                                             </div>
-
-                                            <div class="col-lg-2">
+                                            <div class="col-lg-3">
                                                 <div class="col-12">
                                                     <span><b>Rede Neutra</b></span>
                                                 </div>
@@ -404,12 +417,12 @@ p.id = $idPerfil
                                                 us.id as idSubmenu,
                                                 us.url as urlSubmenu,
                                                 us.submenu as submenu
-                                            FROM
-                                                url_submenu as us
-                                            WHERE
+                                                FROM
+                                                    url_submenu as us
+                                                WHERE
                                                 us.menu_id = 13
-                                            ORDER BY
-                                                us.submenu ASC";
+                                                ORDER BY
+                                                    us.submenu ASC";
                                                 $r_submenu_redeNeutra = mysqli_query($mysqli, $submenu_redeNeutra);
                                                 while ($c_submenu_redeNeutra = mysqli_fetch_assoc($r_submenu_redeNeutra)) {
                                                     $idSubmenu = $c_submenu_redeNeutra['idSubmenu'];
@@ -445,8 +458,7 @@ p.id = $idPerfil
                                                 <?php }
                                                 } ?>
                                             </div>
-
-                                            <div class="col-lg-2">
+                                            <div class="col-lg-3">
                                                 <div class="col-12">
                                                     <span><b>Gerenciamento</b></span>
                                                 </div>
@@ -456,11 +468,11 @@ p.id = $idPerfil
                                                 us.id as idSubmenu,
                                                 us.url as urlSubmenu,
                                                 us.submenu as submenu
-                                            FROM
-                                                url_submenu as us
-                                            WHERE
-                                                us.menu_id = 14
-                                            ORDER BY
+                                                FROM
+                                                    url_submenu as us
+                                                WHERE
+                                                    us.menu_id = 14
+                                                ORDER BY
                                                 us.submenu ASC";
                                                 $r_submenu_gerenciamento = mysqli_query($mysqli, $submenu_gerenciamento);
                                                 while ($c_submenu_gerenciamento = mysqli_fetch_assoc($r_submenu_gerenciamento)) {
@@ -497,8 +509,6 @@ p.id = $idPerfil
                                                 <?php }
                                                 } ?>
                                             </div>
-
-
                                             <div class="col-lg-3">
                                                 <div class="col-12">
                                                     <span><b>Relatórios</b></span>
@@ -509,11 +519,11 @@ p.id = $idPerfil
                                                 us.id as idSubmenu,
                                                 us.url as urlSubmenu,
                                                 us.submenu as submenu
-                                            FROM
-                                                url_submenu as us
-                                            WHERE
-                                                us.menu_id = 19
-                                            ORDER BY
+                                                FROM
+                                                    url_submenu as us
+                                                WHERE
+                                                    us.menu_id = 19
+                                                ORDER BY
                                                 us.submenu ASC";
                                                 $r_submenu_relatorio = mysqli_query($mysqli, $submenu_relatorio);
                                                 while ($c_submenu_relatorio = mysqli_fetch_assoc($r_submenu_relatorio)) {
@@ -550,7 +560,11 @@ p.id = $idPerfil
                                                 <?php }
                                                 } ?>
                                             </div>
+                                        </div>
 
+                                        <br>
+
+                                        <div class="row">
                                             <div class="col-lg-3">
                                                 <div class="col-12">
                                                     <span><b>Sistema</b></span>
@@ -665,11 +679,63 @@ p.id = $idPerfil
                                                 us.id as idSubmenu,
                                                 us.url as urlSubmenu,
                                                 us.submenu as submenu
-                                            FROM
-                                                url_submenu as us
-                                            WHERE
-                                                us.menu_id = 20
-                                            ORDER BY
+                                                FROM
+                                                    url_submenu as us
+                                                WHERE
+                                                    us.menu_id = 20
+                                                ORDER BY
+                                                us.submenu ASC";
+                                                $r_submenu_rede = mysqli_query($mysqli, $submenu_rede);
+                                                while ($c_submenu_rede = mysqli_fetch_assoc($r_submenu_rede)) {
+                                                    $idSubmenu = $c_submenu_rede['idSubmenu'];
+
+                                                    $valida_check =
+                                                        "SELECT
+                                                count(*) as validaCheck,
+                                                ppsm.id as idPermissao
+                                                FROM
+                                                perfil_permissoes_submenu as ppsm
+                                                WHERE
+                                                ppsm.url_submenu = $idSubmenu
+                                                and
+                                                ppsm.perfil_id = $idPerfil
+                                                ";
+                                                    $r_valida_check = mysqli_query($mysqli, $valida_check);
+                                                    $c_valida_check = mysqli_fetch_assoc($r_valida_check);
+
+                                                    if ($c_valida_check['validaCheck'] <> "0") { ?>
+                                                        <div class="col-12">
+                                                            <div class="form-check">
+                                                                <input onclick="despermitirSubmenu(<?= $c_valida_check['idPermissao'] ?>)" class="form-check-input" type="checkbox" id="submenu<?= $idSubmenu ?>" checked data-bs-toggle="modal" data-bs-target="#modalDespermitirSubmenu">
+                                                                <label class="form-check-label" for="submenu<?= $idSubmenu ?>"><?= $c_submenu_rede['submenu'] ?></label>
+                                                            </div>
+                                                        </div>
+                                                    <?php } else { ?>
+                                                        <div class="col-12">
+                                                            <div class="form-check">
+                                                                <input onclick="permitirSubmenu(<?= $idSubmenu ?>, '<?= $idPerfil ?>')" class="form-check-input" type="checkbox" id="submenu<?= $idSubmenu ?>" data-bs-toggle="modal" data-bs-target="#modalPermitirSubmenu">
+                                                                <label class="form-check-label" for="submenu<?= $idSubmenu ?>"><?= $c_submenu_rede['submenu'] ?></label>
+                                                            </div>
+                                                        </div>
+                                                <?php }
+                                                } ?>
+                                            </div>
+
+                                            <div class="col-lg-3">
+                                                <div class="col-12">
+                                                    <span><b>Chamados</b></span>
+                                                </div>
+                                                <?php
+                                                $submenu_rede =
+                                                    "SELECT
+                                                us.id as idSubmenu,
+                                                us.url as urlSubmenu,
+                                                us.submenu as submenu
+                                                FROM
+                                                    url_submenu as us
+                                                WHERE
+                                                    us.menu_id = 4
+                                                ORDER BY
                                                 us.submenu ASC";
                                                 $r_submenu_rede = mysqli_query($mysqli, $submenu_rede);
                                                 while ($c_submenu_rede = mysqli_fetch_assoc($r_submenu_rede)) {

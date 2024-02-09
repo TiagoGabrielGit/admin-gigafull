@@ -824,3 +824,35 @@ ppsm.perfil_id = $perfil_id";
 
 $r_sub_ecommerce_pedidos = mysqli_query($mysqli, $nav_ecommerce_pedidos);
 $c_nav_sub_ecommerce_pedidos = mysqli_fetch_assoc($r_sub_ecommerce_pedidos);
+
+$nav_sub_novo_chamado = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '50'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_sub_novo_chamado = mysqli_query($mysqli, $nav_sub_novo_chamado);
+$c_sub_novo_chamado = mysqli_fetch_assoc($r_sub_novo_chamado);
+
+$sub_consultar_chamado = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '49'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_sub_consultar_chamado = mysqli_query($mysqli, $sub_consultar_chamado);
+$c_sub_consultar_chamado = mysqli_fetch_assoc($r_sub_consultar_chamado);

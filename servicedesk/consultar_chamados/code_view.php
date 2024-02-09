@@ -895,7 +895,7 @@ try {
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"><b>INFORMAÇÕES DA AFERIÇÃO</b></h5>
-           
+
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
@@ -1050,7 +1050,9 @@ try {
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            <a href="/rede/ctos/visualizar.php?id=<?= $cto_id ?>" class="btn btn-sm btn-warning" target="_blank">Ir para CTO</a>
+
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fechar</button>
             </div>
         </div>
     </div>

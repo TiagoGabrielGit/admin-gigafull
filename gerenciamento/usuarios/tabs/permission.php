@@ -200,21 +200,21 @@
                 <select name="permissaoVisualizaChamado" id="permissaoVisualizaChamado" class="form-select" required>
                     <?php
                     if ($campos['permissao_visualiza_chamado'] == 1) { ?>
-                        <option selected value="1">Visualiza somente da empresa do usuário</option>
-                        <option value="2">Visualiza somente tipos de chamados permitidos por equipe do usuário</option>
+                        <option selected value="1">Visualiza somente os chamados da empresa do usuário</option>
+                        <option value="2">Visualiza somente os chamados abertos por membros da mesma equipe</option>
                         <option value="3">Visualiza todos</option>
                     <?php } else if ($campos['permissao_visualiza_chamado'] == 2) { ?>
-                        <option value="1">Visualiza somente da empresa do usuário</option>
-                        <option selected value="2">Visualiza somente tipos de chamados permitidos por equipe do usuário</option>
+                        <option selected value="1">Visualiza somente os chamados da empresa do usuário</option>
+                        <option value="2">Visualiza somente os chamados abertos por membros da mesma equipe</option>
                         <option value="3">Visualiza todos</option>
                     <?php } else if ($campos['permissao_visualiza_chamado'] == 3) { ?>
-                        <option value="1">Visualiza somente da empresa do usuário</option>
-                        <option value="2">Visualiza somente tipos de chamados permitidos por equipe do usuário</option>
-                        <option selected value="3">Visualiza todos</option>
+                        <option selected value="1">Visualiza somente os chamados da empresa do usuário</option>
+                        <option value="2">Visualiza somente os chamados abertos por membros da mesma equipe</option>
+                        <option value="3">Visualiza todos</option>
                     <?php } else { ?>
                         <option selected disabled value="">Selecione uma opção</option>
-                        <option value="1">Visualiza somente da empresa do usuário</option>
-                        <option value="2">Visualiza somente tipos de chamados permitidos por equipe do usuário</option>
+                        <option selected value="1">Visualiza somente os chamados da empresa do usuário</option>
+                        <option value="2">Visualiza somente os chamados abertos por membros da mesma equipe</option>
                         <option value="3">Visualiza todos</option>
                     <?php }
                     ?>

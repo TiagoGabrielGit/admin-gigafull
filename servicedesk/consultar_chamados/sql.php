@@ -1,10 +1,11 @@
 <?php
 
-$sql_chamado1 = 
+$sql_chamado1 =
     "SELECT
 c.id as id_chamado,
 c.assuntoChamado as assunto,
 c.relato_inicial as relato_inicial,
+c.solicitante_equipe_id as solicitante_equipe_id,
 c.prioridade as prioridade,
 date_format(c.data_abertura,'%H:%i:%s %d/%m/%Y') as abertura,
 date_format(c.data_fechamento,'%H:%i:%s %d/%m/%Y') as fechado,
@@ -144,4 +145,3 @@ cs.id != 2
 ORDER BY
 cs.status_chamado ASC
 ";
-

@@ -30,21 +30,13 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       u.dashboard as dashboard,
       u.perfil_id as perfil,
       u.active as active,
+      ei.equipe_id as equipe_id,
       pe.perfil as nome_perfil
-    FROM
-      usuarios as u
-    LEFT JOIN
-      pessoas as p
-    ON
-      p.id = u.pessoa_id
-    LEFT JOIN
-      perfil as pe
-    ON
-      u.perfil_id = pe.id
-    WHERE
-      p.email = '$email' 
-    AND 
-      u.senha = '$senha'";
+    FROM usuarios as u
+    LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+    LEFT JOIN perfil as pe ON u.perfil_id = pe.id
+    LEFT JOIN equipes_integrantes as ei ON u.id = ei.integrante_id
+    WHERE p.email = '$email' AND u.senha = '$senha'";
 
   $resultado = mysqli_query($mysqli, $sql_code) or die("Erro ao retornar dados");
   $quantidade_linhas = mysqli_num_rows($resultado);
@@ -77,6 +69,8 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       $_SESSION['permissao_privacidade_credenciais'] = $usuario['permissao_privacidade_credenciais'];
       $_SESSION['permissao_configuracoes_chamados'] = $usuario['permissao_configuracoes_chamados'];
       $empresaID = $_SESSION['empresa_id'];
+      $_SESSION['equipe_id'] = $usuario['equipe_id'];
+
 
       $usuario_id = $_SESSION['id'];
       $ip_address = $_SESSION['ip_address'];

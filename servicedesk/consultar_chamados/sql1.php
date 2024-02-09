@@ -53,20 +53,23 @@ $sql_lista_atendentes =
     "SELECT
 CASE WHEN p.nome IS NULL THEN '0'             ELSE u.id END AS 'id',
 CASE WHEN p.nome IS NULL THEN 'Sem Atendente' ELSE p.nome END AS 'nome'
-FROM
-chamados as ch
-LEFT JOIN
-usuarios as u
-ON
-ch.atendente_id = u.id
-LEFT JOIN
-pessoas as p
-ON
-p.id = u.pessoa_id
-GROUP BY
-ch.atendente_id
-order by
-p.nome ASC
+FROM chamados as ch
+LEFT JOIN usuarios as u ON ch.atendente_id = u.id
+LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+GROUP BY ch.atendente_id
+order by p.nome ASC
+";
+
+$sql_lista_solicitantes =
+    "SELECT
+    u.id as solicitante_id,
+    p.nome as solicitante
+FROM chamados as ch
+LEFT JOIN usuarios as u ON ch.solicitante_id = u.id
+LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+WHERE p.nome IS NOT NULL
+GROUP BY ch.solicitante_id
+order by p.nome ASC
 ";
 
 $sql_status_chamados =

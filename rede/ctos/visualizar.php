@@ -36,6 +36,8 @@ if ($rowCount_permissions > 0) {
                     <table class="table datatable">
                         <thead>
                             <tr>
+                                <th style="text-align: center;">Chamado</th>
+
                                 <th style="text-align: center;">Solicitante</th>
                                 <th style="text-align: center;">Empresa</th>
                                 <th style="text-align: center;">Data</th>
@@ -46,7 +48,7 @@ if ($rowCount_permissions > 0) {
                         <tbody>
                             <?php
                             $query_afericoes =
-                                "SELECT a.id, p.nome, DATE_FORMAT(a.created, '%d/%m/%Y %H:%i') AS data_formatada, e.fantasia,
+                                "SELECT a.id, p.nome, DATE_FORMAT(a.created, '%d/%m/%Y %H:%i') AS data_formatada, e.fantasia, a.chamado_id,
 
                                 CASE
                                 WHEN a.status = 1 THEN 'Em analise'
@@ -57,7 +59,8 @@ if ($rowCount_permissions > 0) {
                             LEFT JOIN usuarios as u ON u.id = a.solicitante_id
                             LEFT JOIN pessoas as p ON p.id = u.pessoa_id
                             LEFT JOIN empresas as e ON u.empresa_id = e.id
-                            WHERE a.cto_id = :id";
+                            WHERE a.cto_id = :id
+                            ORDER BY a.chamado_id DESC";
                             $stmt_afericoes = $pdo->prepare($query_afericoes);
                             $stmt_afericoes->bindParam(':id', $id);
                             $stmt_afericoes->execute();
@@ -66,6 +69,8 @@ if ($rowCount_permissions > 0) {
                             ?>
 
                                 <tr>
+                                    <td style="text-align: center;"><?= $afericao['chamado_id']; ?></td>
+
                                     <td style="text-align: center;"><?= $afericao['nome']; ?></td>
                                     <td style="text-align: center;"><?= $afericao['fantasia']; ?></td>
 
@@ -210,10 +215,11 @@ if ($rowCount_permissions > 0) {
 
                                             </div>
                                             <div class="modal-footer">
+                                                <a href="/rede/ctos/anexos.php?id=<?= $chamado_id ?>" class="btn btn-sm btn-info" target="_blank">Anexos</a>
 
-                                                <a href="/servicedesk/consultar_chamados/view.php?id=<?= $chamado_id ?>" class="btn btn-warning">Ir para o chamado</a>
+                                                <a href="/servicedesk/consultar_chamados/view.php?id=<?= $chamado_id ?>" class="btn btn-sm btn-warning" target="_blank">Ir para o chamado</a>
 
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fechar</button>
                                             </div>
                                         </div>
                                     </div>
