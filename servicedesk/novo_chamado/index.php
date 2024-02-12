@@ -19,7 +19,7 @@ $rowCount_permissions_submenu = $exec_permissions_submenu->rowCount();
 if ($rowCount_permissions_submenu > 0) {
     $s_empresaID = $_SESSION['empresa_id'];
     $permissao_abrir_chamado = $_SESSION['permissao_abrir_chamado'];
-
+    $chamados_permitidos_abertura = $_SESSION['chamados_permitidos_abertura'];
 
     if ($permissao_abrir_chamado == 1) {
         $sql_lista_empresas =
@@ -37,27 +37,11 @@ if ($rowCount_permissions_submenu > 0) {
         ";
     } else if ($permissao_abrir_chamado == 0) {
         $sql_lista_empresas =
-            "SELECT
-        emp.id as id_empresa,
-        emp.fantasia as fantasia_empresa
-        FROM
-        empresas as emp
-        WHERE
-        atributoCliente = '1'
-        and
-        emp.id = $s_empresaID
-        or
-        atributoEmpresaPropria = '1'
-        and
-        emp.id = $s_empresaID
-        ORDER BY
-        emp.fantasia ASC
-        ";
-    }
-
-
-
-?>
+            "SELECT emp.id as id_empresa, emp.fantasia as fantasia_empresa
+        FROM empresas as emp
+        WHERE atributoCliente = '1' and emp.id = $s_empresaID or atributoEmpresaPropria = '1' and emp.id = $s_empresaID
+        ORDER BY emp.fantasia ASC";
+    } ?>
 
     <main id="main" class="main">
 
@@ -70,7 +54,8 @@ if ($rowCount_permissions_submenu > 0) {
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <form id="formAbrirChamado" action="/servicedesk/novo_chamado/processa/add.php" method="POST" class="row g-3">
+                            <form id="formAbrirChamado" action="/servicedesk/novo_chamado/processa/add.php" method="POST"
+                                class="row g-3">
 
                                 <span id="msg"></span>
 
@@ -82,7 +67,7 @@ if ($rowCount_permissions_submenu > 0) {
                                         <option disabled selected value="">Selecione a empresa</option>
                                         <?php
                                         $resultado = mysqli_query($mysqli, $sql_lista_empresas);
-                                        while ($tipos = mysqli_fetch_object($resultado)) :
+                                        while ($tipos = mysqli_fetch_object($resultado)):
                                             echo "<option value='$tipos->id_empresa'> $tipos->fantasia_empresa</option>";
                                         endwhile;
                                         ?>
@@ -95,96 +80,41 @@ if ($rowCount_permissions_submenu > 0) {
                                         <option disabled selected value="">Selecione o tipo de chamado</option>
                                         <?php
 
-                                        if ($permissao_abrir_chamado == 1) {
-
+                                        if ($chamados_permitidos_abertura == 1) {
                                             $lista_tipos_chamados =
-                                                "SELECT
-                                                                            tc.id as idTipo,
-                                                                            tc.tipo as tipoChamado,
-                                                                            tc.permite_data_entrega as 'permite_data_entrega',
-                                                                            tc.horas_prazo_entrega as 'horas_prazo_entrega'
-                                                                            FROM
-                                                                            tipos_chamados as tc
-                                                                            LEFT JOIN
-                                                                            chamados_autorizados_by_equipe as cae
-                                                                            ON
-                                                                            tc.id = cae.tipo_id
-                                                                            LEFT JOIN
-                                                                            chamados_autorizados_by_company as cac
-                                                                            ON
-                                                                            tc.id = cac.tipo_id
-                                                                            WHERE
-                                                                            tc.active = 1
-                                                                            and
-                                                                            cac.company_id = $s_empresaID
-                                                                            GROUP BY
-                                                                            tc.id
-                                                                            ORDER BY
-                                                                            tc.tipo ASC";
-                                        } else if ($permissao_abrir_chamado == 2) { {
+                                                "SELECT tc.id as idTipo,  tc.tipo as tipoChamado, tc.permite_data_entrega as 'permite_data_entrega', tc.horas_prazo_entrega as 'horas_prazo_entrega'
+                                                FROM tipos_chamados as tc
+                                                LEFT JOIN chamados_autorizados_by_equipe as cae ON tc.id = cae.tipo_id
+                                                LEFT JOIN chamados_autorizados_by_company as cac ON tc.id = cac.tipo_id
+                                                WHERE tc.active = 1 and cac.company_id = $s_empresaID
+                                                GROUP BY  tc.id 
+                                                ORDER BY tc.tipo ASC";
 
-                                                $lista_tipos_chamados = "SELECT
-                                                                    tc.id as idTipo,
-                                                                    tc.tipo as tipoChamado,
-                                                                    tc.permite_data_entrega as 'permite_data_entrega',
-                                                                    tc.horas_prazo_entrega as 'horas_prazo_entrega'
-                                                                    FROM
-                                                                    tipos_chamados as tc
-                                                                    LEFT JOIN
-                                                                    chamados_autorizados_by_equipe as cae
-                                                                    ON
-                                                                    tc.id = cae.tipo_id
-                                                                    LEFT JOIN
-                                                                    chamados_autorizados_by_company as cac
-                                                                    ON
-                                                                    tc.id = cac.tipo_id
-                                                                    WHERE
-                                                                    tc.active = 1
-                                                                    and
-                                                                    cae.equipe_id IN (SELECT 
-                                                                    ei.equipe_id as idEquipe
-                                                                    FROM 
-                                                                    equipes_integrantes as ei
-                                                                    WHERE 
-                                                                    ei.integrante_id = $id_usuario)
-                                                                    GROUP BY
-                                                                    tc.id
-                                                                    ORDER BY
-                                                                    tc.tipo ASC";
-                                            }
-                                        } else if ($permissao_abrir_chamado == 3) {
-                                            $lista_tipos_chamados = "SELECT
-                                                                            tc.id as idTipo,
-                                                                            tc.tipo as tipoChamado,
-                                                                            tc.permite_data_entrega as 'permite_data_entrega',
-                                                                            tc.horas_prazo_entrega as 'horas_prazo_entrega'
-                                                                            FROM
-                                                                            tipos_chamados as tc
-                                                                            LEFT JOIN
-                                                                            chamados_autorizados_by_equipe as cae
-                                                                            ON
-                                                                            tc.id = cae.tipo_id
-                                                                            LEFT JOIN
-                                                                            chamados_autorizados_by_company as cac
-                                                                            ON
-                                                                            tc.id = cac.tipo_id
-                                                                            WHERE
-                                                                            tc.active = 1
-                                                                            and
-                                                                            cae.equipe_id IN (SELECT 
-                                                                            ei.equipe_id as idEquipe
-                                                                            FROM 
-                                                                            equipes_integrantes as ei
-                                                                            WHERE 
-                                                                            ei.integrante_id = $id_usuario)
-                                                                            OR
-                                                                            tc.active = 1
-                                                                            and
-                                                                            cac.company_id = $s_empresaID
-                                                                            GROUP BY
-                                                                            tc.id
-                                                                            ORDER BY
-                                                                            tc.tipo ASC";
+                                        } else if ($chamados_permitidos_abertura == 2) {
+                                            $lista_tipos_chamados =
+                                                "SELECT tc.id as idTipo, tc.tipo as tipoChamado, tc.permite_data_entrega as 'permite_data_entrega', tc.horas_prazo_entrega as 'horas_prazo_entrega'
+                                                FROM tipos_chamados as tc
+                                                LEFT JOIN chamados_autorizados_by_equipe as cae ON tc.id = cae.tipo_id
+                                                LEFT JOIN chamados_autorizados_by_company as cac ON tc.id = cac.tipo_id
+                                                WHERE tc.active = 1 and cae.equipe_id IN 
+                                                (SELECT ei.equipe_id as idEquipe 
+                                                FROM equipes_integrantes as ei
+                                                WHERE ei.integrante_id = $uid)
+                                                GROUP BY tc.id
+                                                ORDER BY tc.tipo ASC";
+
+                                        } else if ($chamados_permitidos_abertura == 3) {
+                                            $lista_tipos_chamados =
+                                                "SELECT tc.id as idTipo, tc.tipo as tipoChamado, tc.permite_data_entrega as 'permite_data_entrega', tc.horas_prazo_entrega as 'horas_prazo_entrega'
+                                                FROM tipos_chamados as tc
+                                                LEFT JOIN chamados_autorizados_by_equipe as cae ON tc.id = cae.tipo_id
+                                                LEFT JOIN chamados_autorizados_by_company as cac ON tc.id = cac.tipo_id
+                                                WHERE tc.active = 1 and cae.equipe_id IN 
+                                                (SELECT ei.equipe_id as idEquipe
+                                                FROM equipes_integrantes as ei
+                                                WHERE ei.integrante_id = $uid) OR tc.active = 1 and cac.company_id = $s_empresaID
+                                                GROUP BY tc.id
+                                                ORDER BY tc.tipo ASC";
                                         }
                                         $r_lista_tipos_chamados = mysqli_query($mysqli, $lista_tipos_chamados);
 
@@ -319,7 +249,8 @@ if ($rowCount_permissions_submenu > 0) {
                                     <?php
                                     $data_minima_formatada = date('Y-m-d\TH:i', strtotime($data_minima));
                                     ?>
-                                    <input type="datetime-local" class="form-control" id="dataConclusao" name="dataConclusao" min="<?= $data_minima_formatada ?>">
+                                    <input type="datetime-local" class="form-control" id="dataConclusao"
+                                        name="dataConclusao" min="<?= $data_minima_formatada ?>">
                                 </div>
 
                                 <br><br><br>
@@ -341,12 +272,14 @@ if ($rowCount_permissions_submenu > 0) {
                                         while ($c_competencias = mysqli_fetch_assoc($r_competencias)) {
                                             $idCompetencia = $c_competencias['idCompetencia'];
                                             $competencia = $c_competencias['competencia'];
-                                        ?>
+                                            ?>
                                             <div class="col-3">
                                                 <div class="form-check">
                                                     <input type="hidden" name="competencia_ids[]" value="<?= $idCompetencia ?>">
 
-                                                    <input class="form-check-input" type="checkbox" name="competencia<?= $idCompetencia ?>" id="competencia<?= $idCompetencia ?>">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        name="competencia<?= $idCompetencia ?>"
+                                                        id="competencia<?= $idCompetencia ?>">
                                                     <label class="form-check-label" for="competencia<?= $idCompetencia ?>">
                                                         <?= $competencia ?>
                                                     </label>
@@ -360,12 +293,14 @@ if ($rowCount_permissions_submenu > 0) {
 
                                 <div class="col-6">
                                     <label for="assuntoChamado" class="form-label">Assunto*</label>
-                                    <input type="text" class="form-control" id="assuntoChamado" name="assuntoChamado" required>
+                                    <input type="text" class="form-control" id="assuntoChamado" name="assuntoChamado"
+                                        required>
                                 </div>
 
                                 <div class="col-12">
                                     <label for="relatoChamado" class="form-label">Descreva a situação*</label>
-                                    <textarea rows="8" id="relatoChamado" name="relatoChamado" class="form-control" maxlength="1000" required></textarea>
+                                    <textarea rows="8" id="relatoChamado" name="relatoChamado" class="form-control"
+                                        maxlength="1000" required></textarea>
 
                                 </div>
 
@@ -381,9 +316,11 @@ if ($rowCount_permissions_submenu > 0) {
                                         </div>
                                     </div>
 
-                                    <button id="btnAbrirChamado" class="btn btn-sm btn-danger" type="submit">Abrir Chamado</button>
+                                    <button id="btnAbrirChamado" class="btn btn-sm btn-danger" type="submit">Abrir
+                                        Chamado</button>
 
-                                    <a href="/servicedesk/consultar_chamados/index.php"> <input id="btnVoltar" type="button" value="Voltar" class="btn btn-sm btn-secondary"></input></a>
+                                    <a href="/servicedesk/consultar_chamados/index.php"> <input id="btnVoltar" type="button"
+                                            value="Voltar" class="btn btn-sm btn-secondary"></input></a>
                                 </div>
 
                                 <div class="col-4"></div>
@@ -395,7 +332,7 @@ if ($rowCount_permissions_submenu > 0) {
         </section>
     </main><!-- End #main -->
 
-<?php
+    <?php
     require "abrir_chamado_admin.php";
 } else {
     require "../../acesso_negado.php";

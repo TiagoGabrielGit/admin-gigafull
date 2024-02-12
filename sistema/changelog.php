@@ -18,7 +18,7 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading12-8">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse12-8" aria-expanded="false" aria-controls="collapse12-8">
-                    Versão 12.8 - XX/01/2024
+                    Versão 12.8 - 12/02/2024
                   </button>
                 </h2>
                 <div id="collapse12-8" class="accordion-collapse collapse" aria-labelledby="heading12-8" data-bs-parent="#accordionExample">
@@ -61,7 +61,7 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading12-7">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse12-7" aria-expanded="false" aria-controls="collapse12-7">
-                    Versão 12.7 - XX/01/2024
+                    Versão 12.7 - 10/02/2024
                   </button>
                 </h2>
                 <div id="collapse12-7" class="accordion-collapse collapse" aria-labelledby="heading12-7" data-bs-parent="#accordionExample">

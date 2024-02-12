@@ -290,6 +290,22 @@ if ($chamado['data_prevista_conclusao'] === null) {
                                             <select class="form-select" id="statusChamado" name="statusChamado">
                                                 <option selected value="2">Andamento</option>
                                                 <?php
+
+$sql_status_chamados =
+"SELECT
+cs.id as id_status,
+cs.status_chamado as status_chamado
+FROM
+chamados_status as cs
+WHERE
+cs.active = 1
+and
+cs.id != 1
+and
+cs.id != 2
+ORDER BY
+cs.status_chamado ASC
+";
                                                 $resultado = mysqli_query($mysqli, $sql_status_chamados);
                                                 while ($status = mysqli_fetch_object($resultado)) :
                                                     echo "<option value='$status->id_status'> $status->status_chamado</option>";
@@ -338,6 +354,34 @@ if ($chamado['data_prevista_conclusao'] === null) {
 
                 <div class="accordion" id="accordionFlushExample">
                     <?php
+
+
+$sql_relatos =
+    "SELECT
+cr.id as id_relato,
+cr.chamado_id as id_chamado,
+cr.private as privacidade,
+p.nome as relatante,
+cr.relato as relato,
+date_format(cr.relato_hora_inicial,'%H:%i:%s %d/%m/%Y') as inicio,
+date_format(cr.relato_hora_final,'%H:%i:%s %d/%m/%Y') as final,
+cr.seconds_worked as seconds_worked
+FROM
+chamado_relato as cr
+LEFT JOIN
+usuarios as u
+ON
+u.id = cr.relator_id
+LEFT JOIN
+pessoas as p
+ON
+p.id = u.pessoa_id
+WHERE
+cr.chamado_id = '$id_chamado'
+ORDER BY
+cr.id DESC
+";
+
                     $resultado_relatos = mysqli_query($mysqli, $sql_relatos)  or die("Erro ao retornar dados");
                     $cont = 1;
                     while ($campos = $resultado_relatos->fetch_array()) {

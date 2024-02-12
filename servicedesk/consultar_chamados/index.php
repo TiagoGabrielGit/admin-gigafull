@@ -1,7 +1,6 @@
 <?php
 require "../../includes/menu.php";
 require "../../conexoes/conexao_pdo.php";
-require "sql1.php";
 
 $submenu_id = "49";
 $uid = $_SESSION['id'];
@@ -24,7 +23,8 @@ if ($rowCount_permissions_submenu > 0) {
         u.pessoa_id as pessoaID,
         u.tipo_usuario as tipoUsuario,
         u.empresa_id as empresa_id,
-        u.permissao_chamado as permissao_abrir_chamado,
+        u.permissao_abrir_chamado as permissao_abrir_chamado,
+        u.permissao_chamado as permissao_chamado,
         u.permissao_visualiza_chamado as permissao_visualiza_chamado,
         e.atributoEmpresaPropria as atributoEmpresaPropria
         FROM usuarios as u
@@ -37,15 +37,13 @@ if ($rowCount_permissions_submenu > 0) {
 
     $user_info = $user_info_statement->fetch(PDO::FETCH_ASSOC);
 
-    $permissao_abrir_chamado = $user_info['permissao_abrir_chamado'];
+    $permissao_abrir_chamado_outras_empresas = $user_info['permissao_abrir_chamado'];
+    $permissao_tipos_chamados = $user_info['permissao_chamado'];
     $permissao_visualiza_chamado = $user_info['permissao_visualiza_chamado'];
     $empresa_usuario = $user_info['empresa_id'];
     $atributoEmpresaPropria = $user_info['atributoEmpresaPropria'];
     $empresa_id = $_SESSION['empresa_id'];
     $equipe_id = $_SESSION['equipe_id'];
-    $permissao_visualiza_chamado = $_SESSION['permissao_visualiza_chamado'];
-
-
 
     if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
@@ -70,10 +68,6 @@ if ($rowCount_permissions_submenu > 0) {
         } else {
             $atendentePesquisa = "%";
         }
-
-
-
-
 
         if ($atendentePesquisa === '0') {
             $whereAtendente = "AND ch.atendente_id = '0'";
@@ -149,6 +143,7 @@ if ($rowCount_permissions_submenu > 0) {
         $idChamado = "%";
         $assuntoChamado = "%";
         $solicitante_id = "%";
+        $relatoInicialPesquisa = "%";
     }
 ?>
 
@@ -205,8 +200,40 @@ if ($rowCount_permissions_submenu > 0) {
                     <div class="card">
                         <div class="card-body">
                             <h1 class="card-title" style="font-size: 28px;">FILTROS</h1>
+
                             <form method="POST" action="#" class="row g-3">
                                 <?php
+
+                                    if ($permissao_abrir_chamado_outras_empresas == 1) {
+                                        $sql_lista_empresas =
+                                            "SELECT
+                                        emp.id as id_empresa,
+                                        emp.fantasia as fantasia_empresa
+                                        FROM
+                                        empresas as emp
+                                        WHERE
+                                        atributoCliente = '1'
+                                        or
+                                        atributoEmpresaPropria = '1'
+                                        ORDER BY
+                                        emp.fantasia ASC
+                                        ";
+                                    } else if ($permissao_abrir_chamado_outras_empresas == 0) {
+                                        $sql_lista_empresas =
+                                            "SELECT
+                                        emp.id as id_empresa,
+                                        emp.fantasia as fantasia_empresa
+                                        FROM empresas as emp
+                                        WHERE atributoCliente = '1'
+                                        and emp.id = $empresa_usuario
+                                        or atributoEmpresaPropria = '1'
+                                        and emp.id = $empresa_usuario
+                                        ORDER BY emp.fantasia ASC
+                                        ";
+                                    }
+
+
+
                                 if ($atributoEmpresaPropria == 1) { ?>
                                     <div class="col-lg-12 row">
                                         <div class="col-4">
@@ -237,6 +264,20 @@ if ($rowCount_permissions_submenu > 0) {
                                             <select id="solicitantePesquisa" name="solicitantePesquisa" class="form-select">
                                                 <option value="%">Todos</option>
                                                 <?php
+
+                                                    $sql_lista_solicitantes =
+                                                        "SELECT
+                                                        u.id as solicitante_id,
+                                                        p.nome as solicitante
+                                                    FROM chamados as ch
+                                                    LEFT JOIN usuarios as u ON ch.solicitante_id = u.id
+                                                    LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                                                    WHERE p.nome IS NOT NULL
+                                                    GROUP BY ch.solicitante_id
+                                                    order by p.nome ASC
+                                                    ";
+
+
                                                 $resultado = mysqli_query($mysqli, $sql_lista_solicitantes);
                                                 while ($solicitante = mysqli_fetch_object($resultado)) {
                                                     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -257,6 +298,17 @@ if ($rowCount_permissions_submenu > 0) {
                                             <select id="atendentePesquisa" name="atendentePesquisa" class="form-select">
                                                 <option value="%">Todos</option>
                                                 <?php
+                                                            $sql_lista_atendentes =
+                                                            "SELECT
+                                                            CASE WHEN p.nome IS NULL THEN '0'             ELSE u.id END AS 'id',
+                                                            CASE WHEN p.nome IS NULL THEN 'Sem Atendente' ELSE p.nome END AS 'nome'
+                                                            FROM chamados as ch
+                                                            LEFT JOIN usuarios as u ON ch.atendente_id = u.id
+                                                            LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                                                            GROUP BY ch.atendente_id
+                                                            order by p.nome ASC
+                                                            ";
+
                                                 $resultado = mysqli_query($mysqli, $sql_lista_atendentes);
                                                 while ($atendente = mysqli_fetch_object($resultado)) {
                                                     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -296,6 +348,18 @@ if ($rowCount_permissions_submenu > 0) {
 
                                             <option selected value="LIKE '%'">Todos</option>
                                             <?php
+
+                                            $sql_status_chamados =
+                                                "SELECT
+                                            cs.id as 'id',
+                                            cs.status_chamado as 'status'
+                                            FROM
+                                            chamados_status as cs
+                                            WHERE
+                                            cs.active = 1
+                                            order by
+                                            cs.status_chamado ASC";
+
                                             $resultado = mysqli_query($mysqli, $sql_status_chamados);
                                             while ($status = mysqli_fetch_object($resultado)) :
                                                 echo "<option value='LIKE $status->id'> $status->status</option>";
@@ -426,8 +490,7 @@ if ($rowCount_permissions_submenu > 0) {
                                         AND ch.assuntoChamado LIKE '$assuntoChamado'
                                         AND ch.relato_inicial LIKE '$relatoInicialPesquisa'
                                         AND ch.solicitante_id LIKE '$solicitante_id'
-                                        ORDER BY
-                                        $ordenarChamadosSelecionado";
+                                        ORDER BY $ordenarChamadosSelecionado";
 
                                     $stmt = $pdo->prepare($chamados_query);
                                     $stmt->execute();
@@ -473,8 +536,7 @@ if ($rowCount_permissions_submenu > 0) {
                                         and ch.assuntoChamado LIKE '$assuntoChamado'
                                         AND ch.relato_inicial LIKE '$relatoInicialPesquisa'
                                         AND ch.solicitante_id LIKE '$solicitante_id'
-
-                                        ORDER BY$ordenarChamadosSelecionado";
+                                        ORDER BY $ordenarChamadosSelecionado";
 
                                     $stmt = $pdo->prepare($chamados_query);
                                     $stmt->execute(array('equipe_id' => $equipe_id));

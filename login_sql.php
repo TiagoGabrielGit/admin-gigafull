@@ -17,6 +17,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       u.empresa_id as empresa_id,
       u.permissao_visualiza_chamado as 'permissao_visualiza_chamado',
       u.permissao_abrir_chamado as 'permissao_abrir_chamado',
+      u.permissao_chamado as 'permissao_chamado',
       u.permissao_apropriar_chamado as 'permissao_apropriar_chamado',
       u.permissao_encaminhar_chamado as 'permissao_encaminhar_chamado',
       u.permissao_interessados_chamados as 'permissao_interessados_chamados',
@@ -68,6 +69,9 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       $_SESSION['permissao_selecionar_atendente'] = $usuario['permissao_selecionar_atendente'];
       $_SESSION['permissao_privacidade_credenciais'] = $usuario['permissao_privacidade_credenciais'];
       $_SESSION['permissao_configuracoes_chamados'] = $usuario['permissao_configuracoes_chamados'];
+      $_SESSION['chamados_permitidos_abertura'] = $usuario['permissao_chamado'];
+
+      
       $empresaID = $_SESSION['empresa_id'];
       $_SESSION['equipe_id'] = $usuario['equipe_id'];
 

@@ -149,7 +149,7 @@ require "validaRotina.php";
             <li class="nav-heading">Service Desk</li>
         <?php } ?>
 
-        <?php if ($c_comunicacao['c'] == 1) { ?>
+        <?php if ($c_nav_chamados['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#chamados-nav" data-bs-toggle="collapse" href="#">
                     <i class="bi bi-layout-text-window-reverse"></i><span>Chamados</span><i class="bi bi-chevron-down ms-auto"></i>
