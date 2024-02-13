@@ -204,9 +204,9 @@ if ($rowCount_permissions_submenu > 0) {
                             <form method="POST" action="#" class="row g-3">
                                 <?php
 
-                                    if ($permissao_abrir_chamado_outras_empresas == 1) {
-                                        $sql_lista_empresas =
-                                            "SELECT
+                                if ($permissao_abrir_chamado_outras_empresas == 1) {
+                                    $sql_lista_empresas =
+                                        "SELECT
                                         emp.id as id_empresa,
                                         emp.fantasia as fantasia_empresa
                                         FROM
@@ -218,9 +218,9 @@ if ($rowCount_permissions_submenu > 0) {
                                         ORDER BY
                                         emp.fantasia ASC
                                         ";
-                                    } else if ($permissao_abrir_chamado_outras_empresas == 0) {
-                                        $sql_lista_empresas =
-                                            "SELECT
+                                } else if ($permissao_abrir_chamado_outras_empresas == 0) {
+                                    $sql_lista_empresas =
+                                        "SELECT
                                         emp.id as id_empresa,
                                         emp.fantasia as fantasia_empresa
                                         FROM empresas as emp
@@ -230,7 +230,7 @@ if ($rowCount_permissions_submenu > 0) {
                                         and emp.id = $empresa_usuario
                                         ORDER BY emp.fantasia ASC
                                         ";
-                                    }
+                                }
 
 
 
@@ -265,8 +265,8 @@ if ($rowCount_permissions_submenu > 0) {
                                                 <option value="%">Todos</option>
                                                 <?php
 
-                                                    $sql_lista_solicitantes =
-                                                        "SELECT
+                                                $sql_lista_solicitantes =
+                                                    "SELECT
                                                         u.id as solicitante_id,
                                                         p.nome as solicitante
                                                     FROM chamados as ch
@@ -298,8 +298,8 @@ if ($rowCount_permissions_submenu > 0) {
                                             <select id="atendentePesquisa" name="atendentePesquisa" class="form-select">
                                                 <option value="%">Todos</option>
                                                 <?php
-                                                            $sql_lista_atendentes =
-                                                            "SELECT
+                                                $sql_lista_atendentes =
+                                                    "SELECT
                                                             CASE WHEN p.nome IS NULL THEN '0'             ELSE u.id END AS 'id',
                                                             CASE WHEN p.nome IS NULL THEN 'Sem Atendente' ELSE p.nome END AS 'nome'
                                                             FROM chamados as ch
@@ -380,13 +380,18 @@ if ($rowCount_permissions_submenu > 0) {
                                         </select>
                                     </div>
 
-                                    <div class="col-3">
-                                        <label for="ordenarChamados" class="form-label">Ordenar</label>
-                                        <select name="ordenarChamados" id="ordenarChamados" class="form-select">
-                                            <option value="1" <?php echo ($ordenarChamadosSelecionado == 'chamado') ? 'selected' : ''; ?>>Por Chamados</option>
-                                            <option value="2" <?php echo ($ordenarChamadosSelecionado == 'prioridade') ? 'selected' : ''; ?>>Por Prioridade</option>
-                                        </select>
-                                    </div>
+                                    <?php
+                                    if ($atributoEmpresaPropria == 1) {
+                                    ?>
+                                        <div class="col-3">
+                                            <label for="ordenarChamados" class="form-label">Ordenar</label>
+                                            <select name="ordenarChamados" id="ordenarChamados" class="form-select">
+                                                <option value="1" <?php echo ($ordenarChamadosSelecionado == 'chamado') ? 'selected' : ''; ?>>Por Chamados</option>
+                                                <option value="2" <?php echo ($ordenarChamadosSelecionado == 'prioridade') ? 'selected' : ''; ?>>Por Prioridade</option>
+                                            </select>
+                                        </div>
+
+                                    <?php } ?>
                                 </div>
 
                                 <div class="col-lg-12 row">

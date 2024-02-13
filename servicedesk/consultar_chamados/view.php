@@ -55,6 +55,7 @@ c.data_prevista_conclusao as 'data_prevista_conclusao',
 c.melhoria_recomendada as 'melhoria_recomendada',
 tc.tipo as tipo,
 tc.id as tipo_id,
+f.status as afericao_status,
 cs.status_chamado as status,
 e.fantasia as empresa,
 e.id as idEmpresa,
@@ -71,6 +72,7 @@ LEFT JOIN contract_service as cser ON cser.id = c.service_id
 LEFT JOIN service as s ON s.id = cser.service_id
 LEFT JOIN contract_iten_service as cis ON cis.id = c.iten_service_id
 LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
+LEFT JOIN afericao as f ON f.chamado_id = c.id
 WHERE c.id = '$id_chamado'";
 
 

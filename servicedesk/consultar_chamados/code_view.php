@@ -102,7 +102,7 @@ if ($chamado['data_prevista_conclusao'] === null) {
                                 $seconds_total = mysqli_query($mysqli, $calc_tempo_total);
                                 $res_second = $seconds_total->fetch_array();
                                 ?>
-
+                                <b>Tipo Chamado:</b> <?= $chamado['tipo']; ?> <br>
                                 <b>Empresa:</b> <?= $chamado['empresa']; ?> <br>
                                 <b>Solicitante:</b> <?= $solicitante['solicitante']; ?><br>
                                 <b>Atendente:</b> <?= $atendente ?><br>
@@ -213,9 +213,12 @@ if ($chamado['data_prevista_conclusao'] === null) {
 
                                     <button title="Anexos" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalAnexos"><i class="bi bi-paperclip"></i></button>
 
-
                                     <?php if ($chamado['afericao'] == 1 && $atributoEmpresaPropria == 1) { ?>
                                         <button title="Aferição" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalAfericao"><i class="bi bi-diagram-3"></i></button>
+                                    <?php } ?>
+
+                                    <?php if ($chamado['status'] == "Fechado") { ?>
+                                        <button title="Reabrir Chamado" type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalReabrirChamado"><i class="bi-arrow-repeat"></i></button>
                                     <?php } ?>
                                 </div>
                             </div>
@@ -287,27 +290,31 @@ if ($chamado['data_prevista_conclusao'] === null) {
                                         <?php if (isset($chamado['prioridade'])) { ?>
                                             <input hidden readonly id="chamadoPrioridade" name="chamadoPrioridade" value="<?= $chamado['prioridade']; ?>"></input>
                                         <?php } ?>
+
+                                        <style>
+                                            .info-icon {
+                                                color: red;
+                                            }
+                                        </style>
+
                                         <div class="col-4">
-                                            <label for="statusChamado" class="form-label">Status*</label>
+                                            <label for="statusChamado" class="form-label">Status*
+                                                <?php
+                                                if ($chamado['afericao_status'] == 1) { ?>
+                                                    <span class="bi bi-info-circle info-icon" data-bs-toggle="tooltip" title="Não é possivel fechar o chamado se tiver uma aferição pendente."></span>
+                                                <?php } ?>
+                                            </label>
                                             <select class="form-select" id="statusChamado" name="statusChamado">
                                                 <option selected value="2">Andamento</option>
                                                 <?php
-
+                                                if ($chamado['afericao_status'] != 1 || $chamado['afericao_status'] === NULL) {
+                                                    echo '<option value="3">Fechado</option>';
+                                                }
                                                 $sql_status_chamados =
-                                                    "SELECT
-cs.id as id_status,
-cs.status_chamado as status_chamado
-FROM
-chamados_status as cs
-WHERE
-cs.active = 1
-and
-cs.id != 1
-and
-cs.id != 2
-ORDER BY
-cs.status_chamado ASC
-";
+                                                    "SELECT cs.id as id_status, cs.status_chamado as status_chamado
+                                                    FROM chamados_status as cs
+                                                    WHERE cs.active = 1 and cs.id != 1 and cs.id != 2 and cs.id != 3
+                                                    ORDER BY cs.status_chamado ASC";
                                                 $resultado = mysqli_query($mysqli, $sql_status_chamados);
                                                 while ($status = mysqli_fetch_object($resultado)) :
                                                     echo "<option value='$status->id_status'> $status->status_chamado</option>";
@@ -1098,6 +1105,37 @@ try {
             <div class="modal-footer">
                 <a href="/rede/ctos/visualizar.php?id=<?= $cto_id ?>" class="btn btn-sm btn-warning" target="_blank">Ir para CTO</a>
 
+                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalReabrirChamado" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><b>REABERTURA DE CHAMADO</b></h5>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+
+            <div class="modal-body">
+                <div class="col-12">
+                    <form method="POST" action="processa/reabertura_chamado.php">
+                        <input id="reabertura_idChamado" name="reabertura_idChamado" value="<?= $id_chamado ?>" hidden readonly></input>
+                        <div class="col-12">
+                            <textarea class="form-control" required id="text_reabertura" name="text_reabertura" rows="6" placeholder="Digite um relato de reabertura"></textarea>
+                        </div>
+                        <br>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-sm btn-danger">Reabrir Chamado</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fechar</button>
             </div>
         </div>
