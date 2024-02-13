@@ -86,7 +86,7 @@ if ($rowCount_permissions_submenu > 0) {
                                                 FROM tipos_chamados as tc
                                                 LEFT JOIN chamados_autorizados_by_equipe as cae ON tc.id = cae.tipo_id
                                                 LEFT JOIN chamados_autorizados_by_company as cac ON tc.id = cac.tipo_id
-                                                WHERE tc.active = 1 and cac.company_id = $s_empresaID
+                                                WHERE tc.afericao != '1' and tc.active = 1 and cac.company_id = $s_empresaID
                                                 GROUP BY  tc.id 
                                                 ORDER BY tc.tipo ASC";
 
@@ -96,7 +96,7 @@ if ($rowCount_permissions_submenu > 0) {
                                                 FROM tipos_chamados as tc
                                                 LEFT JOIN chamados_autorizados_by_equipe as cae ON tc.id = cae.tipo_id
                                                 LEFT JOIN chamados_autorizados_by_company as cac ON tc.id = cac.tipo_id
-                                                WHERE tc.active = 1 and cae.equipe_id IN 
+                                                WHERE tc.afericao != '1' and tc.active = 1 and cae.equipe_id IN 
                                                 (SELECT ei.equipe_id as idEquipe 
                                                 FROM equipes_integrantes as ei
                                                 WHERE ei.integrante_id = $uid)
@@ -109,7 +109,7 @@ if ($rowCount_permissions_submenu > 0) {
                                                 FROM tipos_chamados as tc
                                                 LEFT JOIN chamados_autorizados_by_equipe as cae ON tc.id = cae.tipo_id
                                                 LEFT JOIN chamados_autorizados_by_company as cac ON tc.id = cac.tipo_id
-                                                WHERE tc.active = 1 and cae.equipe_id IN 
+                                                WHERE tc.afericao != '1' and  tc.active = 1 and cae.equipe_id IN 
                                                 (SELECT ei.equipe_id as idEquipe
                                                 FROM equipes_integrantes as ei
                                                 WHERE ei.integrante_id = $uid) OR tc.active = 1 and cac.company_id = $s_empresaID

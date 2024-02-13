@@ -213,8 +213,10 @@ if ($chamado['data_prevista_conclusao'] === null) {
 
                                     <button title="Anexos" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalAnexos"><i class="bi bi-paperclip"></i></button>
 
-                                    <button title="Aferição" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalAfericao"><i class="bi bi-diagram-3"></i></button>
 
+                                    <?php if ($chamado['afericao'] == 1 && $atributoEmpresaPropria == 1) { ?>
+                                        <button title="Aferição" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalAfericao"><i class="bi bi-diagram-3"></i></button>
+                                    <?php } ?>
                                 </div>
                             </div>
                         </div>
@@ -291,8 +293,8 @@ if ($chamado['data_prevista_conclusao'] === null) {
                                                 <option selected value="2">Andamento</option>
                                                 <?php
 
-$sql_status_chamados =
-"SELECT
+                                                $sql_status_chamados =
+                                                    "SELECT
 cs.id as id_status,
 cs.status_chamado as status_chamado
 FROM
@@ -356,8 +358,8 @@ cs.status_chamado ASC
                     <?php
 
 
-$sql_relatos =
-    "SELECT
+                    $sql_relatos =
+                        "SELECT
 cr.id as id_relato,
 cr.chamado_id as id_chamado,
 cr.private as privacidade,
@@ -1094,7 +1096,7 @@ try {
 
             </div>
             <div class="modal-footer">
-            <a href="/rede/ctos/visualizar.php?id=<?= $cto_id ?>" class="btn btn-sm btn-warning" target="_blank">Ir para CTO</a>
+                <a href="/rede/ctos/visualizar.php?id=<?= $cto_id ?>" class="btn btn-sm btn-warning" target="_blank">Ir para CTO</a>
 
                 <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fechar</button>
             </div>
