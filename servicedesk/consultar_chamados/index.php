@@ -613,7 +613,14 @@ if ($rowCount_permissions_submenu > 0) {
                                     }
 
                                     $currentDate = strtotime(date("Y-m-d H:i:s")); // Data atual em formato timestamp
-                                    $dataPrevistaConclusao = strtotime($campos['data_prevista_conclusao']); // Data prevista em formato timestamp
+
+                                    if ($campos['data_prevista_conclusao'] !== null) {
+                                        $dataPrevistaConclusao = strtotime($campos['data_prevista_conclusao']); // Data prevista em formato timestamp
+                                        // Restante do seu código que utiliza $timestamp
+                                    } else {
+                                        // Lógica para lidar com o caso em que $datetime é nulo
+                                    }
+
 
                                     if ($campos['data_prevista_conclusao'] === null) {
                                         $relogioColor = "green";

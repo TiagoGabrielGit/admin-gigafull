@@ -31,9 +31,10 @@ require "../includes/menu.php";
                     # Criado a coluna notify_telegram na tabela usuarios;<br>
                     # Criado a coluna chatIdTelegram na tabela usuarios;<br>
                     # Criado a tabela notificacao_telegram;<br>
-                    
+
                     <br><strong>Backlog</strong><br>
-                    # Integração com Telegram para alertas de chamados;<br>
+
+                    # Integração com Telegram para alertas de chamados do mobile e control;<br>
                     # Mascara de chamados por empresas;<br>
                     # Puxar mascara automatico na abertura de chamado via smartcontrol;<br>
                     # Puxar lista de chamados autorizados para usuario no smartcontrol;<br>

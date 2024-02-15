@@ -24,8 +24,12 @@ if ($chamado['in_execution'] == 1) {
 }
 
 $currentDate = strtotime(date("Y-m-d H:i:s")); // Data atual em formato timestamp
-$dataPrevistaConclusao = strtotime($chamado['data_prevista_conclusao']); // Data prevista em formato timestamp
-
+if ($chamado['data_prevista_conclusao'] !== null) {
+    $dataPrevistaConclusao = strtotime($chamado['data_prevista_conclusao']); // Data prevista em formato timestamp
+    // Restante do seu código que utiliza $timestamp
+} else {
+    // Lógica para lidar com o caso em que $datetime é nulo
+}    
 
 if ($chamado['data_prevista_conclusao'] === null) {
 } elseif ($dataPrevistaConclusao < $currentDate) {
