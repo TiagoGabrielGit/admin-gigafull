@@ -30,7 +30,7 @@ if (isset($_SESSION['id'])) {
           left join authentication_access_points  acp on acp.id = autcont.authentication_access_point_id
           left join authentication_splitters asp  on autport.authentication_splitter_id = asp.id
           left join network_boxes nb on nb.id = asp.network_box_id
-          where nb.integration_code like :integration_code
+          where nb.integration_code like :integration_code and nb.deleted = false
           ORDER BY autport.port ASC";
 
         // Executa a consulta de ocupação com o integration_code específico

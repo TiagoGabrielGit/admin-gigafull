@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace TelegramBot;
@@ -32,7 +33,9 @@ class CrashPad
 
             if (!defined('DEBUG_MODE')) {
                 throw new \RuntimeException(
-                    'Something went wrong, Unfortunately, we can not handle this error.', 0, $throwable
+                    'Something went wrong, Unfortunately, we can not handle this error.',
+                    0,
+                    $throwable
                 );
             }
 
@@ -192,5 +195,4 @@ class CrashPad
 
         return null;
     }
-
 }

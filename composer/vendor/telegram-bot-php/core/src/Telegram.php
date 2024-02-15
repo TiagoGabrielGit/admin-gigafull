@@ -203,7 +203,6 @@ class Telegram
             }
 
             $data['user'] = urldecode($data['user']);
-
         } else {
             $data = json_decode($body, true);
 
@@ -229,5 +228,4 @@ class Telegram
     {
         return self::$api_key !== null ? (self::validateToken(self::$api_key) ? self::$api_key : false) : false;
     }
-
 }

@@ -28,11 +28,11 @@ if (isset($_SESSION['id'])) { //1
                 $idServico = $_POST['selectService'];
                 $sql_qtde_itens =
                     "SELECT count(cis.id) as qtde
-            FROM contract_iten_service as cis 
-            LEFT JOIN contract_service as cs ON cis.contract_service_id = cs.id
-            LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
-            WHERE cis.active = 1 and cs.active = 1 and cs.id = $idServico
-            ORDER BY ise.item ASC";
+                    FROM contract_iten_service as cis 
+                    LEFT JOIN contract_service as cs ON cis.contract_service_id = cs.id
+                    LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
+                    WHERE cis.active = 1 and cs.active = 1 and cs.id = $idServico
+                    ORDER BY ise.item ASC";
                 $r_itens = $mysqli->query($sql_qtde_itens);
                 $row_itens = $r_itens->fetch_assoc();
 
@@ -61,7 +61,7 @@ if (isset($_SESSION['id'])) { //1
                         $cont_insert = false;
 
                         $sql = "INSERT INTO chamados (solicitante_equipe_id, atendente_id, data_prevista_conclusao, assuntoChamado, relato_inicial, tipochamado_id, solicitante_id, empresa_id, status_id, data_abertura, in_execution, in_execution_atd_id, seconds_worked, service_id, iten_service_id)
-            VALUES (:solicitante_equipe_id, :atendente_id, :dataConclusao, :assuntoChamado, :relato_inicial, :tipochamado_id, :solicitante_id, :empresa_id, '1', NOW(), '0', '0', '0', :service_id, :iten_service_id)";
+                        VALUES (:solicitante_equipe_id, :atendente_id, :dataConclusao, :assuntoChamado, :relato_inicial, :tipochamado_id, :solicitante_id, :empresa_id, '1', NOW(), '0', '0', '0', :service_id, :iten_service_id)";
                         $stmt1 = $pdo->prepare($sql);
                         $stmt1->bindParam(':solicitante_equipe_id', $equipe_id);
                         $stmt1->bindParam(':assuntoChamado', $assuntoChamado);
@@ -114,27 +114,34 @@ if (isset($_SESSION['id'])) { //1
                                 $protocol = 'http';
                             }
                             $documentRoot = $_SERVER['DOCUMENT_ROOT'];
-                            $url = $protocol . '://' . $_SERVER['HTTP_HOST'] . '/notificacao/mail/abertura_chamado.php';
-
                             $data = array(
                                 'id_chamado' => $id_chamado
                             );
 
+                            $urlMail = $protocol . '://' . $_SERVER['HTTP_HOST'] . '/notificacao/mail/abertura_chamado.php';
+                            $urlTelegram = $protocol . '://' . $_SERVER['HTTP_HOST'] . '/notificacao/telegram/abertura_chamado.php';
+
                             // Inicializa o cURL
-                            $curl = curl_init($url);
+                            $curlMail = curl_init($urlMail);
+                            $curlTelegram = curl_init($urlTelegram);
 
                             // Configura as opções do cURL
-                            curl_setopt($curl, CURLOPT_POST, true);
-                            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                            curl_setopt($curlMail, CURLOPT_POST, true);
+                            curl_setopt($curlMail, CURLOPT_POSTFIELDS, $data);
+                            curl_setopt($curlMail, CURLOPT_RETURNTRANSFER, true);
+                            // Configura as opções do cURL
+                            curl_setopt($curlTelegram, CURLOPT_POST, true);
+                            curl_setopt($curlTelegram, CURLOPT_POSTFIELDS, $data);
+                            curl_setopt($curlTelegram, CURLOPT_RETURNTRANSFER, true);
 
                             // Executa a requisição cURL
-                            $response = curl_exec($curl);
+                            $response_mail = curl_exec($curlMail);
+                            $response_telegram = curl_exec($curlTelegram);
 
                             // Verifica se ocorreu algum erro durante a requisição
-                            if ($response === false) {
-                                //header("Location: /servicedesk/consultar_chamados/view.php?id=$id_chamado");
-                                //exit; // Encerra a execução do script após o redirecionamento
+                            if ($response_mail === false || $response_telegram === false) {
+                                header("Location: /servicedesk/consultar_chamados/view.php?id=$id_chamado");
+                                exit; // Encerra a execução do script após o redirecionamento
                             } else {
                                 header("Location: /servicedesk/consultar_chamados/view.php?id=$id_chamado");
                                 exit; // Encerra a execução do script após o redirecionamento
@@ -218,25 +225,32 @@ if (isset($_SESSION['id'])) { //1
                                 $protocol = 'http';
                             }
                             $documentRoot = $_SERVER['DOCUMENT_ROOT'];
-                            $url = $protocol . '://' . $_SERVER['HTTP_HOST'] . '/notificacao/mail/abertura_chamado.php';
-
                             $data = array(
                                 'id_chamado' => $id_chamado
                             );
 
+                            $urlMail = $protocol . '://' . $_SERVER['HTTP_HOST'] . '/notificacao/mail/abertura_chamado.php';
+                            $urlTelegram = $protocol . '://' . $_SERVER['HTTP_HOST'] . '/notificacao/telegram/abertura_chamado.php';
+
                             // Inicializa o cURL
-                            $curl = curl_init($url);
+                            $curlMail = curl_init($urlMail);
+                            $curlTelegram = curl_init($urlTelegram);
 
                             // Configura as opções do cURL
-                            curl_setopt($curl, CURLOPT_POST, true);
-                            curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                            curl_setopt($curlMail, CURLOPT_POST, true);
+                            curl_setopt($curlMail, CURLOPT_POSTFIELDS, $data);
+                            curl_setopt($curlMail, CURLOPT_RETURNTRANSFER, true);
+                            // Configura as opções do cURL
+                            curl_setopt($curlTelegram, CURLOPT_POST, true);
+                            curl_setopt($curlTelegram, CURLOPT_POSTFIELDS, $data);
+                            curl_setopt($curlTelegram, CURLOPT_RETURNTRANSFER, true);
 
                             // Executa a requisição cURL
-                            $response = curl_exec($curl);
+                            $response_mail = curl_exec($curlMail);
+                            $response_telegram = curl_exec($curlTelegram);
 
                             // Verifica se ocorreu algum erro durante a requisição
-                            if ($response === false) {
+                            if ($response_mail === false || $response_telegram === false) {
                                 header("Location: /servicedesk/consultar_chamados/view.php?id=$id_chamado");
                                 exit; // Encerra a execução do script após o redirecionamento
                             } else {

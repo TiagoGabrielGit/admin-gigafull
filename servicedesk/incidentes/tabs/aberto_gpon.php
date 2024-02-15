@@ -66,9 +66,9 @@
                             <?php
                             $ctos_afetadas =
                                 "SELECT gc.title
-    FROM incidentes_ctos as ic
-    LEFT JOIN gpon_ctos as gc ON gc.id = ic.cto_id
-    WHERE ic.incidente_id = :incidente_id";
+                                FROM incidentes_ctos as ic
+                                LEFT JOIN gpon_ctos as gc ON gc.id = ic.cto_id
+                                WHERE ic.incidente_id = :incidente_id";
                             $sql_ctos_afetadas = $pdo->prepare($ctos_afetadas);
                             $sql_ctos_afetadas->bindParam(':incidente_id', $id_incidente, PDO::PARAM_INT);
                             $sql_ctos_afetadas->execute();

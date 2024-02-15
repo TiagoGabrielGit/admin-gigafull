@@ -1,5 +1,6 @@
 <?php
 require "../../includes/menu.php";
+require "../../includes/remove_setas_number.php";
 
 $usuarioID = $_GET['id'];
 
@@ -9,6 +10,12 @@ CASE
     WHEN u.notify_email = 1 THEN 'Ativado'
     WHEN u.notify_email = 0 THEN 'Inativado'
 END AS notify_email,
+CASE
+    WHEN u.notify_telegram = 1 THEN 'Ativado'
+    WHEN u.notify_telegram = 0 THEN 'Inativado'
+    WHEN u.notify_telegram IS NULL THEN 'Inativado'
+END AS notify_telegram,
+u.chatIdTelegram as chatIdTelegram,
 u.tipo_usuario as tipoUsuario, p.nome as nome, p.email as email, pf.perfil as perfil, p.email as usuario, e.fantasia as empresa, e.atributoEmpresaPropria as EmpresaPropria
 FROM usuarios as u
 LEFT JOIN pessoas as p ON p.id = u.pessoa_id
@@ -34,6 +41,14 @@ if ($campos['notify_email'] == "Ativado") {
 } else if ($campos['notify_email'] == "Inativado") {
     $checkNotifEmail0 = "checked";
     $checkNotifEmail1 = "";
+}
+
+if ($campos['notify_telegram'] == "Ativado") {
+    $checkNotificaTelegram1 = "checked";
+    $checkNotificaTelegram0 = "";
+} else if ($campos['notify_telegram'] == "Inativado") {
+    $checkNotificaTelegram0 = "checked";
+    $checkNotificaTelegram1 = "";
 }
 
 $request_colaborador =

@@ -1,4 +1,5 @@
 <div class="col-lg-12">
+
     <div class="row">
         <div class="col-lg-8">
             <div class="row">
@@ -12,7 +13,7 @@
                     <input type="text" class="form-control" value="<?= $campos['empresa']; ?>" disabled>
                 </div>
             </div>
-
+            <br>
             <div class="row">
                 <div class="col-6">
                     <label class="form-label">Usuário</label>
@@ -24,11 +25,13 @@
                 </div>
             </div>
         </div>
+
+
         <div class="col-lg-4">
             <?php
             if ($campos['tipoUsuario'] == "1") { ?>
-                <div class="col-12">
-                    <form id="checkNotify" action="processa/profile_notificacao.php" method="POST">
+                <form action="processa/profile_notificacao.php" method="POST">
+                    <div class="col-12">
                         <input id="idUsuario" name="idUsuario" readonly value="<?= $usuarioID ?>" hidden></input>
 
                         <label for="notificaEmail" class="form-label">Notificação E-mail</label>
@@ -44,10 +47,37 @@
                                 Inativo
                             </label>
                         </div>
-                    </form>
-                </div>
-            <?php } ?>
+                    </div>
 
+                    <br>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <label for="notificaTelegram" class="form-label">Notificação Telegram</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="notificaTelegram" id="notificaTelegramAtivo" value="1" <?= $checkNotificaTelegram1 ?>>
+                                <label class="form-check-label" for="notificaTelegramAtivo">
+                                    Ativo
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="notificaTelegram" id="notificaTelegramInativo" value="0" <?= $checkNotificaTelegram0 ?>>
+                                <label class="form-check-label" for="notificaTelegramInativo">
+                                    Inativo
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <label for="chatIdTelegram" class="form-label">Chat ID</label>
+                            <input type="number" class="form-control" id="chatIdTelegram" name="chatIdTelegram" value="<?= $campos['chatIdTelegram'] ?>"></input>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="text-center">
+                        <button class="btn btn-sm btn-success" type="submit">Aplicar</button>
+                    </div>
+                </form>
+            <?php } ?>
         </div>
     </div>
 </div>

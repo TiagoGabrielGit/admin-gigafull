@@ -593,6 +593,15 @@ require "validaRotina.php";
                 </a>
                 <ul id="integracao-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
+
+                    <?php if ($c_sub_telegram['c'] == 1) { ?>
+                        <li>
+                            <a href="/integracao/telegram/index.php">
+                                <i class="bi bi-circle"></i><span>Telegram</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
                     <?php if ($c_sub_voalle['c'] == 1) { ?>
                         <li>
                             <a href="/integracao/voalle/index.php">

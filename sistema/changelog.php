@@ -15,9 +15,59 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
               <div class="accordion-item">
+                <h2 class="accordion-header" id="heading13-0">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse13-0" aria-expanded="false" aria-controls="collapse13-0">
+                    Versão 13.0 - XX/02/2024
+                  </button>
+                </h2>
+                <div id="collapse13-0" class="accordion-collapse collapse" aria-labelledby="heading13-0" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criado o id 51 na tabela submenu;<br>
+                    # Criado a coluna active na tabela integracao_telegram;<br>
+                    # Criado a coluna notify_telegram na tabela usuarios;<br>
+                    # Criado a coluna chatIdTelegram na tabela usuarios;<br>
+                    # Criado a tabela notificacao_telegram;<br>
+                    
+                    <br><strong>Backlog</strong><br>
+                    # Integração com Telegram para alertas de chamados;<br>
+                    # Mascara de chamados por empresas;<br>
+                    # Puxar mascara automatico na abertura de chamado via smartcontrol;<br>
+                    # Puxar lista de chamados autorizados para usuario no smartcontrol;<br>
+                    # Reclassificão de chamados;<br>
+                    # Pesquisa MP Concluidas através da data;<br>
+                    # Página de aceite MP;<br>
+                    # Causador Incidente;<br>
+                    # Enter para login;<br>
+                    # Alternar tabs automanticamente no iframe incidentes;<br>
+                    # White-Label iframe incidentes;<br>
+                    # TABs permitidas no iframe incidentes;<br>
+                    # Remover PON/RF durante criação de MP;<br>
+                    # Vincular uma documentação à um tipo de incidente;<br>
+                    # Selecionar publico ou privado no relato avulso;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Energia POP;<br>
+                    # Atributos de equipamentos;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Permissões em documentações;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                    # Dependencia de chamados;<br>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
                 <h2 class="accordion-header" id="heading12-9">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse12-9" aria-expanded="false" aria-controls="collapse12-9">
-                    Versão 12.9 - XX/02/2024
+                    Versão 12.9 - 13/02/2024
                   </button>
                 </h2>
                 <div id="collapse12-9" class="accordion-collapse collapse" aria-labelledby="heading12-9" data-bs-parent="#accordionExample">
@@ -28,7 +78,7 @@ require "../includes/menu.php";
                     # Não permitir fechar chamado se tiver aferição pendente vinculado;<br>
                     # Ajustado equipe solicitando quando aberto por solicitante terceiro;<br>
                     # Permitido Reabertura de chamado;<br>
-                    
+
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado coluna 'reabertura' na tabela 'chamados';<br>
 
