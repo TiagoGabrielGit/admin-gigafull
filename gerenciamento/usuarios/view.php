@@ -56,26 +56,25 @@ user.notify_email_execucao as 'notify_email_execucao',
 user.permissao_privacidade_credenciais as 'permissao_privacidade_credenciais',
 user.permissao_configuracoes_chamados as 'permissao_configuracoes_chamados',
 p.perfil as nome_perfil,
+user.chatIdTelegram as chatIdTelegram,
 CASE
     WHEN user.active = 1 THEN 'Ativado'
     WHEN user.active = 0 THEN 'Inativado'
 END AS active,
+
+
 CASE
     WHEN user.notify_email = 1 THEN 'Ativado'
     WHEN user.notify_email = 0 THEN 'Inativado'
-END AS notify_email
-FROM 
-usuarios as user
-LEFT JOIN                            
-pessoas as pess
-ON
-pess.id = user.pessoa_id
-LEFT JOIN
-perfil as p
-ON
-p.id = user.perfil_id
-WHERE
-user.id = $idUsuario";
+END AS notify_email,
+CASE
+    WHEN user.notify_telegram = 1 THEN 'Ativado'
+    WHEN user.notify_telegram = 0 THEN 'Inativado'
+END AS notify_telegram
+FROM usuarios as user
+LEFT JOIN pessoas as pess ON pess.id = user.pessoa_id
+LEFT JOIN perfil as p ON p.id = user.perfil_id
+WHERE user.id = $idUsuario";
 
     $r_sql_usuario = mysqli_query($mysqli, $sql_usuario) or die("Erro ao retornar dados");
     $campos = $r_sql_usuario->fetch_array();
@@ -210,7 +209,7 @@ p.active = 1";
                         <div class="row g-3">
                             <div class="col-lg-12">
                                 <div class="card">
-                                    <div class="card-body"> 
+                                    <div class="card-body">
 
                                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                                             <li class="nav-item" role="presentation">
@@ -227,6 +226,9 @@ p.active = 1";
                                             </li>
                                             <li class="nav-item" role="presentation">
                                                 <button class="nav-link" id="permission-tab" data-bs-toggle="tab" data-bs-target="#permission" type="button" role="tab" aria-controls="permission" aria-selected="true">Permissões</button>
+                                            </li>
+                                            <li class="nav-item" role="presentation">
+                                                <button class="nav-link" id="notificacao-tab" data-bs-toggle="tab" data-bs-target="#notificacao" type="button" role="tab" aria-controls="notificacao" aria-selected="true">Notificação</button>
                                             </li>
                                         </ul>
 
@@ -254,6 +256,11 @@ p.active = 1";
 
                                             <div class="tab-pane fade" id="permission" role="tabpanel" aria-labelledby="permission-tab">
                                                 <?php require "tabs/permission.php"
+                                                ?>
+                                            </div>
+
+                                            <div class="tab-pane fade" id="notificacao" role="tabpanel" aria-labelledby="notificacao-tab">
+                                                <?php require "tabs/notificacao.php"
                                                 ?>
                                             </div>
                                         </div>

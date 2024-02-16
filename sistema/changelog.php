@@ -17,13 +17,14 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading13-0">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse13-0" aria-expanded="false" aria-controls="collapse13-0">
-                    Versão 13.0 - XX/02/2024
+                    Versão 13.0 - 16/02/2024
                   </button>
                 </h2>
                 <div id="collapse13-0" class="accordion-collapse collapse" aria-labelledby="heading13-0" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
+                    # Integração com Telegram para alertas de chamados do mobile e control;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado o id 51 na tabela submenu;<br>
@@ -33,8 +34,7 @@ require "../includes/menu.php";
                     # Criado a tabela notificacao_telegram;<br>
 
                     <br><strong>Backlog</strong><br>
-
-                    # Integração com Telegram para alertas de chamados do mobile e control;<br>
+                    # Colocar um 'carregando' em: relato avulso smartcontrol, abrir chamado smartmobile, abrir afecicao smartmobile, relato smartmobile;<br>
                     # Mascara de chamados por empresas;<br>
                     # Puxar mascara automatico na abertura de chamado via smartcontrol;<br>
                     # Puxar lista de chamados autorizados para usuario no smartcontrol;<br>

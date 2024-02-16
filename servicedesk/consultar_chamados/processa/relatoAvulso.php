@@ -22,30 +22,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $protocol = 'http';
         }
         $documentRoot = $_SERVER['DOCUMENT_ROOT'];
-        $url = $protocol . '://' . $_SERVER['HTTP_HOST'] . '/notificacao/mail/relato_chamado.php';
+        $host = $_SERVER['HTTP_HOST'];
+        $id_chamado = $relatoAvulsoChamado;
 
-        $data = array(
-            'id_chamado' => $relatoAvulsoChamado
+        // Configuração da requisição cURL para /notificacao/mail/relato_chamado.php
+        $url_mail = $protocol . '://' . $host . '/notificacao/mail/relato_chamado.php';
+        $data_mail = array(
+            'id_chamado' => $id_chamado
         );
+        $curl_mail = curl_init($url_mail);
+        curl_setopt($curl_mail, CURLOPT_POST, true);
+        curl_setopt($curl_mail, CURLOPT_POSTFIELDS, $data_mail);
+        curl_setopt($curl_mail, CURLOPT_RETURNTRANSFER, true);
+        $response_mail = curl_exec($curl_mail);
 
-        // Inicializa o cURL
-        $curl = curl_init($url);
 
-        // Configura as opções do cURL
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        // Configuração da requisição cURL para /notificacao/telegram/relato_chamado.php
+        $url_telegram = $protocol . '://' . $host . '/notificacao/telegram/relato_chamado.php';
+        $data_telegram = array(
+            'id_chamado' => $id_chamado
+        );
+        $curl_telegram = curl_init($url_telegram);
+        curl_setopt($curl_telegram, CURLOPT_POST, true);
+        curl_setopt($curl_telegram, CURLOPT_POSTFIELDS, $data_telegram);
+        curl_setopt($curl_telegram, CURLOPT_RETURNTRANSFER, true);
+        $response_telegram = curl_exec($curl_telegram);
 
-        // Executa a requisição cURL
-        $response = curl_exec($curl);
 
-        // Verifica se ocorreu algum erro durante a requisição
-        if ($response === false) {
+        // Verificação de erros durante as requisições
+        if ($response_mail === false || $response_telegram === false) {
             header('Location: ' . $_SERVER['HTTP_REFERER']);
-            exit; // Encerra a execução do script após o redirecionamento
+            exit;
         } else {
             header('Location: ' . $_SERVER['HTTP_REFERER']);
-            exit; // Encerra a execução do script após o redirecionamento
+            exit;
         }
     } else {
         header("Location: " . $_SERVER['HTTP_REFERER']);

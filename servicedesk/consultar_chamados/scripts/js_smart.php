@@ -9,6 +9,7 @@
         var dadosRelatar = $("#relatarChamado").serialize();
 
         $.post("/servicedesk/consultar_chamados/processa/newRelato.php", dadosRelatar, function(retornaRelatar) {
+
             if (retornaRelatar.includes("Error")) {
                 $("#msgRelatar").slideDown('slow').html(retornaRelatar);
                 document.querySelector("#btnRelatar").hidden = false;
@@ -16,29 +17,27 @@
                 salvaRascunho();
                 retirarMsgRelatar();
             } else if (retornaRelatar.includes("Success")) {
-                var dadosEnviarEmail = document.querySelector("#chamadoID").value;
+                var dadosIDChamado = document.querySelector("#chamadoID").value;
+
+                $.post("/notificacao/telegram/relato_chamado.php", {
+                    id_chamado: dadosIDChamado
+                }, function(responseNotifyTelegram) {
+
+                });
 
                 // Enviar o comando POST para notify_mail.php
                 $.post("/notificacao/mail/relato_chamado.php", {
-                    id_chamado: dadosEnviarEmail
+                    id_chamado: dadosIDChamado
                 }, function(responseNotifyMail) {
-                    if (responseNotifyMail.includes("Success")) {
-                        // Agora envie para o script do Telegram
-                        $.post("/notificacao/telegram/relato_chamado.php", {
-                            id_chamado: dadosEnviarEmail
-                        }, function(responseTelegram) {
-                            if (responseTelegram.includes("Success")) {
-                                excluiRascunho();
-                                $('#relatarChamado')[0].reset();
-                                $("#basicModal").modal('hide');
-                                recarregarPagina();
-                            }
-                        });
+                    if (retornaRelatar.includes("Success")) {
+                        excluiRascunho();
+                        $('#relatarChamado')[0].reset();
+                        $("#basicModal").modal('hide');
+                        recarregarPagina();
                     }
                 });
             }
         });
-
     });
 
     function retirarMsgRelatar() {
