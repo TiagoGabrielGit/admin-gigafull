@@ -12,7 +12,7 @@
                 $("#msg").slideDown('slow').html(retorna);
             } else {
                 var id = retorna;
-                window.location.href = "/servicedesk/tipos_chamados/view.php?id=" + id;
+                window.location.href = "/servicedesk/tipos_chamados/tipos/view.php?id=" + id;
             }
 
             //Apresentar a mensagem leve

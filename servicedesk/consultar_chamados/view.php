@@ -42,6 +42,7 @@ $sql_chamado1 =
 c.id as id_chamado,
 c.assuntoChamado as assunto,
 c.relato_inicial as relato_inicial,
+c.solicitante_id as solicitante_id,
 c.solicitante_equipe_id as solicitante_equipe_id,
 c.prioridade as prioridade,
 tc.afericao as afericao,

@@ -3,7 +3,7 @@
 if (empty($_POST['tipoChamado'])) {
     echo "<p style='color:red;'>Error: Dados obrigatórios não preenchidos</p>";
 } else {
-    require "../../../conexoes/conexao_pdo.php";
+    require "../../../../conexoes/conexao_pdo.php";
 
     $tipo = $_POST['tipoChamado'];
 

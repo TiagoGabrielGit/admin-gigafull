@@ -9,7 +9,7 @@ if (isset($_SESSION['id'])) {
             $id_tipo_chamado = $_POST['id_mascara'];
 
             if (isset($_POST['mascara'])) {
-                require "../../../conexoes/conexao_pdo.php";
+                require "../../../../conexoes/conexao_pdo.php";
 
                 $mascara = $_POST['mascara'];
 

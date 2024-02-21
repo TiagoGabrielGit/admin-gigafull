@@ -141,3 +141,25 @@
         });
     });
 </script>
+
+<script>
+    // Função para buscar e preencher a máscara do chamado
+    function preencherMascaraChamado() {
+        var empresaChamado = document.getElementById('empresaChamado').value;
+        var tipoChamado = document.getElementById('tipoChamado').value;
+
+        // Faça uma solicitação AJAX para buscar a máscara do chamado
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'processa/get_mascara.php?empresa=' + empresaChamado + '&tipo=' + tipoChamado, true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                var mascara = xhr.responseText;
+                document.getElementById('relatoChamado').value = mascara;
+            }
+        };
+        xhr.send();
+    }
+
+    // Chame esta função quando o tipo de chamado for selecionado
+    document.getElementById('tipoChamado').addEventListener('change', preencherMascaraChamado);
+</script>

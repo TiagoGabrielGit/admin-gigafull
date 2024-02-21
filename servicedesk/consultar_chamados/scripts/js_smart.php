@@ -124,3 +124,21 @@
         }
     }
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('formRelatoAvulso').addEventListener('submit', function(event) {
+            // Impedir o envio do formulário
+            event.preventDefault();
+
+            // Esconder o botão Relatar
+            document.getElementById('buttonRelatoAvulso').style.display = 'none';
+
+            // Mostrar o spinner de carregamento
+            document.getElementById('buttonRelatoAvulsoLoading').style.display = 'block';
+
+            // Enviar o formulário
+            this.submit();
+        });
+    });
+</script>

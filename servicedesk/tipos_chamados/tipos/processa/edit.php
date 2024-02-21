@@ -12,7 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	) {
 		echo "<p style='color:red;'>Dados obrigatórios não preenchidos¹.</p>";
 	} else {
-		require "../../../conexoes/conexao_pdo.php";
+		require "../../../../conexoes/conexao_pdo.php";
 		$id = $_POST['id'];
 		$tipo = $_POST['tipoChamadoEdit'];
 		$situacao = $_POST['situacao'];

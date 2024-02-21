@@ -448,3 +448,20 @@ ppm.perfil_id = $perfil_id";
 
 $r_ecommerce = mysqli_query($mysqli, $nav_ecommerce);
 $c_ecommerce = mysqli_fetch_assoc($r_ecommerce);
+
+//MENU >> COMUNICACAO
+$nav_tipos_chamados = "SELECT
+count(*) as c
+FROM
+url_menu as um
+LEFT JOIN
+perfil_permissoes_menu as ppm
+ON
+ppm.url_menu = um.id
+WHERE
+um.id = '26'
+and
+ppm.perfil_id = $perfil_id";
+
+$r_tipos_chamados = mysqli_query($mysqli, $nav_tipos_chamados);
+$c_tipos_chamados = mysqli_fetch_assoc($r_tipos_chamados);

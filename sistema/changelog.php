@@ -15,6 +15,58 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
               <div class="accordion-item">
+                <h2 class="accordion-header" id="heading13-1">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse13-1" aria-expanded="false" aria-controls="collapse13-1">
+                    Versão 13.1 - 21/02/2024
+                  </button>
+                </h2>
+                <div id="collapse13-1" class="accordion-collapse collapse" aria-labelledby="heading13-1" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Loading no relato avulso do smartcontrol;<br>
+                    # Mascara de chamados por empresas;<br>
+                    # Puxar mascara automatico na abertura de chamado via smartcontrol;<br>
+                    # Configurar para mudar tipo do chamado;<br>
+                    # Configurar para mudar solicitante do chamado;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criado o id 26 na tabela menu;<br>
+                    # Criado o id 52 e 53 na tabela submenu;<br>
+                    # Criado a tabela tipos_chamados_mascaras;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Solicitar aferição via control;<br>
+                    # Minha dashboard;<br>
+                    # Equipe que atende tipo de chamado;<br>
+                    # Observações Internas Chamado;<br>
+                    # Pesquisa MP Concluidas através da data;<br>
+                    # Página de aceite MP;<br>
+                    # Causador Incidente;<br>
+                    # Enter para login;<br>
+                    # Alternar tabs automanticamente no iframe incidentes;<br>
+                    # White-Label iframe incidentes;<br>
+                    # TABs permitidas no iframe incidentes;<br>
+                    # Remover PON/RF durante criação de MP;<br>
+                    # Vincular uma documentação à um tipo de incidente;<br>
+                    # Selecionar publico ou privado no relato avulso;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Energia POP;<br>
+                    # Atributos de equipamentos;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Permissões em documentações;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                    # Dependencia de chamados;<br>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
                 <h2 class="accordion-header" id="heading13-0">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse13-0" aria-expanded="false" aria-controls="collapse13-0">
                     Versão 13.0 - 16/02/2024

@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $query_token =
             "SELECT it.token
             FROM notificacao_telegram as nt
-            LEFT JOIN integracao_telegram as it ON it.id = nt.notificacao_id
+            LEFT JOIN integracao_telegram as it ON it.id = nt.token_id
             WHERE nt.notificacao_id = 1 and it.active = 1";
 
         $stmt_token = $pdo->prepare($query_token);

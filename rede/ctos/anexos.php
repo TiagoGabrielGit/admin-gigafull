@@ -93,7 +93,7 @@ if ($rowCount_permissions > 0) {
 
                         echo "</div>"; // Fechando a galeria
                     } else {
-                        echo "Nenhuma imagem encontrada para este POP.";
+                        echo "Nenhuma imagem encontrada para esta CTO.";
                     }
 
                     ?>

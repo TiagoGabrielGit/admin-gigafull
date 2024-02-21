@@ -15,7 +15,12 @@ require "validaRotina.php";
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
-        </li><!-- End Dashboard Nav -->
+            <br>
+            <a class="nav-link " href="/my/my_service_desk.php?">
+                <i class="bi bi-grid"></i>
+                <span>Meu Service Desk</span>
+            </a>
+        </li>
 
         <?php if ($c_valida_CRM['c'] > 0) { ?>
             <li class="nav-heading">CRM</li>
@@ -309,12 +314,29 @@ require "validaRotina.php";
             </li>
         <?php } ?>
 
-        <?php if ($c_nav_tiposChamados['c'] == 1) { ?>
+        <?php if ($c_tipos_chamados['c'] == 1) { ?>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="/servicedesk/tipos_chamados/index.php">
-                    <i class="bi bi-clipboard-plus"></i>
-                    <span>Tipos de Chamados</span>
+                <a class="nav-link collapsed" data-bs-target="#tiposChamados-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-layout-text-window-reverse"></i><span>Tipos de Chamados</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
+                <ul id="tiposChamados-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                    <?php if ($c_sub_tipos_chamados['c'] == 1) { ?>
+                        <li>
+                            <a href="/servicedesk/tipos_chamados/tipos/index.php">
+                                <i class="bi bi-circle"></i><span>Tipos</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+                    <?php if ($c_sub_mascaras_chamados['c'] == 1) { ?>
+                        <li>
+                            <a href="/servicedesk/tipos_chamados/mascaras/index.php">
+                                <i class="bi bi-circle"></i><span>Mascaras</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+                </ul>
             </li>
         <?php } ?>
 

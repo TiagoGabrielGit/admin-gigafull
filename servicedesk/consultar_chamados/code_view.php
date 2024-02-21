@@ -29,7 +29,7 @@ if ($chamado['data_prevista_conclusao'] !== null) {
     // Restante do seu código que utiliza $timestamp
 } else {
     // Lógica para lidar com o caso em que $datetime é nulo
-}    
+}
 
 if ($chamado['data_prevista_conclusao'] === null) {
 } elseif ($dataPrevistaConclusao < $currentDate) {
@@ -248,7 +248,7 @@ if ($chamado['data_prevista_conclusao'] === null) {
 
                             <div class="modal-body">
                                 <div class="card-body">
-                                    <form method="POST" action="processa/relatoAvulso.php">
+                                    <form id="formRelatoAvulso" method="POST" action="processa/relatoAvulso.php">
                                         <input readonly hidden id="relatoRelator" name="relatoRelator" value="<?= $id_usuario ?>">
                                         <input readonly hidden id="relatoAvulsoChamado" name="relatoAvulsoChamado" value="<?= $id_chamado ?>"></input>
                                         <div class="col-12">
@@ -260,7 +260,12 @@ if ($chamado['data_prevista_conclusao'] === null) {
                                             <div class="col-5">
                                             </div>
                                             <div class="col-4">
-                                                <button type="submit" class="btn btn-danger">Relatar</button>
+                                                <div id="buttonRelatoAvulsoLoading" style="display: none;">
+                                                    <div class="spinner-border text-success" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </div>
+                                                </div>
+                                                <button id="buttonRelatoAvulso" type="submit" class="btn btn-danger">Relatar</button>
                                             </div>
                                         </div>
                                     </form>
@@ -805,6 +810,7 @@ try {
                         </div>
                     </div>
                 </form>
+                <br>
                 <form method="POST" action="processa/prioridade_chamado.php">
                     <input readonly hidden value="<?= $id_chamado ?>" id="conf_id_chamado" name="conf_id_chamado"></input>
                     <div class="row">
@@ -828,6 +834,7 @@ try {
                         </div>
                     </div>
                 </form>
+                <br>
                 <form method="POST" action="processa/melhoria_recomendada.php">
                     <input readonly hidden value="<?= $id_chamado ?>" id="conf_id_chamado" name="conf_id_chamado"></input>
                     <div class="row">
@@ -884,6 +891,86 @@ try {
                                 } ?>
                             </select>
                         </div>
+                        <div class="col-4">
+                            <button style="margin-top: 38px;" type="submit" class="btn btn-danger btn-sm">Atualizar</button>
+                        </div>
+                    </div>
+                </form>
+                <br>
+                <form method="POST" action="processa/alterar_tipo_chamado.php">
+                    <input readonly hidden value="<?= $id_chamado ?>" id="conf_id_chamado" name="conf_id_chamado"></input>
+                    <div class="row">
+                        <div class="col-8">
+                            <label for="chamado_tipo_chamado" class="form-label">Tipo de Chamado</label>
+                            <select class="form-select" name="chamado_tipo_chamado" id="chamado_tipo_chamado" required>
+                                <option disabled value="">Selecione</option>
+                                <?php
+                                try {
+                                    $query_tipos_chamados = $pdo->prepare(
+                                        "SELECT id, tipo FROM tipos_chamados WHERE active = 1 ORDER BY tipo ASC"
+                                    );
+                                    $query_tipos_chamados->execute();
+                                    $result_tc = $query_tipos_chamados->fetchAll(PDO::FETCH_ASSOC);
+                                    if (count($result_tc) > 0) {
+                                        foreach ($result_tc as $row_tc) {
+                                            $optionValue = $row_tc['id'];
+                                            $optionText = $row_tc['tipo'];
+                                            // Verifica se o tipo atual é igual ao tipo neste loop e marca a opção selecionada, se for o caso
+                                            $selected = ($optionValue == $chamado['tipo_id']) ? 'selected' : '';
+                                            echo "<option value='$optionValue' $selected>$optionText</option>";
+                                        }
+                                    } else {
+                                        echo '<option value="" disabled>Nenhum tipo de chamado encontrado.</option>';
+                                    }
+                                } catch (PDOException $e) {
+                                    echo "Erro na consulta: " . $e->getMessage();
+                                }
+                                ?>
+                            </select>
+
+
+                        </div>
+
+                        <div class="col-4">
+                            <button style="margin-top: 38px;" type="submit" class="btn btn-danger btn-sm">Atualizar</button>
+                        </div>
+                    </div>
+                </form>
+                <br>
+                <form method="POST" action="processa/alterar_solicitante.php">
+                    <input readonly hidden value="<?= $id_chamado ?>" id="conf_id_chamado" name="conf_id_chamado"></input>
+                    <div class="row">
+                        <div class="col-8">
+                            <label for="chamado_solicitante" class="form-label">Solicitante</label>
+                            <select class="form-select" name="chamado_solicitante" id="chamado_solicitante" required>
+                                <option disabled value="">Selecione</option>
+                                <?php
+                                try {
+                                    $query_usuarios = $pdo->prepare(
+                                        "SELECT u.id, p.nome FROM usuarios as u LEFT JOIN pessoas as p ON p.id = u.pessoa_id WHERE u.active = 1"
+                                    );
+                                    $query_usuarios->execute();
+                                    $result_u = $query_usuarios->fetchAll(PDO::FETCH_ASSOC);
+                                    if (count($result_u) > 0) {
+                                        foreach ($result_u as $row_u) {
+                                            $optionValue = $row_u['id'];
+                                            $optionText = $row_u['nome'];
+                                            // Verifica se o tipo atual é igual ao tipo neste loop e marca a opção selecionada, se for o caso
+                                            $selected = ($optionValue == $chamado['solicitante_id']) ? 'selected' : '';
+                                            echo "<option value='$optionValue' $selected>$optionText</option>";
+                                        }
+                                    } else {
+                                        echo '<option value="" disabled>Nenhum usuário encontrado.</option>';
+                                    }
+                                } catch (PDOException $e) {
+                                    echo "Erro na consulta: " . $e->getMessage();
+                                }
+                                ?>
+                            </select>
+
+
+                        </div>
+
                         <div class="col-4">
                             <button style="margin-top: 38px;" type="submit" class="btn btn-danger btn-sm">Atualizar</button>
                         </div>
