@@ -187,7 +187,7 @@ if ($statusEquipe  == 'Ativo') {
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h5 class="card-title">Chamados Permitidos Abertura via Control</h5>
+                                        <h5 class="card-title">Chamados Permitidos Abertura</h5>
                                         <form>
                                             <div class="row mb-4">
                                                 <?php
@@ -210,7 +210,7 @@ if ($statusEquipe  == 'Ativo') {
                                                             count(*) as validaCheck,
                                                             ca.id as idPermissao
                                                         FROM
-                                                                chamados_autorizados_by_equipe as ca
+                                                                chamados_autorizados_abertura as ca
                                                         WHERE
                                                                 ca.tipo_id = $idTipoChamado
                                                                 and
@@ -245,21 +245,21 @@ if ($statusEquipe  == 'Ativo') {
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h5 class="card-title">Chamados Permitidos Abertura via Mobile</h5>
+                                        <h5 class="card-title">Chamados Permitidos Atender</h5>
                                         <div class="row mb-4">
                                             <?php
-                                            $chamados_mobile =
+                                            $lista_chamados =
                                                 "SELECT tc.id as idTipoChamado, tc.tipo as tipoChamado
                                                 FROM tipos_chamados as tc
-                                                WHERE tc.active = 1 and mobile = 1
+                                                WHERE tc.active = 1
                                                 ORDER BY tc.tipo ASC";
-                                            $r_chamados_mobile = mysqli_query($mysqli, $chamados_mobile);
-                                            while ($c_chamados_mobile = mysqli_fetch_assoc($r_chamados_mobile)) {
-                                                $idTipoChamado_mobile = $c_chamados_mobile['idTipoChamado'];
-                                                $tipoChamado_mobile = $c_chamados_mobile['tipoChamado'];
+                                            $r_lista_chamados = mysqli_query($mysqli, $lista_chamados);
+                                            while ($c_lista_chamados = mysqli_fetch_assoc($r_lista_chamados)) {
+                                                $idTipoChamado_atender = $c_lista_chamados['idTipoChamado'];
+                                                $tipoChamado_atender = $c_lista_chamados['tipoChamado'];
 
                                                 // Verifica se há registro no banco de dados para este tipo de chamado e equipe
-                                                $query_verificar_registro = "SELECT COUNT(*) AS total FROM chamados_autorizados_mobile_by_equipe WHERE tipo_id = $idTipoChamado_mobile AND equipe_id = $id_equipe";
+                                                $query_verificar_registro = "SELECT COUNT(*) AS total FROM chamados_autorizados_atender WHERE tipo_id = $idTipoChamado_atender AND equipe_id = $id_equipe";
                                                 $resultado_verificar = mysqli_query($mysqli, $query_verificar_registro);
                                                 $registro_existente = mysqli_fetch_assoc($resultado_verificar)['total'];
 
@@ -268,8 +268,8 @@ if ($statusEquipe  == 'Ativo') {
                                             ?>
                                                 <div class="col-3">
                                                     <div class="form-check">
-                                                        <input class="form-check-input chamado-mobile-checkbox" type="checkbox" id="chamadoMobile<?= $idTipoChamado_mobile ?>" data-tipo-id="<?= $idTipoChamado_mobile ?>" data-equipe-id="<?= $id_equipe ?>" <?= $checkbox_marcado ?>>
-                                                        <label class="form-check-label" for="chamadoMobile<?= $idTipoChamado_mobile ?>"><?= $c_chamados_mobile['tipoChamado'] ?></label>
+                                                        <input class="form-check-input chamado-atender-checkbox" type="checkbox" id="chamadoAtender<?= $idTipoChamado_atender ?>" data-tipo-id="<?= $idTipoChamado_atender ?>" data-equipe-id="<?= $id_equipe ?>" <?= $checkbox_marcado ?>>
+                                                        <label class="form-check-label" for="chamadoAtender<?= $idTipoChamado_atender ?>"><?= $c_lista_chamados['tipoChamado'] ?></label>
                                                     </div>
                                                 </div>
                                             <?php } ?>
@@ -288,12 +288,12 @@ if ($statusEquipe  == 'Ativo') {
 
 </main>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 
 <script>
-    $(document).ready(function () {
-        $('.chamado-mobile-checkbox').click(function () {
+    $(document).ready(function() {
+        $('.chamado-atender-checkbox').click(function() {
             var tipo_id = $(this).data('tipo-id');
             var equipe_id = $(this).data('equipe-id');
             var isChecked = $(this).prop('checked');
@@ -303,14 +303,17 @@ if ($statusEquipe  == 'Ativo') {
                     // Se o usuário confirmar, envie uma solicitação AJAX para o script PHP
                     $.ajax({
                         type: 'POST',
-                        url: 'processa/permitirChamadoMobile.php',
-                        data: {tipo_id: tipo_id, equipe_id: equipe_id},
-                        success: function (response) {
+                        url: 'processa/permitirChamadoAtender.php',
+                        data: {
+                            tipo_id: tipo_id,
+                            equipe_id: equipe_id
+                        },
+                        success: function(response) {
                             // Exibir mensagem de sucesso ou redirecionar para outra página
                             alert('Chamado permitido com sucesso!');
                             window.location.href = '/gerenciamento/equipes/view.php?id=' + equipe_id;
                         },
-                        error: function (xhr, status, error) {
+                        error: function(xhr, status, error) {
                             // Lidar com erros
                             alert('Erro ao permitir chamado: ' + error);
                         }
@@ -324,14 +327,17 @@ if ($statusEquipe  == 'Ativo') {
                     // Se o usuário confirmar, envie uma solicitação AJAX para o script PHP
                     $.ajax({
                         type: 'POST',
-                        url: 'processa/despermitirChamadoMobile.php',
-                        data: {tipo_id: tipo_id, equipe_id: equipe_id},
-                        success: function (response) {
+                        url: 'processa/despermitirChamadoAtender.php',
+                        data: {
+                            tipo_id: tipo_id,
+                            equipe_id: equipe_id
+                        },
+                        success: function(response) {
                             // Exibir mensagem de sucesso ou redirecionar para outra página
                             alert('Chamado desabilitado com sucesso!');
                             window.location.href = '/gerenciamento/equipes/view.php?id=' + equipe_id;
                         },
-                        error: function (xhr, status, error) {
+                        error: function(xhr, status, error) {
                             // Lidar com erros
                             alert('Erro ao desabilitar chamado: ' + error);
                         }

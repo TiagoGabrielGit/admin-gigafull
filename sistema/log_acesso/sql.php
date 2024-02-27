@@ -5,7 +5,8 @@ la.id as id,
 la.id as sessao,
 date_format(la.horario,'%H:%i:%S %d/%m/%Y') as horario,
 la.ip_address as ip_address,
-p.nome as usuario
+p.nome as usuario,
+la.plataforma
 FROM
 log_acesso as la
 LEFT JOIN

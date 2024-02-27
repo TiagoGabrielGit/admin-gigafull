@@ -11,7 +11,7 @@ if (isset($_SESSION['id'])) {
 
         try {
             // Preparando a consulta SQL para inserir os dados
-            $inserir_dados = "INSERT INTO chamados_autorizados_mobile_by_equipe (tipo_id, equipe_id) VALUES (:tipo_id, :equipe_id)";
+            $inserir_dados = "INSERT INTO chamados_autorizados_atender (tipo_id, equipe_id) VALUES (:tipo_id, :equipe_id)";
             $stmt = $pdo->prepare($inserir_dados);
 
             // Ligando os parâmetros

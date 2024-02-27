@@ -169,6 +169,14 @@ require "validaRotina.php";
                         </li>
                     <?php } ?>
 
+                    <?php if ($c_sub_atender_chamado['c'] == 1) { ?>
+                        <li>
+                            <a href="/servicedesk/atender_chamado/index.php">
+                                <i class="bi bi-circle"></i><span>Atender Chamado</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
                     <?php if ($c_sub_consultar_chamado['c'] == 1) { ?>
                         <li>
                             <a href="/servicedesk/consultar_chamados/index.php">

@@ -30,51 +30,51 @@ if ($rowCount_permissions_submenu > 0) {
 
     $sql_usuario =
         "SELECT 
-user.id as id, 
-pess.nome as nome,
-pess.email as email,
-user.senha as senha,
-user.perfil_id as idPerfil,
-user.mobile as mobile,
-user.dashboard as dashboard,
-user.permissao_chamado as 'permissao_abertura_chamado',
-user.permissao_visualiza_chamado as 'permissao_visualiza_chamado',
-user.permissao_abrir_chamado as 'permissao_abrir_chamado',
-user.permissao_apropriar_chamado as 'permissao_apropriar_chamado',
-user.permissao_encaminhar_chamado as 'permissao_encaminhar_chamado',
-user.permissao_interessados_chamados as 'permissao_interessados_chamados',
-user.permissao_selecionar_competencias as 'permissao_selecionar_competencias',
-user.permissao_selecionar_solicitante as 'permissao_selecionar_solicitante',
-user.permissao_selecionar_atendente as 'permissao_selecionar_atendente',
-user.permissao_gerenciar_incidentes as 'permissao_gerenciar_incidentes',
-user.permissao_protocolo_erp as 'permissao_protocolo_erp',
-user.notify_email_abertura as 'notify_email_abertura',
-user.notify_email_encaminhamento as 'notify_email_encaminhamento',
-user.notify_email_relatos as 'notify_email_relatos', 
-user.notify_email_apropriacao as 'notify_email_apropriacao',
-user.notify_email_execucao as 'notify_email_execucao',
-user.permissao_privacidade_credenciais as 'permissao_privacidade_credenciais',
-user.permissao_configuracoes_chamados as 'permissao_configuracoes_chamados',
-p.perfil as nome_perfil,
-user.chatIdTelegram as chatIdTelegram,
-CASE
-    WHEN user.active = 1 THEN 'Ativado'
-    WHEN user.active = 0 THEN 'Inativado'
-END AS active,
-
-
-CASE
-    WHEN user.notify_email = 1 THEN 'Ativado'
-    WHEN user.notify_email = 0 THEN 'Inativado'
-END AS notify_email,
-CASE
-    WHEN user.notify_telegram = 1 THEN 'Ativado'
-    WHEN user.notify_telegram = 0 THEN 'Inativado'
-END AS notify_telegram
-FROM usuarios as user
-LEFT JOIN pessoas as pess ON pess.id = user.pessoa_id
-LEFT JOIN perfil as p ON p.id = user.perfil_id
-WHERE user.id = $idUsuario";
+        user.id as id, 
+        pess.nome as nome,
+        pess.email as email,
+        user.senha as senha,
+        user.perfil_id as idPerfil,
+        user.mobile as mobile,
+        user.dashboard as dashboard,
+        user.notify_email_abertura as 'notify_email_abertura',
+        user.notify_email_encaminhamento as 'notify_email_encaminhamento',
+        user.notify_email_relatos as 'notify_email_relatos', 
+        user.notify_email_apropriacao as 'notify_email_apropriacao',
+        user.notify_email_execucao as 'notify_email_execucao',
+        up.permite_abrir_chamados_outras_empresas as 'permite_abrir_chamados_outras_empresas',
+        up.permite_atender_chamados as 'permite_atender_chamados',
+        up.permite_atender_chamados_outras_empresas as 'permite_atender_chamados_outras_empresas',
+        up.permite_interagir_chamados as 'permite_interagir_chamados',
+        up.permite_encaminhar_chamados as 'permite_encaminhar_chamados',
+        up.permite_gerenciar_interessados as 'permite_gerenciar_interessados',
+        up.permite_selecionar_competencias_abertura_chamado as 'permite_selecionar_competencias_abertura_chamado',
+        up.permite_selecionar_solicitantes_abertura_chamado as 'permite_selecionar_solicitantes_abertura_chamado',
+        up.permite_selecionar_atendente_abertura_chamado as 'permite_selecionar_atendente_abertura_chamado',
+        up.permite_alterar_configuracoes_chamado as 'permite_alterar_configuracoes_chamado',
+        up.permite_visualizar_protocolo_erp as 'permite_visualizar_protocolo_erp',
+        up.permite_configurar_privacidade_credenciais as 'permite_configurar_privacidade_credenciais',
+        p.perfil as nome_perfil,
+        user.chatIdTelegram as chatIdTelegram,
+        CASE
+            WHEN user.active = 1 THEN 'Ativado'
+            WHEN user.active = 0 THEN 'Inativado'
+        END AS active,
+        
+        
+        CASE
+            WHEN user.notify_email = 1 THEN 'Ativado'
+            WHEN user.notify_email = 0 THEN 'Inativado'
+        END AS notify_email,
+        CASE
+            WHEN user.notify_telegram = 1 THEN 'Ativado'
+            WHEN user.notify_telegram = 0 THEN 'Inativado'
+        END AS notify_telegram
+        FROM usuarios as user
+        LEFT JOIN pessoas as pess ON pess.id = user.pessoa_id
+        LEFT JOIN perfil as p ON p.id = user.perfil_id
+        LEFT JOIN usuarios_permissoes as up ON user.id = up.usuario_id
+        WHERE user.id = $idUsuario";
 
     $r_sql_usuario = mysqli_query($mysqli, $sql_usuario) or die("Erro ao retornar dados");
     $campos = $r_sql_usuario->fetch_array();
@@ -83,10 +83,8 @@ WHERE user.id = $idUsuario";
         "SELECT
 p.id as idPerfil,
 p.perfil as perfil
-FROM
-perfil as p
-WHERE
-p.active = 1";
+FROM perfil as p
+WHERE p.active = 1";
 
     $horarioColaborador = "SELECT * FROM colaborador_horario WHERE user_id = $idUsuario";
     $r_horarioColaborador = $pdo->query($horarioColaborador);

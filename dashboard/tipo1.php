@@ -1,5 +1,6 @@
 <?php
 require "sql_dashboard_1.php";
+
 ?>
 
 <section class="section dashboard">

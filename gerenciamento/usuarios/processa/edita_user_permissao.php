@@ -1,55 +1,60 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $idUser = $_POST['permissionIdUser'];
-    require "../../../conexoes/conexao_pdo.php";
-    try {
+session_start();
+if (isset($_SESSION['id'])) {
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $idUser = $_POST['permissionIdUser'];
+        require "../../../conexoes/conexao_pdo.php";
+        try {
 
-        // Prepare a consulta SQL
-        $sql = "UPDATE usuarios SET 
-            permissao_chamado = :permissaoAberturaChamado,
-            permissao_visualiza_chamado = :permissaoVisualizaChamado,
-            permissao_abrir_chamado = :permissaoAbrirChamado,
-            permissao_apropriar_chamado = :permissaoApropriarChamados,
-            permissao_encaminhar_chamado = :permissaoEncaminharChamados,
-            permissao_interessados_chamados = :permissaoInteressadosChamados,
-            permissao_selecionar_competencias = :permissaoSelecionarCompetencias,
-            permissao_selecionar_solicitante = :permissaoSelecionaSolicitante,
-            permissao_selecionar_atendente = :permissaoSelecionaAtendente,
-            permissao_configuracoes_chamados = :permissaoAlterarConfiguracoes,
-            permissao_privacidade_credenciais = :permissaoPrivacidadeCredenciais,
-            permissao_gerenciar_incidentes = :permissaoGerenciarIncidentes,
-            permissao_protocolo_erp = :permissao_protocolo_erp
-            WHERE id = :permissionIdUser";
+            // Prepare a consulta SQL
+            $sql = "UPDATE usuarios_permissoes SET 
+            permite_abrir_chamados_outras_empresas = :permite_abrir_chamados_outras_empresas,
+            permite_atender_chamados = :permite_atender_chamados,
+            permite_atender_chamados_outras_empresas = :permite_atender_chamados_outras_empresas,
+            permite_interagir_chamados = :permite_interagir_chamados,
+            permite_encaminhar_chamados = :permite_encaminhar_chamados,
+            permite_gerenciar_interessados = :permite_gerenciar_interessados,
+            permite_selecionar_competencias_abertura_chamado = :permite_selecionar_competencias_abertura_chamado,
+            permite_selecionar_solicitantes_abertura_chamado = :permite_selecionar_solicitantes_abertura_chamado,
+            permite_selecionar_atendente_abertura_chamado = :permite_selecionar_atendente_abertura_chamado,
+            permite_alterar_configuracoes_chamado = :permite_alterar_configuracoes_chamado,
+            permite_gerenciar_incidente = :permite_gerenciar_incidente,
+            permite_visualizar_protocolo_erp = :permite_visualizar_protocolo_erp,
+            permite_configurar_privacidade_credenciais = :permite_configurar_privacidade_credenciais
+            WHERE usuario_id = :permissionIdUser";
 
-        // Preparar a declaração SQL
-        $stmt = $pdo->prepare($sql);
+            // Preparar a declaração SQL 
+            $stmt = $pdo->prepare($sql);
 
-        $stmt->bindParam(':permissaoAberturaChamado', $_POST['permissaoAberturaChamado']);
-        $stmt->bindParam(':permissaoVisualizaChamado', $_POST['permissaoVisualizaChamado']);
-        $stmt->bindParam(':permissaoAbrirChamado', $_POST['permissaoAbrirChamado']);
-        $stmt->bindParam(':permissaoApropriarChamados', $_POST['permissaoApropriarChamados']);
-        $stmt->bindParam(':permissaoEncaminharChamados', $_POST['permissaoEncaminharChamados']);
-        $stmt->bindParam(':permissaoInteressadosChamados', $_POST['permissaoInteressadosChamados']);
-        $stmt->bindParam(':permissaoSelecionarCompetencias', $_POST['permissaoSelecionarCompetencias']);
-        $stmt->bindParam(':permissaoSelecionaSolicitante', $_POST['permissaoSelecionaSolicitante']);
-        $stmt->bindParam(':permissaoSelecionaAtendente', $_POST['permissaoSelecionaAtendente']);
-        $stmt->bindParam(':permissaoAlterarConfiguracoes', $_POST['permissaoAlterarConfiguracoes']);
-        $stmt->bindParam(':permissaoPrivacidadeCredenciais', $_POST['permissaoPrivacidadeCredenciais']);
-        $stmt->bindParam(':permissaoGerenciarIncidentes', $_POST['permissaoGerenciarIncidentes']);
-        $stmt->bindParam(':permissao_protocolo_erp', $_POST['permissaoProtocoloERP']);
+            $stmt->bindParam(':permite_abrir_chamados_outras_empresas', $_POST['permite_abrir_chamados_outras_empresas']);
+            $stmt->bindParam(':permite_atender_chamados', $_POST['permite_atender_chamados']);
+            $stmt->bindParam(':permite_atender_chamados_outras_empresas', $_POST['permite_atender_chamados_outras_empresas']);
+            $stmt->bindParam(':permite_interagir_chamados', $_POST['permite_interagir_chamados']);
+            $stmt->bindParam(':permite_encaminhar_chamados', $_POST['permite_encaminhar_chamados']);
+            $stmt->bindParam(':permite_gerenciar_interessados', $_POST['permite_gerenciar_interessados']);
+            $stmt->bindParam(':permite_selecionar_competencias_abertura_chamado', $_POST['permite_selecionar_competencias_abertura_chamado']);
+            $stmt->bindParam(':permite_selecionar_solicitantes_abertura_chamado', $_POST['permite_selecionar_solicitantes_abertura_chamado']);
+            $stmt->bindParam(':permite_selecionar_atendente_abertura_chamado', $_POST['permite_selecionar_atendente_abertura_chamado']);
+            $stmt->bindParam(':permite_alterar_configuracoes_chamado', $_POST['permite_alterar_configuracoes_chamado']);
+            $stmt->bindParam(':permite_gerenciar_incidente', $_POST['permite_gerenciar_incidente']);
+            $stmt->bindParam(':permite_visualizar_protocolo_erp', $_POST['permite_visualizar_protocolo_erp']);
+            $stmt->bindParam(':permite_configurar_privacidade_credenciais', $_POST['permite_configurar_privacidade_credenciais']);
 
-        $stmt->bindParam(':permissionIdUser', $_POST['permissionIdUser']);
+            $stmt->bindParam(':permissionIdUser', $_POST['permissionIdUser']);
 
 
 
-        $stmt->execute();
+            $stmt->execute();
 
-        header("Location: /gerenciamento/usuarios/view.php?id=$idUser");
-        exit;
-    } catch (PDOException $e) {
-        //echo "Erro: " . $e->getMessage();
-
-        header("Location: /gerenciamento/usuarios/view.php?id=$idUser");
-        exit;
+            header("Location: /gerenciamento/usuarios/view.php?id=$idUser");
+            exit;
+        } catch (PDOException $e) {
+            echo "Erro: " . $e->getMessage();
+            //header("Location: /gerenciamento/usuarios/view.php?id=$idUser");
+            //exit;
+        }
     }
+} else {
+    header("Location: /index.php");
+    exit();
 }

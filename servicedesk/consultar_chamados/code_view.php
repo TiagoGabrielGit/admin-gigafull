@@ -164,7 +164,7 @@ if ($chamado['data_prevista_conclusao'] === null) {
                                 <div class="col-12 " style="margin-top: 5px;">
                                     <?php
                                     if ($c_valida_competencia == null && $id_usuario != $chamado['id_atendente'] && $chamado['status'] != "Fechado") {
-                                        if ($chamado['in_execution'] == '0' && $_SESSION['permissao_apropriar_chamado'] == 1) {
+                                        if ($chamado['in_execution'] == '0' && $_SESSION['permite_atender_chamados'] == 1) {
                                     ?>
                                             <a href="processa/apropriar.php?id=<?= $id_chamado  ?>&pessoa=<?= $id_usuario ?> "><button title="Apropriar" type="button" class="btn btn-info"><i class="bi bi-pin"></i></button></a>
                                         <?php } ?>
@@ -175,38 +175,13 @@ if ($chamado['data_prevista_conclusao'] === null) {
 
                                         <button title="Inserir um relato" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#basicModal"><i class="bi bi-pencil-square"></i></button>
 
-                                    <?php } else if ($c_usuario_ocupado['qtde'] == '0' && $id_usuario == $chamado['id_atendente'] && $chamado['in_execution'] == '0' && $chamado['status'] != "Fechado") { ?>
-                                        <a href=" processa/executar.php?id=<?= $id_chamado ?>&pessoa=<?= $idPessoa ?> "><button title=" Executar chamado" type="button" class="btn btn-success"><i class="bi bi-file-play"></i></button></a>
-                                    <?php } ?>
-
-                                    <?php
-                                    if ($chamado['status'] != "Fechado" &&  $chamado['in_execution'] == '0' && $_SESSION['permissao_encaminhar_chamado'] == 1) { ?>
-                                        <button title="Encaminhar Chamado" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalEncaminhar"><i class="bi bi-arrow-left-right"></i></button>
-                                    <?php }
-
-                                    if ($chamado['status'] != "Fechado" && $_SESSION['permissao_interessados_chamados'] == 1) { ?>
-                                        <button title="Interessados no chamado" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalInteressados"><i class="bi bi-people"></i></button>
-                                    <?php } ?>
-
-
-
+                                    <?php }  ?>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12 " style="margin-top: 5px;">
-
-                                    <?php if ($chamado['status'] != "Fechado" && $_SESSION['permissao_configuracoes_chamados'] == 1) { ?>
-                                        <button title="Configurações do Chamado" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalConfiguracoesChamados"><i class="bi bi-gear"></i></button>
-                                    <?php } ?>
-
-
                                     <?php if ($atributoEmpresaPropria == 1) { ?>
-                                        <?php if ($c_valida_competencia == null) { ?>
-                                            <button title="Qualificado para atender" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalQualificacao"><i class="bi bi-award"></i></button>
-                                        <?php } else { ?>
-                                            <button title="Não qualificado para atender" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalQualificacao"><i class="bi bi-award"></i></button>
-                                        <?php  }
-                                        ?>
+                                     
                                         <button title="Gerar relatório do chamado" type="button" class="btn btn-info">
                                             <a href="/tcpdf/export/relatorio_chamados.php?id=<?= $id_chamado ?>" target="_blank">
                                                 <i class="bi bi-cloud-download"></i>

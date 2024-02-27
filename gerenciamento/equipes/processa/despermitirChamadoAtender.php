@@ -11,7 +11,7 @@ if (isset($_SESSION['id'])) {
 
         try {
             // Preparando a consulta SQL para remover o registro
-            $remover_registro = "DELETE FROM chamados_autorizados_mobile_by_equipe WHERE tipo_id = :tipo_id AND equipe_id = :equipe_id";
+            $remover_registro = "DELETE FROM chamados_autorizados_atender WHERE tipo_id = :tipo_id AND equipe_id = :equipe_id";
 
             // Preparando e executando a consulta usando prepared statement
             $stmt = $pdo->prepare($remover_registro);

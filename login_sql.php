@@ -10,33 +10,35 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
 
   $sql_code =
     "SELECT
-      u.id as id,
-      p.nome as nome,
-      p.email as email,
-      u.senha as senha,
-      u.empresa_id as empresa_id,
-      u.permissao_visualiza_chamado as 'permissao_visualiza_chamado',
-      u.permissao_abrir_chamado as 'permissao_abrir_chamado',
-      u.permissao_chamado as 'permissao_chamado',
-      u.permissao_apropriar_chamado as 'permissao_apropriar_chamado',
-      u.permissao_encaminhar_chamado as 'permissao_encaminhar_chamado',
-      u.permissao_interessados_chamados as 'permissao_interessados_chamados',
-      u.permissao_selecionar_competencias as 'permissao_selecionar_competencias',
-      u.permissao_selecionar_solicitante as 'permissao_selecionar_solicitante',
-      u.permissao_selecionar_atendente as 'permissao_selecionar_atendente',
-      u.permissao_privacidade_credenciais as 'permissao_privacidade_credenciais',
-      u.permissao_configuracoes_chamados as 'permissao_configuracoes_chamados',
-      u.reset_password as reset_password,
-      u.tipo_usuario as tipo_usuario,
-      u.dashboard as dashboard,
-      u.perfil_id as perfil,
-      u.active as active,
-      ei.equipe_id as equipe_id,
-      pe.perfil as nome_perfil
-    FROM usuarios as u
-    LEFT JOIN pessoas as p ON p.id = u.pessoa_id
-    LEFT JOIN perfil as pe ON u.perfil_id = pe.id
-    LEFT JOIN equipes_integrantes as ei ON u.id = ei.integrante_id
+    u.id as id,
+    p.nome as nome,
+    p.email as email,
+    u.senha as senha,
+    u.empresa_id as empresa_id,
+    up.permite_interagir_chamados as 'permite_interagir_chamados',
+    up.permite_abrir_chamados_outras_empresas as 'permite_abrir_chamados_outras_empresas',
+    up.permite_atender_chamados_outras_empresas as 'permite_atender_chamados_outras_empresas',
+    up.permite_atender_chamados as 'permite_atender_chamados',
+    up.permite_encaminhar_chamados as 'permite_encaminhar_chamados',
+    up.permite_gerenciar_interessados as 'permite_gerenciar_interessados',
+    up.permite_selecionar_competencias_abertura_chamado as 'permite_selecionar_competencias_abertura_chamado',
+    up.permite_selecionar_solicitantes_abertura_chamado as 'permite_selecionar_solicitantes_abertura_chamado',
+    up.permite_selecionar_atendente_abertura_chamado as 'permite_selecionar_atendente_abertura_chamado',
+    up.permite_alterar_configuracoes_chamado as 'permite_alterar_configuracoes_chamado',
+    up.permite_visualizar_protocolo_erp as 'permite_visualizar_protocolo_erp',
+    up.permite_configurar_privacidade_credenciais as 'permite_configurar_privacidade_credenciais',
+    u.reset_password as reset_password,
+    u.tipo_usuario as tipo_usuario,
+    u.dashboard as dashboard,
+    u.perfil_id as perfil,
+    u.active as active,
+    ei.equipe_id as equipe_id,
+    pe.perfil as nome_perfil
+  FROM usuarios as u
+  LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+  LEFT JOIN perfil as pe ON u.perfil_id = pe.id
+  LEFT JOIN equipes_integrantes as ei ON u.id = ei.integrante_id
+  LEFT JOIN usuarios_permissoes as up ON u.id = up.usuario_id
     WHERE p.email = '$email' AND u.senha = '$senha'";
 
   $resultado = mysqli_query($mysqli, $sql_code) or die("Erro ao retornar dados");
@@ -59,19 +61,21 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       $_SESSION['dashboard'] = $usuario['dashboard'];
       $_SESSION['ip_address'] = $_SERVER['REMOTE_ADDR'];
       $_SESSION['tipo_usuario'] = $usuario['tipo_usuario'];
-      $_SESSION['permissao_visualiza_chamado'] = $usuario['permissao_visualiza_chamado'];
-      $_SESSION['permissao_abrir_chamado'] = $usuario['permissao_abrir_chamado'];
-      $_SESSION['permissao_apropriar_chamado'] = $usuario['permissao_apropriar_chamado'];
-      $_SESSION['permissao_encaminhar_chamado'] = $usuario['permissao_encaminhar_chamado'];
-      $_SESSION['permissao_interessados_chamados'] = $usuario['permissao_interessados_chamados'];
-      $_SESSION['permissao_selecionar_competencias'] = $usuario['permissao_selecionar_competencias'];
-      $_SESSION['permissao_selecionar_solicitante'] = $usuario['permissao_selecionar_solicitante'];
-      $_SESSION['permissao_selecionar_atendente'] = $usuario['permissao_selecionar_atendente'];
-      $_SESSION['permissao_privacidade_credenciais'] = $usuario['permissao_privacidade_credenciais'];
-      $_SESSION['permissao_configuracoes_chamados'] = $usuario['permissao_configuracoes_chamados'];
-      $_SESSION['chamados_permitidos_abertura'] = $usuario['permissao_chamado'];
 
-      
+
+      $_SESSION['permite_interagir_chamados'] = $usuario['permite_interagir_chamados'];
+      $_SESSION['permite_abrir_chamados_outras_empresas'] = $usuario['permite_abrir_chamados_outras_empresas'];
+      $_SESSION['permite_atender_chamados_outras_empresas'] = $usuario['permite_atender_chamados_outras_empresas'];
+      $_SESSION['permite_atender_chamados'] = $usuario['permite_atender_chamados'];
+      $_SESSION['permite_encaminhar_chamados'] = $usuario['permite_encaminhar_chamados'];
+      $_SESSION['permite_gerenciar_interessados'] = $usuario['permite_gerenciar_interessados'];
+      $_SESSION['permite_selecionar_competencias_abertura_chamado'] = $usuario['permite_selecionar_competencias_abertura_chamado'];
+      $_SESSION['permite_selecionar_solicitantes_abertura_chamado'] = $usuario['permite_selecionar_solicitantes_abertura_chamado'];
+      $_SESSION['permite_selecionar_atendente_abertura_chamado'] = $usuario['permite_selecionar_atendente_abertura_chamado'];
+      $_SESSION['permite_alterar_configuracoes_chamado'] = $usuario['permite_alterar_configuracoes_chamado'];
+      $_SESSION['permite_visualizar_protocolo_erp'] = $usuario['permite_visualizar_protocolo_erp'];
+      $_SESSION['permite_configurar_privacidade_credenciais'] = $usuario['permite_configurar_privacidade_credenciais'];
+
       $empresaID = $_SESSION['empresa_id'];
       $_SESSION['equipe_id'] = $usuario['equipe_id'];
 
@@ -79,7 +83,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       $usuario_id = $_SESSION['id'];
       $ip_address = $_SESSION['ip_address'];
 
-      $insert_log = "INSERT INTO log_acesso (usuario_id, ip_address, horario) VALUES ('$usuario_id', '$ip_address', NOW())";
+      $insert_log = "INSERT INTO log_acesso (usuario_id, ip_address, plataforma, horario) VALUES ('$usuario_id', '$ip_address', 'SmartControl', NOW())";
       mysqli_query($mysqli, $insert_log);
 
       echo "<p style='color:green;'>Code001: Acesso permitido.</p>";

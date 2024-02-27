@@ -2,62 +2,45 @@
 
 $usuarioID = $_SESSION['id'];
 $tipo_usuario = $_SESSION['tipo_usuario'];
-$permissao_visualiza_chamado = $_SESSION['permissao_visualiza_chamado'];
+$permite_interagir_chamados = $_SESSION['permite_interagir_chamados'];
 $empresa_usuario = $_SESSION['empresa_id'];
 $empresaID = $_SESSION['empresa_id'];
 
-if ($permissao_visualiza_chamado == 1) {
+
+
+if ($permite_interagir_chamados == 1) {
+    //Conta os chamados da empresa do usuario
     $sql_count_chamados_abertos =
-        "SELECT
-        count(*) as quantidade
-        FROM
-        chamados as c
-        WHERE
-        c.empresa_id = $empresa_usuario
-        and
-        c.status_id <> 3";
-} else if ($permissao_visualiza_chamado == 2) {
-    $sql_count_chamados_abertos =  "SELECT
-                            count(*) as quantidade
-                            FROM
-                            chamados as ch
-                            LEFT JOIN
-                            empresas as emp
-                            ON
-                            ch.empresa_id = emp.id
-                            LEFT JOIN
-                            tipos_chamados as tc
-                            ON
-                            ch.tipochamado_id = tc.id
-                            LEFT JOIN
-                            chamados_status as cs
-                            ON
-                            cs.id = ch.status_id
-                            LEFT JOIN
-                            pessoas as p
-                            ON
-                            p.id = ch.atendente_id
-                            WHERE
-                            tc.id IN (
-                                SELECT DISTINCT cae.tipo_id
-                                FROM equipes_integrantes ei
-                                JOIN chamados_autorizados_by_equipe cae ON ei.equipe_id = cae.equipe_id
-                                WHERE ei.integrante_id = $usuarioID)
-                                and ch.status_id <> 3";
-} else if ($permissao_visualiza_chamado == 3) {
+        "SELECT count(*) as quantidade
+        FROM chamados as c
+        WHERE c.empresa_id = $empresa_usuario
+        and c.status_id <> 3";
+} else if ($permite_interagir_chamados == 2) {
+    //Conta os chamados da equipe do usuario
     $sql_count_chamados_abertos =
-        "SELECT
-        count(*) as quantidade
-        FROM
-        chamados as c
-        WHERE
-        c.status_id <> 3";
+        "SELECT count(*) as quantidade
+        FROM chamados as ch
+        LEFT JOIN empresas as emp ON ch.empresa_id = emp.id
+        LEFT JOIN tipos_chamados as tc ON ch.tipochamado_id = tc.id
+        LEFT JOIN chamados_status as cs ON cs.id = ch.status_id
+        LEFT JOIN pessoas as p ON p.id = ch.atendente_id
+        WHERE tc.id IN (SELECT DISTINCT caa.tipo_id
+                        FROM equipes_integrantes ei
+                        JOIN chamados_autorizados_abertura caa ON ei.equipe_id = caa.equipe_id
+                        WHERE ei.integrante_id = $usuarioID)
+                        and ch.status_id <> 3";
+} else if ($permite_interagir_chamados == 3) {
+    //Conta todos os chamados
+    $sql_count_chamados_abertos =
+        "SELECT count(*) as quantidade
+        FROM chamados as c
+        WHERE c.status_id <> 3";
 }
 
 $chamados_abertos = mysqli_query($mysqli, $sql_count_chamados_abertos);
 $campos_chamados_abertos = $chamados_abertos->fetch_array();
 
-if ($permissao_visualiza_chamado == 1) {
+if ($permite_interagir_chamados == 1) {
     $sql_count_chamados_sematendente =
         "SELECT
 count(*) as quantidade
@@ -70,7 +53,7 @@ c.atendente_id = 0
 and
 c.status_id <> 3
 ";
-} else if ($permissao_visualiza_chamado == 2) {
+} else if ($permite_interagir_chamados == 2) {
     $sql_count_chamados_sematendente =   "SELECT
 count(*) as quantidade
                             FROM
@@ -95,14 +78,14 @@ count(*) as quantidade
                             tc.id IN (
                                 SELECT DISTINCT cae.tipo_id
                                 FROM equipes_integrantes ei
-                                JOIN chamados_autorizados_by_equipe cae ON ei.equipe_id = cae.equipe_id
+                                JOIN chamados_autorizados_abertura cae ON ei.equipe_id = cae.equipe_id
                                 WHERE ei.integrante_id = $usuarioID
                             ) and ch.atendente_id = 0
                                 and
                                 ch.status_id <> 3
                             ORDER BY
                             ch.data_abertura DESC";
-} else if ($permissao_visualiza_chamado == 3) {
+} else if ($permite_interagir_chamados == 3) {
     $sql_count_chamados_sematendente =
         "SELECT
 count(*) as quantidade
@@ -132,7 +115,7 @@ c.status_id <> 3
 $chamados_meus = mysqli_query($mysqli, $sql_count_chamados_meus);
 $campos_chamados_meus = $chamados_meus->fetch_array();
 
-if ($permissao_visualiza_chamado == 1) {
+if ($permite_interagir_chamados == 1) {
     $sql_ultimos_30_chamados =
         "SELECT
         c.id as idChamado,
@@ -156,7 +139,7 @@ if ($permissao_visualiza_chamado == 1) {
         c.id DESC
         LIMIT 15
         ";
-} else if ($permissao_visualiza_chamado == 2) {
+} else if ($permite_interagir_chamados == 2) {
     $sql_ultimos_30_chamados =    "SELECT
         ch.id as idChamado,
         emp.fantasia as fantasia,
@@ -185,13 +168,13 @@ if ($permissao_visualiza_chamado == 1) {
                                 tc.id IN (
                                     SELECT DISTINCT cae.tipo_id
                                     FROM equipes_integrantes ei
-                                    JOIN chamados_autorizados_by_equipe cae ON ei.equipe_id = cae.equipe_id
+                                    JOIN chamados_autorizados_abertura cae ON ei.equipe_id = cae.equipe_id
                                     WHERE ei.integrante_id = $usuarioID
                                 )
                                 ORDER BY
                                 ch.data_abertura DESC
                                 LIMIT 15";
-} else if ($permissao_visualiza_chamado == 3) {
+} else if ($permite_interagir_chamados == 3) {
     //ÚLTIMOD 30 CHAMADOS
     $sql_ultimos_30_chamados =
         "SELECT
@@ -322,7 +305,7 @@ WHERE i.active = 1 and rfi.active = 1 and rfi.interessado_empresa_id = $empresaI
 $r_inc_backbone = mysqli_query($mysqli, $count_inc_backbone);
 $c_inc_backbone = $r_inc_backbone->fetch_array();
 
-$count_man_prog_af_gpon = 
+$count_man_prog_af_gpon =
     "SELECT COUNT(*) as qtde
     FROM (
         SELECT mp.id
@@ -335,12 +318,12 @@ $count_man_prog_af_gpon =
         GROUP BY mp.id
     ) AS subquery;
 ";
- 
+
 $r_man_prog_af_gpon = mysqli_query($mysqli, $count_man_prog_af_gpon);
 $c_man_prog_af_gpon = $r_man_prog_af_gpon->fetch_array();
 
 $count_man_prog_af_backbone =
-"SELECT count(*) as qtde
+    "SELECT count(*) as qtde
 FROM
 manutencao_programada as mp
 LEFT JOIN manutencao_rotas_fibra as mrf ON mrf.manutencao_id = mp.id
@@ -353,7 +336,7 @@ $r_man_prog_af_backbone = mysqli_query($mysqli, $count_man_prog_af_backbone);
 $c_man_prog_af_backbone = $r_man_prog_af_backbone->fetch_array();
 
 $total_mp = (isset($c_man_prog_af_backbone['qtde']) && $c_man_prog_af_backbone['qtde'] > 0 ? $c_man_prog_af_backbone['qtde'] : 0) +
-(isset($c_man_prog_af_gpon['qtde']) && $c_man_prog_af_gpon['qtde'] > 0 ? $c_man_prog_af_gpon['qtde'] : 0);
+    (isset($c_man_prog_af_gpon['qtde']) && $c_man_prog_af_gpon['qtde'] > 0 ? $c_man_prog_af_gpon['qtde'] : 0);
 
 
 $incidentes_gpon_reincidentes =

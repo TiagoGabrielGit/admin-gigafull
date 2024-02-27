@@ -4,7 +4,7 @@
 
     <div class="col-lg-12">
 
- 
+
         <hr class="sidebar-divider">
 
         <div class="pagetitle">
@@ -12,220 +12,208 @@
         </div>
 
         <div class="row mb-3">
-            <label for="permissaoAberturaChamado" class="col-sm-4 col-form-label">Tipos de chamados permitidos abertura</label>
+            <label for="permite_abrir_chamados_outras_empresas" class="col-sm-5 col-form-label">Permite abrir chamados para outras empresas</label>
             <div class="col-sm-6">
-                <select name="permissaoAberturaChamado" id="permissaoAberturaChamado" class="form-select" required>
+                <select name="permite_abrir_chamados_outras_empresas" id="permite_abrir_chamados_outras_empresas" class="form-select" required>
                     <?php
-                    if ($campos['permissao_abertura_chamado'] == 1) { ?>
-                        <option selected value="1">Permite abrir apenas chamados liberados para a empresa</option>
-                        <option value="2">Permite abrir apenas chamados liberados para a equipe</option>
-                        <option value="3">Permite abrir chamados liberados para empresa e para a equipe</option>
-                    <?php } else if ($campos['permissao_abertura_chamado'] == 2) { ?>
-                        <option value="1">Permite abrir apenas chamados liberados para a empresa</option>
-                        <option selected value="2">Permite abrir apenas chamados liberados para a equipe</option>
-                        <option value="3">Permite abrir chamados liberados para empresa e para a equipe</option>
-                    <?php } else if ($campos['permissao_abertura_chamado'] == 3) { ?>
-                        <option value="1">Permite abrir apenas chamados liberados para a empresa</option>
-                        <option value="2">Permite abrir apenas chamados liberados para a equipe</option>
-                        <option selected value="3">Permite abrir chamados liberados para empresa e para a equipe</option>
-                    <?php } else { ?>
-                        <option selected disabled value="">Selecione uma opção</option>
-                        <option value="1">Permite abrir apenas chamados liberados para a empresa</option>
-                        <option value="2">Permite abrir apenas chamados liberados para a equipe</option>
-                        <option value="3">Permite abrir chamados liberados para empresa e para a equipe</option>
-                    <?php }
-                    ?>
-                </select>
-            </div>
-
-
-            <label for="permissaoVisualizaChamado" class="col-sm-4 col-form-label">Permissão para visualização de chamado</label>
-            <div class="col-sm-6">
-                <select name="permissaoVisualizaChamado" id="permissaoVisualizaChamado" class="form-select" required>
-                    <?php
-                    if ($campos['permissao_visualiza_chamado'] == 1) { ?>
-                        <option selected value="1">Visualiza somente os chamados da empresa do usuário</option>
-                        <option value="2">Visualiza somente os chamados abertos por membros da mesma equipe</option>
-                        <option value="3">Visualiza todos</option>
-                    <?php } else if ($campos['permissao_visualiza_chamado'] == 2) { ?>
-                        <option value="1">Visualiza somente os chamados da empresa do usuário</option>
-                        <option selected value="2">Visualiza somente os chamados abertos por membros da mesma equipe</option>
-                        <option value="3">Visualiza todos</option>
-                    <?php } else if ($campos['permissao_visualiza_chamado'] == 3) { ?>
-                        <option value="1">Visualiza somente os chamados da empresa do usuário</option>
-                        <option value="2">Visualiza somente os chamados abertos por membros da mesma equipe</option>
-                        <option selected value="3">Visualiza todos</option>
-                    <?php } else { ?>
-                        <option selected disabled value="">Selecione uma opção</option>
-                        <option value="1">Visualiza somente os chamados da empresa do usuário</option>
-                        <option value="2">Visualiza somente os chamados abertos por membros da mesma equipe</option>
-                        <option value="3">Visualiza todos</option>
-                    <?php }
-                    ?>
-                </select>
-            </div>
-
-            <label for="permissaoAbrirChamado" class="col-sm-4 col-form-label">Pode abrir chamados para outras empresas</label>
-            <div class="col-sm-6">
-                <select name="permissaoAbrirChamado" id="permissaoAbrirChamado" class="form-select" required>
-                    <?php
-                    if ($campos['permissao_abrir_chamado'] == 1) { ?>
-
+                    if ($campos['permite_abrir_chamados_outras_empresas'] == 1) { ?>
                         <option selected value="1">Sim</option>
                         <option value="0">Não</option>
-                    <?php } else if ($campos['permissao_abrir_chamados'] == 0) { ?>
+                    <?php } else if ($campos['permite_abrir_chamados_outras_empresas'] == 0) { ?>
                         <option value="1">Sim</option>
                         <option selected value="0">Não</option>
-                    <?php } else { ?>
-                        <option selected disabled value="">Selecione uma opção</option>
-                        <option value="1">Sim</option>
-                        <option value="0">Não</option>
-                    <?php }
-                    ?>
+                    <?php } ?>
                 </select>
             </div>
+        </div>
 
-            <label for="permissaoApropriarChamados" class="col-sm-4 col-form-label">Pode se apropriar de chamados</label>
+        <div class="row mb-3">
+            <label for="permite_atender_chamados" class="col-sm-5 col-form-label">Permite atender chamados</label>
             <div class="col-sm-6">
-                <select name="permissaoApropriarChamados" id="permissaoApropriarChamadoss" class="form-select" required>
+                <select name="permite_atender_chamados" id="permite_atender_chamados" class="form-select" required>
                     <?php
-                    if ($campos['permissao_apropriar_chamado'] == 1) { ?>
+                    if ($campos['permite_atender_chamados'] == 1) { ?>
                         <option selected value="1">Sim</option>
                         <option value="0">Não</option>
-                    <?php } else if ($campos['permissao_apropriar_chamado'] == 0) { ?>
+                    <?php } else if ($campos['permite_atender_chamados'] == 0) { ?>
                         <option value="1">Sim</option>
                         <option selected value="0">Não</option>
-                    <?php } else { ?>
-                        <option selected disabled value="">Selecione uma opção</option>
-                        <option value="1">Sim</option>
-                        <option value="0">Não</option>
-                    <?php }
-                    ?>
+                    <?php } ?>
                 </select>
             </div>
 
-            <label for="permissaoEncaminharChamados" class="col-sm-4 col-form-label">Pode encaminhar chamados</label>
+        </div>
+        <div class="row mb-3">
+            <label for="permite_atender_chamados_outras_empresas" class="col-sm-5 col-form-label">Permite atender chamados de outras empresas</label>
             <div class="col-sm-6">
-                <select name="permissaoEncaminharChamados" id="permissaoEncaminharChamados" class="form-select" required>
+                <select name="permite_atender_chamados_outras_empresas" id="permite_atender_chamados_outras_empresas" class="form-select" required>
                     <?php
-                    if ($campos['permissao_encaminhar_chamado'] == 1) { ?>
+                    if ($campos['permite_atender_chamados_outras_empresas'] == 1) { ?>
                         <option selected value="1">Sim</option>
                         <option value="0">Não</option>
-                    <?php } else if ($campos['permissao_encaminhar_chamado'] == 0) { ?>
+                    <?php } else if ($campos['permite_atender_chamados_outras_empresas'] == 0) { ?>
                         <option value="1">Sim</option>
                         <option selected value="0">Não</option>
-                    <?php } else { ?>
-                        <option selected disabled value="">Selecione uma opção</option>
-                        <option value="1">Sim</option>
-                        <option value="0">Não</option>
-                    <?php }
-                    ?>
+                    <?php } ?>
                 </select>
             </div>
 
-            <label for="permissaoInteressadosChamados" class="col-sm-4 col-form-label">Pode incluir/remover interessados</label>
+        </div>
+
+        <div class="row mb-3">
+            <label for="permite_interagir_chamados" class="col-sm-5 col-form-label">Permite interagir em chamados</label>
             <div class="col-sm-6">
-                <select name="permissaoInteressadosChamados" id="permissaoInteressadosChamados" class="form-select" required>
+                <select name="permite_interagir_chamados" id="permite_interagir_chamados" class="form-select" required>
                     <?php
-                    if ($campos['permissao_interessados_chamados'] == 1) { ?>
+                    if ($campos['permite_interagir_chamados'] == 1) { ?>
+                        <option selected value="1">Permite interagir nos chamados da empresa do usuário</option>
+                        <option value="2">Permite interagir nos chamados da equipe do usuário</option>
+                        <option value="3">Permite interagir em qualquer chamado</option>
+                        <option value="0">Não</option>
+                    <?php } else if ($campos['permite_interagir_chamados'] == 2) {  ?>
+                        <option value="1">Permite interagir nos chamados da empresa do usuário</option>
+                        <option selected value="2">Permite interagir nos chamados da equipe do usuário</option>
+                        <option value="3">Permite interagir em qualquer chamado</option>
+                        <option value="0">Não</option>
+                    <?php } else if ($campos['permite_interagir_chamados'] == 3) { ?>
+                        <option value="1">Permite interagir nos chamados da empresa do usuário</option>
+                        <option value="2">Permite interagir nos chamados da equipe do usuário</option>
+                        <option selected value="3">Permite interagir em qualquer chamado</option>
+                        <option  value="0">Não</option>
+                    <?php } else if ($campos['permite_interagir_chamados'] == 0) { ?>
+                        <option value="1">Permite interagir nos chamados da empresa do usuário</option>
+                        <option value="2">Permite interagir nos chamados da equipe do usuário</option>
+                        <option value="3">Permite interagir em qualquer chamado</option>
+                        <option selected value="0">Não</option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+
+            <label for="permite_encaminhar_chamados" class="col-sm-5 col-form-label">Permite encaminhar chamados</label>
+            <div class="col-sm-6">
+                <select name="permite_encaminhar_chamados" id="permite_encaminhar_chamados" class="form-select" required>
+                    <?php
+                    if ($campos['permite_encaminhar_chamados'] == 1) { ?>
                         <option selected value="1">Sim</option>
                         <option value="0">Não</option>
-                    <?php } else if ($campos['permissao_interessados_chamados'] == 0) { ?>
+                    <?php } else if ($campos['permite_encaminhar_chamados'] == 0) { ?>
                         <option value="1">Sim</option>
                         <option selected value="0">Não</option>
-                    <?php } else { ?>
-                        <option selected disabled value="">Selecione uma opção</option>
-                        <option value="1">Sim</option>
-                        <option value="0">Não</option>
-                    <?php }
-                    ?>
+                    <?php } ?>
                 </select>
             </div>
+        </div>
 
-            <label for="permissaoSelecionarCompetencias" class="col-sm-4 col-form-label">Pode selecionar competências na abertura do chamado</label>
+        <div class="row mb-3">
+            <label for="permite_gerenciar_interessados" class="col-sm-5 col-form-label">Permite incluir/remover interessados</label>
             <div class="col-sm-6">
-                <select name="permissaoSelecionarCompetencias" id="permissaoSelecionarCompetencias" class="form-select" required>
+                <select name="permite_gerenciar_interessados" id="permite_gerenciar_interessados" class="form-select" required>
                     <?php
-                    if ($campos['permissao_selecionar_competencias'] == 1) { ?>
+                    if ($campos['permite_gerenciar_interessados'] == 1) { ?>
                         <option selected value="1">Sim</option>
                         <option value="0">Não</option>
-                    <?php } else if ($campos['permissao_selecionar_competencias'] == 0) { ?>
+                    <?php } else if ($campos['permite_gerenciar_interessados'] == 0) { ?>
                         <option value="1">Sim</option>
                         <option selected value="0">Não</option>
-                    <?php } else { ?>
-                        <option selected disabled value="">Selecione uma opção</option>
-                        <option value="1">Sim</option>
-                        <option value="0">Não</option>
-                    <?php }
-                    ?>
+                    <?php } ?>
                 </select>
             </div>
+        </div>
 
-            <label for="permissaoSelecionaSolicitante" class="col-sm-4 col-form-label">Permite selecionar solicitante na abertura de um chamado</label>
+        <div class="row mb-3">
+            <label for="permite_selecionar_competencias_abertura_chamado" class="col-sm-5 col-form-label">Permite selecionar competências na abertura do chamado</label>
             <div class="col-sm-6">
-                <select name="permissaoSelecionaSolicitante" id="permissaoSelecionaSolicitante" class="form-select" required>
+                <select name="permite_selecionar_competencias_abertura_chamado" id="permite_selecionar_competencias_abertura_chamado" class="form-select" required>
                     <?php
-                    if ($campos['permissao_selecionar_solicitante'] == 1) { ?>
+                    if ($campos['permite_selecionar_competencias_abertura_chamado'] == 1) { ?>
                         <option selected value="1">Sim</option>
                         <option value="0">Não</option>
-                    <?php } else if ($campos['permissao_selecionar_solicitante'] == 0) { ?>
+                    <?php } else if ($campos['permite_selecionar_competencias_abertura_chamado'] == 0) { ?>
                         <option value="1">Sim</option>
                         <option selected value="0">Não</option>
-                    <?php } else { ?>
-                        <option selected disabled value="">Selecione uma opção</option>
-                        <option value="1">Sim</option>
-                        <option value="0">Não</option>
-                    <?php }
-                    ?>
+                    <?php } ?>
                 </select>
             </div>
+        </div>
 
-            <label for="permissaoSelecionaAtendente" class="col-sm-4 col-form-label">Permite selecionar atentende na abertura de um chamado</label>
+        <div class="row mb-3">
+            <label for="permite_selecionar_solicitantes_abertura_chamado" class="col-sm-5 col-form-label">Permite selecionar solicitante na abertura do chamado</label>
             <div class="col-sm-6">
-                <select name="permissaoSelecionaAtendente" id="permissaoSelecionaAtendente" class="form-select" required>
+                <select name="permite_selecionar_solicitantes_abertura_chamado" id="permite_selecionar_solicitantes_abertura_chamado" class="form-select" required>
                     <?php
-                    if ($campos['permissao_selecionar_atendente'] == 1) { ?>
+                    if ($campos['permite_selecionar_solicitantes_abertura_chamado'] == 1) { ?>
                         <option selected value="1">Sim</option>
                         <option value="0">Não</option>
-                    <?php } else if ($campos['permissao_selecionar_atendente'] == 0) { ?>
+                    <?php } else if ($campos['permite_selecionar_solicitantes_abertura_chamado'] == 0) { ?>
                         <option value="1">Sim</option>
                         <option selected value="0">Não</option>
-                    <?php } else { ?>
-                        <option selected disabled value="">Selecione uma opção</option>
-                        <option value="1">Sim</option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+
+
+
+        <div class="row mb-3">
+            <label for="permite_selecionar_atendente_abertura_chamado" class="col-sm-5 col-form-label">Permite selecionar atendente na abertura do chamado</label>
+            <div class="col-sm-6">
+                <select name="permite_selecionar_atendente_abertura_chamado" id="permite_selecionar_atendente_abertura_chamado" class="form-select" required>
+                    <?php
+                    if ($campos['permite_selecionar_atendente_abertura_chamado'] == 1) { ?>
+                        <option selected value="1">Sim</option>
                         <option value="0">Não</option>
-                    <?php }
-                    ?>
+                    <?php } else if ($campos['permite_selecionar_atendente_abertura_chamado'] == 0) { ?>
+                        <option value="1">Sim</option>
+                        <option selected value="0">Não</option>
+                    <?php } ?>
                 </select>
             </div>
+        </div>
 
-            <label for="permissaoAlterarConfiguracoes" class="col-sm-4 col-form-label">Permite Alterar Configurações do Chamado</label>
+        <div class="row mb-3">
+            <label for="permite_alterar_configuracoes_chamado" class="col-sm-5 col-form-label">Permite alterar configurações do chamado</label>
             <div class="col-sm-6">
-                <select name="permissaoAlterarConfiguracoes" id="permissaoAlterarConfiguracoes" class="form-select" required>
-                    <option disabled value="" <?php echo ($campos['permissao_configuracoes_chamados'] === null) ? 'selected' : ''; ?>>Selecione uma opção</option>
-                    <option value="1" <?php echo ($campos['permissao_configuracoes_chamados'] == 1) ? 'selected' : ''; ?>>Sim</option>
-                    <option value="0" <?php echo ($campos['permissao_configuracoes_chamados'] == 0) ? 'selected' : ''; ?>>Não</option>
+                <select name="permite_alterar_configuracoes_chamado" id="permite_alterar_configuracoes_chamado" class="form-select" required>
+                    <?php
+                    if ($campos['permite_alterar_configuracoes_chamado'] == 1) { ?>
+                        <option selected value="1">Sim</option>
+                        <option value="0">Não</option>
+                    <?php } else if ($campos['permite_alterar_configuracoes_chamado'] == 0) { ?>
+                        <option value="1">Sim</option>
+                        <option selected value="0">Não</option>
+                    <?php } ?>
                 </select>
             </div>
+        </div>
 
-            <label for="permissaoGerenciarIncidentes" class="col-sm-4 col-form-label">Permite Gerenciar Incidente</label>
+        <div class="row mb-3">
+            <label for="permite_gerenciar_incidente" class="col-sm-5 col-form-label">Permite gerenciar incidentes</label>
             <div class="col-sm-6">
-                <select name="permissaoGerenciarIncidentes" id="permissaoGerenciarIncidentes" class="form-select" required>
-                    <option disabled value="" <?php echo ($campos['permissao_gerenciar_incidentes'] === null) ? 'selected' : ''; ?>>Selecione uma opção</option>
-                    <option value="1" <?php echo ($campos['permissao_gerenciar_incidentes'] == 1) ? 'selected' : ''; ?>>Sim</option>
-                    <option value="0" <?php echo ($campos['permissao_gerenciar_incidentes'] == 0) ? 'selected' : ''; ?>>Não</option>
+                <select name="permite_gerenciar_incidente" id="permite_gerenciar_incidente" class="form-select" required>
+                    <?php
+                    if ($campos['permite_gerenciar_incidente'] == 1) { ?>
+                        <option selected value="1">Sim</option>
+                        <option value="0">Não</option>
+                    <?php } else if ($campos['permite_gerenciar_incidente'] == 0) { ?>
+                        <option value="1">Sim</option>
+                        <option selected value="0">Não</option>
+                    <?php } ?>
                 </select>
             </div>
+        </div>
 
-            <label for="permissaoProtocoloERP" class="col-sm-4 col-form-label">Permite Visualizar Protocolo do ERP</label>
+        <div class="row mb-3">
+            <label for="permite_visualizar_protocolo_erp" class="col-sm-5 col-form-label">Permite Visualizar Protocolo do ERP</label>
             <div class="col-sm-6">
-                <select name="permissaoProtocoloERP" id="permissaoProtocoloERP" class="form-select" required>
-                    <option disabled value="" <?php echo ($campos['permissao_protocolo_erp'] === null) ? 'selected' : ''; ?>>Selecione uma opção</option>
-                    <option value="1" <?php echo ($campos['permissao_protocolo_erp'] == 1) ? 'selected' : ''; ?>>Sim</option>
-                    <option value="0" <?php echo ($campos['permissao_protocolo_erp'] == 0) ? 'selected' : ''; ?>>Não</option>
+                <select name="permite_visualizar_protocolo_erp" id="permite_visualizar_protocolo_erp" class="form-select" required>
+                    <option disabled value="" <?php echo ($campos['permite_visualizar_protocolo_erp'] === null) ? 'selected' : ''; ?>>Selecione uma opção</option>
+                    <option value="1" <?php echo ($campos['permite_visualizar_protocolo_erp'] == 1) ? 'selected' : ''; ?>>Sim</option>
+                    <option value="0" <?php echo ($campos['permite_visualizar_protocolo_erp'] == 0) ? 'selected' : ''; ?>>Não</option>
                 </select>
             </div>
-
         </div>
     </div>
 
@@ -235,14 +223,14 @@
     </div>
 
     <div class="row mb-3">
-        <label for="permissaoPrivacidadeCredenciais" class="col-sm-4 col-form-label">Permissão Configurar Privacidade Credenciais</label>
+        <label for="permite_configurar_privacidade_credenciais" class="col-sm-4 col-form-label">Permite configurar privacidade credenciais</label>
         <div class="col-sm-6">
-            <select name="permissaoPrivacidadeCredenciais" id="permissaoPrivacidadeCredenciais" class="form-select" required>
+            <select name="permite_configurar_privacidade_credenciais" id="permite_configurar_privacidade_credenciais" class="form-select" required>
                 <?php
-                if ($campos['permissao_privacidade_credenciais'] == 1) { ?>
+                if ($campos['permite_configurar_privacidade_credenciais'] == 1) { ?>
                     <option selected value="1">Sim</option>
                     <option value="0">Não</option>
-                <?php } else if ($campos['permissao_privacidade_credenciais'] == 0) { ?>
+                <?php } else if ($campos['permite_configurar_privacidade_credenciais'] == 0) { ?>
                     <option value="1">Sim</option>
                     <option selected value="0">Não</option>
                 <?php } else { ?>

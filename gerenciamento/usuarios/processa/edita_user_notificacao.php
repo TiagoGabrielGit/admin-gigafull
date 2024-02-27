@@ -2,8 +2,14 @@
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $idUser = $_POST['notificacaoIdUser'];
     require "../../../conexoes/conexao_pdo.php";
-    try {
 
+    if (isset($_POST['chatID']) && !empty($_POST['chatID'])) {
+        $chatIdTelegram = $_POST['chatID'];
+    } else {
+        $chatIdTelegram = '0';
+    }
+
+    try {
         // Prepare a consulta SQL
         $sql = "UPDATE usuarios SET 
             notify_email = :notificaEmail,
@@ -22,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Substituir os valores dos parâmetros com os valores do formulário
         $stmt->bindParam(':notificaEmail', $_POST['notificaEmail']);
         $stmt->bindParam(':notificaTelegram', $_POST['notificaTelegram']);
-        $stmt->bindParam(':chatIdTelegram', $_POST['chatID']);
+        $stmt->bindParam(':chatIdTelegram', $chatIdTelegram);
         $stmt->bindParam(':notificaEmailAbertura', $_POST['notificaAbertura']);
         $stmt->bindParam(':notificaEmailEncaminhamento', $_POST['notificaEncaminhamento']);
         $stmt->bindParam(':notificaEmailRelatos', $_POST['notificaRelatos']);
@@ -33,10 +39,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute();
 
         header("Location: /gerenciamento/usuarios/view.php?id=$idUser");
-        exit;
+        exit();
     } catch (PDOException $e) {
         echo "Erro: " . $e->getMessage();
         header("Location: /gerenciamento/usuarios/view.php?id=$idUser");
-        exit;
+        exit();
     }
 }

@@ -14,11 +14,11 @@ u.id as idUsuario,
 u.pessoa_id as idPessoa,
 u.empresa_id as idEmpresa,
 u.empresa_id as empresa_id,
-u.tipo_usuario as tipoUsuario,
 ei.equipe_id as equipe_id,
-u.permissao_visualiza_chamado as permissao_visualiza_chamado,
+up.permite_interagir_chamados as permite_interagir_chamados,
 e.atributoEmpresaPropria as atributoEmpresaPropria
 FROM usuarios as u
+LEFT JOIN usuarios_permissoes as up ON up.usuario_id = u.id
 LEFT JOIN empresas as e ON e.id = u.empresa_id
 LEFT JOIN equipes_integrantes as ei ON u.id = ei.integrante_id
 WHERE u.active = 1 and u.id = $id_usuario";
@@ -31,9 +31,7 @@ $pessoaID = $c_dados_usuario['idPessoa'];
 $idEmpresa = $c_dados_usuario['idEmpresa'];
 $usuario_equipe_id = $c_dados_usuario['equipe_id'];
 
-//$idParceiro = $c_dados_usuario['idParceiro'];
-$tipoUsuario = $c_dados_usuario['tipoUsuario'];
-$permissao_visualiza_chamado = $c_dados_usuario['permissao_visualiza_chamado'];
+$permite_interagir_chamados = $c_dados_usuario['permite_interagir_chamados'];
 $empresa_usuario = $c_dados_usuario['empresa_id'];
 $atributoEmpresaPropria = $c_dados_usuario['atributoEmpresaPropria'];
 
@@ -122,16 +120,16 @@ if (empty($atendente['atendente'])) {
     $atendente = $atendente['atendente'];
 }
 
-if ($permissao_visualiza_chamado == 1 && ($chamado['idEmpresa'] == $empresa_usuario)) { // Visualiza somente chamados da empresa
+if ($permite_interagir_chamados == 1 && ($chamado['idEmpresa'] == $empresa_usuario)) { // Visualiza somente chamados da empresa
     require "code_view.php";
-} else if ($permissao_visualiza_chamado == 2) {
+} else if ($permite_interagir_chamados == 2) {
     if ($solicitante_equipe_id == $usuario_equipe_id) {
         require "code_view.php";
     } else {
         require "../../acesso_negado.php";
         require "../../includes/footer.php";
     }
-} else if ($permissao_visualiza_chamado == 3) { //Visuliza todos chamados
+} else if ($permite_interagir_chamados == 3) { //Visuliza todos chamados
     require "code_view.php";
 } else {
     require "../../acesso_negado.php";

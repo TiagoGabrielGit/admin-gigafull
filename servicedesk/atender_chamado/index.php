@@ -2,7 +2,7 @@
 require "../../includes/menu.php";
 require "../../conexoes/conexao_pdo.php";
 
-$submenu_id = "49";
+$submenu_id = "54";
 $uid = $_SESSION['id'];
 
 $permissions_submenu =
@@ -23,10 +23,8 @@ if ($rowCount_permissions_submenu > 0) {
         u.pessoa_id as pessoaID,
         u.tipo_usuario as tipoUsuario,
         u.empresa_id as empresa_id,
-        up.permite_interagir_chamados as permite_interagir_chamados,
         e.atributoEmpresaPropria as atributoEmpresaPropria
         FROM usuarios as u
-        LEFT JOIN usuarios_permissoes as up ON up.usuario_id = u.id
         LEFT JOIN empresas as e ON u.empresa_id = e.id
         WHERE u.id = :uid";
 
@@ -36,8 +34,8 @@ if ($rowCount_permissions_submenu > 0) {
 
     $user_info = $user_info_statement->fetch(PDO::FETCH_ASSOC);
 
-    $permite_interagir_chamados = $user_info['permite_interagir_chamados'];
-    $empresa_usuario = $user_info['empresa_id'];
+    $permite_atender_chamados_outras_empresas = $_SESSION['permite_atender_chamados_outras_empresas'];
+    $empresa_usuario = $_SESSION['empresa_id'];
     $atributoEmpresaPropria = $user_info['atributoEmpresaPropria'];
     $empresa_id = $_SESSION['empresa_id'];
     $equipe_id = $_SESSION['equipe_id'];
@@ -46,32 +44,15 @@ if ($rowCount_permissions_submenu > 0) {
 
         if (isset($_POST['ordenarChamados'])) {
             if ($_POST['ordenarChamados'] == 1) {
-                $ordenarChamadosSelecionado  = "ch.status_id = 3, ch.data_abertura DESC";
+                $ordenarChamadosSelecionado  = "c.status_id = 3, c.data_abertura DESC";
             } else if ($_POST['ordenarChamados'] == 2) {
-                $ordenarChamadosSelecionado  = "ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
+                $ordenarChamadosSelecionado  = "c.status_id = 3, IFNULL(c.prioridade, 9999) ASC, c.data_abertura DESC";
             } else {
-                $ordenarChamadosSelecionado  = "ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
+                $ordenarChamadosSelecionado  = "c.status_id = 3, IFNULL(c.prioridade, 9999) ASC, c.data_abertura DESC";
             }
         } else {
-            $ordenarChamadosSelecionado  = "ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
+            $ordenarChamadosSelecionado  = "c.status_id = 3, IFNULL(c.prioridade, 9999) ASC, c.data_abertura DESC";
         }
-
-        if (isset($_POST['atendentePesquisa'])) {
-            if ($_POST['atendentePesquisa'] != '%') {
-                $atendentePesquisa = $_POST['atendentePesquisa'];
-            } else {
-                $atendentePesquisa = "%";
-            }
-        } else {
-            $atendentePesquisa = "%";
-        }
-
-        if ($atendentePesquisa === '0') {
-            $whereAtendente = "AND ch.atendente_id = '0'";
-        } else {
-            $whereAtendente = "AND ch.atendente_id LIKE '$atendentePesquisa'";
-        }
-
 
         if (isset($_POST['empresaPesquisa'])) {
             if (!empty($_POST['empresaPesquisa'])) {
@@ -133,8 +114,7 @@ if ($rowCount_permissions_submenu > 0) {
             $relatoInicialPesquisa = "%";
         }
     } else {
-        $whereAtendente = "AND ch.atendente_id LIKE '%'";
-        $ordenarChamadosSelecionado = "ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
+        $ordenarChamadosSelecionado = "c.status_id = 3, IFNULL(c.prioridade, 9999) ASC, c.data_abertura DESC";
         $empresa_id = "%";
         $statusChamado = "LIKE '%'";
         $idChamado = "%";
@@ -189,7 +169,8 @@ if ($rowCount_permissions_submenu > 0) {
             border-color: black;
         }
     </style>
-    <?php if ($permite_interagir_chamados != 0) { ?>
+
+    <?php if ($_SESSION['permite_atender_chamados'] == '1') { ?>
 
         <main id="main" class="main">
             <section class="section">
@@ -202,21 +183,30 @@ if ($rowCount_permissions_submenu > 0) {
                                 <form method="POST" action="#" class="row g-3">
                                     <?php
 
-                                    if ($permite_interagir_chamados == 1 || $permite_interagir_chamados == 2) {
+                                    if ($permite_atender_chamados_outras_empresas == 1) {
                                         $sql_lista_empresas =
                                             "SELECT
-                                        e.id as id_empresa,
-                                        e.fantasia as fantasia_empresa
-                                        FROM empresas as e
-                                        WHERE e.id = $empresa_usuario
-                                        ORDER BY e.fantasia ASC
+                                        emp.id as id_empresa,
+                                        emp.fantasia as fantasia_empresa
+                                        FROM
+                                        empresas as emp
+                                        WHERE
+                                        atributoCliente = '1'
+                                        or
+                                        atributoEmpresaPropria = '1'
+                                        ORDER BY
+                                        emp.fantasia ASC
                                         ";
-                                    } else if ($permite_interagir_chamados == 3) {
+                                    } else if ($permite_atender_chamados_outras_empresas == 0) {
                                         $sql_lista_empresas =
                                             "SELECT
                                         emp.id as id_empresa,
                                         emp.fantasia as fantasia_empresa
                                         FROM empresas as emp
+                                        WHERE atributoCliente = '1'
+                                        and emp.id = $empresa_usuario
+                                        or atributoEmpresaPropria = '1'
+                                        and emp.id = $empresa_usuario
                                         ORDER BY emp.fantasia ASC
                                         ";
                                     }
@@ -280,37 +270,6 @@ if ($rowCount_permissions_submenu > 0) {
                                                     ?>
                                                 </select>
                                             </div>
-
-                                            <div class="col-4">
-
-                                                <label for="atendentePesquisa" class="form-label">Atendente</label>
-                                                <select id="atendentePesquisa" name="atendentePesquisa" class="form-select">
-                                                    <option value="%">Todos</option>
-                                                    <?php
-                                                    $sql_lista_atendentes =
-                                                        "SELECT
-                                                            CASE WHEN p.nome IS NULL THEN '0'             ELSE u.id END AS 'id',
-                                                            CASE WHEN p.nome IS NULL THEN 'Sem Atendente' ELSE p.nome END AS 'nome'
-                                                            FROM chamados as ch
-                                                            LEFT JOIN usuarios as u ON ch.atendente_id = u.id
-                                                            LEFT JOIN pessoas as p ON p.id = u.pessoa_id
-                                                            GROUP BY ch.atendente_id
-                                                            order by p.nome ASC
-                                                            ";
-
-                                                    $resultado = mysqli_query($mysqli, $sql_lista_atendentes);
-                                                    while ($atendente = mysqli_fetch_object($resultado)) {
-                                                        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                                            $atdPesquisa = $_POST['atendentePesquisa'];
-                                                        } else {
-                                                            $atdPesquisa = "";
-                                                        }
-                                                        $selected = ($atdPesquisa == $atendente->id) ? 'selected' : '';
-                                                        echo "<option value='$atendente->id' $selected> $atendente->nome</option>";
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
                                         </div>
                                     <?php } ?>
 
@@ -331,56 +290,14 @@ if ($rowCount_permissions_submenu > 0) {
                                             ?>
                                         </div>
 
-                                        <div class="col-4">
-                                            <label for="statusChamado" class="form-label">Status</label>
-                                            <select id="statusChamado" name="statusChamado" class="form-select">
-
-                                                <option selected value="LIKE '%'">Todos</option>
-                                                <?php
-
-                                                $sql_status_chamados =
-                                                    "SELECT
-                                            cs.id as 'id',
-                                            cs.status_chamado as 'status'
-                                            FROM
-                                            chamados_status as cs
-                                            WHERE
-                                            cs.active = 1
-                                            order by
-                                            cs.status_chamado ASC";
-
-                                                $resultado = mysqli_query($mysqli, $sql_status_chamados);
-                                                while ($status = mysqli_fetch_object($resultado)) :
-                                                    echo "<option value='LIKE $status->id'> $status->status</option>";
-                                                endwhile;
-                                                ?>
-                                                <option value="!= 3">Não Fechados</option>
-                                                <?php if ($_SERVER["REQUEST_METHOD"] == 'POST') : ?>
-                                                    <script>
-                                                        let statusChamado = '<?= $_POST['statusChamado']; ?>'
-                                                        if (statusChamado.includes("LIKE '%")) {} else {
-                                                            document.querySelector("#statusChamado").value = statusChamado
-                                                        }
-                                                    </script>
-                                                <?php
-                                                endif;
-                                                ?>
-
+                                        <div class="col-3">
+                                            <label for="ordenarChamados" class="form-label">Ordenar</label>
+                                            <select name="ordenarChamados" id="ordenarChamados" class="form-select">
+                                                <option value="1" <?php echo ($ordenarChamadosSelecionado == 'chamado') ? 'selected' : ''; ?>>Por Chamados</option>
+                                                <option value="2" <?php echo ($ordenarChamadosSelecionado == 'prioridade') ? 'selected' : ''; ?>>Por Prioridade</option>
                                             </select>
                                         </div>
 
-                                        <?php
-                                        if ($atributoEmpresaPropria == 1) {
-                                        ?>
-                                            <div class="col-3">
-                                                <label for="ordenarChamados" class="form-label">Ordenar</label>
-                                                <select name="ordenarChamados" id="ordenarChamados" class="form-select">
-                                                    <option value="1" <?php echo ($ordenarChamadosSelecionado == 'chamado') ? 'selected' : ''; ?>>Por Chamados</option>
-                                                    <option value="2" <?php echo ($ordenarChamadosSelecionado == 'prioridade') ? 'selected' : ''; ?>>Por Prioridade</option>
-                                                </select>
-                                            </div>
-
-                                        <?php } ?>
                                     </div>
 
                                     <div class="col-lg-12 row">
@@ -414,22 +331,6 @@ if ($rowCount_permissions_submenu > 0) {
                                             endif;
                                             ?>
                                         </div>
-
-                                        <div class="col-4">
-                                            <label for="relatosPesquisa" class="form-label">Relatos</label>
-                                            <input name="relatosPesquisa" type="text" class="form-control" id="relatosPesquisa">
-
-                                            <?php if ($_SERVER["REQUEST_METHOD"] == 'POST') : ?>
-                                                <script>
-                                                    let chamado = '<?= $_POST['relatosPesquisa']; ?>'
-                                                    if (chamado == '%') {} else {
-                                                        document.querySelector("#relatosPesquisa").value = relatosChamado
-                                                    }
-                                                </script>
-                                            <?php
-                                            endif;
-                                            ?>
-                                        </div>
                                     </div>
 
                                     <div class="col-6">
@@ -439,149 +340,76 @@ if ($rowCount_permissions_submenu > 0) {
 
                                 <hr class="sidebar-divider">
 
-
                                 <div class="accordion" id="accordionFlushExample">
 
-                                    <?php if ($permite_interagir_chamados == 1) {
-                                        //EMPRESA
+                                    <?php if ($permite_atender_chamados_outras_empresas == 1) {
+                                        // QUALQUER EMPRESA
                                         $chamados_query =
-                                            "SELECT
-                                     ch.id as id_chamado,
-                                     ch.assuntoChamado as assunto,
-                                     ch.relato_inicial as relato_inicial,
-                                     ch.atendente_id as id_atendente,
-                                     ch.prioridade as prioridade,
-                                     ch.melhoria_recomendada as melhoria_recomendada,
-                                     date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
-                                     ch.in_execution as inExecution,
-                                     ch.status_id as id_status,
-                                     ch.data_prevista_conclusao as 'data_prevista_conclusao',
-                                     cs.status_chamado as statusChamado,
-                                     tc.tipo as tipoChamado,
-                                     emp.fantasia as fantasia,
-                                     p.nome as atendente,
-                                     s.service as service,
-                                     ise.item as itemService,
-                                        pes.nome as solicitante_nome
-                                     
-                                     FROM chamados as ch
-                                     LEFT JOIN empresas as emp ON ch.empresa_id = emp.id
-                                     LEFT JOIN tipos_chamados as tc ON ch.tipochamado_id  = tc.id
-                                     LEFT JOIN chamados_status as cs ON cs.id = ch.status_id
-                                     LEFT JOIN usuarios as u ON u.id = ch.atendente_id
-                                     LEFT JOIN pessoas as p ON p.id = u.pessoa_id
-                                     LEFT JOIN contract_service as cser ON  cser.id = ch.service_id
-                                     LEFT JOIN service as s ON s.id = cser.service_id 
-                                     LEFT JOIN contract_iten_service as cis ON cis.id = ch.iten_service_id
-                                     LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
-                                     LEFT JOIN usuarios as us ON us.id = ch.solicitante_id
-                                        LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
-                                     WHERE ch.empresa_id LIKE '$empresa_usuario'
-                                        AND ch.empresa_id LIKE '$empresa_id'
-                                        $whereAtendente
-                                        AND ch.status_id $statusChamado
-                                        AND ch.id LIKE '$idChamado'
-                                        AND ch.assuntoChamado LIKE '$assuntoChamado'
-                                        AND ch.relato_inicial LIKE '$relatoInicialPesquisa'
-                                        AND ch.solicitante_id LIKE '$solicitante_id'
-                                        ORDER BY $ordenarChamadosSelecionado";
-
-                                        $stmt = $pdo->prepare($chamados_query);
-                                        $stmt->execute();
-                                    } else if ($permite_interagir_chamados == 2) {
-                                        //EQUIPE
-                                        $chamados_query =
-                                            "SELECT
-                                         ch.id as id_chamado,
-                                         ch.assuntoChamado as assunto,
-                                         ch.relato_inicial as relato_inicial,
-                                         ch.atendente_id as id_atendente,
-                                         ch.prioridade as prioridade,
-                                         ch.melhoria_recomendada as melhoria_recomendada,
-                                         date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
-                                         ch.in_execution as inExecution,
-                                         ch.status_id as id_status,
-                                         ch.data_prevista_conclusao as 'data_prevista_conclusao',
-                                         cs.status_chamado as statusChamado,
-                                         tc.tipo as tipoChamado,
-                                         emp.fantasia as fantasia,
-                                         p.nome as atendente,
-                                         s.service as service,
-                                         ise.item as itemService,
-                                        pes.nome as solicitante_nome
-                                         
-                                         FROM chamados as ch
-                                         LEFT JOIN empresas as emp ON ch.empresa_id = emp.id
-                                         LEFT JOIN tipos_chamados as tc ON ch.tipochamado_id  = tc.id
-                                         LEFT JOIN chamados_status as cs ON cs.id = ch.status_id
-                                         LEFT JOIN usuarios as u ON u.id = ch.atendente_id
-                                         LEFT JOIN pessoas as p ON p.id = u.pessoa_id
-                                         LEFT JOIN contract_service as cser ON  cser.id = ch.service_id
-                                         LEFT JOIN service as s ON s.id = cser.service_id 
-                                         LEFT JOIN contract_iten_service as cis ON cis.id = ch.iten_service_id
-                                         LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
-                                         LEFT JOIN usuarios as us ON us.id = ch.solicitante_id
-                                        LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
-                                         WHERE ch.solicitante_equipe_id = :equipe_id
-                                        and ch.empresa_id LIKE '$empresa_id'
-                                        $whereAtendente
-                                        and ch.status_id $statusChamado
-                                        and ch.id LIKE '$idChamado'
-                                        and ch.assuntoChamado LIKE '$assuntoChamado'
-                                        AND ch.relato_inicial LIKE '$relatoInicialPesquisa'
-                                        AND ch.solicitante_id LIKE '$solicitante_id'
-                                        ORDER BY $ordenarChamadosSelecionado";
-
-                                        $stmt = $pdo->prepare($chamados_query);
-                                        $stmt->execute(array('equipe_id' => $equipe_id));
-                                    } else if ($permite_interagir_chamados == 3) {
-                                        //TODOS OS CHAMADOS
-                                        $chamados_query =
-                                            "SELECT
-                                        ch.id as id_chamado,
-                                        ch.assuntoChamado as assunto,
-                                        ch.relato_inicial as relato_inicial,
-                                        ch.atendente_id as id_atendente,
-                                        ch.prioridade as prioridade,
-                                        ch.melhoria_recomendada as melhoria_recomendada,
-                                        date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
-                                        ch.in_execution as inExecution,
-                                        ch.status_id as id_status,
-                                        ch.data_prevista_conclusao as 'data_prevista_conclusao',
-                                        cs.status_chamado as statusChamado,
-                                        tc.tipo as tipoChamado,
-                                        emp.fantasia as fantasia,
-                                        p.nome as atendente,
-                                        s.service as service,
-                                        ise.item as itemService,
-                                        pes.nome as solicitante_nome
-                                        
-                                        FROM chamados as ch
-                                        LEFT JOIN empresas as emp ON ch.empresa_id = emp.id
-                                        LEFT JOIN tipos_chamados as tc ON ch.tipochamado_id  = tc.id
-                                        LEFT JOIN chamados_status as cs ON cs.id = ch.status_id
-                                        LEFT JOIN usuarios as u ON u.id = ch.atendente_id
+                                            "SELECT c.id as 'id_chamado',
+                                            p.nome as 'solicitante_nome',
+                                            c.in_execution as 'inExecution',
+                                            c.status_id as id_status,
+                                            c.data_prevista_conclusao as data_prevista_conclusao,
+                                            c.melhoria_recomendada as melhoria_recomendada,
+                                            c.relato_inicial as relato_inicial,
+                                            date_format(c.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
+                                            c.assuntoChamado as assunto,
+                                            cs.status_chamado as statusChamado,
+                                            tc.tipo as tipoChamado,
+                                            e.fantasia as fantasia,
+                                            s.service as service,
+                                            ise.item as itemService
+                                        FROM chamados c
+                                        LEFT JOIN usuarios as u ON u.id = c.solicitante_id
                                         LEFT JOIN pessoas as p ON p.id = u.pessoa_id
-                                        LEFT JOIN contract_service as cser ON  cser.id = ch.service_id
+                                        LEFT JOIN tipos_chamados as tc ON tc.id = c.tipochamado_id
+                                        LEFT JOIN empresas as e ON e.id = c.empresa_id
+                                        LEFT JOIN contract_service as cser ON  cser.id = c.service_id
                                         LEFT JOIN service as s ON s.id = cser.service_id 
-                                        LEFT JOIN contract_iten_service as cis ON cis.id = ch.iten_service_id
+                                        LEFT JOIN contract_iten_service as cis ON cis.id = c.iten_service_id
                                         LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
-                                        LEFT JOIN usuarios as us ON us.id = ch.solicitante_id
-                                        LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
-                                        WHERE ch.empresa_id LIKE '$empresa_id'
-                                        $whereAtendente
-                                        and ch.status_id $statusChamado
-                                        and ch.id LIKE '$idChamado'
-                                        AND ch.relato_inicial LIKE '$relatoInicialPesquisa'
-                                        and ch.assuntoChamado LIKE '$assuntoChamado'
-                                        AND ch.solicitante_id LIKE '$solicitante_id'
+                                        LEFT JOIN chamados_status as cs ON cs.id = c.status_id
+                                        INNER JOIN chamados_autorizados_atender caa ON c.tipochamado_id = caa.tipo_id
+                                        WHERE caa.equipe_id = $equipe_id
+                                        ORDER BY $ordenarChamadosSelecionado";
 
-                                ORDER BY
-                                $ordenarChamadosSelecionado";
+                                    } else {
+                                        // QUALQUER EMPRESA
+                                        $chamados_query =
+                                            "SELECT c.id as 'id_chamado',
+                                            p.nome as 'solicitante_nome',
+                                            c.in_execution as 'inExecution',
+                                            c.status_id as id_status,
+                                            c.data_prevista_conclusao as data_prevista_conclusao,
+                                            c.melhoria_recomendada as melhoria_recomendada,
+                                            c.relato_inicial as relato_inicial,
+                                            date_format(c.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
+                                            c.assuntoChamado as assunto,
+                                            cs.status_chamado as statusChamado,
+                                            tc.tipo as tipoChamado,
+                                            e.fantasia as fantasia,
+                                            s.service as service,
+                                            ise.item as itemService
+                                        FROM chamados c
+                                        LEFT JOIN usuarios as u ON u.id = c.solicitante_id
+                                        LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                                        LEFT JOIN tipos_chamados as tc ON tc.id = c.tipochamado_id
+                                        LEFT JOIN empresas as e ON e.id = c.empresa_id
+                                        LEFT JOIN contract_service as cser ON  cser.id = c.service_id
+                                        LEFT JOIN service as s ON s.id = cser.service_id 
+                                        LEFT JOIN contract_iten_service as cis ON cis.id = c.iten_service_id
+                                        LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
+                                        LEFT JOIN chamados_status as cs ON cs.id = c.status_id
+                                        INNER JOIN chamados_autorizados_atender caa ON c.tipochamado_id = caa.tipo_id
+                                        WHERE caa.equipe_id = $equipe_id and e.id = $empresa_id
+                                        ORDER BY $ordenarChamadosSelecionado";
 
-                                        $stmt = $pdo->prepare($chamados_query);
-                                        $stmt->execute();
                                     }
+
+
+                                    $stmt = $pdo->prepare($chamados_query);
+                                    $stmt->execute();
+
 
                                     $cont = '1';
                                     while ($campos = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -769,7 +597,6 @@ if ($rowCount_permissions_submenu > 0) {
 
                     </div>
                 </div>
-
             </section>
 
         </main><!-- End #main -->
