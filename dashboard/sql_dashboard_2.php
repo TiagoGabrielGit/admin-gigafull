@@ -1,24 +1,9 @@
 <?php
 
-$uid = $_SESSION['id'];
-
-$dados_usuario =
-    "SELECT
-    u.empresa_id as empresaID,
-    u.permissao_gerenciar_incidentes as permissaoGerenciar
-    FROM
-    usuarios as u
-    LEFT JOIN
-    redeneutra_parceiro as rnp
-    ON
-    rnp.empresa_id = u.empresa_id
-    WHERE
-    u.id =   $uid
-";
-
-$r_dados_usuario = mysqli_query($mysqli, $dados_usuario);
-$c_dados_usuario = $r_dados_usuario->fetch_array();
-$empresaID = $c_dados_usuario['empresaID'];
+$usuarioID = $_SESSION['id'];
+$permite_interagir_chamados = $_SESSION['permite_interagir_chamados'];
+$empresa_usuario = $_SESSION['empresa_id'];
+$empresaID = $_SESSION['empresa_id'];
 
 $count_inc_gpon =
     "SELECT
@@ -81,25 +66,6 @@ $c_man_prog_af_backbone = $r_man_prog_af_backbone->fetch_array();
 
 $total_mp = (isset($c_man_prog_af_backbone['qtde']) && $c_man_prog_af_backbone['qtde'] > 0 ? $c_man_prog_af_backbone['qtde'] : 0) +
 (isset($c_man_prog_af_gpon['qtde']) && $c_man_prog_af_gpon['qtde'] > 0 ? $c_man_prog_af_gpon['qtde'] : 0);
-
-
-$incidentes_gpon_reincidentes =
-"SELECT gpo.olt_name, gpl.cidade, gpl.bairro, gop.slot, gop.pon, ic.classificacao, COUNT(*) AS quantidade_incidentes
-FROM incidentes AS i
-LEFT JOIN gpon_pon AS gop ON gop.id = i.pon_id
-LEFT JOIN gpon_olts AS gpo ON gpo.id = gop.olt_id
-LEFT JOIN gpon_localidades AS gpl ON gpl.pon_id = i.pon_id
-LEFT JOIN incidentes_classificacao AS ic ON ic.id = i.classificacao
-LEFT JOIN gpon_olts_interessados as goi ON goi.gpon_olt_id = gpo.id
-WHERE i.inicioIncidente >= DATE_SUB(NOW(), INTERVAL 60 DAY) 
-AND i.pon_id IS NOT NULL 
-AND gpl.active = 1
-AND goi.interessado_empresa_id = $empresaID
-GROUP BY gpo.olt_name, gpl.cidade, gpl.bairro, i.pon_id, i.classificacao
-HAVING quantidade_incidentes > 1
-ORDER BY quantidade_incidentes DESC";
-
-$r_incidentes_gpon_reincidentes = mysqli_query($mysqli, $incidentes_gpon_reincidentes);
 
 $count_inc_outros =
     "SELECT count(i.id) as qtde

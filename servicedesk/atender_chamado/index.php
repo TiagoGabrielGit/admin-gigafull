@@ -42,18 +42,6 @@ if ($rowCount_permissions_submenu > 0) {
 
     if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
-        if (isset($_POST['ordenarChamados'])) {
-            if ($_POST['ordenarChamados'] == 1) {
-                $ordenarChamadosSelecionado  = "c.status_id = 3, c.data_abertura DESC";
-            } else if ($_POST['ordenarChamados'] == 2) {
-                $ordenarChamadosSelecionado  = "c.status_id = 3, IFNULL(c.prioridade, 9999) ASC, c.data_abertura DESC";
-            } else {
-                $ordenarChamadosSelecionado  = "c.status_id = 3, IFNULL(c.prioridade, 9999) ASC, c.data_abertura DESC";
-            }
-        } else {
-            $ordenarChamadosSelecionado  = "c.status_id = 3, IFNULL(c.prioridade, 9999) ASC, c.data_abertura DESC";
-        }
-
         if (isset($_POST['empresaPesquisa'])) {
             if (!empty($_POST['empresaPesquisa'])) {
                 $empresa_id = $_POST['empresaPesquisa'];
@@ -114,7 +102,6 @@ if ($rowCount_permissions_submenu > 0) {
             $relatoInicialPesquisa = "%";
         }
     } else {
-        $ordenarChamadosSelecionado = "c.status_id = 3, IFNULL(c.prioridade, 9999) ASC, c.data_abertura DESC";
         $empresa_id = "%";
         $statusChamado = "LIKE '%'";
         $idChamado = "%";
@@ -188,27 +175,17 @@ if ($rowCount_permissions_submenu > 0) {
                                             "SELECT
                                         emp.id as id_empresa,
                                         emp.fantasia as fantasia_empresa
-                                        FROM
-                                        empresas as emp
-                                        WHERE
-                                        atributoCliente = '1'
-                                        or
-                                        atributoEmpresaPropria = '1'
-                                        ORDER BY
-                                        emp.fantasia ASC
-                                        ";
+                                        FROM empresas as emp
+                                        WHERE atributoCliente = '1' or atributoEmpresaPropria = '1'
+                                        ORDER BY emp.fantasia ASC";
                                     } else if ($permite_atender_chamados_outras_empresas == 0) {
                                         $sql_lista_empresas =
                                             "SELECT
                                         emp.id as id_empresa,
                                         emp.fantasia as fantasia_empresa
                                         FROM empresas as emp
-                                        WHERE atributoCliente = '1'
-                                        and emp.id = $empresa_usuario
-                                        or atributoEmpresaPropria = '1'
-                                        and emp.id = $empresa_usuario
-                                        ORDER BY emp.fantasia ASC
-                                        ";
+                                        WHERE atributoCliente = '1' and emp.id = $empresa_usuario or atributoEmpresaPropria = '1' and emp.id = $empresa_usuario
+                                        ORDER BY emp.fantasia ASC";
                                     }
 
 
@@ -290,17 +267,6 @@ if ($rowCount_permissions_submenu > 0) {
                                             ?>
                                         </div>
 
-                                        <div class="col-3">
-                                            <label for="ordenarChamados" class="form-label">Ordenar</label>
-                                            <select name="ordenarChamados" id="ordenarChamados" class="form-select">
-                                                <option value="1" <?php echo ($ordenarChamadosSelecionado == 'chamado') ? 'selected' : ''; ?>>Por Chamados</option>
-                                                <option value="2" <?php echo ($ordenarChamadosSelecionado == 'prioridade') ? 'selected' : ''; ?>>Por Prioridade</option>
-                                            </select>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="col-lg-12 row">
                                         <div class="col-4">
                                             <label for="chamadoPesquisa" class="form-label">Titulo Chamado</label>
                                             <input name="chamadoPesquisa" type="text" class="form-control" id="chamadoPesquisa">
@@ -347,6 +313,7 @@ if ($rowCount_permissions_submenu > 0) {
                                         $chamados_query =
                                             "SELECT c.id as 'id_chamado',
                                             p.nome as 'solicitante_nome',
+                                            pes.nome as 'atendente',
                                             c.in_execution as 'inExecution',
                                             c.status_id as id_status,
                                             c.data_prevista_conclusao as data_prevista_conclusao,
@@ -369,15 +336,19 @@ if ($rowCount_permissions_submenu > 0) {
                                         LEFT JOIN contract_iten_service as cis ON cis.id = c.iten_service_id
                                         LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
                                         LEFT JOIN chamados_status as cs ON cs.id = c.status_id
+                                        LEFT JOIN usuarios as us ON us.id = c.atendente_id
+                                        LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
                                         INNER JOIN chamados_autorizados_atender caa ON c.tipochamado_id = caa.tipo_id
-                                        WHERE caa.equipe_id = $equipe_id
-                                        ORDER BY $ordenarChamadosSelecionado";
+                                        WHERE caa.equipe_id = $equipe_id and c.status_id != 3 and (c.atendente_id = $uid or c.atendente_id is null)
+                                        ORDER BY c.id desc";
 
+                                        $stmt = $pdo->prepare($chamados_query);
                                     } else {
                                         // QUALQUER EMPRESA
                                         $chamados_query =
                                             "SELECT c.id as 'id_chamado',
                                             p.nome as 'solicitante_nome',
+                                            pes.nome as 'atendente',
                                             c.in_execution as 'inExecution',
                                             c.status_id as id_status,
                                             c.data_prevista_conclusao as data_prevista_conclusao,
@@ -400,14 +371,16 @@ if ($rowCount_permissions_submenu > 0) {
                                         LEFT JOIN contract_iten_service as cis ON cis.id = c.iten_service_id
                                         LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
                                         LEFT JOIN chamados_status as cs ON cs.id = c.status_id
-                                        INNER JOIN chamados_autorizados_atender caa ON c.tipochamado_id = caa.tipo_id
-                                        WHERE caa.equipe_id = $equipe_id and e.id = $empresa_id
-                                        ORDER BY $ordenarChamadosSelecionado";
 
+                                        LEFT JOIN usuarios as us ON us.id = c.atendente_id
+                                        LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
+                                        INNER JOIN chamados_autorizados_atender caa ON c.tipochamado_id = caa.tipo_id
+                                        WHERE caa.equipe_id = $equipe_id and e.id LIKE '$empresa_id' and c.status_id != 3  and (c.atendente_id = $uid or c.atendente_id is null)
+                                        ORDER BY c.id desc";
+
+                                        $stmt = $pdo->prepare($chamados_query);
                                     }
 
-
-                                    $stmt = $pdo->prepare($chamados_query);
                                     $stmt->execute();
 
 
@@ -433,9 +406,7 @@ if ($rowCount_permissions_submenu > 0) {
 
                                         if ($campos['data_prevista_conclusao'] !== null) {
                                             $dataPrevistaConclusao = strtotime($campos['data_prevista_conclusao']); // Data prevista em formato timestamp
-                                            // Restante do seu código que utiliza $timestamp
                                         } else {
-                                            // Lógica para lidar com o caso em que $datetime é nulo
                                         }
 
 

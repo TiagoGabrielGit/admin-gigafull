@@ -92,6 +92,8 @@ if ($rowCount_permissions_submenu > 0) {
 
                                             if ($tipos_chamados->permite_data_entrega == 1) {
                                                 $data_minima = date('Y-m-d H:i', strtotime("+ $horas_prazo_entrega hours"));
+                                            } else {
+                                                $data_minima = "";
                                             }
                                         }
                                         ?>

@@ -1,24 +1,9 @@
-<?php
+<?php 
 
-$uid = $_SESSION['id'];
-
-$dados_usuario =
-    "SELECT
-    u.empresa_id as empresaID,
-    u.permissao_gerenciar_incidentes as permissaoGerenciar
-    FROM
-    usuarios as u
-    LEFT JOIN
-    redeneutra_parceiro as rnp
-    ON
-    rnp.empresa_id = u.empresa_id
-    WHERE
-    u.id =   $uid
-";
-
-$r_dados_usuario = mysqli_query($mysqli, $dados_usuario);
-$c_dados_usuario = $r_dados_usuario->fetch_array();
-$empresaID = $c_dados_usuario['empresaID'];
+$usuarioID = $_SESSION['id'];
+$permite_interagir_chamados = $_SESSION['permite_interagir_chamados'];
+$empresa_usuario = $_SESSION['empresa_id'];
+$empresaID = $_SESSION['empresa_id'];
 
 $count_inc_gpon =
     "SELECT

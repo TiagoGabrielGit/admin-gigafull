@@ -32,7 +32,7 @@ require "../includes/menu.php";
                     # Excluido tabela `chamados_autorizados_by_company`;<br>
                     # Editado nome da coluna de chamados_autorizados_by_equipe para chamados_autorizados_abertura;<br>
                     # Criado a tabela chamados_autorizados_atender;<br>
-                    # Excluido coluna chamados_autorizados_mobile_by_equipe;<br>
+                    # Excluido tabela chamados_autorizados_mobile_by_equipe;<br>
 
                     <br><strong>Backlog</strong><br>
                     # Solicitar aferição via control;<br>

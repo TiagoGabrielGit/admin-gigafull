@@ -1,7 +1,6 @@
-<?php
+<?php 
 
 $usuarioID = $_SESSION['id'];
-$tipo_usuario = $_SESSION['tipo_usuario'];
 $permite_interagir_chamados = $_SESSION['permite_interagir_chamados'];
 $empresa_usuario = $_SESSION['empresa_id'];
 $empresaID = $_SESSION['empresa_id'];

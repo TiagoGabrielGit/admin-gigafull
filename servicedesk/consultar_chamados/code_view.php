@@ -161,7 +161,7 @@ if ($chamado['data_prevista_conclusao'] === null) {
                         <div class="col-lg-4 text-center">
 
                             <div class="row">
-                                <div class="col-12 " style="margin-top: 5px;">
+                                <div class="col-12" style="margin-top: 5px;">
                                     <?php
                                     if ($c_valida_competencia == null && $id_usuario != $chamado['id_atendente'] && $chamado['status'] != "Fechado") {
                                         if ($chamado['in_execution'] == '0' && $_SESSION['permite_atender_chamados'] == 1) {
@@ -175,12 +175,8 @@ if ($chamado['data_prevista_conclusao'] === null) {
 
                                         <button title="Inserir um relato" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#basicModal"><i class="bi bi-pencil-square"></i></button>
 
-                                    <?php }  ?>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12 " style="margin-top: 5px;">
-                                    <?php if ($atributoEmpresaPropria == 1) { ?>
+                                    <?php }
+                                    if ($atributoEmpresaPropria == 1) { ?>
 
                                         <button title="Gerar relatório do chamado" type="button" class="btn btn-info">
                                             <a href="/tcpdf/export/relatorio_chamados.php?id=<?= $id_chamado ?>" target="_blank">
