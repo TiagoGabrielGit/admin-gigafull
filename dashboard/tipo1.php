@@ -24,9 +24,9 @@ require "sql_dashboard_1.php";
                                             <input type="hidden" name="statusChamado" value="!= 3">
 
                                             <button type="submit" style=" background: none; border: none; cursor: pointer;">
-                                                <?= $campos_chamados_abertos['quantidade'] ?>
+                                                <?= $quantidade_chamados_abertos ?>
                                                 <?php
-                                                if ($campos_chamados_abertos['quantidade'] < 2) {
+                                                if ($quantidade_chamados_abertos < 2) {
                                                     echo "<span>Chamado</span>";
                                                 } else {
                                                     echo "<span>Chamados</span>";
@@ -56,9 +56,9 @@ require "sql_dashboard_1.php";
                                             <input type="hidden" name="statusChamado" value="!= 3">
 
                                             <button type="submit" style=" background: none; border: none; cursor: pointer;">
-                                                <?= $campos_chamados_sematendentes['quantidade'] ?>
+                                                <?= $quantidade_chamados_sem_atendente ?>
                                                 <?php
-                                                if ($campos_chamados_sematendentes['quantidade'] < 2) {
+                                                if ($quantidade_chamados_sem_atendente < 2) {
                                                     echo "<span>Chamado</span>";
                                                 } else {
                                                     echo "<span>Chamados</span>";
@@ -87,9 +87,9 @@ require "sql_dashboard_1.php";
                                             <input type="hidden" name="statusChamado" value="!= 3">
 
                                             <button type="submit" style=" background: none; border: none; cursor: pointer;">
-                                                <?= $campos_chamados_meus['quantidade'] ?>
+                                                <?= $quantidade_meus_chamados ?>
                                                 <?php
-                                                if ($campos_chamados_meus['quantidade'] < 2) {
+                                                if ($quantidade_meus_chamados < 2) {
                                                     echo '<span>Chamado</span>';
                                                 } else {
                                                     echo '<span>Chamados</span>';
@@ -282,41 +282,43 @@ require "sql_dashboard_1.php";
             </div>
 
             <div class="col-lg-5">
-                <div class="card recent-sales overflow-auto">
-                    <div class="card-body">
-                        <h5 class="card-title">Últimos 15 chamados</h5>
-                        <table class="table table-striped" id="styleTable">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Número</th>
-                                    <th scope="col">Cliente</th>
-                                    <th scope="col">Chamado</th>
-                                    <th scope="col">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                while ($campos_ultimos_30_chamados = $r_ultimos_30_chamados->fetch_array()) { ?>
-                                    <tr onclick="location.href='/servicedesk/consultar_chamados/view.php?id=<?= $campos_ultimos_30_chamados['idChamado'] ?>'">
-                                        <td><?= $campos_ultimos_30_chamados['idChamado'] ?></th>
-                                        <td><?= $campos_ultimos_30_chamados['fantasia'] ?></td>
-                                        <td><?= $campos_ultimos_30_chamados['assuntoChamado'] ?></td>
-                                        <?php
-                                        $statusChamado = $campos_ultimos_30_chamados['statusChamado'];
-                                        if ($statusChamado == 1) { ?>
-                                            <td><span class="badge bg-success">Aberto</span></td>
-                                        <?php } else if ($statusChamado == 2) { ?>
-                                            <td><span class="badge bg-info">Andamento</span></td>
-                                        <?php } else if ($statusChamado == 3) { ?>
-                                            <td><span class="badge bg-secondary">Fechado</span></td>
-                                        <?php } ?>
+                <?php if ($permite_interagir_chamados != 0) { ?>
+                    <div class="card recent-sales overflow-auto">
+                        <div class="card-body">
+                            <h5 class="card-title">Últimos 15 chamados</h5>
+                            <table class="table table-striped" id="styleTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Número</th>
+                                        <th scope="col">Cliente</th>
+                                        <th scope="col">Chamado</th>
+                                        <th scope="col">Status</th>
                                     </tr>
-                                <?php
-                                } ?>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    while ($campos_ultimos_30_chamados = $r_ultimos_30_chamados->fetch_array()) { ?>
+                                        <tr onclick="location.href='/servicedesk/consultar_chamados/view.php?id=<?= $campos_ultimos_30_chamados['idChamado'] ?>'">
+                                            <td><?= $campos_ultimos_30_chamados['idChamado'] ?></th>
+                                            <td><?= $campos_ultimos_30_chamados['fantasia'] ?></td>
+                                            <td><?= $campos_ultimos_30_chamados['assuntoChamado'] ?></td>
+                                            <?php
+                                            $statusChamado = $campos_ultimos_30_chamados['statusChamado'];
+                                            if ($statusChamado == 1) { ?>
+                                                <td><span class="badge bg-success">Aberto</span></td>
+                                            <?php } else if ($statusChamado == 2) { ?>
+                                                <td><span class="badge bg-info">Andamento</span></td>
+                                            <?php } else if ($statusChamado == 3) { ?>
+                                                <td><span class="badge bg-secondary">Fechado</span></td>
+                                            <?php } ?>
+                                        </tr>
+                                    <?php
+                                    } ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
+                <?php } ?>
 
                 <div class="card recent-sales overflow-auto">
                     <div class="card-body">

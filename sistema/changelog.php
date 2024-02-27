@@ -27,13 +27,13 @@ require "../includes/menu.php";
 
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado o submenu id 54;<br>
-                    # Criado a tabela usuarios_permissoes;<br>
+                    # Criado a tabela usuarios_permissoes; (Replicar informacoes da tabela usuarios)<br>
                     # Excluido algumas colunas da tabela usuarios;<br>
                     # Excluido tabela `chamados_autorizados_by_company`;<br>
                     # Editado nome da coluna de chamados_autorizados_by_equipe para chamados_autorizados_abertura;<br>
                     # Criado a tabela chamados_autorizados_atender;<br>
                     # Excluido coluna chamados_autorizados_mobile_by_equipe;<br>
-                    
+
                     <br><strong>Backlog</strong><br>
                     # Solicitar aferição via control;<br>
                     # Minha dashboard;<br>
