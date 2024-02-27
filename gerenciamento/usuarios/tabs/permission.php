@@ -79,7 +79,7 @@
                         <option value="1">Permite interagir nos chamados da empresa do usuário</option>
                         <option value="2">Permite interagir nos chamados da equipe do usuário</option>
                         <option selected value="3">Permite interagir em qualquer chamado</option>
-                        <option  value="0">Não</option>
+                        <option value="0">Não</option>
                     <?php } else if ($campos['permite_interagir_chamados'] == 0) { ?>
                         <option value="1">Permite interagir nos chamados da empresa do usuário</option>
                         <option value="2">Permite interagir nos chamados da equipe do usuário</option>

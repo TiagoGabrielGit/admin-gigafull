@@ -48,6 +48,7 @@ if ($rowCount_permissions_submenu > 0) {
         up.permite_interagir_chamados as 'permite_interagir_chamados',
         up.permite_encaminhar_chamados as 'permite_encaminhar_chamados',
         up.permite_gerenciar_interessados as 'permite_gerenciar_interessados',
+        up.permite_gerenciar_incidente as 'permite_gerenciar_incidente',
         up.permite_selecionar_competencias_abertura_chamado as 'permite_selecionar_competencias_abertura_chamado',
         up.permite_selecionar_solicitantes_abertura_chamado as 'permite_selecionar_solicitantes_abertura_chamado',
         up.permite_selecionar_atendente_abertura_chamado as 'permite_selecionar_atendente_abertura_chamado',
