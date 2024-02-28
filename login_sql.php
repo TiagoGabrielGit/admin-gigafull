@@ -13,6 +13,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
     u.id as id,
     p.nome as nome,
     p.email as email,
+    p.id as id_pessoa,
     u.senha as senha,
     u.empresa_id as empresa_id,
     up.permite_interagir_chamados as 'permite_interagir_chamados',
@@ -33,12 +34,14 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
     u.perfil_id as perfil,
     u.active as active,
     ei.equipe_id as equipe_id,
-    pe.perfil as nome_perfil
+    pe.perfil as nome_perfil,
+    e.atributoEmpresaPropria as atributoEmpresaPropria
   FROM usuarios as u
   LEFT JOIN pessoas as p ON p.id = u.pessoa_id
   LEFT JOIN perfil as pe ON u.perfil_id = pe.id
   LEFT JOIN equipes_integrantes as ei ON u.id = ei.integrante_id
   LEFT JOIN usuarios_permissoes as up ON u.id = up.usuario_id
+  LEFT JOIN empresas as e ON e.id = u.empresa_id
     WHERE p.email = '$email' AND u.senha = '$senha'";
 
   $resultado = mysqli_query($mysqli, $sql_code) or die("Erro ao retornar dados");
@@ -75,6 +78,8 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       $_SESSION['permite_alterar_configuracoes_chamado'] = $usuario['permite_alterar_configuracoes_chamado'];
       $_SESSION['permite_visualizar_protocolo_erp'] = $usuario['permite_visualizar_protocolo_erp'];
       $_SESSION['permite_configurar_privacidade_credenciais'] = $usuario['permite_configurar_privacidade_credenciais'];
+      $_SESSION['atributoEmpresaPropria'] = $usuario['atributoEmpresaPropria'];
+      $_SESSION['id_pessoa'] = $usuario['id_pessoa'];
 
       $empresaID = $_SESSION['empresa_id'];
       $_SESSION['equipe_id'] = $usuario['equipe_id'];

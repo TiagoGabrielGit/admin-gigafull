@@ -14,7 +14,8 @@ if (isset($_SESSION['id'])) {
             $stmt->execute(['novo_tipo_id' => $novo_tipo_id, 'chamado_id' => $chamado_id]);
 
             // Redirecionar para a página de detalhes do chamado ou outra página
-            header("Location: /servicedesk/consultar_chamados/view.php?id=$chamado_id");
+            header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamado_id");
+
             exit;
         }
     }

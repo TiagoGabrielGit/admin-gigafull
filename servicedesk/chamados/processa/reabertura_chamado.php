@@ -26,7 +26,7 @@ if (isset($_SESSION['id'])) {
         $stmt_insert->execute();
 
         // Redirecionar para a página de visualização do chamado
-        header("Location: /servicedesk/consultar_chamados/view.php?id=$chamado_id");
+        header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamado_id");
         exit();
     } else {
         header("Location: /index.php");

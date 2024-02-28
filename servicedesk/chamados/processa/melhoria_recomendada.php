@@ -1,6 +1,6 @@
 <?php
 session_start();
-if ($_SESSION['id'] && $_SERVER["REQUEST_METHOD"] == "POST") {
+if (isset($_SESSION['id']) && $_SERVER["REQUEST_METHOD"] == "POST") {
     // Verificando se o campo conf_id_chamado foi enviado pelo formulário
     if (isset($_POST["conf_id_chamado"])) {
         $id_chamado = $_POST["conf_id_chamado"];
@@ -22,7 +22,8 @@ if ($_SESSION['id'] && $_SERVER["REQUEST_METHOD"] == "POST") {
                 ':melhoria_recomendada' => $melhoria_recomendada,
                 ':id_chamado' => $id_chamado
             ]);
-            header("Location: /servicedesk/consultar_chamados/view.php?id=$id_chamado");
+            header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$id_chamado");
+
             exit();
         } catch (PDOException $e) {
             echo "Erro na atualização: " . $e->getMessage();

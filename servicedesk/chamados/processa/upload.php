@@ -19,13 +19,13 @@ if (isset($_SESSION['id'])) {
 
         if (in_array($fileType, $allowedTypes)) {
             if (move_uploaded_file($uploadedFile['tmp_name'], $targetPath)) {
-                header("Location: /servicedesk/consultar_chamados/view.php?id=$chamadoID");
+                header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamadoID");
                 exit;
             } else {
-                header("Location: /servicedesk/consultar_chamados/view.php?id=$chamadoID");
+                header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamadoID");
                 exit;            }
         } else {
-            header("Location: /servicedesk/consultar_chamados/view.php?id=$chamadoID");
+            header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamadoID");
             exit;        }
     }
 }

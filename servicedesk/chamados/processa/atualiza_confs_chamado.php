@@ -23,10 +23,10 @@ if ($_SESSION['id'] && $_SERVER["REQUEST_METHOD"] == "POST") {
         // Execute a consulta SQL
         $stmt->execute();
 
-        header("Location: /servicedesk/consultar_chamados/view.php?id=$id_chamado");
+        header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$id_chamado");
         exit;
     } catch (PDOException $e) {
-        header("Location: /servicedesk/consultar_chamados/view.php?id=$id_chamado");
+        header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$id_chamado");
         exit;
     }
 

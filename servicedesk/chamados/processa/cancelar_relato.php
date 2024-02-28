@@ -1,6 +1,6 @@
 <?php
 session_start();
-if ($_SESSION['id']) {
+if (isset($_SESSION['id'])) {
     if ($_SERVER["REQUEST_METHOD"] === "GET") {
         $chamadoID = $_GET['idChamado'];
 
@@ -28,16 +28,16 @@ if ($_SESSION['id']) {
                 $affectedRowsDelete = $stmt_delete->rowCount();
                 if ($affectedRowsDelete > 0) {
                     //echo "Cancelado execução de chamado e realizado exclusão de rascunho de relato.";
-                    header("Location: /servicedesk/consultar_chamados/view.php?id=$chamadoID&success=1");
+                    header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamadoID&success=1");
                     exit;
                 } else {
                     //echo "Cancelada execuç~eo de chamado e nenhum rascunho de chamado encontrado com o ID informado.";
-                    header("Location: /servicedesk/consultar_chamados/view.php?id=$chamadoID&success=2");
+                    header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamadoID&success=2");
                     exit;
                 }
             } else {
                 //echo "Nenhum chamado encontrado com o ID informado.";
-                header("Location: /servicedesk/consultar_chamados/view.php?id=$chamadoID&error=1");
+                header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamadoID&error=1");
                 exit;
             }
         } catch (PDOException $e) {

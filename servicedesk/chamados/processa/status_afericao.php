@@ -15,18 +15,18 @@ if (isset($_SESSION['id'])) {
                 $stmt_update_afericao->bindParam(':relato', $relato);
                 $stmt_update_afericao->bindParam(':chamado_id', $chamado_id);
                 if ($stmt_update_afericao->execute()) {
-                    header("Location: /servicedesk/consultar_chamados/view.php?id=$chamado_id");
+                    header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamado_id");
                     exit;
                 } else {
-                    header("Location: /servicedesk/consultar_chamados/view.php?id=$chamado_id");
+                    header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamado_id");
                     exit;
                 }
             } else {
-                header("Location: /servicedesk/consultar_chamados/view.php?id=$chamado_id");
+                header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamado_id");
                 exit;
             }
         } else {
-            header("Location: /servicedesk/consultar_chamados/view.php?id=$chamado_id");
+            header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamado_id");
             exit;
         }
     } else {

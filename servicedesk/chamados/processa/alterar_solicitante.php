@@ -20,7 +20,8 @@ if (isset($_SESSION['id'])) {
         $stmt->execute(['novo_solicitante_id' => $novo_solicitante_id, 'equipe_id' => $solicitante_equipe_id, 'chamado_id' => $chamado_id]);
 
         // Redirecionar para a página de detalhes do chamado ou outra página
-        header("Location: /servicedesk/consultar_chamados/view.php?id=$chamado_id");
+        header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamado_id");
+
         exit;
     }
 } else {
