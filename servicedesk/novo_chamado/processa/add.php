@@ -140,10 +140,10 @@ if (isset($_SESSION['id'])) { //1
 
                             // Verifica se ocorreu algum erro durante a requisição
                             if ($response_mail === false || $response_telegram === false) {
-                                header("Location: /servicedesk/consultar_chamados/view.php?id=$id_chamado");
+                                header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$id_chamado");
                                 exit; // Encerra a execução do script após o redirecionamento
                             } else {
-                                header("Location: /servicedesk/consultar_chamados/view.php?id=$id_chamado");
+                                header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$id_chamado");
                                 exit; // Encerra a execução do script após o redirecionamento
                             }
                         } else {
@@ -251,10 +251,10 @@ if (isset($_SESSION['id'])) { //1
 
                             // Verifica se ocorreu algum erro durante a requisição
                             if ($response_mail === false || $response_telegram === false) {
-                                header("Location: /servicedesk/consultar_chamados/view.php?id=$id_chamado");
+                                header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$id_chamado");
                                 exit; // Encerra a execução do script após o redirecionamento
                             } else {
-                                header("Location: /servicedesk/consultar_chamados/view.php?id=$id_chamado");
+                                header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$id_chamado");
                                 exit; // Encerra a execução do script após o redirecionamento
                             }
                         } else {

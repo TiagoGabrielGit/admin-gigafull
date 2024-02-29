@@ -30,9 +30,8 @@ if ($rowCount_permissions_submenu > 0) {
 
     $dados_usuario =
         "SELECT
-    u.empresa_id as empresaID,
-    u.permissao_gerenciar_incidentes as permissaoGerenciar
-    FROM
+    u.empresa_id as empresaID
+        FROM
     usuarios as u
     LEFT JOIN
     redeneutra_parceiro as rnp
@@ -45,7 +44,7 @@ if ($rowCount_permissions_submenu > 0) {
     $r_dados_usuario = mysqli_query($mysqli, $dados_usuario);
     $c_dados_usuario = $r_dados_usuario->fetch_array();
     $empresaID = $c_dados_usuario['empresaID'];
-    $permissaoGerenciar = $c_dados_usuario['permissaoGerenciar'];
+    $permissaoGerenciar = $_SESSION['permite_gerenciar_incidente'];
 
     $tab_gpon = "show active";
     $nav_gpon = "active";

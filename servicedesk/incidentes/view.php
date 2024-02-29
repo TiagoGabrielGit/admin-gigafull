@@ -10,16 +10,9 @@ $uid = $_SESSION['id'];
 $permissions_submenu =
     "SELECT 
 	u.perfil_id
-FROM 
-	usuarios u
-JOIN 
-	perfil_permissoes_submenu pp
-ON 
-	u.perfil_id = pp.perfil_id
-WHERE
-	u.id = $uid
-AND 
-	pp.url_submenu = $submenu_id";
+FROM usuarios u
+JOIN perfil_permissoes_submenu pp ON u.perfil_id = pp.perfil_id
+WHERE u.id = $uid AND pp.url_submenu = $submenu_id";
 
 $exec_permissions_submenu = $pdo->prepare($permissions_submenu);
 $exec_permissions_submenu->execute();
@@ -32,8 +25,7 @@ if ($rowCount_permissions_submenu > 0) {
 
     $dados_usuario =
         "SELECT
-    u.empresa_id as empresaID,
-    u.permissao_gerenciar_incidentes as gerenciarIncidentes
+    u.empresa_id as empresaID
     FROM
     usuarios as u
     WHERE
@@ -43,7 +35,7 @@ if ($rowCount_permissions_submenu > 0) {
     $r_dados_usuario = mysqli_query($mysqli, $dados_usuario);
     $c_dados_usuario = $r_dados_usuario->fetch_array();
     $empresaID = $c_dados_usuario['empresaID'];
-    $gerenciarIncidentes = $c_dados_usuario['gerenciarIncidentes'];
+    $gerenciarIncidentes = $_SESSION['permite_gerenciar_incidente'];
 
     if ($gerenciarIncidentes == 1) {
 

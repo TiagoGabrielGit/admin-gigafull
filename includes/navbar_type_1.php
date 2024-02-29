@@ -15,11 +15,6 @@ require "validaRotina.php";
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
-            <br>
-            <a class="nav-link " href="/my/my_service_desk.php?">
-                <i class="bi bi-grid"></i>
-                <span>Meu Service Desk</span>
-            </a>
         </li>
 
         <?php if ($c_valida_CRM['c'] > 0) { ?>

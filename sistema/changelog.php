@@ -25,6 +25,7 @@ require "../includes/menu.php";
 
                     <br><strong>Melhorias</strong><br>
                     # Corrigido BUG para abrir pagina de incidentes abertos;<br>
+                    # Corrigigo BUGs dos incidentes;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
 

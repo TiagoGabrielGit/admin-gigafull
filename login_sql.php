@@ -28,6 +28,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
     up.permite_alterar_configuracoes_chamado as 'permite_alterar_configuracoes_chamado',
     up.permite_visualizar_protocolo_erp as 'permite_visualizar_protocolo_erp',
     up.permite_configurar_privacidade_credenciais as 'permite_configurar_privacidade_credenciais',
+    up.permite_gerenciar_incidente as 'permite_gerenciar_incidente',
     u.reset_password as reset_password,
     u.tipo_usuario as tipo_usuario,
     u.dashboard as dashboard,

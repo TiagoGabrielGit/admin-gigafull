@@ -21,18 +21,7 @@ $rowCount_permissions_submenu = $exec_permissions_submenu->rowCount();
 if ($rowCount_permissions_submenu > 0) {
     require "../../conexoes/conexao.php";
 
-    $dados_usuario =
-        "SELECT
-    u.permissao_gerenciar_incidentes as permissaoGerenciar
-    FROM usuarios as u
-    LEFT JOIN empresas as e ON e.id = u.empresa_id
-    LEFT JOIN redeneutra_parceiro as rnp ON rnp.empresa_id = u.empresa_id
-    WHERE u.id =   $uid";
-
-    $r_dados_usuario = mysqli_query($mysqli, $dados_usuario);
-    $c_dados_usuario = $r_dados_usuario->fetch_array();
-
-    $permissaoGerenciar = $c_dados_usuario['permissaoGerenciar'];
+    $permissaoGerenciar = $_SESSION['permite_gerenciar_incidente'];
     if ($permissaoGerenciar == 1) {
         $idIncidente = $_POST['idIncidente'];
         $sql =

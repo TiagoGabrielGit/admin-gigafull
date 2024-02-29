@@ -135,7 +135,7 @@
                                 <?php if ($row['privacidade'] == 2) : ?>
                                     <?php
 
-                                    if ($_SESSION['permissao_privacidade_credenciais'] == 1) { ?>
+                                    if ($_SESSION['permite_configurar_privacidade_credenciais'] == 1) { ?>
                                         <a onclick="configurarPrivacidade(<?= $id ?>)" data-bs-toggle="modal" data-bs-target="#modalConfigurarPrivacidade"><input type="button" class="btn btn-dark btn-sm" value="Configurar Privacidade"></input></a>
                                     <?php }
                                     ?>

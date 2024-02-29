@@ -18,7 +18,7 @@ require "sql_dashboard_1.php";
                                 <div class="ps-3">
                                     <h4>
 
-                                        <form action="/servicedesk/consultar_chamados/index.php" method="POST">
+                                        <form action="/servicedesk/chamados/consultar_chamados.php" method="POST">
 
                                             <input type="hidden" name="atendentePesquisa" value="%">
                                             <input type="hidden" name="statusChamado" value="!= 3">
@@ -50,7 +50,7 @@ require "sql_dashboard_1.php";
                                 </div>
                                 <div class="ps-3">
                                     <h4>
-                                        <form action="/servicedesk/consultar_chamados/index.php" method="POST">
+                                        <form action="/servicedesk/chamados/consultar_chamados.php" method="POST">
 
                                             <input type="hidden" name="atendentePesquisa" value="0">
                                             <input type="hidden" name="statusChamado" value="!= 3">
@@ -82,7 +82,7 @@ require "sql_dashboard_1.php";
                                 </div>
                                 <div class="ps-3">
                                     <h4>
-                                        <form action="/servicedesk/consultar_chamados/index.php" method="POST">
+                                        <form action="/servicedesk/chamados/consultar_chamados.php" method="POST">
                                             <input type="hidden" name="atendentePesquisa" value="<?= $_SESSION['id'] ?>">
                                             <input type="hidden" name="statusChamado" value="!= 3">
 
@@ -298,7 +298,7 @@ require "sql_dashboard_1.php";
                                 <tbody>
                                     <?php
                                     while ($campos_ultimos_30_chamados = $r_ultimos_30_chamados->fetch_array()) { ?>
-                                        <tr onclick="location.href='/servicedesk/consultar_chamados/view.php?id=<?= $campos_ultimos_30_chamados['idChamado'] ?>'">
+                                        <tr onclick="location.href='/servicedesk/chamados/visualizar_chamado.php?id=<?= $campos_ultimos_30_chamados['idChamado'] ?>'">
                                             <td><?= $campos_ultimos_30_chamados['idChamado'] ?></th>
                                             <td><?= $campos_ultimos_30_chamados['fantasia'] ?></td>
                                             <td><?= $campos_ultimos_30_chamados['assuntoChamado'] ?></td>
