@@ -54,7 +54,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
 
       if (!isset($_SESSION)) {
         session_start();
-      }
+      } 
 
       $_SESSION['id'] = $usuario['id'];
       $_SESSION['nome'] = $usuario['nome'];
@@ -80,6 +80,9 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       $_SESSION['permite_configurar_privacidade_credenciais'] = $usuario['permite_configurar_privacidade_credenciais'];
       $_SESSION['atributoEmpresaPropria'] = $usuario['atributoEmpresaPropria'];
       $_SESSION['id_pessoa'] = $usuario['id_pessoa'];
+      $_SESSION['permite_gerenciar_incidente'] = $usuario['permite_gerenciar_incidente'];
+
+      
 
       $empresaID = $_SESSION['empresa_id'];
       $_SESSION['equipe_id'] = $usuario['equipe_id'];

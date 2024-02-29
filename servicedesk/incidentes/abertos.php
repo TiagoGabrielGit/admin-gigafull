@@ -31,8 +31,6 @@ if ($rowCount_permissions_submenu > 0) {
     $dados_usuario =
         "SELECT
     u.empresa_id as empresaID,
-    u.permissao_gerenciar_incidentes as permissaoGerenciar,
-    u.permissao_protocolo_erp as permissaoProtocoloERP,
     e.atributoEmpresaPropria  as atributoEmpresaPropria
     FROM usuarios as u
     LEFT JOIN empresas as e ON e.id = u.empresa_id
@@ -45,8 +43,8 @@ if ($rowCount_permissions_submenu > 0) {
     $empresaID = $c_dados_usuario['empresaID'];
     $empresaPropria = $c_dados_usuario['atributoEmpresaPropria'];
 
-    $permissaoGerenciar = $c_dados_usuario['permissaoGerenciar'];
-    $permissaoProtocoloERP = $c_dados_usuario['permissaoProtocoloERP'];
+    $permissaoGerenciar = $_SESSION['permite_gerenciar_incidente'];
+    $permissaoProtocoloERP = $_SESSION['permite_visualizar_protocolo_erp'];
 
     $tab_gpon = "show active";
     $nav_gpon = "active";
