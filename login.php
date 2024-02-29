@@ -44,6 +44,12 @@
 
       <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
         <div class="container">
+          <div class="text-center alert alert-warning alert-dismissible fade show" role="alert">
+            Informamos que no dia 29/02/2024, o sistema estara passando por algumas melhorias e podera sofrer instabilidades.
+            <br>
+            Qualquer dificuldades, por favor informe nossa equipe!
+          </div>
+
           <div class="row justify-content-center">
             <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 

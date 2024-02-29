@@ -17,14 +17,15 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading13-2">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse13-2" aria-expanded="false" aria-controls="collapse13-2">
-                    Versão 13.2 - 21/02/2024
+                    Versão 13.2 - 29/02/2024
                   </button>
                 </h2>
                 <div id="collapse13-2" class="accordion-collapse collapse" aria-labelledby="heading13-2" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
-
+                    # Reestruturação no código e banco de usuários e chamados;<br>
+                    
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado o submenu id 54;<br>
                     # Criado a tabela usuarios_permissoes; (Replicar informacoes da tabela usuarios)<br>
