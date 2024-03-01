@@ -82,7 +82,7 @@ if ($statusEquipe  == 'Ativo') {
                         <hr class="sidebar-divider">
                         <div class="row">
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-6"> <!-- Adiciona integrante na equipe -->
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">Adicionar integrante na equipe</h5>
@@ -128,7 +128,7 @@ if ($statusEquipe  == 'Ativo') {
                                 </div>
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-6"> <!-- Remove integrante na equipe -->
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">Remover integrante da equipe</h5>
@@ -183,65 +183,83 @@ if ($statusEquipe  == 'Ativo') {
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row"> <!-- Chamados permitidos abrir -->
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">Chamados Permitidos Abertura</h5>
-                                        <form>
-                                            <div class="row mb-4">
-                                                <?php
-                                                $chamados =
-                                                    "SELECT
-                                                        tc.id as idTipoChamado,
-                                                        tc.tipo as tipoChamado
-                                                    FROM
-                                                        tipos_chamados as tc
-                                                    WHERE
-                                                        tc.active = 1
-                                                    ORDER BY 
-                                                        tc.tipo ASC";
-                                                $r_chamados = mysqli_query($mysqli, $chamados);
-                                                while ($c_chamados = mysqli_fetch_assoc($r_chamados)) {
-                                                    $idTipoChamado = $c_chamados['idTipoChamado'];
-                                                    $tipoChamado = $c_chamados['tipoChamado'];
-                                                    $valida_check =
-                                                        "SELECT
-                                                            count(*) as validaCheck,
-                                                            ca.id as idPermissao
-                                                        FROM
-                                                                chamados_autorizados_abertura as ca
-                                                        WHERE
-                                                                ca.tipo_id = $idTipoChamado
-                                                                and
-                                                                ca.equipe_id = $id_equipe";
-                                                    $r_valida_check = mysqli_query($mysqli, $valida_check);
-                                                    $c_valida_check = mysqli_fetch_assoc($r_valida_check);
+                                        <div class="row mb-4">
+                                            <?php
+                                            $lista_chamados =
+                                                "SELECT tc.id as idTipoChamado, tc.tipo as tipoChamado
+                                                FROM tipos_chamados as tc
+                                                WHERE tc.active = 1
+                                                ORDER BY tc.tipo ASC";
+                                            $r_lista_chamados = mysqli_query($mysqli, $lista_chamados);
+                                            while ($c_lista_chamados = mysqli_fetch_assoc($r_lista_chamados)) {
+                                                $idTipoChamado_abertura = $c_lista_chamados['idTipoChamado'];
+                                                $tipoChamado_abertura = $c_lista_chamados['tipoChamado'];
 
-                                                    if ($c_valida_check['validaCheck'] <> "0") { ?>
-                                                        <div class="col-3">
-                                                            <div class="form-check">
-                                                                <input onclick="despermitirChamado(<?= $c_valida_check['idPermissao'] ?>, '<?= $nameEquipe ?>', '<?= $tipoChamado ?>')" class="form-check-input" type="checkbox" id="chamado<?= $idTipoChamado ?>" checked data-bs-toggle="modal" data-bs-target="#modalDespermitirChamado">
-                                                                <label class="form-check-label" for="chamado<?= $idTipoChamado ?>"><?= $c_chamados['tipoChamado'] ?></label>
-                                                            </div>
-                                                        </div>
-                                                    <?php } else { ?>
-                                                        <div class="col-3">
-                                                            <div class="form-check">
-                                                                <input onclick="permitirChamado(<?= $idTipoChamado ?>, '<?= $id_equipe ?>', '<?= $nameEquipe ?>', '<?= $tipoChamado ?>')" class="form-check-input" type="checkbox" id="chamado<?= $idTipoChamado ?>" data-bs-toggle="modal" data-bs-target="#modalPermitirChamado">
-                                                                <label class="form-check-label" for="chamado<?= $idTipoChamado ?>"><?= $c_chamados['tipoChamado'] ?></label>
-                                                            </div>
-                                                        </div>
-                                                <?php }
-                                                } ?>
-                                            </div>
-                                        </form>
+                                                // Verifica se há registro no banco de dados para este tipo de chamado e equipe
+                                                $query_verificar_registro = "SELECT COUNT(*) AS total FROM chamados_autorizados_abertura WHERE tipo_id = $idTipoChamado_abertura AND equipe_id = $id_equipe";
+                                                $resultado_verificar = mysqli_query($mysqli, $query_verificar_registro);
+                                                $registro_existente = mysqli_fetch_assoc($resultado_verificar)['total'];
+
+                                                // Verifica se o checkbox deve estar marcado inicialmente
+                                                $checkbox_marcado = $registro_existente > 0 ? 'checked' : '';
+                                            ?>
+                                                <div class="col-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input chamado-abertura-checkbox" type="checkbox" id="chamadoAbertura<?= $idTipoChamado_abertura ?>" data-tipo-id="<?= $idTipoChamado_abertura ?>" data-equipe-id="<?= $id_equipe ?>" <?= $checkbox_marcado ?>>
+                                                        <label class="form-check-label" for="chamadoAbertura<?= $idTipoChamado_abertura ?>"><?= $c_lista_chamados['tipoChamado'] ?></label>
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row"> <!-- Chamados permitidos interagir -->
+                            <div class="col-lg-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Chamados Permitidos Interagir</h5>
+                                        <div class="row mb-4">
+                                            <?php
+                                            $lista_chamados =
+                                                "SELECT tc.id as idTipoChamado, tc.tipo as tipoChamado
+                                                FROM tipos_chamados as tc
+                                                WHERE tc.active = 1
+                                                ORDER BY tc.tipo ASC";
+                                            $r_lista_chamados = mysqli_query($mysqli, $lista_chamados);
+                                            while ($c_lista_chamados = mysqli_fetch_assoc($r_lista_chamados)) {
+                                                $idTipoChamado_interagir = $c_lista_chamados['idTipoChamado'];
+                                                $tipoChamado_interagir = $c_lista_chamados['tipoChamado'];
+
+                                                // Verifica se há registro no banco de dados para este tipo de chamado e equipe
+                                                $query_verificar_registro = "SELECT COUNT(*) AS total FROM chamados_autorizados_interagir WHERE tipo_id = $idTipoChamado_interagir AND equipe_id = $id_equipe";
+                                                $resultado_verificar = mysqli_query($mysqli, $query_verificar_registro);
+                                                $registro_existente = mysqli_fetch_assoc($resultado_verificar)['total'];
+
+                                                // Verifica se o checkbox deve estar marcado inicialmente
+                                                $checkbox_marcado = $registro_existente > 0 ? 'checked' : '';
+                                            ?>
+                                                <div class="col-3">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input chamado-interagir-checkbox" type="checkbox" id="chamadoInteragir<?= $idTipoChamado_interagir ?>" data-tipo-id="<?= $idTipoChamado_interagir ?>" data-equipe-id="<?= $id_equipe ?>" <?= $checkbox_marcado ?>>
+                                                        <label class="form-check-label" for="chamadoInteragir<?= $idTipoChamado_interagir ?>"><?= $c_lista_chamados['tipoChamado'] ?></label>
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row"> <!-- Chamados permitidos atender -->
                             <div class="col-lg-12">
                                 <div class="card">
                                     <div class="card-body">
@@ -351,11 +369,129 @@ if ($statusEquipe  == 'Ativo') {
     });
 </script>
 
+<script>
+    $(document).ready(function() {
+        $('.chamado-interagir-checkbox').click(function() {
+            var tipo_id = $(this).data('tipo-id');
+            var equipe_id = $(this).data('equipe-id');
+            var isChecked = $(this).prop('checked');
+
+            if (isChecked) {
+                if (confirm('Tem certeza que deseja permitir este chamado?')) {
+                    // Se o usuário confirmar, envie uma solicitação AJAX para o script PHP
+                    $.ajax({
+                        type: 'POST',
+                        url: 'processa/permitirChamadoInteragir.php',
+                        data: {
+                            tipo_id: tipo_id,
+                            equipe_id: equipe_id
+                        },
+                        success: function(response) {
+                            // Exibir mensagem de sucesso ou redirecionar para outra página
+                            alert('Chamado permitido com sucesso!');
+                            window.location.href = '/gerenciamento/equipes/view.php?id=' + equipe_id;
+                        },
+                        error: function(xhr, status, error) {
+                            // Lidar com erros
+                            alert('Erro ao permitir chamado: ' + error);
+                        }
+                    });
+                } else {
+                    // Se o usuário cancelar, desmarque o checkbox
+                    $(this).prop('checked', false);
+                }
+            } else {
+                if (confirm('Tem certeza que deseja desabilitar este chamado?')) {
+                    // Se o usuário confirmar, envie uma solicitação AJAX para o script PHP
+                    $.ajax({
+                        type: 'POST',
+                        url: 'processa/despermitirChamadoInteragir.php',
+                        data: {
+                            tipo_id: tipo_id,
+                            equipe_id: equipe_id
+                        },
+                        success: function(response) {
+                            // Exibir mensagem de sucesso ou redirecionar para outra página
+                            alert('Chamado desabilitado com sucesso!');
+                            window.location.href = '/gerenciamento/equipes/view.php?id=' + equipe_id;
+                        },
+                        error: function(xhr, status, error) {
+                            // Lidar com erros
+                            alert('Erro ao desabilitar chamado: ' + error);
+                        }
+                    });
+                } else {
+                    // Se o usuário cancelar, marque o checkbox novamente
+                    $(this).prop('checked', true);
+                }
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.chamado-abertura-checkbox').click(function() {
+            var tipo_id = $(this).data('tipo-id');
+            var equipe_id = $(this).data('equipe-id');
+            var isChecked = $(this).prop('checked');
+
+            if (isChecked) {
+                if (confirm('Tem certeza que deseja permitir este chamado?')) {
+                    // Se o usuário confirmar, envie uma solicitação AJAX para o script PHP
+                    $.ajax({
+                        type: 'POST',
+                        url: 'processa/permitirChamadoAbertura.php',
+                        data: {
+                            tipo_id: tipo_id,
+                            equipe_id: equipe_id
+                        },
+                        success: function(response) {
+                            // Exibir mensagem de sucesso ou redirecionar para outra página
+                            alert('Chamado permitido com sucesso!');
+                            window.location.href = '/gerenciamento/equipes/view.php?id=' + equipe_id;
+                        },
+                        error: function(xhr, status, error) {
+                            // Lidar com erros
+                            alert('Erro ao permitir chamado: ' + error);
+                        }
+                    });
+                } else {
+                    // Se o usuário cancelar, desmarque o checkbox
+                    $(this).prop('checked', false);
+                }
+            } else {
+                if (confirm('Tem certeza que deseja desabilitar este chamado?')) {
+                    // Se o usuário confirmar, envie uma solicitação AJAX para o script PHP
+                    $.ajax({
+                        type: 'POST',
+                        url: 'processa/despermitirChamadoAbertura.php',
+                        data: {
+                            tipo_id: tipo_id,
+                            equipe_id: equipe_id
+                        },
+                        success: function(response) {
+                            // Exibir mensagem de sucesso ou redirecionar para outra página
+                            alert('Chamado desabilitado com sucesso!');
+                            window.location.href = '/gerenciamento/equipes/view.php?id=' + equipe_id;
+                        },
+                        error: function(xhr, status, error) {
+                            // Lidar com erros
+                            alert('Erro ao desabilitar chamado: ' + error);
+                        }
+                    });
+                } else {
+                    // Se o usuário cancelar, marque o checkbox novamente
+                    $(this).prop('checked', true);
+                }
+            }
+        });
+    });
+</script>
+
 <?php
 require "confirmEdit.php";
 require "modalConfirmAdd.php";
 require "modalConfirmRemove.php";
-require "modalPermiteChamado.php";
-require "modalDespermiteChamado.php";
 require "../../includes/footer.php";
 ?>

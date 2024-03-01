@@ -17,7 +17,7 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading13-3">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse13-3" aria-expanded="false" aria-controls="collapse13-3">
-                    Versão 13.3 - 29/02/2024
+                    Versão 13.3 - 01/03/2024
                   </button>
                 </h2>
                 <div id="collapse13-3" class="accordion-collapse collapse" aria-labelledby="heading13-3" data-bs-parent="#accordionExample">
@@ -26,8 +26,12 @@ require "../includes/menu.php";
                     <br><strong>Melhorias</strong><br>
                     # Corrigido BUG para abrir pagina de incidentes abertos;<br>
                     # Corrigigo BUGs dos incidentes;<br>
+                    # Aplicado permissões de chamados permitidos abertura por equipe;<br>
+                    # Aplicado permissões de chamados permitidos interação por equipe;<br>
+                    # Aplicado permissões de chamados permitidos atendimento por equipe;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
+                    # Criado coluna chamados_autorizados_interagir;<br>
 
                     <br><strong>Backlog</strong><br>
                     # Solicitar aferição via control;<br>

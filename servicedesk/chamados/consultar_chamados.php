@@ -416,8 +416,9 @@ if ($rowCount_permissions_submenu > 0) {
                                         LEFT JOIN contract_iten_service as cis ON cis.id = ch.iten_service_id
                                         LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
                                         LEFT JOIN usuarios as us ON us.id = ch.solicitante_id
-                                            LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
-                                            LEFT JOIN equipe as e ON e.id = ch.solicitante_equipe_id
+                                        LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
+                                        LEFT JOIN equipe as e ON e.id = ch.solicitante_equipe_id
+                                        LEFT JOIN chamados_autorizados_interagir AS cai ON cai.tipo_id = tc.id
 
                                             WHERE ch.empresa_id LIKE '$empresa_usuario'
                                             $whereAtendente
@@ -426,6 +427,7 @@ if ($rowCount_permissions_submenu > 0) {
                                             AND ch.assuntoChamado LIKE '$assuntoChamado'
                                             AND ch.relato_inicial LIKE '$relatoInicialPesquisa'
                                             AND ch.solicitante_id LIKE '$solicitante_id'
+                                            AND cai.equipe_id = '$equipe_id'
                                             ORDER BY ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
 
                                         $stmt = $pdo->prepare($chamados_query);
@@ -466,6 +468,7 @@ if ($rowCount_permissions_submenu > 0) {
                                         LEFT JOIN usuarios as us ON us.id = ch.solicitante_id
                                         LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
                                         LEFT JOIN equipe as e ON e.id = ch.solicitante_equipe_id
+                                        LEFT JOIN chamados_autorizados_interagir AS cai ON cai.tipo_id = tc.id
 
                                         WHERE ch.solicitante_equipe_id = :equipe_id
                                         and ch.empresa_id LIKE '$filtro_empresa'
@@ -475,6 +478,7 @@ if ($rowCount_permissions_submenu > 0) {
                                         and ch.assuntoChamado LIKE '$assuntoChamado'
                                         AND ch.relato_inicial LIKE '$relatoInicialPesquisa'
                                         AND ch.solicitante_id LIKE '$solicitante_id'
+                                        AND cai.equipe_id = '$equipe_id'
                                         ORDER BY ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
 
                                         $stmt = $pdo->prepare($chamados_query);
@@ -514,6 +518,8 @@ if ($rowCount_permissions_submenu > 0) {
                                         LEFT JOIN usuarios as us ON us.id = ch.solicitante_id
                                         LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
                                         LEFT JOIN equipe as e ON e.id = ch.solicitante_equipe_id
+                                        LEFT JOIN chamados_autorizados_interagir AS cai ON cai.tipo_id = tc.id
+
                                         WHERE ch.empresa_id LIKE '$filtro_empresa'
                                         $whereAtendente
                                         and ch.status_id $statusChamado
@@ -521,6 +527,7 @@ if ($rowCount_permissions_submenu > 0) {
                                         AND ch.relato_inicial LIKE '$relatoInicialPesquisa'
                                         and ch.assuntoChamado LIKE '$assuntoChamado'
                                         AND ch.solicitante_id LIKE '$solicitante_id'
+                                        AND cai.equipe_id = '$equipe_id'
                                         ORDER BY ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
 
 

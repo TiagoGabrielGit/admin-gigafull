@@ -11,7 +11,6 @@ if (isset($_SESSION['id'])) {
         #Recebe os parametros do relato
         $chamadoID = $_POST['chamadoID'];
         $relatorID = $_POST['relatorID'];
-        $tipoUsuario = $_POST['tipoUsuario'];
         $novoRelato = $_POST['novoRelato'];
         $statusChamado = $_POST['statusChamado'];
         $private = $_POST['privateChamado'];
