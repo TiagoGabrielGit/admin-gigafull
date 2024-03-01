@@ -1,7 +1,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 
-
 <script>
     $(document).ready(function() {
         $('#empresaChamado').change(function() {
@@ -30,6 +29,38 @@
                 },
                 success: function(responseItens) {
                     $('#selectIten').html(responseItens);
+                }
+            });
+        });
+    });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////    
+    $(document).ready(function() {
+        $('#empresaChamado').change(function() {
+            var empresaId = $(this).val();
+            $.ajax({
+                url: 'buscar_usuarios.php',
+                type: 'POST',
+                data: {
+                    empresaId: empresaId
+                },
+                success: function(responseUsuarios) {
+                    $('#selectSolicitante').html(responseUsuarios);
+                }
+            });
+        });
+    });
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////    
+    $(document).ready(function() {
+        $('#tipoChamado').change(function() {
+            var chamadoID = $(this).val();
+            $.ajax({
+                url: 'buscar_atendentes.php',
+                type: 'POST',
+                data: {
+                    chamadoID: chamadoID
+                },
+                success: function(responseAtendentes) {
+                    $('#selectAtendente').html(responseAtendentes);
                 }
             });
         });
@@ -97,7 +128,6 @@
         }
     });
 </script>
-
 
 <script>
     // Obter o elemento select e o campo de data e hora

@@ -106,6 +106,7 @@ if ($rowCount_permissions_submenu > 0) {
                                         <option disabled selected value="">Selecione a Empresa</option>
                                     </select>
                                 </div>
+
                                 <div class="col-6">
                                     <label for="selectIten" class="form-label">Item de Serviço</label>
                                     <select class="form-select" id="selectIten" name="selectIten">
@@ -117,46 +118,7 @@ if ($rowCount_permissions_submenu > 0) {
                                     <div class="col-6">
                                         <label for="selectSolicitante" class="form-label">Solicitante</label>
                                         <select class="form-select" id="selectSolicitante" name="selectSolicitante">
-                                            <option disabled selected value="">Selecione o solicitante</option>
-                                            <?php
-                                            // Verifique se $pdo está inicializado corretamente
-                                            if ($pdo) {
-                                                $sql_solicitante = "SELECT
-                                                                    u.id as 'idUsuario',
-                                                                    p.nome as 'solicitante'
-                                                                    FROM
-                                                                    usuarios as u
-                                                                    LEFT JOIN
-                                                                    pessoas as p
-                                                                    ON
-                                                                    p.id = u.pessoa_id
-                                                                    WHERE
-                                                                    u.active = 1
-                                                                    ORDER BY
-                                                                    p.nome ASC";
-
-                                                try {
-                                                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-                                                    // Execute a consulta SQL e verifique se foi bem-sucedida
-                                                    if ($stmt = $pdo->query($sql_solicitante)) {
-                                                        $resultadoSolicitante = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                                                        foreach ($resultadoSolicitante as $rowSolicitante) {
-                                                            $idUsuario = $rowSolicitante['idUsuario'];
-                                                            $solicitante = $rowSolicitante['solicitante'];
-                                                            echo "<option value='$idUsuario'>$solicitante</option>";
-                                                        }
-                                                    } else {
-                                                        echo "Erro ao executar a consulta SQL.";
-                                                    }
-                                                } catch (PDOException $e) {
-                                                    echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
-                                                }
-                                            } else {
-                                                echo "Erro ao conectar ao banco de dados.";
-                                            }
-                                            ?>
+                                            <option disabled selected value="">Selecione a Empresa</option>
                                         </select>
                                     </div>
                                 <?php } ?>
@@ -165,45 +127,7 @@ if ($rowCount_permissions_submenu > 0) {
                                     <div class="col-6">
                                         <label for="selectAtendente" class="form-label">Atendente</label>
                                         <select class="form-select" id="selectAtendente" name="selectAtendente">
-                                            <option disabled selected value="">Selecione o atendente</option>
-                                            <?php
-                                            // Verifique se $pdo está inicializado corretamente
-                                            if ($pdo) {
-                                                $sql_atendentes = "SELECT
-                                                                    u.id as 'idUsuario',
-                                                                    p.nome as 'atendente'
-                                                                    FROM usuarios as u
-                                                                    LEFT JOIN usuarios_permissoes as up ON up.usuario_id = u.id
-                                                                    LEFT JOIN pessoas as p ON p.id = u.pessoa_id
-                                                                    LEFT JOIN empresas as e ON e.id = u.empresa_id
-                                                                    WHERE u.active = 1
-                                                                    and up.permite_atender_chamados = 1
-                                                                    ORDER BY
-                                                                    p.nome ASC";
-
-                                                try {
-                                                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-                                                    // Execute a consulta SQL e verifique se foi bem-sucedida
-                                                    if ($stmt = $pdo->query($sql_atendentes)) {
-                                                        $resultadoAtendente = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                                                        foreach ($resultadoAtendente as $rowAtendente) {
-                                                            $idUsuario = $rowAtendente['idUsuario'];
-                                                            $atendente = $rowAtendente['atendente'];
-
-                                                            echo "<option value='$idUsuario'>$atendente</option>";
-                                                        }
-                                                    } else {
-                                                        echo "Erro ao executar a consulta SQL.";
-                                                    }
-                                                } catch (PDOException $e) {
-                                                    echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
-                                                }
-                                            } else {
-                                                echo "Erro ao conectar ao banco de dados.";
-                                            }
-                                            ?>
+                                            <option disabled selected value="">Selecione o tipo de chamado</option>
                                         </select>
                                     </div>
                                 <?php } ?>

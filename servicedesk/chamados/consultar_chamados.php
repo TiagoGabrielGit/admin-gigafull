@@ -111,6 +111,217 @@ if ($rowCount_permissions_submenu > 0) {
             $solicitante_id = "%";
             $relatoInicialPesquisa = "%";
         }
+
+        if ($permite_interagir_chamados == 1) {
+            //EMPRESA
+            $chamados_query =
+                "SELECT
+            ch.id as id_chamado,
+            ch.assuntoChamado as assunto,
+            ch.relato_inicial as relato_inicial,
+            ch.atendente_id as id_atendente,
+            ch.prioridade as prioridade,
+            ch.melhoria_recomendada as melhoria_recomendada,
+            date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
+            ch.in_execution as inExecution,
+            ch.status_id as id_status,
+            ch.data_prevista_conclusao as 'data_prevista_conclusao',
+            cs.status_chamado as statusChamado,
+            tc.tipo as tipoChamado,
+            emp.fantasia as fantasia,
+            p.nome as atendente,
+            s.service as service,
+            ise.item as itemService,
+                pes.nome as solicitante_nome,
+                e.equipe as equipe_solicitante
+
+            FROM chamados as ch
+            LEFT JOIN empresas as emp ON ch.empresa_id = emp.id
+            LEFT JOIN tipos_chamados as tc ON ch.tipochamado_id  = tc.id
+            LEFT JOIN chamados_status as cs ON cs.id = ch.status_id
+            LEFT JOIN usuarios as u ON u.id = ch.atendente_id
+            LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+            LEFT JOIN contract_service as cser ON  cser.id = ch.service_id
+            LEFT JOIN service as s ON s.id = cser.service_id 
+            LEFT JOIN contract_iten_service as cis ON cis.id = ch.iten_service_id
+            LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
+            LEFT JOIN usuarios as us ON us.id = ch.solicitante_id
+            LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
+            LEFT JOIN equipe as e ON e.id = ch.solicitante_equipe_id
+            LEFT JOIN chamados_autorizados_interagir AS cai ON cai.tipo_id = tc.id
+
+                WHERE ch.empresa_id LIKE '$empresa_usuario'
+                $whereAtendente
+                AND ch.status_id $statusChamado
+                AND ch.id LIKE '$idChamado'
+                AND ch.assuntoChamado LIKE '$assuntoChamado'
+                AND ch.relato_inicial LIKE '$relatoInicialPesquisa'
+                AND ch.solicitante_id LIKE '$solicitante_id'
+                AND cai.equipe_id = '$equipe_id'
+                ORDER BY ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
+
+            $sql_lista_solicitantes =
+                "SELECT
+                    u.id as solicitante_id,
+                    p.nome as solicitante
+                    FROM chamados as ch
+                    LEFT JOIN usuarios as u ON ch.solicitante_id = u.id
+                    LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                    WHERE p.nome IS NOT NULL AND ch.empresa_id = $empresa_usuario
+                    GROUP BY ch.solicitante_id
+                    order by p.nome ASC
+                    ";
+
+            $sql_lista_atendentes =
+                "SELECT
+                CASE WHEN p.nome IS NULL THEN '0'             ELSE u.id END AS 'id',
+                CASE WHEN p.nome IS NULL THEN 'Sem Atendente' ELSE p.nome END AS 'nome'
+                FROM chamados as ch
+                LEFT JOIN usuarios as u ON ch.atendente_id = u.id
+                LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                WHERE p.nome IS NOT NULL AND ch.empresa_id = $empresa_usuario
+                GROUP BY ch.atendente_id
+                order by p.nome ASC";
+        } else if ($permite_interagir_chamados == 2) {
+            //CHAMADOS ABERTOS POR SOLICITANTES DA EQUIPE
+            $chamados_query =
+                "SELECT
+            ch.id as id_chamado,
+            ch.assuntoChamado as assunto,
+            ch.relato_inicial as relato_inicial,
+            ch.atendente_id as id_atendente,
+            ch.prioridade as prioridade,
+            ch.melhoria_recomendada as melhoria_recomendada,
+            date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
+            ch.in_execution as inExecution,
+            ch.status_id as id_status,
+            ch.data_prevista_conclusao as 'data_prevista_conclusao',
+            cs.status_chamado as statusChamado,
+            tc.tipo as tipoChamado,
+            emp.fantasia as fantasia,
+            p.nome as atendente,
+            s.service as service,
+            ise.item as itemService,
+            pes.nome as solicitante_nome,
+            e.equipe as equipe_solicitante
+
+            FROM chamados as ch
+            LEFT JOIN empresas as emp ON ch.empresa_id = emp.id
+            LEFT JOIN tipos_chamados as tc ON ch.tipochamado_id  = tc.id
+            LEFT JOIN chamados_status as cs ON cs.id = ch.status_id
+            LEFT JOIN usuarios as u ON u.id = ch.atendente_id
+            LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+            LEFT JOIN contract_service as cser ON  cser.id = ch.service_id
+            LEFT JOIN service as s ON s.id = cser.service_id 
+            LEFT JOIN contract_iten_service as cis ON cis.id = ch.iten_service_id
+            LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
+            LEFT JOIN usuarios as us ON us.id = ch.solicitante_id
+            LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
+            LEFT JOIN equipe as e ON e.id = ch.solicitante_equipe_id
+            LEFT JOIN chamados_autorizados_interagir AS cai ON cai.tipo_id = tc.id
+
+            WHERE ch.solicitante_equipe_id = :equipe_id
+            and ch.empresa_id LIKE '$filtro_empresa'
+            $whereAtendente
+            and ch.status_id $statusChamado
+            and ch.id LIKE '$idChamado'
+            and ch.assuntoChamado LIKE '$assuntoChamado'
+            AND ch.relato_inicial LIKE '$relatoInicialPesquisa'
+            AND ch.solicitante_id LIKE '$solicitante_id'
+            AND cai.equipe_id = '$equipe_id'
+            ORDER BY ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
+
+            $sql_lista_solicitantes =
+                "SELECT
+                u.id as solicitante_id,
+                p.nome as solicitante
+                FROM chamados as ch
+                LEFT JOIN usuarios as u ON ch.solicitante_id = u.id
+                LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                WHERE p.nome IS NOT NULL AND ch.solicitante_equipe_id = $equipe_id
+                GROUP BY ch.solicitante_id
+                order by p.nome ASC";
+
+            $sql_lista_atendentes =
+                "SELECT
+                CASE WHEN p.nome IS NULL THEN '0'             ELSE u.id END AS 'id',
+                CASE WHEN p.nome IS NULL THEN 'Sem Atendente' ELSE p.nome END AS 'nome'
+                FROM chamados as ch
+                LEFT JOIN usuarios as u ON ch.atendente_id = u.id
+                LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                WHERE p.nome IS NOT NULL AND ch.solicitante_equipe_id = $equipe_id
+                GROUP BY ch.atendente_id
+                order by p.nome ASC";
+        } else if ($permite_interagir_chamados == 3) {
+            //TODOS OS CHAMADOS
+            $chamados_query =
+                "SELECT
+            ch.id as id_chamado,
+            ch.assuntoChamado as assunto,
+            ch.relato_inicial as relato_inicial,
+            ch.atendente_id as id_atendente,
+            ch.prioridade as prioridade,
+            ch.melhoria_recomendada as melhoria_recomendada,
+            date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
+            ch.in_execution as inExecution,
+            ch.status_id as id_status,
+            ch.data_prevista_conclusao as 'data_prevista_conclusao',
+            cs.status_chamado as statusChamado,
+            tc.tipo as tipoChamado,
+            emp.fantasia as fantasia,
+            p.nome as atendente,
+            s.service as service,
+            ise.item as itemService,
+            pes.nome as solicitante_nome,
+            e.equipe as equipe_solicitante
+            FROM chamados as ch
+            LEFT JOIN empresas as emp ON ch.empresa_id = emp.id
+            LEFT JOIN tipos_chamados as tc ON ch.tipochamado_id  = tc.id
+            LEFT JOIN chamados_status as cs ON cs.id = ch.status_id
+            LEFT JOIN usuarios as u ON u.id = ch.atendente_id
+            LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+            LEFT JOIN contract_service as cser ON  cser.id = ch.service_id
+            LEFT JOIN service as s ON s.id = cser.service_id 
+            LEFT JOIN contract_iten_service as cis ON cis.id = ch.iten_service_id
+            LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
+            LEFT JOIN usuarios as us ON us.id = ch.solicitante_id
+            LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
+            LEFT JOIN equipe as e ON e.id = ch.solicitante_equipe_id
+            LEFT JOIN chamados_autorizados_interagir AS cai ON cai.tipo_id = tc.id
+
+            WHERE ch.empresa_id LIKE '$filtro_empresa'
+            $whereAtendente
+            and ch.status_id $statusChamado
+            and ch.id LIKE '$idChamado'
+            AND ch.relato_inicial LIKE '$relatoInicialPesquisa'
+            and ch.assuntoChamado LIKE '$assuntoChamado'
+            AND ch.solicitante_id LIKE '$solicitante_id'
+            AND cai.equipe_id = '$equipe_id'
+            ORDER BY ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
+
+            $sql_lista_solicitantes =
+                "SELECT
+                u.id as solicitante_id,
+                p.nome as solicitante
+                FROM chamados as ch
+                LEFT JOIN usuarios as u ON ch.solicitante_id = u.id
+                LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                WHERE p.nome IS NOT NULL
+                GROUP BY ch.solicitante_id
+                order by p.nome ASC
+                ";
+
+            $sql_lista_atendentes =
+                "SELECT
+                CASE WHEN p.nome IS NULL THEN '0'             ELSE u.id END AS 'id',
+                CASE WHEN p.nome IS NULL THEN 'Sem Atendente' ELSE p.nome END AS 'nome'
+                FROM chamados as ch
+                LEFT JOIN usuarios as u ON ch.atendente_id = u.id
+                LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                WHERE p.nome IS NOT NULL
+                GROUP BY ch.atendente_id
+                order by p.nome ASC";
+        }
 ?>
 
         <style>
@@ -218,22 +429,8 @@ if ($rowCount_permissions_submenu > 0) {
                                                 <select id="solicitantePesquisa" name="solicitantePesquisa" class="form-select">
                                                     <option value="%">Todos</option>
                                                     <?php
-
-                                                    $sql_lista_solicitantes =
-                                                        "SELECT
-                                                        u.id as solicitante_id,
-                                                        p.nome as solicitante
-                                                    FROM chamados as ch
-                                                    LEFT JOIN usuarios as u ON ch.solicitante_id = u.id
-                                                    LEFT JOIN pessoas as p ON p.id = u.pessoa_id
-                                                    WHERE p.nome IS NOT NULL
-                                                    GROUP BY ch.solicitante_id
-                                                    order by p.nome ASC
-                                                    ";
-
-
-                                                    $resultado = mysqli_query($mysqli, $sql_lista_solicitantes);
-                                                    while ($solicitante = mysqli_fetch_object($resultado)) {
+                                                    $resultado_solicitantes = mysqli_query($mysqli, $sql_lista_solicitantes);
+                                                    while ($solicitante = mysqli_fetch_object($resultado_solicitantes)) {
                                                         if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                                             $solicitantePesquisa = $_POST['solicitantePesquisa'];
                                                         } else {
@@ -252,16 +449,6 @@ if ($rowCount_permissions_submenu > 0) {
                                                 <select id="atendentePesquisa" name="atendentePesquisa" class="form-select">
                                                     <option value="%">Todos</option>
                                                     <?php
-                                                    $sql_lista_atendentes =
-                                                        "SELECT
-                                                            CASE WHEN p.nome IS NULL THEN '0'             ELSE u.id END AS 'id',
-                                                            CASE WHEN p.nome IS NULL THEN 'Sem Atendente' ELSE p.nome END AS 'nome'
-                                                            FROM chamados as ch
-                                                            LEFT JOIN usuarios as u ON ch.atendente_id = u.id
-                                                            LEFT JOIN pessoas as p ON p.id = u.pessoa_id
-                                                            GROUP BY ch.atendente_id
-                                                            order by p.nome ASC
-                                                            ";
 
                                                     $resultado = mysqli_query($mysqli, $sql_lista_atendentes);
                                                     while ($atendente = mysqli_fetch_object($resultado)) {
@@ -383,154 +570,12 @@ if ($rowCount_permissions_submenu > 0) {
                                 <div class="accordion" id="accordionFlushExample">
 
                                     <?php if ($permite_interagir_chamados == 1) {
-                                        //EMPRESA
-                                        $chamados_query =
-                                            "SELECT
-                                        ch.id as id_chamado,
-                                        ch.assuntoChamado as assunto,
-                                        ch.relato_inicial as relato_inicial,
-                                        ch.atendente_id as id_atendente,
-                                        ch.prioridade as prioridade,
-                                        ch.melhoria_recomendada as melhoria_recomendada,
-                                        date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
-                                        ch.in_execution as inExecution,
-                                        ch.status_id as id_status,
-                                        ch.data_prevista_conclusao as 'data_prevista_conclusao',
-                                        cs.status_chamado as statusChamado,
-                                        tc.tipo as tipoChamado,
-                                        emp.fantasia as fantasia,
-                                        p.nome as atendente,
-                                        s.service as service,
-                                        ise.item as itemService,
-                                            pes.nome as solicitante_nome,
-                                            e.equipe as equipe_solicitante
-
-                                        FROM chamados as ch
-                                        LEFT JOIN empresas as emp ON ch.empresa_id = emp.id
-                                        LEFT JOIN tipos_chamados as tc ON ch.tipochamado_id  = tc.id
-                                        LEFT JOIN chamados_status as cs ON cs.id = ch.status_id
-                                        LEFT JOIN usuarios as u ON u.id = ch.atendente_id
-                                        LEFT JOIN pessoas as p ON p.id = u.pessoa_id
-                                        LEFT JOIN contract_service as cser ON  cser.id = ch.service_id
-                                        LEFT JOIN service as s ON s.id = cser.service_id 
-                                        LEFT JOIN contract_iten_service as cis ON cis.id = ch.iten_service_id
-                                        LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
-                                        LEFT JOIN usuarios as us ON us.id = ch.solicitante_id
-                                        LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
-                                        LEFT JOIN equipe as e ON e.id = ch.solicitante_equipe_id
-                                        LEFT JOIN chamados_autorizados_interagir AS cai ON cai.tipo_id = tc.id
-
-                                            WHERE ch.empresa_id LIKE '$empresa_usuario'
-                                            $whereAtendente
-                                            AND ch.status_id $statusChamado
-                                            AND ch.id LIKE '$idChamado'
-                                            AND ch.assuntoChamado LIKE '$assuntoChamado'
-                                            AND ch.relato_inicial LIKE '$relatoInicialPesquisa'
-                                            AND ch.solicitante_id LIKE '$solicitante_id'
-                                            AND cai.equipe_id = '$equipe_id'
-                                            ORDER BY ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
-
                                         $stmt = $pdo->prepare($chamados_query);
                                         $stmt->execute();
                                     } else if ($permite_interagir_chamados == 2) {
-                                        //CHAMADOS ABERTOS POR SOLICITANTES DA EQUIPE
-                                        $chamados_query =
-                                            "SELECT
-                                        ch.id as id_chamado,
-                                        ch.assuntoChamado as assunto,
-                                        ch.relato_inicial as relato_inicial,
-                                        ch.atendente_id as id_atendente,
-                                        ch.prioridade as prioridade,
-                                        ch.melhoria_recomendada as melhoria_recomendada,
-                                        date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
-                                        ch.in_execution as inExecution,
-                                        ch.status_id as id_status,
-                                        ch.data_prevista_conclusao as 'data_prevista_conclusao',
-                                        cs.status_chamado as statusChamado,
-                                        tc.tipo as tipoChamado,
-                                        emp.fantasia as fantasia,
-                                        p.nome as atendente,
-                                        s.service as service,
-                                        ise.item as itemService,
-                                        pes.nome as solicitante_nome,
-                                        e.equipe as equipe_solicitante
-
-                                        FROM chamados as ch
-                                        LEFT JOIN empresas as emp ON ch.empresa_id = emp.id
-                                        LEFT JOIN tipos_chamados as tc ON ch.tipochamado_id  = tc.id
-                                        LEFT JOIN chamados_status as cs ON cs.id = ch.status_id
-                                        LEFT JOIN usuarios as u ON u.id = ch.atendente_id
-                                        LEFT JOIN pessoas as p ON p.id = u.pessoa_id
-                                        LEFT JOIN contract_service as cser ON  cser.id = ch.service_id
-                                        LEFT JOIN service as s ON s.id = cser.service_id 
-                                        LEFT JOIN contract_iten_service as cis ON cis.id = ch.iten_service_id
-                                        LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
-                                        LEFT JOIN usuarios as us ON us.id = ch.solicitante_id
-                                        LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
-                                        LEFT JOIN equipe as e ON e.id = ch.solicitante_equipe_id
-                                        LEFT JOIN chamados_autorizados_interagir AS cai ON cai.tipo_id = tc.id
-
-                                        WHERE ch.solicitante_equipe_id = :equipe_id
-                                        and ch.empresa_id LIKE '$filtro_empresa'
-                                        $whereAtendente
-                                        and ch.status_id $statusChamado
-                                        and ch.id LIKE '$idChamado'
-                                        and ch.assuntoChamado LIKE '$assuntoChamado'
-                                        AND ch.relato_inicial LIKE '$relatoInicialPesquisa'
-                                        AND ch.solicitante_id LIKE '$solicitante_id'
-                                        AND cai.equipe_id = '$equipe_id'
-                                        ORDER BY ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
-
                                         $stmt = $pdo->prepare($chamados_query);
                                         $stmt->execute(array('equipe_id' => $equipe_id));
                                     } else if ($permite_interagir_chamados == 3) {
-                                        //TODOS OS CHAMADOS
-                                        $chamados_query =
-                                            "SELECT
-                                        ch.id as id_chamado,
-                                        ch.assuntoChamado as assunto,
-                                        ch.relato_inicial as relato_inicial,
-                                        ch.atendente_id as id_atendente,
-                                        ch.prioridade as prioridade,
-                                        ch.melhoria_recomendada as melhoria_recomendada,
-                                        date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
-                                        ch.in_execution as inExecution,
-                                        ch.status_id as id_status,
-                                        ch.data_prevista_conclusao as 'data_prevista_conclusao',
-                                        cs.status_chamado as statusChamado,
-                                        tc.tipo as tipoChamado,
-                                        emp.fantasia as fantasia,
-                                        p.nome as atendente,
-                                        s.service as service,
-                                        ise.item as itemService,
-                                        pes.nome as solicitante_nome,
-                                        e.equipe as equipe_solicitante
-                                        FROM chamados as ch
-                                        LEFT JOIN empresas as emp ON ch.empresa_id = emp.id
-                                        LEFT JOIN tipos_chamados as tc ON ch.tipochamado_id  = tc.id
-                                        LEFT JOIN chamados_status as cs ON cs.id = ch.status_id
-                                        LEFT JOIN usuarios as u ON u.id = ch.atendente_id
-                                        LEFT JOIN pessoas as p ON p.id = u.pessoa_id
-                                        LEFT JOIN contract_service as cser ON  cser.id = ch.service_id
-                                        LEFT JOIN service as s ON s.id = cser.service_id 
-                                        LEFT JOIN contract_iten_service as cis ON cis.id = ch.iten_service_id
-                                        LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
-                                        LEFT JOIN usuarios as us ON us.id = ch.solicitante_id
-                                        LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
-                                        LEFT JOIN equipe as e ON e.id = ch.solicitante_equipe_id
-                                        LEFT JOIN chamados_autorizados_interagir AS cai ON cai.tipo_id = tc.id
-
-                                        WHERE ch.empresa_id LIKE '$filtro_empresa'
-                                        $whereAtendente
-                                        and ch.status_id $statusChamado
-                                        and ch.id LIKE '$idChamado'
-                                        AND ch.relato_inicial LIKE '$relatoInicialPesquisa'
-                                        and ch.assuntoChamado LIKE '$assuntoChamado'
-                                        AND ch.solicitante_id LIKE '$solicitante_id'
-                                        AND cai.equipe_id = '$equipe_id'
-                                        ORDER BY ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
-
-
                                         $stmt = $pdo->prepare($chamados_query);
                                         $stmt->execute();
                                     }
