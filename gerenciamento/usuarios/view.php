@@ -37,6 +37,7 @@ if ($rowCount_permissions_submenu > 0) {
         user.perfil_id as idPerfil,
         user.mobile as mobile,
         user.dashboard as dashboard,
+        user.notify_smart as 'notify_smart',
         user.notify_email_abertura as 'notify_email_abertura',
         user.notify_email_encaminhamento as 'notify_email_encaminhamento',
         user.notify_email_relatos as 'notify_email_relatos', 
@@ -60,13 +61,15 @@ if ($rowCount_permissions_submenu > 0) {
         CASE
             WHEN user.active = 1 THEN 'Ativado'
             WHEN user.active = 0 THEN 'Inativado'
-        END AS active,
-        
-        
+        END AS active,     
         CASE
             WHEN user.notify_email = 1 THEN 'Ativado'
             WHEN user.notify_email = 0 THEN 'Inativado'
         END AS notify_email,
+        CASE
+            WHEN user.notify_smart = 1 THEN 'Ativado'
+            WHEN user.notify_smart = 0 THEN 'Inativado'
+        END AS notify_smart,
         CASE
             WHEN user.notify_telegram = 1 THEN 'Ativado'
             WHEN user.notify_telegram = 0 THEN 'Inativado'

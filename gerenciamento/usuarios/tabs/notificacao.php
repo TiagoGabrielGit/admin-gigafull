@@ -7,7 +7,7 @@
     <div class="col-lg-12">
         <hr class="sidebar-divider">
         <div class="row">
-            <div class="col-4">
+            <div class="col-3">
                 <label for="notificaEmail" class="form-label">Notificação por e-mail</label>
                 <select name="notificaEmail" id="notificaEmail" class="form-select" required>
                     <?php
@@ -26,7 +26,7 @@
                 </select>
             </div>
 
-            <div class="col-4">
+            <div class="col-3">
                 <label for="notificaTelegram" class="form-label">Notificação por Telegram</label>
                 <select name="notificaTelegram" id="notificaTelegram" class="form-select" required>
                     <?php
@@ -45,9 +45,28 @@
                 </select>
             </div>
 
-            <div class="col-4">
+            <div class="col-3">
                 <label for="chatID" class="form-label">Chat ID Telegram</label>
                 <input class="form-control" id="chatID" name="chatID" value="<?= $campos['chatIdTelegram'] ?>"></input>
+            </div>
+
+            <div class="col-3">
+                <label for="notificaSmart" class="form-label">Notificação Smart</label>
+                <select name="notificaSmart" id="notificaSmart" class="form-select" required>
+                    <?php
+                    if ($campos['notify_smart'] == "Ativado") { ?>
+                        <option selected value="1">Ativado</option>
+                        <option value="0">Desativado</option>
+                    <?php } else if ($campos['notify_smart'] == "Inativado") { ?>
+                        <option value="1">Ativado</option>
+                        <option selected value="0">Desativado</option>
+                    <?php } else { ?>
+                        <option selected disabled value="">Selecione uma opção</option>
+                        <option value="1">Ativado</option>
+                        <option value="0">Desativado</option>
+                    <?php }
+                    ?>
+                </select>
             </div>
         </div>
         <br><br>

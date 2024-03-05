@@ -2,15 +2,16 @@
 session_start();
 // Verifica se existe os dados da sessão de login
 if (!isset($_SESSION["id"])) {
-    // Salvar a URL da página atual para redirecionamento após o login
-    $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
+  // Salvar a URL da página atual para redirecionamento após o login
+  $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
 
-    // Redirecionar para a página de login
-    header("Location: /login.php");
-    exit();
+  // Redirecionar para a página de login
+  header("Location: /login.php");
+  exit();
 }
 $nome = $_SESSION['nome'];
 $id = $_SESSION['id'];
+$usuario_id = $id;
 $perfil = $_SESSION['nome_perfil'];
 $user_ip = $_SESSION['ip_address'];
 $horario = date('d/m/Y H:i');
@@ -102,7 +103,7 @@ if (empty($chamado['execucao'])) {
     <div class="d-flex align-items-center justify-content-between">
       <a href="/index.php" class="logo d-flex align-items-center">
         <img src="/assets/img/logo.png" alt="">
-        <span class="d-none d-lg-block"><u>  SmartControl  </u></span>
+        <span class="d-none d-lg-block"><u> SmartControl </u></span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -148,148 +149,93 @@ if (empty($chamado['execucao'])) {
         }
         ?>
 
-        <!--
-        <li class="nav-item dropdown">
 
+        <?php
+        // Consulta para obter o total de notificações
+        $total_notificacoes_query =
+          "SELECT COUNT(*) AS total_notificacoes
+          FROM smart_notification 
+          WHERE status = 1 AND usuario_id = $usuario_id";
+
+        $result_total_notificacoes = mysqli_query($mysqli, $total_notificacoes_query);
+
+        if ($result_total_notificacoes) {
+          $row = mysqli_fetch_assoc($result_total_notificacoes);
+          $total_notificacoes = $row['total_notificacoes'];
+        } else {
+          $total_notificacoes = 0;
+        }
+        ?>
+
+        <li class="nav-item dropdown">
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
             <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number">4</span>
+            <span class="badge bg-primary badge-number"><?= $total_notificacoes ?></span>
           </a>
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
             <li class="dropdown-header">
-              You have 4 new notifications
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+              <?= '####### ' . 'Você tem ' . $total_notificacoes . ' notificações' . ' #######' ?>
+              <a href="#"></a>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
 
-            <li class="notification-item">
-              <i class="bi bi-exclamation-circle text-warning"></i>
-              <div>
-                <h4>Lorem Ipsum</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>30 min. ago</p>
-              </div>
-            </li>
+            <?php
+            $notificacoes_query =
+              "SELECT
+              CASE
+              WHEN sn.mensagem_tipo = 3 THEN 'Novo relato adicionado'
+              END as titulo,
+              sn.mensagem as mensagem,
+              DATE_FORMAT(sn.date, '%d/%m/%Y %H:%i') as date_formatted,
+              sn.id as 'id'
+            FROM smart_notification as sn
+            WHERE sn.status = 1 AND sn.usuario_id = $usuario_id
+            ORDER BY sn.id desc";
+            $result_notificacoes = mysqli_query($mysqli, $notificacoes_query);
 
-            <li>
-              <hr class="dropdown-divider">
-            </li>
+            if (mysqli_num_rows($result_notificacoes) > 0) {
+              while ($notificacao = mysqli_fetch_assoc($result_notificacoes)) { ?>
+                <li class="notification-item">
+                  <i class="bi bi-exclamation-circle text-warning"></i>
+                  <div>
+                    <h4><?= $notificacao['titulo']; ?></h4>
+                    <p><?= $notificacao['mensagem']; ?></p>
+                    <br>
+                    <p><?= $notificacao['date_formatted']; ?></p>
+                    <p>
+                      <a href="/includes/processa/marcar_como_lido.php?id=<?=$notificacao['id']?>" class="btn btn-info rounded-pill" style="padding: 3px 10px; font-size: 10px;">Marcar como Lido</a>
+                      <a href="/includes/processa/ir_para_chamado.php?id=<?=$notificacao['id']?>" class="btn btn-info rounded-pill" style="padding: 3px 10px; font-size: 10px;">Ir para Chamado</a>
+                    </p>
+                  </div>
+                </li>
 
-            <li class="notification-item">
-              <i class="bi bi-x-circle text-danger"></i>
-              <div>
-                <h4>Atque rerum nesciunt</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>1 hr. ago</p>
-              </div>
-            </li>
+                <li>
+                  <hr class="dropdown-divider">
+                </li>
 
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-check-circle text-success"></i>
-              <div>
-                <h4>Sit rerum fuga</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>2 hrs. ago</p>
-              </div>
-            </li>
-
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="notification-item">
-              <i class="bi bi-info-circle text-primary"></i>
-              <div>
-                <h4>Dicta reprehenderit</h4>
-                <p>Quae dolorem earum veritatis oditseno</p>
-                <p>4 hrs. ago</p>
-              </div>
-            </li>
+              <?php }
+            } else { ?>
+              <li class="notification-item">
+                <div>
+                  <p>Você não tem notificações</p>
+                </div>
+              </li>
+            <?php }
+            ?>
 
             <li>
               <hr class="dropdown-divider">
             </li>
             <li class="dropdown-footer">
-              <a href="#">Show all notifications</a>
+              <a href="#">Ver todas notificações</a>
             </li>
 
-          </ul>
+          </ul><!-- End Notification Dropdown Items -->
 
-        </li>
-        -->
-        <!--
-        <li class="nav-item dropdown">
-
-          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
-            <i class="bi bi-chat-left-text"></i>
-            <span class="badge bg-success badge-number">3</span>
-          </a>
-
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
-            <li class="dropdown-header">
-              You have 3 new messages
-              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="/assets/img/messages-1.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Maria Hudson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>4 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="/assets/img/messages-2.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>Anna Nelson</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>6 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="message-item">
-              <a href="#">
-                <img src="/assets/img/messages-3.jpg" alt="" class="rounded-circle">
-                <div>
-                  <h4>David Muldon</h4>
-                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                  <p>8 hrs. ago</p>
-                </div>
-              </a>
-            </li>
-            <li>
-              <hr class="dropdown-divider">
-            </li>
-
-            <li class="dropdown-footer">
-              <a href="#">Show all messages</a>
-            </li>
-
-          </ul>
-
-        </li>-->
+        </li><!-- End Notification Nav -->
 
         <li class="nav-item dropdown pe-3">
 

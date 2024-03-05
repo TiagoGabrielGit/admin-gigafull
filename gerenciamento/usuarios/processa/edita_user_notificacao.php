@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Prepare a consulta SQL
         $sql = "UPDATE usuarios SET 
             notify_email = :notificaEmail,
+            notify_smart = :notificaSmart,
             notify_telegram = :notificaTelegram,
             chatIdTelegram = :chatIdTelegram,
             notify_email_abertura = :notificaEmailAbertura,
@@ -26,6 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt = $pdo->prepare($sql);
 
         // Substituir os valores dos parâmetros com os valores do formulário
+        $stmt->bindParam(':notificaSmart', $_POST['notificaSmart']);
         $stmt->bindParam(':notificaEmail', $_POST['notificaEmail']);
         $stmt->bindParam(':notificaTelegram', $_POST['notificaTelegram']);
         $stmt->bindParam(':chatIdTelegram', $chatIdTelegram);

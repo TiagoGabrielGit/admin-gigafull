@@ -77,7 +77,7 @@ if ($rowCount_permissions_submenu > 0) {
         $chamado = mysqli_fetch_assoc($r_chamado);
 
         if (($permite_interagir_chamados == 1 && ($chamado['idEmpresa'] == $empresa_usuario)) || ($permite_interagir_chamados == 2 & ($chamado['solicitante_equipe_id'] == $equipe_id)) || ($permite_interagir_chamados == 3)) {
-
+            $idEmpresa = $chamado['idEmpresa'];
             if ($chamado['in_execution'] == 1) {
                 $classeColor = "playColor";
             } else {
@@ -255,7 +255,7 @@ if ($rowCount_permissions_submenu > 0) {
                                                 $stmt->bindParam(':tipo_id', $tipochamado_id, PDO::PARAM_INT);
                                                 $stmt->bindParam(':equipe_id', $equipe_id, PDO::PARAM_INT);
                                                 $stmt->execute();
-                                                
+
                                                 if ($permite_atender_chamados == 1 & ($stmt->rowCount() > 0)) { ?>
                                                     <?php if (/*$c_valida_competencia == null &&*/$uid != $chamado['id_atendente'] && $chamado['status'] != "Fechado" && $chamado['in_execution'] == '0') {
                                                         if (($_SESSION['permite_atender_chamados_outras_empresas'] == 1) || ($_SESSION['permite_atender_chamados_outras_empresas'] == 0 && ($empresa_usuario == $chamado['idEmpresa']))) { ?>
@@ -793,30 +793,15 @@ if ($rowCount_permissions_submenu > 0) {
                                                 <tbody>
                                                     <?php
                                                     $lista_atendentes =
-                                                        "SELECT u.id as idUsuario,
-                                            p.nome as atendente
-                                     FROM usuarios AS u
-                                     LEFT JOIN pessoas AS p ON p.id = u.pessoa_id
-                                     LEFT JOIN (
-                                       SELECT cc.chamado_id, COUNT(cc.competencia_id) AS total_competencias
-                                       FROM chamados_competencias AS cc
-                                       GROUP BY cc.chamado_id
-                                     ) AS comp_total ON comp_total.chamado_id = $id_chamado
-                                     LEFT JOIN (
-                                       SELECT cc.chamado_id, uc.id_usuario, COUNT(uc.id_competencia) AS total_competencias_usuario
-                                       FROM chamados_competencias AS cc
-                                       LEFT JOIN usuario_competencia AS uc ON cc.competencia_id = uc.id_competencia
-                                       WHERE cc.chamado_id = $id_chamado
-                                       GROUP BY cc.chamado_id, uc.id_usuario
-                                     ) AS comp_usuario ON comp_usuario.chamado_id = $id_chamado AND comp_usuario.id_usuario = u.id
-                                     WHERE (
-                                       comp_total.chamado_id IS NULL
-                                       OR comp_total.total_competencias = comp_usuario.total_competencias_usuario
-                                     )
-                                     and
-                                     u.tipo_usuario = 1
-                                     ORDER BY p.nome ASC;
-                                     ";
+                                                        "SELECT u.id as 'idUsuario', p.nome as 'atendente', e.equipe
+                                                        FROM usuarios as u
+                                                        LEFT JOIN usuarios_permissoes as up ON up.usuario_id = u.id
+                                                        LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                                                        LEFT JOIN equipes_integrantes as ei ON ei.integrante_id = u.id
+                                                        LEFT JOIN equipe as e ON e.id = ei.equipe_id
+                                                        LEFT JOIN chamados_autorizados_atender as caa ON caa.equipe_id = ei.equipe_id
+                                                        WHERE caa.tipo_id = $tipochamado_id AND u.active = 1 AND up.permite_atender_chamados = 1
+                                                        ORDER BY p.nome ASC";
 
                                                     $r_lista_atendentes = mysqli_query($mysqli, $lista_atendentes);
                                                     while ($c_lista_atendentes = $r_lista_atendentes->fetch_array()) { ?>
@@ -1021,7 +1006,12 @@ if ($rowCount_permissions_submenu > 0) {
                                             <?php
                                             try {
                                                 $query_usuarios = $pdo->prepare(
-                                                    "SELECT u.id, p.nome FROM usuarios as u LEFT JOIN pessoas as p ON p.id = u.pessoa_id WHERE u.active = 1"
+                                                    "SELECT u.id, p.nome
+                                                        FROM usuarios as u
+                                                        LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                                                        LEFT JOIN empresas as e ON e.id = u.empresa_id
+                                                        WHERE  u.active = 1 AND e.id = $idEmpresa
+                                                        ORDER BY p.nome ASC"
                                                 );
                                                 $query_usuarios->execute();
                                                 $result_u = $query_usuarios->fetchAll(PDO::FETCH_ASSOC);
@@ -1163,6 +1153,12 @@ if ($rowCount_permissions_submenu > 0) {
                             $.post("/notificacao/telegram/relato_chamado.php", {
                                 id_chamado: dadosIDChamado
                             }, function(responseNotifyTelegram) {
+
+                            });
+
+                            $.post("/notificacao/smart/relato_chamado.php", {
+                                id_chamado: dadosIDChamado
+                            }, function(responseNotifySmart) {
 
                             });
 

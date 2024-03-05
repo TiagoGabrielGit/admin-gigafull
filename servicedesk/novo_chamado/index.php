@@ -67,7 +67,7 @@ if ($rowCount_permissions_submenu > 0) {
                                 </div>
 
                                 <div class="col-6">
-                                    <label for="tipoChamado" class="form-label">Tipo de chamado*</label>
+                                    <label for="tipoChamado" class="form-label">Tipo de chamado* </label>
                                     <select class="form-select" id="tipoChamado" name="tipoChamado" required>
                                         <option disabled selected value="">Selecione o tipo de chamado</option>
                                         <?php

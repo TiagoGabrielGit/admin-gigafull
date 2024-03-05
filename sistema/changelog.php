@@ -13,24 +13,34 @@ require "../includes/menu.php";
         <div class="card">
           <div class="card-body">
 
-          <div class="accordion" id="accordionExample">
+            <div class="accordion" id="accordionExample">
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading13-4">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse13-4" aria-expanded="false" aria-controls="collapse13-4">
-                    Versão 13.4 - 01/03/2024
+                    Versão 13.4 - 05/03/2024
                   </button>
                 </h2>
                 <div id="collapse13-4" class="accordion-collapse collapse" aria-labelledby="heading13-4" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
-                    # Validação de lista solicitantes e atendentes perminitos na abertura de chamado;<br>
-                    
+                    # Validação de lista solicitantes e atendentes permitidos na abertura de chamado;<br>
+                    # Notificações smart de relatos em chamados realizados via smartcontrol;<br>
+
                     <br><strong>Alterações banco de dados</strong><br>
+                    # Criado coluna notify_smart na tabela usuarios;<br>
+                    # Criado tabela smart_notification;<br>
 
                     <br><strong>Backlog</strong><br>
+                    # Notificações smart de relatos em chamados realizados via smartmobile;<br>
+                    # Notificações smart de abertura de chamados realizados via smartcontrol;<br>
+                    # Notificações smart de abertura de chamados realizados via smartmobile;<br>
+                    # Filtro por tipo de chamado em consultar chamados smartcontrol;<br>
+                    # Ajustar tela de relatar, fazer não modal;<br>
+                    # Descrição tipo de chamado;<br>
+                    # Poder editar o assunto do chamado;<br>
+                    # Rascunho de relatos em chamados;<br>
                     # Solicitar aferição via control;<br>
-                    # Minha dashboard;<br>
                     # Observações Internas Chamado;<br>
                     # Pesquisa MP Concluidas através da data;<br>
                     # Página de aceite MP;<br>
