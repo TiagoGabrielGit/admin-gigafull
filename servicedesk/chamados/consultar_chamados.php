@@ -376,7 +376,14 @@ if ($rowCount_permissions_submenu > 0) {
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
-                                <h1 class="card-title" style="font-size: 28px;">FILTROS</h1>
+                                <div class="row">
+                                    <div class="col-9">
+                                        <h1 class="card-title" style="font-size: 28px;">FILTROS</h1>
+                                    </div>
+                                    <div class="col-3">
+                                    <a href="/servicedesk/novo_chamado/index.php" style="margin-top: 20px;" class="btn btn-sm btn-danger">Abrir Chamado</a>
+                                    </div>
+                                </div>
                                 <form method="POST" action="#" class="row g-3">
                                     <?php
 

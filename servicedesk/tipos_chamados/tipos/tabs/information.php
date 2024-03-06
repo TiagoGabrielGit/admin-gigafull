@@ -22,6 +22,13 @@
                     <input name="tipoChamadoEdit" type="text" class="form-control" id="tipoChamadoEdit" value="<?= $c_tipo_chamado['nome_tipo']; ?>">
                 </div>
             </div>
+            <br>
+            <div class="row">
+                <div class="col-12">
+                    <label for="tipoDescricaoEdit" class="form-label">Descrição</label>
+                    <textarea required id="tipoDescricaoEdit" name="tipoDescricaoEdit" class="form-control" style="resize: none;" rows="4" maxlength="5000"><?= $c_tipo_chamado['descricao']; ?></textarea>
+                </div>
+            </div>
         </div>
         <div class="col-lg-4">
             <div class="col-12">
@@ -66,7 +73,7 @@
 
                 </div>
             </div>
-            
+
             <div class="row mb-3">
                 <label class="col-sm-5 col-form-label">Chamado do tipo aferição de CTO</label>
                 <div class="col-sm-2">

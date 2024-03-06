@@ -47,6 +47,9 @@ if ($rowCount_permissions_submenu > 0) {
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
+                            <div class="float-end">
+                                <button title="Tipos de Chamados" data-bs-toggle="modal" data-bs-target="#modalDetalhesTC" type="button" style="margin-top: 5px;" class="btn btn-sm btn-warning rounded-pill">?</button>
+                            </div>
                             <form id="formAbrirChamado" action="/servicedesk/novo_chamado/processa/add.php" method="POST" class="row g-3">
 
                                 <span id="msg"></span>
@@ -213,6 +216,43 @@ if ($rowCount_permissions_submenu > 0) {
             </div>
         </section>
     </main><!-- End #main -->
+
+    <div class="modal fade" id="modalDetalhesTC" tabindex="-1" style="display: none;" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Tipos de Chamados</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <?php
+                    $descricao_tipos_chamados = "SELECT tc.descricao as descricao, tc.tipo as tipo
+                                FROM chamados_autorizados_abertura as caas
+                                LEFT JOIN tipos_chamados as  tc ON tc.id = caas.tipo_id
+                                WHERE tc.active = 1 and caas.equipe_id = :equipe_id
+                                ORDER BY tc.tipo ASC";
+
+                    $stmt = $pdo->prepare($descricao_tipos_chamados);
+                    $stmt->bindParam(':equipe_id', $equipe_id, PDO::PARAM_INT);
+                    $stmt->execute();
+
+                    if ($stmt->rowCount() > 0) {
+                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            echo "<p><b>" . $row["tipo"] . "</b><br>";
+                            echo !empty($row["descricao"]) ? $row["descricao"] : "Sem descrição";
+                            echo "</p>";
+                        }
+                    } else {
+                        echo "<p>Nenhum chamado liberado.</p>";
+                    }
+                    ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <?php
     require "abrir_chamado_admin.php";

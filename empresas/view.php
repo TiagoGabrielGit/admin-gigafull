@@ -133,9 +133,6 @@ empresa.id = $id
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="notificacao-tab" data-bs-toggle="tab" data-bs-target="#notificacao" type="button" role="tab" aria-controls="notificacao" aria-selected="false" tabindex="-1">Notificação</button>
                                 </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="tiposProtocolos-tab" data-bs-toggle="tab" data-bs-target="#tiposProtocolos" type="button" role="tab" aria-controls="tiposProtocolos" aria-selected="false" tabindex="-1">Tipos de Protocolos</button>
-                                </li>
                             </ul>
                             <div class="tab-content pt-2" id="myTabContent">
                                 <div class="tab-pane fade show active" id="dados" role="tabpanel" aria-labelledby="dados-tab">
@@ -143,9 +140,6 @@ empresa.id = $id
                                 </div>
                                 <div class="tab-pane fade" id="notificacao" role="tabpanel" aria-labelledby="notificacao-tab">
                                     <?php require "tabs/notificacao.php" ?>
-                                </div>
-                                <div class="tab-pane fade" id="tiposProtocolos" role="tabpanel" aria-labelledby="tiposProtocolos-tab">
-                                    <?php require "tabs/tipos_protocolos.php" ?>
                                 </div>
                             </div><!-- End Default Tabs -->
 
@@ -160,9 +154,6 @@ empresa.id = $id
     </main>
 
 <?php
-    require "js.php";
-    require "modalPermiteChamado.php";
-    require "modalDespermiteChamado.php";
     require 'js.php';
 } else {
     require "../acesso_negado.php";

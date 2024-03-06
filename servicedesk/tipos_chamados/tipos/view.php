@@ -26,6 +26,7 @@ if ($rowCount_permissions > 0) {
         "SELECT
 tc.id as id_tipo,
 tc.tipo as nome_tipo,
+tc.descricao as descricao,
 tc.horas_prazo_entrega as tempo_entrega,
 tc.permite_data_entrega as permite_data_entrega,
 CASE

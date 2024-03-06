@@ -139,8 +139,8 @@
 
         <div class="text-center">
             <span id="msgEditarEmpresa2"></span>
-            <input id="btnEditar" name="btnEditar" type="button" value="Salvar Alterações" class="btn btn-danger"></input>
-            <input type="button" value="Voltar" onClick="history.go(-1)" class="btn btn-secondary">
+            <input id="btnEditar" name="btnEditar" type="button" value="Salvar Alterações" class="btn btn-sm btn-danger"></input>
+            <input type="button" value="Voltar" onClick="history.go(-1)" class="btn btn-sm btn-secondary">
         </div>
     </form><!-- End Multi Columns Form -->
 </div>

@@ -170,7 +170,14 @@ if (empty($chamado['execucao'])) {
         <li class="nav-item dropdown">
           <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
             <i class="bi bi-bell"></i>
-            <span class="badge bg-primary badge-number"><?= $total_notificacoes ?></span>
+            <?php
+            if ($total_notificacoes > 0) { ?>
+              <span class="badge bg-warning badge-number"><?= $total_notificacoes ?></span>
+
+            <?php  } else {  ?>
+              <span class="badge bg-primary badge-number"><?= $total_notificacoes ?></span>
+            <?php }
+            ?>
           </a>
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
@@ -206,8 +213,8 @@ if (empty($chamado['execucao'])) {
                     <br>
                     <p><?= $notificacao['date_formatted']; ?></p>
                     <p>
-                      <a href="/includes/processa/marcar_como_lido.php?id=<?=$notificacao['id']?>" class="btn btn-info rounded-pill" style="padding: 3px 10px; font-size: 10px;">Marcar como Lido</a>
-                      <a href="/includes/processa/ir_para_chamado.php?id=<?=$notificacao['id']?>" class="btn btn-info rounded-pill" style="padding: 3px 10px; font-size: 10px;">Ir para Chamado</a>
+                      <a href="/includes/processa/marcar_como_lido.php?id=<?= $notificacao['id'] ?>" class="btn btn-info rounded-pill" style="padding: 3px 10px; font-size: 10px;">Marcar como Lido</a>
+                      <a href="/includes/processa/ir_para_chamado.php?id=<?= $notificacao['id'] ?>" class="btn btn-info rounded-pill" style="padding: 3px 10px; font-size: 10px;">Ir para Chamado</a>
                     </p>
                   </div>
                 </li>

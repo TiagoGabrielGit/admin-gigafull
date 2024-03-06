@@ -268,7 +268,7 @@ if ($rowCount_permissions_submenu > 0) {
                                                             ||
                                                             ($_SESSION['permite_atender_chamados_outras_empresas'] == 0 && ($empresa_usuario == $chamado['idEmpresa']))
                                                         ) { ?>
-                                                            <a href=" processa/executar.php?id=<?= $id_chamado ?>&pessoa=<?= $idPessoa ?> "><button title=" Executar chamado" type="button" class="btn btn-success"><i class="bi bi-file-play"></i></button></a>
+                                                            <a href="processa/executar.php?id=<?= $id_chamado ?>&pessoa=<?= $idPessoa ?> "><button title=" Executar chamado" type="button" class="btn btn-success"><i class="bi bi-file-play"></i></button></a>
                                                     <?php }
                                                     } ?>
 
@@ -285,7 +285,8 @@ if ($rowCount_permissions_submenu > 0) {
                                                     <?php } ?>
 
                                                     <?php if ($uid == $chamado['id_atendente'] && $chamado['in_execution'] == '1' && $chamado['in_execution_atd_id'] == $idPessoa) { ?>
-                                                        <button title="Inserir um relato" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#basicModal"><i class="bi bi-pencil-square"></i></button>
+                                                        <a href="atendimento_chamado.php?id=<?= $id_chamado ?>"><button title="Atender chamado" type="button" class="btn btn-info"><i class="bi bi-pencil-square"></i></button></a>
+
                                                     <?php } ?>
 
                                                     <button title="Gerar relatório do chamado" type="button" class="btn btn-info">
@@ -566,6 +567,30 @@ if ($rowCount_permissions_submenu > 0) {
                 </section>
             </main>
 
+            <?php
+            try {
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                // Busca os chamados com suas prioridades
+                $sql_prioridades_chamados = "SELECT id, prioridade, assuntoChamado FROM chamados where prioridade IS NOT NULL and status_id <> 3 ORDER BY prioridade";
+                $stmt_prioridades_chamados = $pdo->query($sql_prioridades_chamados);
+                $chamados_prioridades = $stmt_prioridades_chamados->fetchAll(PDO::FETCH_ASSOC);
+
+                // Encontra a próxima prioridade disponível
+                $proximo_numero = 1;
+                foreach ($chamados_prioridades as $chamado_pri) {
+                    if ($chamado_pri['prioridade'] == $proximo_numero) {
+                        $proximo_numero++;
+                    } else {
+                        break;
+                    }
+                }
+            } catch (PDOException $e) {
+                echo "Erro: " . $e->getMessage();
+            }
+
+            ?>
+
             <div class="modal fade" id="relatoAvulso" tabindex="-1">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
@@ -594,95 +619,6 @@ if ($rowCount_permissions_submenu > 0) {
                                                 </div>
                                             </div>
                                             <button id="buttonRelatoAvulso" type="submit" class="btn btn-danger">Relatar</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal fade" id="basicModal" tabindex="-1">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Novo relato</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-
-                        <div class="modal-body">
-                            <div class="card-body">
-                                <form method="POST" id="relatarChamado" class="row g-3">
-                                    <span id="msgRelatar"></span>
-                                    <input readonly hidden id="chamadoID" name="chamadoID" value="<?= $id_chamado ?>"></input>
-                                    <input readonly hidden id="relatorID" name="relatorID" value="<?= $uid ?>"></input>
-                                    <input hidden id="startTime" name="startTime" value="<?= $chamado['in_execution_start']; ?>"></input>
-
-
-                                    <?php if (isset($chamado['prioridade'])) { ?>
-                                        <input hidden readonly id="chamadoPrioridade" name="chamadoPrioridade" value="<?= $chamado['prioridade']; ?>"></input>
-                                    <?php } ?>
-
-                                    <style>
-                                        .info-icon {
-                                            color: red;
-                                        }
-                                    </style>
-
-                                    <div class="col-4">
-                                        <label for="statusChamado" class="form-label">Status*
-                                            <?php
-                                            if ($chamado['afericao_status'] == 1) { ?>
-                                                <span class="bi bi-info-circle info-icon" data-bs-toggle="tooltip" title="Não é possivel fechar o chamado se tiver uma aferição pendente."></span>
-                                            <?php } ?>
-                                        </label>
-                                        <select class="form-select" id="statusChamado" name="statusChamado">
-                                            <option selected value="2">Andamento</option>
-                                            <?php
-                                            if ($chamado['afericao_status'] != 1 || $chamado['afericao_status'] === NULL) {
-                                                echo '<option value="3">Fechado</option>';
-                                            }
-                                            $sql_status_chamados =
-                                                "SELECT cs.id as id_status, cs.status_chamado as status_chamado
-                                                    FROM chamados_status as cs
-                                                    WHERE cs.active = 1 and cs.id != 1 and cs.id != 2 and cs.id != 3
-                                                    ORDER BY cs.status_chamado ASC";
-                                            $resultado = mysqli_query($mysqli, $sql_status_chamados);
-                                            while ($status = mysqli_fetch_object($resultado)) :
-                                                echo "<option value='$status->id_status'> $status->status_chamado</option>";
-                                            endwhile;
-                                            ?>
-                                        </select>
-                                    </div>
-                                    <div class="col-4"></div>
-                                    <div class="col-4">
-                                        <label for="privateChamado" class="form-label">Privacidade*</label>
-                                        <select class="form-select" id="privateChamado" name="privateChamado">
-                                            <option selected value="">Selecione</option>
-                                            <option value='1'> Público</option>
-                                            <option value='2'> Privado</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <label for="novoRelato" class="form-label">Relato*</label>
-                                        <textarea id="novoRelato" name="novoRelato" class="form-control" maxlength="10000" rows="8"></textarea>
-                                    </div>
-
-                                    <hr class="sidebar-divider">
-                                    <div class="row">
-                                        <div class="col-5"></div>
-                                        <div class="col-4">
-                                            <span id="relatarLoading" hidden>
-                                                <div class="spinner-border text-success" role="status">
-                                                    <span class="visually-hidden">Loading...</span>
-                                                </div>
-                                            </span>
-                                            <input id="btnRelatar" name="btnRelatar" type="button" value="Relatar" class="btn btn-danger btn-sm"></input>
-                                        </div>
-                                        <div class="col-3">
-                                            <a href="processa/cancelar_relato.php?idChamado=<?= $id_chamado ?>" class="btn btn-secondary btn-sm" onclick="confirmarCancelarRelato()">Cancelar Execução do Chamado</a>
                                         </div>
                                     </div>
                                 </form>
@@ -822,31 +758,6 @@ if ($rowCount_permissions_submenu > 0) {
                     </div>
                 </div>
             </div>
-
-            <?php
-            try {
-                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-                // Busca os chamados com suas prioridades
-                $sql_prioridades_chamados = "SELECT id, prioridade, assuntoChamado FROM chamados where prioridade IS NOT NULL and status_id <> 3 ORDER BY prioridade";
-                $stmt_prioridades_chamados = $pdo->query($sql_prioridades_chamados);
-                $chamados_prioridades = $stmt_prioridades_chamados->fetchAll(PDO::FETCH_ASSOC);
-
-                // Encontra a próxima prioridade disponível
-                $proximo_numero = 1;
-                foreach ($chamados_prioridades as $chamado_pri) {
-                    if ($chamado_pri['prioridade'] == $proximo_numero) {
-                        $proximo_numero++;
-                    } else {
-                        break;
-                    }
-                }
-            } catch (PDOException $e) {
-                echo "Erro: " . $e->getMessage();
-            }
-
-            ?>
-
 
             <div class="modal fade" id="modalConfiguracoesChamados" tabindex="-1" style="display: none;" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
@@ -1134,62 +1045,6 @@ if ($rowCount_permissions_submenu > 0) {
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
             <script>
-                // btn relatar
-                $("#btnRelatar").click(function() {
-                    document.querySelector("#btnRelatar").hidden = true;
-                    document.querySelector("#relatarLoading").hidden = false;
-                    var dadosRelatar = $("#relatarChamado").serialize();
-
-                    $.post("/servicedesk/chamados/processa/newRelato.php", dadosRelatar, function(retornaRelatar) {
-
-                        if (retornaRelatar.includes("Error")) {
-                            $("#msgRelatar").slideDown('slow').html(retornaRelatar);
-                            document.querySelector("#btnRelatar").hidden = false;
-                            document.querySelector("#relatarLoading").hidden = true;
-                            retirarMsgRelatar();
-                        } else if (retornaRelatar.includes("Success")) {
-                            var dadosIDChamado = document.querySelector("#chamadoID").value;
-
-                            $.post("/notificacao/telegram/relato_chamado.php", {
-                                id_chamado: dadosIDChamado
-                            }, function(responseNotifyTelegram) {
-
-                            });
-
-                            $.post("/notificacao/smart/relato_chamado.php", {
-                                id_chamado: dadosIDChamado
-                            }, function(responseNotifySmart) {
-
-                            });
-
-                            // Enviar o comando POST para notify_mail.php
-                            $.post("/notificacao/mail/relato_chamado.php", {
-                                id_chamado: dadosIDChamado
-                            }, function(responseNotifyMail) {
-                                if (retornaRelatar.includes("Success")) {
-                                    $('#relatarChamado')[0].reset();
-                                    $("#basicModal").modal('hide');
-                                    recarregarPagina();
-                                }
-                            });
-                        }
-                    });
-                });
-
-                function retirarMsgRelatar() {
-                    setTimeout(function() {
-                        $("#msgRelatar").slideUp('slow', function() {});
-                    }, 1700);
-                };
-            </script>
-
-            <script>
-                function recarregarPagina() {
-                    location.reload();
-                }
-            </script>
-
-            <script>
                 // Função para remover os parâmetros 'success' e 'error' da URL
                 function removeParameters() {
                     const urlParams = new URLSearchParams(window.location.search);
@@ -1203,18 +1058,6 @@ if ($rowCount_permissions_submenu > 0) {
 
                 // Chame a função quando a página for carregada
                 window.addEventListener('load', removeParameters);
-            </script>
-
-            <script>
-                function confirmarCancelarRelato() {
-                    if (confirm("Tem certeza que deseja cancelar a execução do chamado?")) {
-                        // O usuário clicou em 'OK', prosseguir com o cancelamento do relato
-                        return true;
-                    } else {
-                        // O usuário clicou em 'Cancelar', cancelar a ação
-                        return false;
-                    }
-                }
             </script>
 
             <script>

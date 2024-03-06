@@ -26,6 +26,9 @@ require "../includes/menu.php";
                     <br><strong>Melhorias</strong><br>
                     # Validação de lista solicitantes e atendentes permitidos na abertura de chamado;<br>
                     # Notificações smart de relatos em chamados realizados via smartcontrol;<br>
+                    # Ajustar tela de relatar, fazer não modal;<br>
+                    # Rascunho de relatos em chamados;<br>
+                    # Descrição tipo de chamado;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado coluna notify_smart na tabela usuarios;<br>
@@ -36,10 +39,7 @@ require "../includes/menu.php";
                     # Notificações smart de abertura de chamados realizados via smartcontrol;<br>
                     # Notificações smart de abertura de chamados realizados via smartmobile;<br>
                     # Filtro por tipo de chamado em consultar chamados smartcontrol;<br>
-                    # Ajustar tela de relatar, fazer não modal;<br>
-                    # Descrição tipo de chamado;<br>
                     # Poder editar o assunto do chamado;<br>
-                    # Rascunho de relatos em chamados;<br>
                     # Solicitar aferição via control;<br>
                     # Observações Internas Chamado;<br>
                     # Pesquisa MP Concluidas através da data;<br>

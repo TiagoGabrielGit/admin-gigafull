@@ -50,9 +50,19 @@ if (isset($_SESSION['id'])) {
             curl_setopt($curl_telegram, CURLOPT_RETURNTRANSFER, true);
             $response_telegram = curl_exec($curl_telegram);
 
+            // Configuração da requisição cURL para /notificacao/smart/relato_chamado.php
+            $url_smart = $protocol . '://' . $host . '/notificacao/smart/relato_chamado.php';
+            $data_smart = array(
+                'id_chamado' => $id_chamado
+            );
+            $curl_smart = curl_init($url_smart);
+            curl_setopt($curl_smart, CURLOPT_POST, true);
+            curl_setopt($curl_smart, CURLOPT_POSTFIELDS, $data_smart);
+            curl_setopt($curl_smart, CURLOPT_RETURNTRANSFER, true);
+            $response_smart = curl_exec($curl_smart);
 
             // Verificação de erros durante as requisições
-            if ($response_mail === false || $response_telegram === false) {
+            if ($response_mail === false || $response_telegram === false || $response_smart === false) {
                 header('Location: ' . $_SERVER['HTTP_REFERER']);
                 exit;
             } else {

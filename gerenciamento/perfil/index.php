@@ -107,9 +107,13 @@ if ($rowCount_permissions > 0) { ?>
                                     $r_sql_perfil = mysqli_query($mysqli, $sql_perfil);
 
                                     while ($campos = $r_sql_perfil->fetch_array()) { ?>
-                                        <tr onclick="location.href='view.php?idPerfil=<?= $campos['idPerfil']; ?>'">
+                                        <tr>
                                             <td><?= $campos['idPerfil'] ?></th>
-                                            <td><?= $campos['perfil'] ?></td>
+
+                                            <td style="text-align: center;">
+                                                <a style="color: red;" href="view.php?idPerfil=<?= $campos['idPerfil'] ?>"><?= $campos['perfil']; ?></a>
+                                            </td>
+
                                             <td><?= $campos['situacao']; ?></td>
                                         </tr>
                                     <?php } ?>

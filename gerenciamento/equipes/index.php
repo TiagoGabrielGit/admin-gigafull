@@ -7,18 +7,10 @@ $submenu_id = "16";
 $uid = $_SESSION['id'];
 
 $permissions_submenu =
-    "SELECT 
-	u.perfil_id
-FROM 
-	usuarios u
-JOIN 
-	perfil_permissoes_submenu pp
-ON 
-	u.perfil_id = pp.perfil_id
-WHERE
-	u.id = $uid
-AND 
-	pp.url_submenu = $submenu_id";
+    "SELECT u.perfil_id
+FROM usuarios u
+JOIN perfil_permissoes_submenu pp ON  u.perfil_id = pp.perfil_id
+WHERE u.id = $uid AND  pp.url_submenu = $submenu_id";
 
 $exec_permissions_submenu = $pdo->prepare($permissions_submenu);
 $exec_permissions_submenu->execute();
@@ -50,7 +42,7 @@ if ($rowCount_permissions_submenu > 0) {
                                     <div class="col-2">
                                         <div class="card">
                                             <!-- Basic Modal -->
-                                            <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
+                                            <button style="margin-top: 15px" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
                                                 Nova Equipe
                                             </button>
                                         </div>
@@ -100,10 +92,10 @@ if ($rowCount_permissions_submenu > 0) {
                                 }
                             </style>
 
-                            <table class="table table-striped">
+                            <table class="table datatable" id="styleTable">
                                 <thead>
                                     <tr>
-                                        <th style="text-align: left;" scope="col">Equipe</th>
+                                        <th style="text-align: center;" scope="col">Equipe</th>
                                         <th style="text-align: center;" scope="col">Status</th>
                                     </tr>
                                 </thead>
@@ -116,11 +108,15 @@ if ($rowCount_permissions_submenu > 0) {
                                     while ($campos = $resultado->fetch_array()) {
                                         $id = $campos['id_equipe']; ?>
 
-                                        <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $campos['id_equipe']; ?>'">
+
+                                        <tr>
+                                            <td style="text-align: center;">
+                                                <a style="color: red;" href="view.php?id=<?= $campos['id_equipe'] ?>"><?= $campos['equipe']; ?></a>
                                             </td>
-                                            <td style="text-align: left;"><?= $campos['equipe']; ?></td>
+
                                             <td style="text-align: center;"><?= $campos['active']; ?></td>
-                                        <?php } ?>
+                                        </tr>
+                                    <?php } ?>
                                 </tbody>
                             </table>
                             <!-- End Table with stripped rows -->
