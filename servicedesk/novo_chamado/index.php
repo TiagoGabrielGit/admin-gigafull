@@ -186,7 +186,9 @@ if ($rowCount_permissions_submenu > 0) {
 
                                 <div class="col-12">
                                     <label for="relatoChamado" class="form-label">Descreva a situação*</label>
-                                    <textarea rows="8" id="relatoChamado" name="relatoChamado" class="form-control" maxlength="1000" required></textarea>
+                                    <!--<textarea rows="8" id="relatoChamado" name="relatoChamado" class="form-control" maxlength="1000" required></textarea>-->
+                                    <textarea rows="8" id="relatoChamado" name="relatoChamado" class="form-control" maxlength="1000" required disabled>Selecione primeiro o tipo de chamado</textarea>
+
 
                                 </div>
 
@@ -218,7 +220,7 @@ if ($rowCount_permissions_submenu > 0) {
     </main><!-- End #main -->
 
     <div class="modal fade" id="modalDetalhesTC" tabindex="-1" style="display: none;" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Tipos de Chamados</h5>

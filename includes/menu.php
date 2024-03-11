@@ -200,7 +200,8 @@ if (empty($chamado['execucao'])) {
               sn.id as 'id'
             FROM smart_notification as sn
             WHERE sn.status = 1 AND sn.usuario_id = $usuario_id
-            ORDER BY sn.id desc";
+            ORDER BY sn.id desc
+            LIMIT 4";
             $result_notificacoes = mysqli_query($mysqli, $notificacoes_query);
 
             if (mysqli_num_rows($result_notificacoes) > 0) {
@@ -237,7 +238,7 @@ if (empty($chamado['execucao'])) {
               <hr class="dropdown-divider">
             </li>
             <li class="dropdown-footer">
-              <a href="#">Ver todas notificações</a>
+              <a href="/all_notification/index.php">Ver todas notificações</a>
             </li>
 
           </ul><!-- End Notification Dropdown Items -->

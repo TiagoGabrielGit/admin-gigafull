@@ -1,29 +1,43 @@
 <?php
 session_start();
-if (isset($_SESSION['id'])) {
+
+// Verifica se o ID da sessão está definido e é válido
+if (isset($_SESSION['id']) && $_SESSION['id'] !== '') {
     require "../../../conexoes/conexao_pdo.php";
 
     // Obtenha os parâmetros enviados via GET
-    $empresaChamado = $_GET['empresa'] ?? null;
-    $tipoChamado = $_GET['tipo'] ?? null;
+    $empresaChamado = $_SESSION['empresa_id'];
+    //$empresaChamado = isset($_GET['empresa']) ? intval($_GET['empresa']) : null;
+    $tipoChamado = isset($_GET['tipo']) ? intval($_GET['tipo']) : null;
 
-    // Consulte a tabela tipos_chamados_mascaras para obter a máscara personalizada
-    $sql = "SELECT mascara FROM tipos_chamados_mascaras WHERE empresa_id = :empresa AND tipo_chamado_id = :tipo AND active = 1";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['empresa' => $empresaChamado, 'tipo' => $tipoChamado]);
-    $mascara = $stmt->fetchColumn();
+    if ($empresaChamado !== null && $tipoChamado !== null) {
+        try {
+            // Consulta preparada para evitar injeção SQL
+            $sql = "SELECT CASE 
+                            WHEN tcm.active = 1 THEN tcm.mascara 
+                            ELSE tc.mascara 
+                        END AS mascara
+                        FROM tipos_chamados as tc
+                        LEFT JOIN tipos_chamados_mascaras as tcm ON tcm.tipo_chamado_id = tc.id AND tcm.active = 1 AND tcm.empresa_id = :empresaChamado
+                        WHERE tc.id = :tipoChamado";
 
-    // Se não houver máscara personalizada, consulte a tabela tipos_chamados para obter a máscara padrão
-    if (!$mascara) {
-        $sql = "SELECT mascara FROM tipos_chamados WHERE id = :tipo";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(['tipo' => $tipoChamado]);
-        $mascara = $stmt->fetchColumn();
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(':empresaChamado', $empresaChamado, PDO::PARAM_INT);
+            $stmt->bindParam(':tipoChamado', $tipoChamado, PDO::PARAM_INT);
+            $stmt->execute();
+            $mascara = $stmt->fetchColumn();
+
+            // Retorna a máscara (ou vazio se não houver)
+            //echo 'Empresa:' . $empresaChamado . '<br>' . 'Tipo Chamado: ' . $tipoChamado;
+            echo $mascara ?? '';
+        } catch (PDOException $e) {
+            // Tratamento de erro
+            echo "Erro ao executar a consulta: " . $e->getMessage();
+        }
+    } else {
+        echo "Parâmetros inválidos.";
     }
-
-    // Retorna a máscara (ou vazio se não houver)
-    echo $mascara ?? '';
-} else { // 1
+} else { // Se o ID da sessão não estiver definido ou for inválido
     header("Location: /index.php");
     exit();
 }

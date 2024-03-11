@@ -34,6 +34,7 @@ if ($rowCount_permissions_submenu > 0) {
         c.solicitante_equipe_id as solicitante_equipe_id,
         c.prioridade as prioridade,
         c.tipochamado_id as tipochamado_id,
+        c.chamado_dependente as chamado_dependente,
         tc.afericao as afericao,
         date_format(c.data_abertura,'%H:%i:%s %d/%m/%Y') as abertura,
         date_format(c.data_fechamento,'%H:%i:%s %d/%m/%Y') as fechado,
@@ -170,6 +171,16 @@ if ($rowCount_permissions_submenu > 0) {
                                     </div>
                                 </div>
 
+                                <div class="col-lg-2">
+                                    <?php
+                                    if ($chamado['chamado_dependente'] === null || $chamado['chamado_dependente'] == 0) {
+                                    } else { ?>
+                                        <a href="/servicedesk/chamados/visualizar_chamado.php?id=<?= $chamado['chamado_dependente'] ?>" target="_blank">
+                                            <span style="margin-top: 10px;" class="btn btn-small btn-warning rounded-pill">Dependente do chamado <?= $chamado['chamado_dependente'] ?></span>
+                                        </a>
+
+                                    <?php } ?>
+                                </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="row">
@@ -465,7 +476,7 @@ if ($rowCount_permissions_submenu > 0) {
                                                     <?php } ?>
                                                 <?php } ?>
 
-                                                <?php if ($uid != $chamado['id_atendente']) { ?>
+                                                <?php if ($uid != $chamado['id_atendente'] & $chamado['status'] <> "Fechado") { ?>
                                                     <button title="Inserir um relato" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#relatoAvulso"><i class="bi bi-pencil-square"></i></button>
                                                 <?php } ?>
 
@@ -760,7 +771,7 @@ if ($rowCount_permissions_submenu > 0) {
             </div>
 
             <div class="modal fade" id="modalConfiguracoesChamados" tabindex="-1" style="display: none;" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog modal-xl">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Configurações do Chamado</h5>
@@ -768,6 +779,192 @@ if ($rowCount_permissions_submenu > 0) {
                         </div>
 
                         <div class="modal-body">
+                            <form method="POST" action="processa/atualiza_assunto_chamado.php">
+                                <input readonly hidden value="<?= $id_chamado ?>" id="conf_id_chamado" name="conf_id_chamado"></input>
+                                <div class="row">
+                                    <div class="col-8">
+                                        <label for="assunto_chamado" class="form-label">Assunto Chamado</label>
+                                        <input value="<?= $chamado['assunto'] ?>" id="assunto_chamado" name="assunto_chamado" type="text" class="form-control"></input>
+                                    </div>
+                                    <div class="col-4">
+                                        <button style="margin-top: 38px;" type="submit" class="btn btn-danger btn-sm">Atualizar</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <br>
+                            <form method="POST" action="processa/dependencia_chamado.php">
+                                <input readonly hidden value="<?= $id_chamado ?>" id="conf_id_chamado" name="conf_id_chamado"></input>
+                                <div class="row">
+                                    <div class="col-8">
+                                        <label for="dependencia_chamado" class="form-label">Dependência Chamado</label>
+                                        <select class="form-select" name="dependencia_chamado" id="dependencia_chamado" required>
+                                            <option disabled value="">Selecione</option>
+                                            <?php
+
+                                            if ($permite_interagir_chamados == 1) {
+                                                //EMPRESA
+                                                $query_chamados_abertos =
+                                                    $pdo->prepare("SELECT
+                                                    ch.id as id_chamado,
+                                                    ch.assuntoChamado as assunto,
+                                                    ch.relato_inicial as relato_inicial,
+                                                    ch.atendente_id as id_atendente,
+                                                    ch.prioridade as prioridade,
+                                                    ch.melhoria_recomendada as melhoria_recomendada,
+                                                    date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
+                                                    ch.in_execution as inExecution,
+                                                    ch.status_id as id_status,
+                                                    ch.data_prevista_conclusao as 'data_prevista_conclusao',
+                                                    cs.status_chamado as statusChamado,
+                                                    tc.tipo as tipoChamado,
+                                                    emp.fantasia as fantasia,
+                                                    p.nome as atendente,
+                                                    s.service as service,
+                                                    ise.item as itemService,
+                                                        pes.nome as solicitante_nome,
+                                                        e.equipe as equipe_solicitante
+
+                                                    FROM chamados as ch
+                                                    LEFT JOIN empresas as emp ON ch.empresa_id = emp.id
+                                                    LEFT JOIN tipos_chamados as tc ON ch.tipochamado_id  = tc.id
+                                                    LEFT JOIN chamados_status as cs ON cs.id = ch.status_id
+                                                    LEFT JOIN usuarios as u ON u.id = ch.atendente_id
+                                                    LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                                                    LEFT JOIN contract_service as cser ON  cser.id = ch.service_id
+                                                    LEFT JOIN service as s ON s.id = cser.service_id 
+                                                    LEFT JOIN contract_iten_service as cis ON cis.id = ch.iten_service_id
+                                                    LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
+                                                    LEFT JOIN usuarios as us ON us.id = ch.solicitante_id
+                                                    LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
+                                                    LEFT JOIN equipe as e ON e.id = ch.solicitante_equipe_id
+                                                    LEFT JOIN chamados_autorizados_interagir AS cai ON cai.tipo_id = tc.id
+
+                                                        WHERE ch.empresa_id LIKE '$empresa_usuario'
+                                                        AND ch.status_id <> 3
+                                                        AND cai.equipe_id = '$equipe_id'
+                                                        ORDER BY ch.id DESC");
+                                            } else if ($permite_interagir_chamados == 2) {
+                                                //CHAMADOS ABERTOS POR SOLICITANTES DA EQUIPE
+                                                $query_chamados_abertos =
+                                                    $pdo->prepare("SELECT
+                                                    ch.id as id_chamado,
+                                                    ch.assuntoChamado as assunto,
+                                                    ch.relato_inicial as relato_inicial,
+                                                    ch.atendente_id as id_atendente,
+                                                    ch.prioridade as prioridade,
+                                                    ch.melhoria_recomendada as melhoria_recomendada,
+                                                    date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
+                                                    ch.in_execution as inExecution,
+                                                    ch.status_id as id_status,
+                                                    ch.data_prevista_conclusao as 'data_prevista_conclusao',
+                                                    cs.status_chamado as statusChamado,
+                                                    tc.tipo as tipoChamado,
+                                                    emp.fantasia as fantasia,
+                                                    p.nome as atendente,
+                                                    s.service as service,
+                                                    ise.item as itemService,
+                                                    pes.nome as solicitante_nome,
+                                                    e.equipe as equipe_solicitante
+
+                                                    FROM chamados as ch
+                                                    LEFT JOIN empresas as emp ON ch.empresa_id = emp.id
+                                                    LEFT JOIN tipos_chamados as tc ON ch.tipochamado_id  = tc.id
+                                                    LEFT JOIN chamados_status as cs ON cs.id = ch.status_id
+                                                    LEFT JOIN usuarios as u ON u.id = ch.atendente_id
+                                                    LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                                                    LEFT JOIN contract_service as cser ON  cser.id = ch.service_id
+                                                    LEFT JOIN service as s ON s.id = cser.service_id 
+                                                    LEFT JOIN contract_iten_service as cis ON cis.id = ch.iten_service_id
+                                                    LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
+                                                    LEFT JOIN usuarios as us ON us.id = ch.solicitante_id
+                                                    LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
+                                                    LEFT JOIN equipe as e ON e.id = ch.solicitante_equipe_id
+                                                    LEFT JOIN chamados_autorizados_interagir AS cai ON cai.tipo_id = tc.id
+
+                                                    WHERE ch.solicitante_equipe_id = :equipe_id
+                                                    and ch.status_id <> 3
+                                                    AND cai.equipe_id = '$equipe_id'
+                                                    ORDER BY ch.id DESC");
+                                            } else if ($permite_interagir_chamados == 3) {
+                                                //TODOS OS CHAMADOS
+                                                $query_chamados_abertos =
+                                                    $pdo->prepare("SELECT
+                                                    ch.id as id_chamado,
+                                                    ch.assuntoChamado as assunto,
+                                                    ch.relato_inicial as relato_inicial,
+                                                    ch.atendente_id as id_atendente,
+                                                    ch.prioridade as prioridade,
+                                                    ch.melhoria_recomendada as melhoria_recomendada,
+                                                    date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
+                                                    ch.in_execution as inExecution,
+                                                    ch.status_id as id_status,
+                                                    ch.data_prevista_conclusao as 'data_prevista_conclusao',
+                                                    cs.status_chamado as statusChamado,
+                                                    tc.tipo as tipoChamado,
+                                                    emp.fantasia as fantasia,
+                                                    p.nome as atendente,
+                                                    s.service as service,
+                                                    ise.item as itemService,
+                                                    pes.nome as solicitante_nome,
+                                                    e.equipe as equipe_solicitante
+                                                    FROM chamados as ch
+                                                    LEFT JOIN empresas as emp ON ch.empresa_id = emp.id
+                                                    LEFT JOIN tipos_chamados as tc ON ch.tipochamado_id  = tc.id
+                                                    LEFT JOIN chamados_status as cs ON cs.id = ch.status_id
+                                                    LEFT JOIN usuarios as u ON u.id = ch.atendente_id
+                                                    LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                                                    LEFT JOIN contract_service as cser ON  cser.id = ch.service_id
+                                                    LEFT JOIN service as s ON s.id = cser.service_id 
+                                                    LEFT JOIN contract_iten_service as cis ON cis.id = ch.iten_service_id
+                                                    LEFT JOIN iten_service as ise ON ise.id = cis.iten_service
+                                                    LEFT JOIN usuarios as us ON us.id = ch.solicitante_id
+                                                    LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
+                                                    LEFT JOIN equipe as e ON e.id = ch.solicitante_equipe_id
+                                                    LEFT JOIN chamados_autorizados_interagir AS cai ON cai.tipo_id = tc.id
+
+                                                    WHERE
+                                                    ch.status_id <> 3
+                                                    AND cai.equipe_id = '$equipe_id'
+                                                    ORDER BY ch.id DESC");
+                                            }
+
+
+                                            $query_chamados_abertos->execute();
+                                            $result_qca = $query_chamados_abertos->fetchAll(PDO::FETCH_ASSOC);
+                                            if (count($result_qca) > 0) {
+                                                $nenhumSelecionado = true;
+                                                foreach ($result_qca as $row_qca) {
+                                                    $optionValue = $row_qca['id_chamado'];
+                                                    $optionText = $row_qca['assunto'];
+
+                                                    $selected = ($optionValue == $chamado['chamado_dependente']) ? 'selected' : '';
+
+                                                    // Se encontrar um chamado dependente selecionado, define $nenhumSelecionado como false
+                                                    if ($selected == 'selected') {
+                                                        $nenhumSelecionado = false;
+                                                    }
+
+                                                    echo "<option value='$optionValue' $selected>Chamado $optionValue - $optionText</option>";
+                                                }
+
+                                                // Se nenhum chamado dependente estiver selecionado, adiciona a opção "Nenhum chamado dependente" selecionada
+                                                if ($nenhumSelecionado) {
+                                                    echo "<option value='' selected>Nenhum chamado dependente</option>";
+                                                } else {
+                                                    echo "<option value=''>Nenhum chamado dependente</option>";
+                                                }
+                                            } else {
+                                                echo '<option value="" disabled>Nenhum chamado encontrado.</option>';
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
+                                        <button style="margin-top: 38px;" type="submit" class="btn btn-danger btn-sm">Atualizar</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <br>
                             <form method="POST" action="processa/atualiza_confs_chamado.php">
                                 <input readonly hidden value="<?= $id_chamado ?>" id="conf_id_chamado" name="conf_id_chamado"></input>
                                 <div class="row">
@@ -877,7 +1074,12 @@ if ($rowCount_permissions_submenu > 0) {
                                             <?php
                                             try {
                                                 $query_tipos_chamados = $pdo->prepare(
-                                                    "SELECT id, tipo FROM tipos_chamados WHERE active = 1 ORDER BY tipo ASC"
+
+                                                    "SELECT tc.id as id,  tc.tipo as tipo
+                                                    FROM chamados_autorizados_abertura as caas
+                                                    LEFT JOIN tipos_chamados as  tc ON tc.id = caas.tipo_id
+                                                    WHERE tc.active = 1 and caas.equipe_id = $equipe_id
+                                                    ORDER BY tc.tipo ASC"
                                                 );
                                                 $query_tipos_chamados->execute();
                                                 $result_tc = $query_tipos_chamados->fetchAll(PDO::FETCH_ASSOC);

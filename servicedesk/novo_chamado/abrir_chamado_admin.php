@@ -2,6 +2,25 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var tipoChamadoSelect = document.getElementById('tipoChamado');
+        var relatoChamadoTextarea = document.getElementById('relatoChamado');
+        var mensagem = "Selecione primeiro o tipo de chamado";
+
+        tipoChamadoSelect.addEventListener('change', function() {
+            if (tipoChamadoSelect.value === "") {
+                relatoChamadoTextarea.disabled = true;
+                relatoChamadoTextarea.value = mensagem;
+            } else {
+                relatoChamadoTextarea.disabled = false;
+                relatoChamadoTextarea.value = "";
+            }
+        });
+    });
+</script>
+
+
+<script>
     $(document).ready(function() {
         $('#empresaChamado').change(function() {
             var empresaId = $(this).val();

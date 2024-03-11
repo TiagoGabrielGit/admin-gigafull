@@ -42,7 +42,14 @@
                                     <label class="form-check-label" for="editPrivacidade" value="3">Somente criador</label>
                                 </div>
 
-                                <?= $aplicaButton ?>
+
+                                <?php if ($_SESSION['permite_configurar_privacidade_credenciais'] == 1) { ?>
+                                    <div class='col-4' style='text-align: left;'>
+                                        <a onclick='dadosCredencial("<?php echo $row['cred_id']; ?>")' data-bs-toggle='modal' data-bs-target='#modalConfigPermissoes'>
+                                            <input type='button' class='btn btn-outline-dark btn-sm' value='Configurar permissões'>
+                                        </a>
+                                    </div>
+                                <?php } ?>
                             </div>
 
                             <div class="col-9"> </div>

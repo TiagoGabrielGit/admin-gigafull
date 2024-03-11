@@ -144,7 +144,17 @@ if (isset($_SESSION['temp_password'])) {
                     </div>
 
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-6">
+                            <label for="control" class="form-label">Acesso Control</label>
+                            <select name="control" id="control" class="form-select" required>
+
+                                <option disabled value="" <?php echo ($campos['control'] === null) ? 'selected' : ''; ?>>Selecione uma opção</option>
+                                <option value="1" <?php echo ($campos['control'] == 1) ? 'selected' : ''; ?>>Sim</option>
+                                <option value="0" <?php echo ($campos['control'] == 0) ? 'selected' : ''; ?>>Não</option>
+
+                            </select>
+                        </div>
+                        <div class="col-6">
                             <label for="mobile" class="form-label">Acesso Mobile</label>
                             <select name="mobile" id="mobile" class="form-select" required>
 

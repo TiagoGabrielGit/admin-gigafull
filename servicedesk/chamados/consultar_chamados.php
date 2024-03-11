@@ -120,6 +120,7 @@ if ($rowCount_permissions_submenu > 0) {
             ch.assuntoChamado as assunto,
             ch.relato_inicial as relato_inicial,
             ch.atendente_id as id_atendente,
+            ch.chamado_dependente as chamado_dependente,
             ch.prioridade as prioridade,
             ch.melhoria_recomendada as melhoria_recomendada,
             date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
@@ -191,6 +192,8 @@ if ($rowCount_permissions_submenu > 0) {
             ch.relato_inicial as relato_inicial,
             ch.atendente_id as id_atendente,
             ch.prioridade as prioridade,
+            ch.chamado_dependente as chamado_dependente,
+
             ch.melhoria_recomendada as melhoria_recomendada,
             date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
             ch.in_execution as inExecution,
@@ -261,6 +264,8 @@ if ($rowCount_permissions_submenu > 0) {
             ch.relato_inicial as relato_inicial,
             ch.atendente_id as id_atendente,
             ch.prioridade as prioridade,
+            ch.chamado_dependente as chamado_dependente,
+
             ch.melhoria_recomendada as melhoria_recomendada,
             date_format(ch.data_abertura,'%H:%i:%s %d/%m/%Y') as dataAbertura,
             ch.in_execution as inExecution,
@@ -381,7 +386,7 @@ if ($rowCount_permissions_submenu > 0) {
                                         <h1 class="card-title" style="font-size: 28px;">FILTROS</h1>
                                     </div>
                                     <div class="col-3">
-                                    <a href="/servicedesk/novo_chamado/index.php" style="margin-top: 20px;" class="btn btn-sm btn-danger">Abrir Chamado</a>
+                                        <a href="/servicedesk/novo_chamado/index.php" style="margin-top: 20px;" class="btn btn-sm btn-danger">Abrir Chamado</a>
                                     </div>
                                 </div>
                                 <form method="POST" action="#" class="row g-3">
@@ -689,14 +694,14 @@ if ($rowCount_permissions_submenu > 0) {
                                                         <?php
                                                         $valida_competencia =
                                                             "SELECT cc.competencia_id as competencia_id
-                FROM chamados_competencias as cc
-                WHERE cc.chamado_id = $id_chamado
-                AND NOT EXISTS (
-                SELECT id_competencia
-                FROM usuario_competencia as uc
-                WHERE uc.id_usuario = $uid
-                AND uc.id_competencia = cc.competencia_id
-                )";
+                                                            FROM chamados_competencias as cc
+                                                            WHERE cc.chamado_id = $id_chamado
+                                                            AND NOT EXISTS (
+                                                            SELECT id_competencia
+                                                            FROM usuario_competencia as uc
+                                                            WHERE uc.id_usuario = $uid
+                                                            AND uc.id_competencia = cc.competencia_id
+                                                            )";
                                                         $r_valida_competencia = mysqli_query($mysqli, $valida_competencia);
                                                         $c_valida_competencia = $r_valida_competencia->fetch_assoc();
 
@@ -705,8 +710,15 @@ if ($rowCount_permissions_submenu > 0) {
                                                             if ($campos['data_prevista_conclusao'] === null || $campos['id_status'] == 3) {
                                                             } else { ?>
                                                                 <span title="Data prevista de conclusão" class="btn btn-small btn-<?= $colorPill ?> rounded-pill"><?= date('d/m/Y H:i', strtotime($campos['data_prevista_conclusao'])) ?></span>
-                                                        <?php }
-                                                            if ($c_valida_competencia) {
+                                                            <?php }
+                                                            if ($campos['chamado_dependente'] === null || $campos['chamado_dependente'] == 0) {
+                                                            } else { ?>
+                                                                <a href="/servicedesk/chamados/visualizar_chamado.php?id=<?= $campos['chamado_dependente'] ?>" target="_blank">
+                                                                    <span style="margin-bottom: 10px;" class="btn btn-small btn-warning rounded-pill">Dependente do chamado <?= $campos['chamado_dependente'] ?></span>
+                                                                </a>
+                                                            <?php } ?>
+                                                            <br>
+                                                        <?php if ($c_valida_competencia) {
                                                                 // O usuário tem todas as competências necessárias
                                                                 echo '<span class="btn btn-small btn-secondary rounded-pill">Qualificado</span>';
                                                             } else {

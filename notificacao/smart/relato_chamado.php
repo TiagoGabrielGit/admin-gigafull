@@ -29,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $chamado_id = $c_infos_chamado['chamado_id'];
         // Consulta para obter o último relato do chamado
         $ultimo_relato = "SELECT
+            cr.id as 'id_ultimo_relato',
             p.nome as 'relatante',
             cr.relato as 'relato',
             cr.private as 'privacidade'
@@ -46,6 +47,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $ultimo_relato = $c_ultimo_relato['relato'];
         $relatante = $c_ultimo_relato['relatante'];
         $privacidade = $c_ultimo_relato['privacidade'];
+        $id_ultimo_relato = $c_ultimo_relato['id_ultimo_relato'];
+
 
         // Consulta para obter a lista de destinatários
         if ($privacidade == 1) { //Publico
@@ -99,11 +102,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $usuario_id = $row['id_usuario'];
                 $mensagem = "Um novo relato foi adicionado no chamado $id_chamado por $relatante.";
 
-                $insert_query = "INSERT INTO smart_notification (usuario_id, status, mensagem_tipo, chamado_id, mensagem, date) VALUES (:usuario_id, '1', '3', :chamado_id, :mensagem, NOW())";
+                $insert_query = "INSERT INTO smart_notification (usuario_id, status, mensagem_tipo, chamado_id, relato_id, mensagem, date) VALUES (:usuario_id, '1', '3', :chamado_id, :id_ultimo_relato, :mensagem, NOW())";
                 $stmt_insert = $pdo->prepare($insert_query);
                 $stmt_insert->bindParam(':usuario_id', $usuario_id);
                 $stmt_insert->bindParam(':chamado_id', $chamado_id);
                 $stmt_insert->bindParam(':mensagem', $mensagem);
+                $stmt_insert->bindParam(':id_ultimo_relato', $id_ultimo_relato);
+
+                
                 $stmt_insert->execute();
             }
 

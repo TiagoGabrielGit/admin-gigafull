@@ -13,6 +13,66 @@ require "../includes/menu.php";
         <div class="card">
           <div class="card-body">
 
+
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading13-5">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse13-5" aria-expanded="false" aria-controls="collapse13-5">
+                    Versão 13.5 - 10/03/2024
+                  </button>
+                </h2>
+                <div id="collapse13-5" class="accordion-collapse collapse" aria-labelledby="heading13-5" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Botão relato avulso esta aparecendo para chamados fechados;<br>
+                    # Revisar mascara principal;<br>
+                    # Permissão ao usuario para acesso ao smartcontrol;<br>
+                    # Deixar por default habilitado botão 'Ativado' em credenciais;<br>
+                    # Deixar sempre aparecendo botão de configurar permissões credenciais;<br>
+                    # Ver todas notificações;<br>
+                    # Poder editar o assunto do chamado;<br>
+                    # Dependencia de chamados;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Adicionado coluna 'control' na tabela usuarios;<br>
+                    # Criado coluna 'relato_id' na tabela smart_notification;<br>
+                    # Adicionado coluna 'chamado_dependente' na tabela chamados;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Não permitir fechar chamado se tiver chamados dependentes em aberto;<br>
+                    # Mostrar os chamados dependentes do chamado;<br>
+                    # Filtros em todas notificações;<br>
+                    # Notificações smart de relatos em chamados realizados via smartmobile;<br>
+                    # Notificações smart de abertura de chamados realizados via smartcontrol;<br>
+                    # Notificações smart de abertura de chamados realizados via smartmobile;<br>
+                    # Filtro por tipo de chamado em consultar chamados smartcontrol;<br>
+                    # Solicitar aferição via control;<br>
+                    # Observações Internas Chamado;<br>
+                    # Pesquisa MP Concluidas através da data;<br>
+                    # Página de aceite MP;<br>
+                    # Causador Incidente;<br>
+                    # Enter para login;<br>
+                    # Alternar tabs automanticamente no iframe incidentes;<br>
+                    # White-Label iframe incidentes;<br>
+                    # TABs permitidas no iframe incidentes;<br>
+                    # Remover PON/RF durante criação de MP;<br>
+                    # Vincular uma documentação à um tipo de incidente;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Energia POP;<br>
+                    # Atributos de equipamentos;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Permissões em documentações;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Pautas e ATAs de Reunião;<br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
             <div class="accordion" id="accordionExample">
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading13-4">
@@ -35,6 +95,13 @@ require "../includes/menu.php";
                     # Criado tabela smart_notification;<br>
 
                     <br><strong>Backlog</strong><br>
+                    # Permitir acesso control;<br>
+                    # Dependencia de chamados;<br>
+                    # Ver todos incidentes;<br>
+                    # Revisar mascara principal;<br>
+                    # Botão relato avulso esta aparecendo para chamados fechados;<br>
+                    # Deixar sempre aparecendo botão de configurar permissões credenciais;<br>
+                    # Deixar por default habilitado botão 'Ativado' em credenciais equipamentos;<br>
                     # Notificações smart de relatos em chamados realizados via smartmobile;<br>
                     # Notificações smart de abertura de chamados realizados via smartcontrol;<br>
                     # Notificações smart de abertura de chamados realizados via smartmobile;<br>
@@ -61,7 +128,6 @@ require "../includes/menu.php";
                     # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
                     # Pautas e ATAs de Reunião;<br>
                     # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
-                    # Dependencia de chamados;<br>
                   </div>
                 </div>
               </div>

@@ -28,7 +28,7 @@ if (empty($_POST['equipamentoPesquisa'])) {
 }
 
 if (empty($_POST['statusEquipamentoPesquisa'])) {
-    $_POST['statusEquipamentoPesquisa'] = "%";
+    $_POST['statusEquipamentoPesquisa'] = "Ativado";
 }
 
 if (empty($_POST['limiteBusca'])) {
@@ -106,18 +106,17 @@ LIMIT $limiteBusca
                     <div class="container">
                         <div class="row">
                             <div class="col-10">
-                                <h5 class="card-title">Pesquisar</h5>
                             </div>
                             <div class="col-2">
                                 <div class="card">
                                     <!-- Basic Modal -->
-                                    <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalNovoEquipamento">
+                                    <button style="margin-top: 15px" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalNovoEquipamento">
                                         Cadastrar novo
                                     </button>
                                 </div>
                             </div>
                             <div class="modal fade" id="modalNovoEquipamento" tabindex="-1">
-                                <div class="modal-dialog modal-lg">
+                                <div class="modal-dialog modal-xl">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title">Novo cadastro</h5>
@@ -216,8 +215,8 @@ LIMIT $limiteBusca
                                                     <hr class="sidebar-divider">
 
                                                     <div class="text-center">
-                                                        <button type="submit" class="btn btn-danger">Salvar</button>
-                                                        <a href="/telecom/credentials/index.php"> <input type="button" value="Voltar" class="btn btn-secondary"></input></a>
+                                                        <button type="submit" class="btn btn-sm btn-danger">Salvar</button>
+                                                        <a href="/telecom/credentials/index.php"> <input type="button" value="Voltar" class="btn btn-sm btn-secondary"></input></a>
                                                     </div>
                                                 </form><!-- Vertical Form -->
                                             </div>
@@ -227,6 +226,7 @@ LIMIT $limiteBusca
                             </div><!-- End Basic Modal-->
                         </div>
                     </div>
+                    <?= 'Status: ' .$statusEquipamentoPesquisa ?>
 
                     <form method="POST" action="#" class="row g-3">
                         <input type="hidden" id="tabequipamento" name="tabequipamento">
@@ -260,7 +260,7 @@ LIMIT $limiteBusca
                             <select id="popPesquisa" name="popPesquisa" class="form-select">
                                 <option selected disabled>Selecione o pop</option>
                             </select>
-                        </div>  
+                        </div>
 
                         <div class="col-3">
                             <label for="ipaddressPesquisa" class="form-label">Endereço IP</label>
@@ -358,9 +358,9 @@ LIMIT $limiteBusca
                         <div class="col-3">
                             <label for="statusEquipamentoPesquisa" class="form-label">Status</label>
                             <select id="statusEquipamentoPesquisa" name="statusEquipamentoPesquisa" class="form-select" required>
-                                
-                                <option selected value="%">Todos</option>
-                                <option value="Ativado">Ativado</option>
+
+                                <option value="%">Todos</option>
+                                <option selected value="Ativado">Ativado</option>
                                 <option value="Em Implementação">Em Implementação</option>
                                 <option value="Inativado">Inativado</option>
 
@@ -368,7 +368,7 @@ LIMIT $limiteBusca
                                 <?php if ($_SERVER["REQUEST_METHOD"] == 'POST') : ?>
                                     <script>
                                         let statusEquipamentoPesquisa = '<?= $_POST['statusEquipamentoPesquisa']; ?>'
-                                        if (statusEquipamentoPesquisa == 'Todos') {} else {
+                                        if (statusEquipamentoPesquisa == 'Ativado') {} else {
                                             document.querySelector("#statusEquipamentoPesquisa").value = statusEquipamentoPesquisa
                                         }
                                     </script>
@@ -403,7 +403,7 @@ LIMIT $limiteBusca
                         </div>
 
                         <div class="col-6">
-                            <button style="margin-top: 30px; " type="submit" class="btn btn-danger">Filtrar</button>
+                            <button style="margin-top: 30px; " type="submit" class="btn btn-sm btn-danger">Filtrar</button>
                         </div>
 
                     </form>

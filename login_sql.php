@@ -15,6 +15,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
     p.email as email,
     p.id as id_pessoa,
     u.senha as senha,
+    u.control as control,
     u.empresa_id as empresa_id,
     up.permite_interagir_chamados as 'permite_interagir_chamados',
     up.permite_abrir_chamados_outras_empresas as 'permite_abrir_chamados_outras_empresas',
@@ -55,7 +56,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
 
       if (!isset($_SESSION)) {
         session_start();
-      } 
+      }
 
       $_SESSION['id'] = $usuario['id'];
       $_SESSION['nome'] = $usuario['nome'];
@@ -83,7 +84,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       $_SESSION['id_pessoa'] = $usuario['id_pessoa'];
       $_SESSION['permite_gerenciar_incidente'] = $usuario['permite_gerenciar_incidente'];
 
-      
+
 
       $empresaID = $_SESSION['empresa_id'];
       $_SESSION['equipe_id'] = $usuario['equipe_id'];
@@ -92,10 +93,14 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       $usuario_id = $_SESSION['id'];
       $ip_address = $_SESSION['ip_address'];
 
-      $insert_log = "INSERT INTO log_acesso (usuario_id, ip_address, plataforma, horario) VALUES ('$usuario_id', '$ip_address', 'SmartControl', NOW())";
-      mysqli_query($mysqli, $insert_log);
+      if ($usuario['control'] == "1") {
+        $insert_log = "INSERT INTO log_acesso (usuario_id, ip_address, plataforma, horario) VALUES ('$usuario_id', '$ip_address', 'SmartControl', NOW())";
+        mysqli_query($mysqli, $insert_log);
 
-      echo "<p style='color:green;'>Code001: Acesso permitido.</p>";
+        echo "<p style='color:green;'>Code001: Acesso permitido.</p>";
+      } else {
+        echo "<p style='color:red;'>Error: Usuário não habilitado para acesso ao SmartControl.</p>";
+      }
     } else if ($usuario['active'] == "1" && $usuario['reset_password'] == "1") {
       echo "<p style='color:green;'>Code002: Reset Password.</p>";
     } else {

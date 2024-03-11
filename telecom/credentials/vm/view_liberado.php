@@ -121,12 +121,11 @@
 
                             <div class="col-4" style="text-align: left;">
                                 <a onclick="visualizarCredenciais(<?= $id ?>, '<?= $row['hostname']; ?>')" data-bs-toggle="modal" data-bs-target="#visualizaCredenciais"><input type="button" class="btn btn-info btn-sm" value="Visualizar credenciais"></input></a>
-                                <?php if ($row['privacidade'] == 2) :
-                                    if ($_SESSION['permite_configurar_privacidade_credenciais'] == 1) { ?>
-                                        <a onclick="configurarPrivacidade(<?= $id ?>)" data-bs-toggle="modal" data-bs-target="#modalConfigurarPrivacidade"><input type="button" class="btn btn-dark btn-sm" value="Configurar Privacidade"></input></a>
-                                    <?php }
-                                    ?>
-                                <?php endif; ?>
+                                <?php
+                                if ($_SESSION['permite_configurar_privacidade_credenciais'] == 1) { ?>
+                                    <a onclick="configurarPrivacidade(<?= $id ?>)" data-bs-toggle="modal" data-bs-target="#modalConfigurarPrivacidade"><input type="button" class="btn btn-dark btn-sm" value="Configurar Privacidade"></input></a>
+                                <?php }
+                                ?>
                             </div>
 
                             <div class="col-4" style="text-align: center;">

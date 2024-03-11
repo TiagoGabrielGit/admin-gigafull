@@ -28,7 +28,7 @@ if (empty($_POST['SOPesquisa'])) {
 }
 
 if (empty($_POST['statusVMPesquisa'])) {
-    $_POST['statusVMPesquisa'] = "%";
+    $_POST['statusVMPesquisa'] = "Ativado";
 }
 
 $empresa_id = $_POST['VMempresaPesquisa'];
@@ -102,19 +102,18 @@ LIMIT $limiteBusca
                     <div class="container">
                         <div class="row">
                             <div class="col-10">
-                                <h5 class="card-title">Pesquisar</h5>
                             </div>
 
                             <div class="col-2">
                                 <div class="card">
                                     <!-- Basic Modal -->
-                                    <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#modalNovaVM">
+                                    <button style="margin-top: 15px" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalNovaVM">
                                         Cadastrar novo
                                     </button>
                                 </div>
                             </div>
                             <div class="modal fade" id="modalNovaVM" tabindex="-1">
-                                <div class="modal-dialog modal-lg">
+                                <div class="modal-dialog modal-xl">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title">Novo cadastro</h5>
@@ -195,7 +194,7 @@ LIMIT $limiteBusca
                                                     <div class="col-3">
                                                         <label for="VMcadastroStatus" class="form-label">Status*</label>
                                                         <select id="VMcadastroStatus" name="VMcadastroStatus" class="form-select" required>
-                                                            <option selected disabled>Selecione</option>>
+                                                            <option disabled>Selecione</option>>
                                                             <option value="Ativado">Ativado</option>
                                                             <option value="Em Implementação">Em Implementação</option>
                                                             <option value="Inativado">Inativado</option>
@@ -223,8 +222,8 @@ LIMIT $limiteBusca
                                                     </div>
 
                                                     <div class="text-center">
-                                                        <button type="submit" class="btn btn-danger">Salvar</button>
-                                                        <button type="reset" class="btn btn-secondary">Limpar</button>
+                                                        <button type="submit" class="btn btn-sm btn-danger">Salvar</button>
+                                                        <button type="reset" class="btn btn-sm btn-secondary">Limpar</button>
                                                     </div>
                                                 </form><!-- Vertical Form -->
                                             </div>
@@ -363,8 +362,8 @@ LIMIT $limiteBusca
                         <div class="col-3">
                             <label for="statusVMPesquisa" class="form-label">Status</label>
                             <select id="statusVMPesquisa" name="statusVMPesquisa" class="form-select" required>
-                                <option selected value="%">Todos</option>>
-                                <option value="Ativado">Ativado</option>
+                                <option value="%">Todos</option>>
+                                <option selected value="Ativado">Ativado</option>
                                 <option value="Em Implementação">Em Implementação</option>
                                 <option value="Inativado">Inativado</option>
 
@@ -382,8 +381,8 @@ LIMIT $limiteBusca
                             </select>
                         </div>
 
-                        <div class="col-6">
-                            <button style="margin-top: 15px; " type="submit" class="btn btn-danger">Filtrar</button>
+                        <div class="text-center">
+                            <button style="margin-top: 15px; " type="submit" class="btn btn-sm btn-danger">Aplicar Filtros</button>
                         </div>
 
                     </form>
@@ -435,4 +434,4 @@ LIMIT $limiteBusca
 
 <?php
 /* require "../../scripts/vms.php"; */
-?> 
+?>

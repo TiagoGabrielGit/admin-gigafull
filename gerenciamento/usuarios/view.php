@@ -36,6 +36,7 @@ if ($rowCount_permissions_submenu > 0) {
         user.senha as senha,
         user.perfil_id as idPerfil,
         user.mobile as mobile,
+        user.control as control,
         user.dashboard as dashboard,
         user.notify_smart as 'notify_smart',
         user.notify_email_abertura as 'notify_email_abertura',

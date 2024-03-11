@@ -9,10 +9,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $empresaID = $_POST['empresaSelect'];
     $dashboard = $_POST['usuarioDashboard'];
     $mobile = $_POST['mobile'];
+    $control = $_POST['control'];
+
 
     $sql = "UPDATE usuarios SET 
     empresa_id = :empresaID,
     mobile = :mobile,
+    control = :control,
+
     perfil_id = :perfil,
     active = :active,
     dashboard = :dashboard,
@@ -23,6 +27,8 @@ WHERE id = :id";
     $stmt = $pdo->prepare($sql);
 
     $stmt->bindValue(':mobile', $mobile);
+    $stmt->bindValue(':control', $control);
+
     $stmt->bindValue(':empresaID', $empresaID);
     $stmt->bindValue(':perfil', $perfil);
     $stmt->bindValue(':active', $active);
