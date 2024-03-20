@@ -77,7 +77,7 @@ if ($rowCount_permissions_submenu > 0) {
     if (mysqli_num_rows($r_chamado) > 0) {
         $chamado = mysqli_fetch_assoc($r_chamado);
 
-        if (($permite_interagir_chamados == 1 && ($chamado['idEmpresa'] == $empresa_usuario)) || ($permite_interagir_chamados == 2 & ($chamado['solicitante_equipe_id'] == $equipe_id)) || ($permite_interagir_chamados == 3)) {
+        if (($permite_interagir_chamados == 1 && ($chamado['idEmpresa'] == $empresa_usuario)) || ($permite_interagir_chamados == 2 & ($chamado['solicitante_equipe_id'] == $equipe_id || $chamado['caa.equipe_id'] = $equipe_id)) || ($permite_interagir_chamados == 3)) {
             $idEmpresa = $chamado['idEmpresa'];
             if ($chamado['in_execution'] == 1) {
                 $classeColor = "playColor";
@@ -487,6 +487,78 @@ if ($rowCount_permissions_submenu > 0) {
                                                 <?php } ?>
                                             </div>
                                         </div>
+                                        <br>
+
+                                        <?php
+                                        $chamados_dependentes =
+                                            "SELECT * 
+                                                            FROM chamados as c
+                                                            WHERE c.chamado_dependente = :id_Chamado";
+
+                                        $stmt = $pdo->prepare($chamados_dependentes);
+                                        $stmt->bindParam(':id_Chamado', $id_chamado, PDO::PARAM_INT);
+                                        $stmt->execute();
+
+                                        if ($stmt->rowCount() > 0) { ?>
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalChamadosDependentes">
+                                                        Chamados Dependentes
+                                                    </button>
+                                                </div>
+
+                                                <div class="modal fade" id="modalChamadosDependentes" tabindex="-1" aria-hidden="true" style="display: none;">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Chamados Dependentes</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <?php
+                                                                $chamados_dependentes =
+                                                                    "SELECT c.id as id, c.assuntoChamado as assuntoChamado, cs.status_chamado as statusChamado
+                                                            FROM chamados as c
+                                                            LEFT JOIN chamados_status AS cs ON cs.id = c.status_id
+                                                            WHERE c.chamado_dependente = :id_Chamado";
+
+                                                                $stmt = $pdo->prepare($chamados_dependentes);
+                                                                $stmt->bindParam(':id_Chamado', $id_chamado, PDO::PARAM_INT);
+                                                                $stmt->execute();
+
+                                                                if ($stmt->rowCount() > 0) {
+                                                                    echo '<table class="table">';
+                                                                    echo '<thead>';
+                                                                    echo '<tr>';
+                                                                    echo '<th>Chamado ID</th>';
+                                                                    echo '<th>Assunto</th>';
+                                                                    echo '<th>Status</th>';
+                                                                    echo '</tr>';
+                                                                    echo '</thead>';
+                                                                    echo '<tbody>';
+
+                                                                    while ($rowChamadoDependente = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                                                        echo '<tr>';
+                                                                        echo '<td>' . $rowChamadoDependente['id'] . '</td>';
+                                                                        echo '<td>' . $rowChamadoDependente['assuntoChamado'] . '</td>';
+                                                                        echo '<td>' . $rowChamadoDependente['statusChamado'] . '</td>';
+                                                                        echo '</tr>';
+                                                                    }
+
+                                                                    echo '</tbody>';
+                                                                    echo '</table>';
+                                                                } else {
+                                                                    echo "<p>Nenhum chamado dependente encontrado.</p>";
+                                                                }
+                                                                ?>
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
                                     </div>
 
                                     <div class="col-lg-12">
@@ -881,7 +953,7 @@ if ($rowCount_permissions_submenu > 0) {
                                                     LEFT JOIN equipe as e ON e.id = ch.solicitante_equipe_id
                                                     LEFT JOIN chamados_autorizados_interagir AS cai ON cai.tipo_id = tc.id
 
-                                                    WHERE ch.solicitante_equipe_id = :equipe_id
+                                                    WHERE ch.solicitante_equipe_id = '$equipe_id'
                                                     and ch.status_id <> 3
                                                     AND cai.equipe_id = '$equipe_id'
                                                     ORDER BY ch.id DESC");

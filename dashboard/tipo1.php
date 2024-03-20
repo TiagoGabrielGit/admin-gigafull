@@ -302,15 +302,7 @@ require "sql_dashboard_1.php";
                                             <td><?= $campos_ultimos_30_chamados['idChamado'] ?></th>
                                             <td><?= $campos_ultimos_30_chamados['fantasia'] ?></td>
                                             <td><?= $campos_ultimos_30_chamados['assuntoChamado'] ?></td>
-                                            <?php
-                                            $statusChamado = $campos_ultimos_30_chamados['statusChamado'];
-                                            if ($statusChamado == 1) { ?>
-                                                <td><span class="badge bg-success">Aberto</span></td>
-                                            <?php } else if ($statusChamado == 2) { ?>
-                                                <td><span class="badge bg-info">Andamento</span></td>
-                                            <?php } else if ($statusChamado == 3) { ?>
-                                                <td><span class="badge bg-secondary">Fechado</span></td>
-                                            <?php } ?>
+                                            <td><span style="background-color: <?= $campos_ultimos_30_chamados['statusColor']?>;" class="badge"><?= $campos_ultimos_30_chamados['status_chamado']?></span></td>
                                         </tr>
                                     <?php
                                     } ?>

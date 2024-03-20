@@ -102,6 +102,17 @@ if ($rowCount_permissions_submenu > 0) {
             } else {
                 $relatoInicialPesquisa = "%";
             }
+
+
+            if (isset($_POST['tipoChamadoPesquisa'])) {
+                if (!empty($_POST['tipoChamadoPesquisa'])) {
+                    $tipoChamadoPesquisa = $_POST['tipoChamadoPesquisa'];
+                } else {
+                    $tipoChamadoPesquisa = "%";
+                }
+            } else {
+                $tipoChamadoPesquisa = "%";
+            }
         } else {
             $whereAtendente = "AND ch.atendente_id LIKE '%'";
             $filtro_empresa = "%";
@@ -110,6 +121,7 @@ if ($rowCount_permissions_submenu > 0) {
             $assuntoChamado = "%";
             $solicitante_id = "%";
             $relatoInicialPesquisa = "%";
+            $tipoChamadoPesquisa = "%";
         }
 
         if ($permite_interagir_chamados == 1) {
@@ -128,6 +140,7 @@ if ($rowCount_permissions_submenu > 0) {
             ch.status_id as id_status,
             ch.data_prevista_conclusao as 'data_prevista_conclusao',
             cs.status_chamado as statusChamado,
+            cs.color as statusColor,
             tc.tipo as tipoChamado,
             emp.fantasia as fantasia,
             p.nome as atendente,
@@ -159,6 +172,7 @@ if ($rowCount_permissions_submenu > 0) {
                 AND ch.relato_inicial LIKE '$relatoInicialPesquisa'
                 AND ch.solicitante_id LIKE '$solicitante_id'
                 AND cai.equipe_id = '$equipe_id'
+                AND ch.tipochamado_id LIKE '$tipoChamadoPesquisa'
                 ORDER BY ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
 
             $sql_lista_solicitantes =
@@ -183,6 +197,28 @@ if ($rowCount_permissions_submenu > 0) {
                 WHERE p.nome IS NOT NULL AND ch.empresa_id = $empresa_usuario
                 GROUP BY ch.atendente_id
                 order by p.nome ASC";
+
+            $sql_tipos_chamados =
+                "SELECT
+            u.id as solicitante_id,
+            p.nome as solicitante
+            FROM chamados as ch
+            LEFT JOIN usuarios as u ON ch.solicitante_id = u.id
+            LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+            WHERE ch.empresa_id = $empresa_usuario
+            GROUP BY ch.solicitante_id
+            order by p.nome ASC
+            ";
+
+            $sql_tipos_chamados =
+                "SELECT
+                tc.id as id_tipoChamado,
+                tc.tipo as tipoChamado
+                FROM chamados as ch
+                LEFT JOIN tipos_chamados as tc ON tc.id = ch.tipochamado_id
+                WHERE ch.empresa_id = $empresa_usuario
+                GROUP BY ch.tipochamado_id
+                order by tc.tipo ASC";
         } else if ($permite_interagir_chamados == 2) {
             //CHAMADOS ABERTOS POR SOLICITANTES DA EQUIPE
             $chamados_query =
@@ -200,6 +236,7 @@ if ($rowCount_permissions_submenu > 0) {
             ch.status_id as id_status,
             ch.data_prevista_conclusao as 'data_prevista_conclusao',
             cs.status_chamado as statusChamado,
+            cs.color as statusColor,
             tc.tipo as tipoChamado,
             emp.fantasia as fantasia,
             p.nome as atendente,
@@ -222,8 +259,10 @@ if ($rowCount_permissions_submenu > 0) {
             LEFT JOIN pessoas as pes ON pes.id = us.pessoa_id
             LEFT JOIN equipe as e ON e.id = ch.solicitante_equipe_id
             LEFT JOIN chamados_autorizados_interagir AS cai ON cai.tipo_id = tc.id
+            LEFT JOIN chamados_autorizados_atender AS caa ON caa.tipo_id = tc.id
 
-            WHERE ch.solicitante_equipe_id = :equipe_id
+            WHERE 
+            (ch.solicitante_equipe_id = :equipe_id OR caa.equipe_id = $equipe_id)
             and ch.empresa_id LIKE '$filtro_empresa'
             $whereAtendente
             and ch.status_id $statusChamado
@@ -232,6 +271,7 @@ if ($rowCount_permissions_submenu > 0) {
             AND ch.relato_inicial LIKE '$relatoInicialPesquisa'
             AND ch.solicitante_id LIKE '$solicitante_id'
             AND cai.equipe_id = '$equipe_id'
+            AND ch.tipochamado_id LIKE '$tipoChamadoPesquisa'
             ORDER BY ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
 
             $sql_lista_solicitantes =
@@ -255,6 +295,16 @@ if ($rowCount_permissions_submenu > 0) {
                 WHERE p.nome IS NOT NULL AND ch.solicitante_equipe_id = $equipe_id
                 GROUP BY ch.atendente_id
                 order by p.nome ASC";
+
+            $sql_tipos_chamados =
+                "SELECT
+                tc.id as id_tipoChamado,
+                tc.tipo as tipoChamado
+                FROM chamados as ch
+                LEFT JOIN tipos_chamados as tc ON tc.id = ch.tipochamado_id
+                WHERE ch.solicitante_equipe_id = $equipe_id
+                GROUP BY ch.tipochamado_id
+                order by tc.tipo ASC";
         } else if ($permite_interagir_chamados == 3) {
             //TODOS OS CHAMADOS
             $chamados_query =
@@ -272,6 +322,7 @@ if ($rowCount_permissions_submenu > 0) {
             ch.status_id as id_status,
             ch.data_prevista_conclusao as 'data_prevista_conclusao',
             cs.status_chamado as statusChamado,
+            cs.color as statusColor,
             tc.tipo as tipoChamado,
             emp.fantasia as fantasia,
             p.nome as atendente,
@@ -302,6 +353,7 @@ if ($rowCount_permissions_submenu > 0) {
             and ch.assuntoChamado LIKE '$assuntoChamado'
             AND ch.solicitante_id LIKE '$solicitante_id'
             AND cai.equipe_id = '$equipe_id'
+            AND ch.tipochamado_id LIKE '$tipoChamadoPesquisa'
             ORDER BY ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
 
             $sql_lista_solicitantes =
@@ -326,6 +378,15 @@ if ($rowCount_permissions_submenu > 0) {
                 WHERE p.nome IS NOT NULL
                 GROUP BY ch.atendente_id
                 order by p.nome ASC";
+
+            $sql_tipos_chamados =
+                "SELECT
+                    tc.id as id_tipoChamado,
+                    tc.tipo as tipoChamado
+                    FROM chamados as ch
+                    LEFT JOIN tipos_chamados as tc ON tc.id = ch.tipochamado_id
+                    GROUP BY ch.tipochamado_id
+                    order by tc.tipo ASC";
         }
 ?>
 
@@ -564,6 +625,28 @@ if ($rowCount_permissions_submenu > 0) {
                                         </div>
                                     </div>
 
+
+                                    <div class="col-lg-12 row">
+                                        <div class="col-4">
+                                            <label for="tipoChamadoPesquisa" class="form-label">Tipo de Chamado</label>
+                                            <select id="tipoChamadoPesquisa" name="tipoChamadoPesquisa" class="form-select">
+                                                <option value="%">Todos</option>
+                                                <?php
+                                                $r_tipos_chamados = mysqli_query($mysqli, $sql_tipos_chamados);
+                                                while ($tipos_chamados = mysqli_fetch_object($r_tipos_chamados)) {
+                                                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                                                        $tipoChamadoPesquisa = $_POST['tipoChamadoPesquisa'];
+                                                    } else {
+                                                        $tipoChamadoPesquisa = "";
+                                                    }
+                                                    $selected = ($tipoChamadoPesquisa == $tipos_chamados->id_tipoChamado) ? 'selected' : '';
+                                                    echo "<option value='$tipos_chamados->id_tipoChamado' $selected> $tipos_chamados->tipoChamado</option>";
+                                                }
+                                                ?>
+                                            </select>
+                                        </div>
+
+                                    </div>
                                     <div class="col-12">
                                         <div class="text-center">
                                             <button style="margin-top: 30px; " type="submit" class="btn btn-sm btn-danger">Aplicar Filtros</button>
@@ -691,43 +774,27 @@ if ($rowCount_permissions_submenu > 0) {
                                                             <?php } ?>
 
                                                         </span>
-                                                        <?php
-                                                        $valida_competencia =
-                                                            "SELECT cc.competencia_id as competencia_id
-                                                            FROM chamados_competencias as cc
-                                                            WHERE cc.chamado_id = $id_chamado
-                                                            AND NOT EXISTS (
-                                                            SELECT id_competencia
-                                                            FROM usuario_competencia as uc
-                                                            WHERE uc.id_usuario = $uid
-                                                            AND uc.id_competencia = cc.competencia_id
-                                                            )";
-                                                        $r_valida_competencia = mysqli_query($mysqli, $valida_competencia);
-                                                        $c_valida_competencia = $r_valida_competencia->fetch_assoc();
 
-                                                        if ($atributoEmpresaPropria == 1) {
-                                                            echo '<span class="text-end">';
-                                                            if ($campos['data_prevista_conclusao'] === null || $campos['id_status'] == 3) {
-                                                            } else { ?>
-                                                                <span title="Data prevista de conclusão" class="btn btn-small btn-<?= $colorPill ?> rounded-pill"><?= date('d/m/Y H:i', strtotime($campos['data_prevista_conclusao'])) ?></span>
-                                                            <?php }
-                                                            if ($campos['chamado_dependente'] === null || $campos['chamado_dependente'] == 0) {
-                                                            } else { ?>
-                                                                <a href="/servicedesk/chamados/visualizar_chamado.php?id=<?= $campos['chamado_dependente'] ?>" target="_blank">
-                                                                    <span style="margin-bottom: 10px;" class="btn btn-small btn-warning rounded-pill">Dependente do chamado <?= $campos['chamado_dependente'] ?></span>
-                                                                </a>
+                                                        <span class="text-end">
+                                                            <?php
+                                                            if ($atributoEmpresaPropria == 1) {
+                                                                if ($campos['data_prevista_conclusao'] === null || $campos['id_status'] == 3) {
+                                                                } else { ?>
+                                                                    <span title="Data prevista de conclusão" class="btn btn-small btn-<?= $colorPill ?> rounded-pill"><?= date('d/m/Y H:i', strtotime($campos['data_prevista_conclusao'])) ?></span>
+                                                                <?php }
+                                                                if ($campos['chamado_dependente'] === null || $campos['chamado_dependente'] == 0) {
+                                                                } else { ?>
+                                                                    <a href="/servicedesk/chamados/visualizar_chamado.php?id=<?= $campos['chamado_dependente'] ?>" target="_blank">
+                                                                        <span style="margin-top: 10px;" class="btn btn-small btn-warning rounded-pill">Dependente do chamado <?= $campos['chamado_dependente'] ?></span>
+                                                                    </a>
+                                                                <?php } ?>
+                                                                <br>
                                                             <?php } ?>
                                                             <br>
-                                                        <?php if ($c_valida_competencia) {
-                                                                // O usuário tem todas as competências necessárias
-                                                                echo '<span class="btn btn-small btn-secondary rounded-pill">Qualificado</span>';
-                                                            } else {
-                                                                // O usuário não tem todas as competências necessárias
-                                                                echo '<span class="text-end"><span class="btn btn-small btn-success rounded-pill">Qualificado</span>';
-                                                            }
-                                                            echo '</span>';
-                                                        }
-                                                        ?>
+                                                            <span style="margin-top: 10px; color: #FFFFFF; background-color: <?= $campos['statusColor'] ?>;" class="badge">Status: <?= $campos['statusChamado'] ?></span>
+
+
+                                                        </span>
                                                     </div>
                                                 </button>
                                             </h2>

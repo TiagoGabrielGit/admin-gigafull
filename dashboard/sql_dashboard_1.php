@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $usuarioID = $_SESSION['id'];
 $permite_interagir_chamados = $_SESSION['permite_interagir_chamados'];
@@ -72,10 +72,13 @@ if ($permite_interagir_chamados == 1) {
         e.fantasia as fantasia,
         tc.tipo as tipoChamado,
         c.assuntoChamado as assuntoChamado,
-        c.status_id as statusChamado
+        c.status_id as statusChamado,
+        cs.status_chamado as status_chamado,
+        cs.color as statusColor
         FROM chamados as c
         LEFT JOIN empresas as e ON e.id = c.empresa_id
         LEFT JOIN tipos_chamados as tc ON c.tipochamado_id = tc.id
+        LEFT JOIN chamados_status as cs ON cs.id = c.status_id
         WHERE e.id = 1
         ORDER BY c.id DESC
         LIMIT 15";
@@ -85,12 +88,15 @@ if ($permite_interagir_chamados == 1) {
         emp.fantasia as fantasia,
         tc.tipo as tipoChamado,
         ch.assuntoChamado as assuntoChamado,
-        ch.status_id as statusChamado
+        ch.status_id as statusChamado,
+        cs.status_chamado as status_chamado,
+        cs.color as statusColor
                                 FROM chamados as ch
                                 LEFT JOIN empresas as emp ON ch.empresa_id = emp.id
                                 LEFT JOIN tipos_chamados as tc ON ch.tipochamado_id = tc.id
                                 LEFT JOIN chamados_status as cs ON cs.id = ch.status_id
                                 LEFT JOIN pessoas as p ON p.id = ch.atendente_id
+
                                 WHERE tc.id IN (
                                     SELECT DISTINCT cae.tipo_id
                                     FROM equipes_integrantes ei
@@ -106,10 +112,14 @@ if ($permite_interagir_chamados == 1) {
         e.fantasia as fantasia,
         tc.tipo as tipoChamado,
         c.assuntoChamado as assuntoChamado,
-        c.status_id as statusChamado
+        c.status_id as statusChamado,
+        cs.status_chamado as status_chamado,
+        cs.color as statusColor
         FROM chamados as c
         LEFT JOIN empresas as e ON e.id = c.empresa_id
         LEFT JOIN tipos_chamados as tc ON c.tipochamado_id = tc.id
+        LEFT JOIN chamados_status as cs ON cs.id = c.status_id
+
         ORDER BY c.id DESC
         LIMIT 15";
 }

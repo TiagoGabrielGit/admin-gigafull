@@ -905,3 +905,20 @@ ppsm.perfil_id = $perfil_id";
 $r_sub_mascaras_chamados = mysqli_query($mysqli, $sub_mascaras_chamados);
 $c_sub_mascaras_chamados = mysqli_fetch_assoc($r_sub_mascaras_chamados);
 
+
+$sub_status_chamados = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '55'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_sub_status_chamados = mysqli_query($mysqli, $sub_status_chamados);
+$c_sub_status_chamados = mysqli_fetch_assoc($r_sub_status_chamados);
+

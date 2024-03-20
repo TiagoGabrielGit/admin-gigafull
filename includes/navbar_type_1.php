@@ -315,6 +315,21 @@ require "validaRotina.php";
                     <i class="bi bi-layout-text-window-reverse"></i><span>Tipos de Chamados</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="tiposChamados-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <?php if ($c_sub_mascaras_chamados['c'] == 1) { ?>
+                        <li>
+                            <a href="/servicedesk/tipos_chamados/mascaras/index.php">
+                                <i class="bi bi-circle"></i><span>Mascaras</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+                    <?php if ($c_sub_status_chamados['c'] == 1) { ?>
+                        <li>
+                            <a href="/servicedesk/tipos_chamados/status/index.php">
+                                <i class="bi bi-circle"></i><span>Status de Chamados</span>
+                            </a>
+                        </li>
+                    <?php } ?>
 
                     <?php if ($c_sub_tipos_chamados['c'] == 1) { ?>
                         <li>
@@ -324,13 +339,7 @@ require "validaRotina.php";
                         </li>
                     <?php } ?>
 
-                    <?php if ($c_sub_mascaras_chamados['c'] == 1) { ?>
-                        <li>
-                            <a href="/servicedesk/tipos_chamados/mascaras/index.php">
-                                <i class="bi bi-circle"></i><span>Mascaras</span>
-                            </a>
-                        </li>
-                    <?php } ?>
+                 
                 </ul>
             </li>
         <?php } ?>

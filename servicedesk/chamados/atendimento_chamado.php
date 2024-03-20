@@ -72,6 +72,22 @@ if ($rowCount_permissions_submenu > 0) {
             $dataPrevistaConclusao = strtotime($chamado['data_prevista_conclusao']); // Data prevista em formato timestamp
         }
 
+
+        $chamados_dependentes_abertos =
+            "SELECT * 
+             FROM chamados as c
+             WHERE c.chamado_dependente = :id_Chamado AND c.status_id <> 3";
+
+        $stmt_chamados_dependentes_abertos = $pdo->prepare($chamados_dependentes_abertos);
+        $stmt_chamados_dependentes_abertos->bindParam(':id_Chamado', $id_chamado, PDO::PARAM_INT);
+        $stmt_chamados_dependentes_abertos->execute();
+
+        if ($stmt_chamados_dependentes_abertos->rowCount() > 0) {
+            $chamados_dependentes_abertos = 1;
+        } else {
+            $chamados_dependentes_abertos = 0;
+        }
+
 ?>
         <main id="main" class="main">
             <div class="pagetitle">
@@ -195,11 +211,15 @@ if ($rowCount_permissions_submenu > 0) {
                                     if ($chamado['afericao_status'] == 1) { ?>
                                         <span class="bi bi-info-circle info-icon" data-bs-toggle="tooltip" title="Não é possivel fechar o chamado se tiver uma aferição pendente."></span>
                                     <?php } ?>
+                                    <?php
+                                    if ($chamados_dependentes_abertos == 1) { ?>
+                                        <span class="bi bi-info-circle info-icon" data-bs-toggle="tooltip" title="Não é possivel fechar o chamado se tiver um chamado dependente aberto."></span>
+                                    <?php } ?>
                                 </label>
                                 <select class="form-select" id="statusChamado" name="statusChamado">
                                     <option selected value="2">Andamento</option>
                                     <?php
-                                    if ($chamado['afericao_status'] != 1 || $chamado['afericao_status'] === NULL) {
+                                    if (($chamado['afericao_status'] != 1 || $chamado['afericao_status'] === NULL) && $chamados_dependentes_abertos == "0") {
                                         echo '<option value="3">Fechado</option>';
                                     }
                                     $sql_status_chamados =
