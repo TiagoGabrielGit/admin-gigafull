@@ -764,10 +764,13 @@ if ($rowCount_permissions_submenu > 0) {
                                                                 &nbsp;
                                                             <?php } ?>
 
-                                                            <b>Chamado #<?= $id_chamado ?> - <?= $campos['tipoChamado']; ?> - <?= $campos['assunto']; ?></b><br>
-                                                            Empresa: <?= $campos['fantasia']; ?><br>
-                                                            Solicitante: <?= $solicitante_nome . ' (Equipe: ' . $equipe_solicitante . ')'  ?><br>
-                                                            Atendente: <?= $atendente ?>
+                                                            <b>Chamado #<?= $id_chamado ?> - <?= $campos['tipoChamado']; ?> - <?= $campos['assunto']; ?></b><br><br>
+                                                            <b>Empresa:</b> <?= $campos['fantasia']; ?><br>
+                                                            <b>Solicitante:</b> <?= $solicitante_nome . ' (Equipe: ' . $equipe_solicitante . ')'  ?><br>
+                                                            <b>Atendente:</b> <?= $atendente ?><br>
+                                                            <b>Abertura:</b>  <?= $campos['dataAbertura']; ?><br>
+                                                            <b>Tempo total atendimento:</b> <?= gmdate("H:i:s", $res_second['secondsTotal']); ?>
+
                                                             <br>
                                                             <?php if (isset($campos['prioridade']) && $atributoEmpresaPropria == 1) { ?>
                                                                 <span class="badge bg-warning  text-dark">Prioridade: <?= $campos['prioridade'] ?></span>
@@ -800,22 +803,12 @@ if ($rowCount_permissions_submenu > 0) {
                                             </h2>
                                             <div id="flush-collapse<?= $cont ?>" class="accordion-collapse collapse" aria-labelledby="flush-heading<?= $cont ?>" data-bs-parent="#accordionFlushExample">
                                                 <div class="accordion-body colorAccordion">
+                                          
+                                                    <hr class="sidebar-divider">
                                                     <div class="row">
-                                                        <div class="col-lg-5">
+                                                        <div class="col-lg-10">
                                                             <div class="col-12">
-                                                                <b>Chamado: </b><?= $id_chamado ?><br>
-                                                                <b>Tipo de chamado: </b><?= $campos['tipoChamado']; ?><br>
-                                                                <b>Cliente: </b><?= $campos['fantasia']; ?><br>
-                                                                <b>Atendente: </b><?= $atendente ?><br><br>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-5">
-                                                            <div class="col-12">
-                                                                <b>Serviço: </b><?= $campos['service']; ?><br>
-                                                                <b>Item de Serviço: </b><?= $campos['itemService']; ?><br>
-                                                                <b>Data abertura: </b><?= $campos['dataAbertura']; ?><br>
-                                                                <b>Status: </b><?= $campos['statusChamado']; ?><br><br>
-                                                                <b>Tempo total atendimento: </b> <?= gmdate("H:i:s", $res_second['secondsTotal']); ?>
+                                                                <b>Descrição: </b><br><?= nl2br($campos['relato_inicial']); ?>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-2">
@@ -829,14 +822,6 @@ if ($rowCount_permissions_submenu > 0) {
                                                                         Ver chamado
                                                                     </button>
                                                                 </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <hr class="sidebar-divider">
-                                                    <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <div class="col-12">
-                                                                <b>Descrição: </b><br><?= nl2br($campos['relato_inicial']); ?>
                                                             </div>
                                                         </div>
                                                     </div>

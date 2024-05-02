@@ -1,6 +1,7 @@
 <?php
 require "../../../includes/menu.php";
 require "../../../includes/remove_setas_number.php";
+require "../../../conexoes/conexao_pdo.php";
 $usuarioID = $_SESSION['id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -39,6 +40,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+<style>
+    .btn-smaller {
+        padding: 0.1rem 0.25rem;
+        /* Ajuste o tamanho do padding conforme necessário */
+        font-size: 0.75rem;
+        /* Ajuste o tamanho da fonte conforme necessário */
+    }
+</style>
 
 <main id="main" class="main">
     <div class="pagetitle">

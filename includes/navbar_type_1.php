@@ -227,22 +227,14 @@ require "validaRotina.php";
                 </a>
                 <ul id="informativos-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
-                    <?php if ($c_nav_sub_incidentes_abertos['c'] == 1) { ?>
+                    <?php if ($c_nav_sub_informativos_incidentes['c'] == 1) { ?>
                         <li>
-                            <a href="/servicedesk/incidentes/abertos.php">
-                                <i class="bi bi-circle"></i><span>Incidentes Abertos</span>
+                            <a href="/servicedesk/incidentes/informativos/informativos.php">
+                                <i class="bi bi-circle"></i><span>Informativos de Incidentes</span>
                             </a>
                         </li>
                     <?php } ?>
-
-                    <?php if ($c_nav_sub_incidentes_fechados['c'] == 1) { ?>
-                        <li>
-                            <a href="/servicedesk/incidentes/normalizados.php">
-                                <i class="bi bi-circle"></i><span>Incidentes Normalizados</span>
-                            </a>
-                        </li>
-                    <?php } ?>
-
+ 
                     <?php if ($c_nav_sub_novo_incidente['c'] == 1) { ?>
                         <li>
                             <a href="/servicedesk/incidentes/new_incident/index.php">

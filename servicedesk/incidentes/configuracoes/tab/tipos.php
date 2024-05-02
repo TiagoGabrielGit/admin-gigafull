@@ -32,6 +32,8 @@ if (isset($_GET['error'])) {
                         <th scope="col">Tipo</th>
                         <th scope="col">Código</th>
                         <th scope="col">Status</th>
+                        <th scope="col">Editar</th>
+                        <th scope="col">Vincular Empresa</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,6 +57,7 @@ if (isset($_GET['error'])) {
                     $r_lista_tipos = mysqli_query($mysqli, $sql_lista_tipos);
 
                     while ($c_lista_tipos = $r_lista_tipos->fetch_array()) {
+                        $tipo_id = $c_lista_tipos['id'];
                     ?>
                         <tr>
                             <td style="vertical-align: middle;"><?= $c_lista_tipos['tipo']; ?></td>
@@ -111,7 +114,76 @@ if (isset($_GET['error'])) {
                                     </div>
                                 <?php } ?>
                             </td>
+                            <td style="vertical-align: middle;">
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalVincularEmpresa<?= $c_lista_tipos['id']; ?>">Vincular Empresa</button>
 
+                                <div class="modal fade" id="modalVincularEmpresa<?= $c_lista_tipos['id']; ?>" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title"><?= $c_lista_tipos['tipo']; ?></h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <div class="card-body">
+                                                    <form action="/servicedesk/incidentes/configuracoes/processa/vincularEmpresa.php" method="POST" class="row g-3">
+                                                        <input hidden id="ve_tipoID" name="ve_tipoID" value="<?= $c_lista_tipos['id']; ?>"></input>
+                                                        <div class="col-8">
+                                                            <select class="form-select" id="vincularEmpresa" name="vincularEmpresa" required>
+                                                                <option selected value="">Selecione uma empresa</option>
+                                                                <?php
+                                                                $listar_empresas = "SELECT * FROM empresas WHERE deleted = 1 AND id NOT IN (SELECT empresa_id FROM incidentes_types_empresa WHERE incidente_type_id = $tipo_id) ORDER BY fantasia ASC";
+                                                                $stmt_empresas = $pdo->query($listar_empresas);
+
+                                                                // Iterar sobre os resultados e criar os checkboxes
+                                                                while ($empresa = $stmt_empresas->fetch(PDO::FETCH_ASSOC)) {
+                                                                ?>
+                                                                    <option value="<?= $empresa['id'] ?>"><?= $empresa['fantasia'] ?></option>
+                                                                <?php
+                                                                }
+                                                                ?>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <button type="submit" class="btn btn-sm btn-danger">Adicionar</button>
+
+                                                        </div>
+
+                                                    </form>
+
+                                                    <hr class="sidebar-divider">
+
+                                                    <div class="col-12">
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="col">Empresa</th>
+                                                                    <th scope="col">Desvincular</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php
+                                                                $sql = "SELECT ite.id, e.fantasia FROM incidentes_types_empresa as ite LEFT JOIN empresas as e ON e.id = ite.empresa_id WHERE ite.incidente_type_id = $tipo_id ORDER BY e.fantasia ASC";
+                                                                $stmt = $pdo->query($sql);
+                                                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                                                ?>
+                                                                    <tr>
+                                                                        <td><?= $row['fantasia'] ?></td>
+                                                                        <td><button class="btn btn-smaller rounded-pill btn-danger" onclick="confirmarDesvinculacao(<?= $row['id'] ?>)">Desvincular</button></td>
+
+                                                                    </tr>
+                                                                <?php }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
 
                         </tr>
 
@@ -159,3 +231,16 @@ if (isset($_GET['error'])) {
         </div>
     </div>
 </div>
+
+<script>
+    function confirmarDesvinculacao(idVinculo) {
+        // Exibir uma mensagem de confirmação
+        if (confirm("Tem certeza que deseja desvincular esta empresa?")) {
+            // Se o usuário confirmar, redirecionar para a URL de desvinculação
+            window.location.href = "processa/desvincularEmpresa.php?id=" + idVinculo;
+        } else {
+            // Se o usuário cancelar, não fazer nada
+            // Você pode adicionar algum código aqui se desejar
+        }
+    }
+</script>
