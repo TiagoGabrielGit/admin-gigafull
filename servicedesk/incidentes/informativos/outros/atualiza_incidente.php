@@ -195,55 +195,6 @@ if ($rowCount_permissions_submenu > 0) {
             </section>
         </main>
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const checkboxes = document.querySelectorAll('.form-check-input');
-
-                checkboxes.forEach(function(checkbox) {
-                    checkbox.addEventListener('click', function() {
-                        const incidenteID = <?= $idIncidente ?>;
-                        const caixaID = this.getAttribute('data-caixa-id');
-
-                        if (this.checked) {
-                            // Checkbox marcado: enviar solicitação para adicionar
-                            const xhr = new XMLHttpRequest();
-                            xhr.open('POST', 'processa/adiciona_cto_afetada.php', true);
-                            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                            xhr.onreadystatechange = function() {
-                                if (xhr.readyState === 4 && xhr.status === 200) {
-                                    // Verifique a resposta do servidor, se necessário
-                                }
-                            };
-                            xhr.send('incidenteID=' + incidenteID + '&caixaID=' + caixaID);
-                        } else {
-                            // Checkbox desmarcado: enviar solicitação para remover
-                            const xhr = new XMLHttpRequest();
-                            xhr.open('POST', 'processa/remove_cto_afetada.php', true);
-                            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                            xhr.onreadystatechange = function() {
-                                if (xhr.readyState === 4 && xhr.status === 200) {
-                                    // Verifique a resposta do servidor, se necessário
-                                    const response = xhr.responseText;
-                                    // Atualizar a interface do usuário se a exclusão foi bem-sucedida
-                                    if (response === 'success') {
-                                        // Atualize a interface do usuário conforme necessário
-                                    }
-                                }
-                            };
-                            xhr.send('incidenteID=' + incidenteID + '&caixaID=' + caixaID);
-                        }
-                    });
-                });
-            });
-        </script>
-
-
-
-        <script>
-            function goBack() {
-                window.history.back();
-            }
-        </script>
 <?php
     } else {
         require "../../../../acesso_negado.php";

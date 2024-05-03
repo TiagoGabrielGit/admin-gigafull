@@ -1,9 +1,8 @@
 <?php
 session_start();
 
-if ($_SESSION['id']) {
+if (isset($_SESSION['id'])) {
     require "../../../../conexoes/conexao_pdo.php";
-
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $descricao = $_POST["descricao"];
@@ -13,17 +12,8 @@ if ($_SESSION['id']) {
         $classificacao = "0";
         $active = "1";
 
-
-        if ($tipo == 100) {
-            $hostID = $_POST["olt"];
-            $pon_id = $_POST["pons"];
-        } else if ($tipo == 102) {
-            $hostID = $_POST["rotasFibras"];
-            $pon_id = "";
-        } else {
-            $hostID = "";
-            $pon_id = "";
-        }
+        $hostID = $_POST["olt"];
+        $pon_id = $_POST["pons"];
 
         $query = "INSERT INTO incidentes (descricaoIncidente, inicioIncidente, incident_type, autor_id, equipamento_id, classificacao, active, pon_id) VALUES (:descricao, :inicio, :tipo, :autor_id, :equipamento_id, :classificacao, :active, :pon_id)";
 
@@ -38,12 +28,11 @@ if ($_SESSION['id']) {
             $stmt->bindParam(':pon_id', $pon_id, PDO::PARAM_INT);
             $stmt->bindParam(':active', $active, PDO::PARAM_INT);
 
-
             $stmt->execute();
 
             if ($stmt->rowCount() > 0) {
                 $incidente_id = $pdo->lastInsertId();
-                header("Location: /servicedesk/incidentes/view.php?id=$incidente_id");
+                header("Location: /servicedesk/incidentes/informativos/gpon/view_gpon.php?id=$incidente_id");
                 exit();
             } else {
                 echo "Falha ao criar o incidente.";
@@ -52,7 +41,10 @@ if ($_SESSION['id']) {
             echo "Erro na inserção do incidente: " . $e->getMessage();
         }
     } else {
-        header("Location: sua_pagina_de_erro.php");
+        header("Location: /index.php");
         exit();
     }
+} else {
+    header("Location: /index.php");
+    exit();
 }

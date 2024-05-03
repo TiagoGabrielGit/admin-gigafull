@@ -101,7 +101,7 @@ if ($stmt2->execute()) {
             header("Location: comunicaInteressados.php?incidenteID=$incidenteID");
             exit();
         } else {
-            header("Location: /servicedesk/incidentes/informativos/backbone/view_backbone.php?id=$incidenteID");
+            header("Location: /servicedesk/incidentes/informativos/outros/view_outros.php?id=$incidenteID");
             exit();
         }
     } else {
@@ -150,7 +150,7 @@ if ($stmt2->execute()) {
                 header("Location: comunicaInteressados.php?incidenteID=$incidenteID");
                 exit();
             } else {
-                header("Location: /servicedesk/incidentes/informativos/backbone/view_backbone.php?id=$incidenteID");
+                header("Location: /servicedesk/incidentes/informativos/outros/view_outros.php?id=$incidenteID");
                 exit();
             }
         } else {
@@ -158,12 +158,12 @@ if ($stmt2->execute()) {
                 header("Location: comunicaInteressados.php?incidenteID=$incidenteID");
                 exit();
             } else {
-                header("Location: /servicedesk/incidentes/informativos/backbone/view_backbone.php?id=$incidenteID");
+                header("Location: /servicedesk/incidentes/informativos/outros/view_outros.php?id=$incidenteID");
                 exit();
             }
         }
     }
 } else {
-    header("Location: /servicedesk/incidentes/informativos/backbone/view_backbone.php?id=$incidenteID");
+    header("Location: /servicedesk/incidentes/informativos/outros/view_outros.php?id=$incidenteID");
     exit();
 }

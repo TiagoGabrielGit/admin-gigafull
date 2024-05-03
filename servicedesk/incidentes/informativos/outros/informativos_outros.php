@@ -70,11 +70,10 @@ if ($rowCount_permissions_submenu > 0) {
                                     i.zabbix_event_id as zabbixID,
                                     i.id as idIncidente,
                                     i.incident_type as incident_type,
-                                    i.equipamento_id,
+                                    i.equipamento_id, 
                                     i.descricaoIncidente as descricaoIncidente,
                                     i.active as activeID,
                                     i.protocolo_erp as protocoloERP,
-                                    i.pon_id as pon_id,
                                     i.active as active,
                                     ic.classificacao as classificacao,
                                     ic.descricao as descClassificacao,
@@ -87,8 +86,6 @@ if ($rowCount_permissions_submenu > 0) {
                                     date_format(i.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
                                     IF (i.fimIncidente IS NULL, TIMEDIFF(NOW(), i.inicioIncidente), TIMEDIFF(i.fimIncidente, i.inicioIncidente)) as tempoIncidente
                                     FROM incidentes i
-                                    INNER JOIN gpon_olts o ON i.equipamento_id = o.equipamento_id
-                                    INNER JOIN gpon_olts_interessados oi ON o.id = oi.gpon_olt_id
                                     LEFT JOIN incidentes_classificacao as ic ON ic.id = i.classificacao
                                     LEFT JOIN usuarios as u ON i.autor_id = u.id LEFT JOIN pessoas as p ON p.id = u.pessoa_id
                                     LEFT JOIN incidentes_types as it ON it.codigo = i.incident_type
@@ -103,16 +100,7 @@ if ($rowCount_permissions_submenu > 0) {
                                 while ($campos = $r_sql_incidentes->fetch_array()) {
                                     $status_incidente = $campos['active'];
                                     $id_incidente = $campos['idIncidente'];
-                                    $pon_id = $campos['pon_id'];
-                                    $hostID = $campos['equipamento_id'];
-                                    $sql_host =
-                                        "SELECT eqp.hostname as identificacao
-                                        FROM equipamentospop as eqp
-                                        WHERE eqp.id = $hostID";
-
-                                    $r_host = mysqli_query($mysqli, $sql_host);
-                                    $c_host = $r_host->fetch_array();
-
+                
 
                                     if ($status_incidente == 1) {
                                         $styleIncidente = "styleTableIncidentesAlarm";
@@ -133,38 +121,7 @@ if ($rowCount_permissions_submenu > 0) {
                                                             <?= $campos['descricaoIncidente'] ?>
 
                                                         </b> <br>
-                                                        <?php
-                                                        $ctos_afetadas =
-                                                            "SELECT gc.title
-                                                            FROM incidentes_ctos as ic
-                                                            LEFT JOIN gpon_ctos as gc ON gc.id = ic.cto_id
-                                                            WHERE ic.incidente_id = :incidente_id";
-                                                        $sql_ctos_afetadas = $pdo->prepare($ctos_afetadas);
-                                                        $sql_ctos_afetadas->bindParam(':incidente_id', $id_incidente, PDO::PARAM_INT);
-                                                        $sql_ctos_afetadas->execute();
-                                                        $ctos = $sql_ctos_afetadas->fetchAll(PDO::FETCH_ASSOC);
-
-                                                        if (!empty($ctos)) {
-                                                            echo '&nbsp; &nbsp; &nbsp; &nbsp; <b>CTOs Afetadas:</b><br>';
-                                                            echo '<div class="row">'; // Inicie a primeira linha
-                                                            $count = 0;
-
-                                                            foreach ($ctos as $row) {
-                                                                if ($count % 3 === 0 && $count > 0) {
-                                                                    echo '</div><div class="row">'; // Feche a linha anterior e inicie uma nova linha a cada quatro caixas
-                                                                }
-
-                                                                echo '<div class="col">'; // Use col para criar colunas igualmente distribuídas
-                                                                echo "&nbsp; &nbsp; &nbsp; &nbsp;" . $row['title'] . '<br>';
-                                                                echo '</div>';
-                                                                $count++;
-                                                            }
-
-                                                            echo '</div>'; // Feche a última linha
-                                                        } else {
-                                                            echo '&nbsp; &nbsp; &nbsp; &nbsp; Nenhuma CTO vinculada ao incidente.<br>';
-                                                        }
-                                                        ?>
+                                                      
                                                         <br>
                                                         <b>&nbsp; &nbsp; &nbsp; &nbsp;Tempo total incidente: </b><?= $campos['tempoIncidente']; ?> <?= (!empty($campos['protocoloERP'])) ? '- <b> Protocolo ERP: </b> ' . $campos['protocoloERP'] : '' ?>
 

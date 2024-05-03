@@ -1,107 +1,83 @@
 <?php
 require "../../../includes/menu.php";
-require "../../../includes/remove_setas_number.php";
+require "../../../conexoes/conexao.php";
 require "../../../conexoes/conexao_pdo.php";
 
-$uid = $_SESSION['id'];
 $submenu_id = "37";
+$uid = $_SESSION['id'];
 
-$permissions =
-    "SELECT 
-	u.perfil_id
-FROM 
-	usuarios u
-JOIN 
-	perfil_permissoes_submenu pp
-ON 
-	u.perfil_id = pp.perfil_id
-WHERE
-	u.id = $uid
-AND 
-	pp.url_submenu = $submenu_id";
+$permissions_submenu =
+    "SELECT u.perfil_id
+    FROM usuarios u
+    JOIN perfil_permissoes_submenu pp ON u.perfil_id = pp.perfil_id
+    WHERE u.id = $uid AND pp.url_submenu = $submenu_id";
 
-$exec_permissions = $pdo->prepare($permissions);
-$exec_permissions->execute();
+$exec_permissions_submenu = $pdo->prepare($permissions_submenu);
+$exec_permissions_submenu->execute();
 
-$rowCount_permissions = $exec_permissions->rowCount();
+$rowCount_permissions_submenu = $exec_permissions_submenu->rowCount();
 
-if ($rowCount_permissions > 0) {
+if ($rowCount_permissions_submenu > 0) {
+
 ?>
+
     <main id="main" class="main">
-
         <section class="section">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">Novo Incidente</h3>
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Criar Informativo</h5>
+                        <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label for="tipo" class="form-label">Tipo Incidente</label>
+                                    <select class="form-select" id="tipo" name="tipo" required>
+                                        <option selected disabled value="">Selecione...</option>
+                                        <?php
+                                        $sql = "SELECT * FROM incidentes_types as it where it.active = 1 ORDER BY it.type ASC";
+                                        $result = $mysqli->query($sql);
+                                        while ($row = $result->fetch_assoc()) { ?>
 
-                            <hr class="sidebar-divider">
+                                            <option value="<?= $row['codigo'] ?>" <?php if (isset($_POST['tipo']) && $_POST['tipo'] == $row['codigo']) echo "selected"; ?>><?= $row['type'] ?></option>
 
-                            <br><br>
-
-                            <form method="POST" action="processa/novo_incidente.php" class="row g-3">
-                                <div class="row">
-                                    <div class="col-5">
-                                        <label for="descricao" class="form-label">Descrição</label>
-                                        <input name="descricao" type="text" class="form-control" id="descricao" required>
-                                    </div>
-
-                                    <div class="col-3">
-                                        <label for="inicio" class="form-label">Inicio</label>
-                                        <input name="inicio" type="datetime-local" class="form-control" id="inicio" required>
-                                    </div>
-
-                                    <div class="col-2">
-                                        <label for="tipo" class="form-label">Tipo Incidente</label>
-                                        <select class="form-select" id="tipo" name="tipo" required>
-                                            <option selected disabled value="">Selecione...</option>
-                                            <option value="102">Backbone</option>
-                                            <option value="100">GPON</option>
-                                            <option value="200">Outros</option>
-                                        </select>
-                                    </div>
+                                        <?php }
+                                        ?>
+                                    </select>
                                 </div>
+                                <div style="margin-top: 35px;" class="col-4">
+                                    <button type="submit" class="btn btn-sm btn-danger">Selecionar</button>
+                                </div>
+                            </div>
+                        </form>
 
-                                <hr class="sidebar-divider">
+                    </div>
+                </div>
+            </div>
 
-                                <div class="row">
-                                    <div class="col-lg-12" id="fibraOptions">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <h5 class="card-title">Rotas de Fibra</h5>
-                                                <?php
-                                                $query = "SELECT
-                                                rf.id as id,
-                                                rf.ponta_a as ponta_a,
-                                                rf.ponta_b as ponta_b,
-                                                rf.codigo as codigo
-                                                FROM
-                                                rotas_fibra as rf
-                                                WHERE
-                                                rf.active = 1";
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Formulário Novo Informativo</h5>
+                        <?php
+                        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+                            $tipo_incidente = $_POST['tipo'];
+                            if ($tipo_incidente == 100) { ?>
+                                <form method="POST" action="processa/novo_incidente_gpon.php" class="row g-3">
+                                    <input readonly hidden id="tipo" name="tipo" value="100"></input>
 
-                                                try {
-                                                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                                                    $stmt = $pdo->prepare($query);
-                                                    $stmt->execute();
-                                                    $rotas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                                } catch (PDOException $e) {
-                                                    echo "Erro na consulta SQL: " . $e->getMessage();
-                                                } ?>
-                                                <select class="form-select" id="rotasFibras" name="rotasFibras">
-                                                    <option value="" disabled selected>Selecione...</option>
-                                                    <?php
-                                                    foreach ($rotas as $rota) :
-                                                    ?>
-                                                        <option value="<?= $rota['codigo'] ?>"><?= $rota['ponta_a'] . " <b> <> </b> " . $rota['ponta_b']; ?></option>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <label for="descricao" class="form-label">Descrição</label>
+                                            <input name="descricao" type="text" class="form-control" id="descricao" required>
+                                        </div>
 
-                                                    <?php endforeach; ?>
-                                                </select>
-                                            </div>
+                                        <div class="col-3">
+                                            <label for="inicio" class="form-label">Inicio</label>
+                                            <input name="inicio" type="datetime-local" class="form-control" id="inicio" required>
                                         </div>
                                     </div>
 
+                                    <hr class="sidebar-divider">
                                     <div class="col-lg-12" id="gponOptions">
                                         <div class="card">
                                             <div class="card-body">
@@ -147,49 +123,101 @@ if ($rowCount_permissions > 0) {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-sm btn-danger">Criar Incidente</button>
-                                </div>
-                            </form>
 
-                        </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-sm btn-danger">Criar Incidente</button>
+                                    </div>
+                                </form>
+                            <?php } elseif ($tipo_incidente == 102) { ?>
+                                <form method="POST" action="processa/novo_incidente_backbone.php" class="row g-3">
+                                    <input readonly hidden id="tipo" name="tipo" value="102"></input>
+
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <label for="descricao" class="form-label">Descrição</label>
+                                            <input name="descricao" type="text" class="form-control" id="descricao" required>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <label for="inicio" class="form-label">Inicio</label>
+                                            <input name="inicio" type="datetime-local" class="form-control" id="inicio" required>
+                                        </div>
+                                    </div>
+
+                                    <hr class="sidebar-divider">
+                                    <div class="col-lg-12" id="fibraOptions">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Rotas de Fibra</h5>
+                                                <?php
+                                                $query = "SELECT
+                                                rf.id as id,
+                                                rf.ponta_a as ponta_a,
+                                                rf.ponta_b as ponta_b,
+                                                rf.codigo as codigo
+                                                FROM
+                                                rotas_fibra as rf
+                                                WHERE
+                                                rf.active = 1";
+
+                                                try {
+                                                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                                                    $stmt = $pdo->prepare($query);
+                                                    $stmt->execute();
+                                                    $rotas = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                                } catch (PDOException $e) {
+                                                    echo "Erro na consulta SQL: " . $e->getMessage();
+                                                } ?>
+                                                <select class="form-select" id="rotasFibras" name="rotasFibras">
+                                                    <option value="" disabled selected>Selecione...</option>
+                                                    <?php
+                                                    foreach ($rotas as $rota) :
+                                                    ?>
+                                                        <option value="<?= $rota['codigo'] ?>"><?= $rota['ponta_a'] . " <b> <> </b> " . $rota['ponta_b']; ?></option>
+
+                                                    <?php endforeach; ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-sm btn-danger">Criar Incidente</button>
+                                    </div>
+                                </form>
+                            <?php } else { ?>
+                                <form method="POST" action="processa/novo_incidente_outros.php" class="row g-3">
+                                    <input readonly hidden id="tipo" name="tipo" value="<?= $tipo_incidente ?>"></input>
+
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <label for="descricao" class="form-label">Descrição</label>
+                                            <input name="descricao" type="text" class="form-control" id="descricao" required>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <label for="inicio" class="form-label">Inicio</label>
+                                            <input name="inicio" type="datetime-local" class="form-control" id="inicio" required>
+                                        </div>
+                                    </div>
+
+                                    <hr class="sidebar-divider">
+
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-sm btn-danger">Criar Incidente</button>
+                                    </div>
+                                </form>
+                        <?php }
+                        }
+                        ?>
                     </div>
                 </div>
-
             </div>
         </section>
-    </main><!-- End #main -->
+    </main>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Obtém uma referência ao elemento de seleção do tipo de incidente
-            var tipoIncidenteSelect = document.getElementById("tipo");
 
-            // Obtém referências aos elementos de opções de GPON e de rota de fibra
-            var gponOptions = document.getElementById("gponOptions");
-            var fibraOptions = document.getElementById("fibraOptions");
-
-            // Define um ouvinte de evento para detectar mudanças no tipo de incidente
-            tipoIncidenteSelect.addEventListener("change", function() {
-                var selectedValue = tipoIncidenteSelect.value;
-
-                // Oculta todos os elementos de opções inicialmente
-                gponOptions.style.display = "none";
-                fibraOptions.style.display = "none";
-
-                // Mostra o elemento apropriado com base na seleção
-                if (selectedValue === "100") {
-                    gponOptions.style.display = "block";
-                } else if (selectedValue === "102") {
-                    fibraOptions.style.display = "block";
-                }
-            });
-
-            // Executa o código para configurar a exibição inicial com base no valor selecionado
-            tipoIncidenteSelect.dispatchEvent(new Event("change"));
-        });
-    </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Certifique-se de incluir a biblioteca jQuery -->
 
     <script>
@@ -217,9 +245,7 @@ if ($rowCount_permissions > 0) {
         });
     </script>
 
-
 <?php
-
 } else {
     require "../../../acesso_negado.php";
 }
