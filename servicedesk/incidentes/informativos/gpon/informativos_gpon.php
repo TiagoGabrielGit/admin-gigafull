@@ -77,6 +77,7 @@ if ($rowCount_permissions_submenu > 0) {
                                     i.protocolo_erp as protocoloERP,
                                     i.pon_id as pon_id,
                                     i.active as active,
+                                    i.descricaoEvento as descricaoEvento,
                                     ic.classificacao as classificacao,
                                     ic.descricao as descClassificacao,
                                     ic.color as ClassColor,
@@ -132,8 +133,13 @@ if ($rowCount_permissions_submenu > 0) {
                                                             </svg>
                                                             &nbsp; &nbsp;<b>
                                                                 <?= $campos['descricaoIncidente'] ?>
-
                                                             </b> <br>
+                                                            <?php if ($campos['descricaoEvento'] === NULL) {
+                                                            } else { ?>
+                                                                <span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<?= $campos['descricaoEvento'] ?></span><br><br>
+                                                            <?php }
+                                                            ?>
+
                                                             <?php
                                                             $ctos_afetadas =
                                                                 "SELECT gc.title
@@ -340,7 +346,6 @@ if ($rowCount_permissions_submenu > 0) {
 <?php
     } else {
         require "../../../../acesso_negado.php";
-
     }
 } else {
     require "../../../../acesso_negado.php";

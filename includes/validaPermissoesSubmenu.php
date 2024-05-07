@@ -904,3 +904,21 @@ ppsm.perfil_id = $perfil_id";
 $r_sub_status_chamados = mysqli_query($mysqli, $sub_status_chamados);
 $c_sub_status_chamados = mysqli_fetch_assoc($r_sub_status_chamados);
 
+
+/////////////////////////////////////////
+$nav_sub_atualizacao_massa = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '33'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_atualizacao_massa = mysqli_query($mysqli, $nav_sub_atualizacao_massa);
+$c_nav_sub_atualizacao_massa = mysqli_fetch_assoc($r_nav_sub_atualizacao_massa);
+/////////////////////////////////////////

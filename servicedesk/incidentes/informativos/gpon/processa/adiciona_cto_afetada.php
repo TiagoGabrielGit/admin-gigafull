@@ -1,6 +1,6 @@
 <?php
+require "../../../../../conexoes/conexao_pdo.php";
 
-require "../../../../conexoes/conexao_pdo.php";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $incidenteID = $_POST['incidenteID'];
     $caixaID = $_POST['caixaID'];
@@ -18,4 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Erro ao salvar os dados
         echo 'Erro ao salvar os dados.';
     }
+} else {
+    echo "Metodo Incorreto";
 }
+

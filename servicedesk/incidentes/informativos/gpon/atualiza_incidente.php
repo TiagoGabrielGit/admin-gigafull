@@ -178,56 +178,55 @@ if ($rowCount_permissions_submenu > 0) {
                                 </div>
 
                             </div>
-                            <?php
-                            if ($idTypeIncidenteAtual == 100) { ?>
-                                <div class="12">
-                                    <hr class="sidebar-divider">
-                                    <span><b>Selecione as caixas afetadas</b></span>
-                                    <?php
-                                    $consulta_caixas = "SELECT * FROM gpon_ctos as gc WHERE gc.paintegration_code = :paintegration_code ORDER BY title ASC";
 
-                                    $stmt = $pdo->prepare($consulta_caixas);
-                                    $stmt->bindValue(':paintegration_code', $paintegration_code);
-                                    $stmt->execute();
-                                    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            <div class="col-12">
+                                <hr class="sidebar-divider">
+                                <span><b>Selecione as caixas afetadas</b></span>
+                                <?php
+                                $consulta_caixas = "SELECT * FROM gpon_ctos as gc WHERE gc.paintegration_code = :paintegration_code ORDER BY title ASC";
 
-
-                                    // Consulta para obter os IDs das caixas afetadas com base no ID do incidente
-                                    $consulta_caixas_relacionadas = "SELECT cto_id FROM incidentes_ctos WHERE incidente_id = :incidenteID";
-
-                                    $stmt = $pdo->prepare($consulta_caixas_relacionadas);
-                                    $stmt->bindParam(':incidenteID', $idIncidente, PDO::PARAM_INT);
-                                    $stmt->execute();
-
-                                    // Obtenha os IDs das caixas afetadas
-                                    $caixas_relacionadas = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
-                                    ?>
-
-                                    <div class="row mb-3">
-                                        <?php $count = 0; ?>
-                                        <?php foreach ($result as $row) : ?>
-                                            <?php if ($count % 4 === 0) : ?>
-                                    </div>
-                                    <div class="row mb-3">
-                                    <?php endif; ?>
-
-                                    <div class="col-sm-3">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="gridCheck<?= $row['id']; ?>" data-caixa-id="<?= $row['id'] ?>" <?= in_array($row['id'], $caixas_relacionadas) ? 'checked' : '' ?>>
-                                            <label class="form-check-label" for="gridCheck<?= $row['id']; ?>">
-                                                <?= $row['title']; ?>
-                                            </label>
-                                        </div>
-                                    </div>
+                                $stmt = $pdo->prepare($consulta_caixas);
+                                $stmt->bindValue(':paintegration_code', $paintegration_code);
+                                $stmt->execute();
+                                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
-                                    <?php $count++; ?>
-                                <?php endforeach; ?>
-                                    </div>
+                                // Consulta para obter os IDs das caixas afetadas com base no ID do incidente
+                                $consulta_caixas_relacionadas = "SELECT cto_id FROM incidentes_ctos WHERE incidente_id = :incidenteID";
 
-                                    <hr class="sidebar-divider">
+                                $stmt = $pdo->prepare($consulta_caixas_relacionadas);
+                                $stmt->bindParam(':incidenteID', $idIncidente, PDO::PARAM_INT);
+                                $stmt->execute();
+
+                                // Obtenha os IDs das caixas afetadas
+                                $caixas_relacionadas = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+                                ?>
+
+                                <div class="row mb-3">
+                                    <?php $count = 0; ?>
+                                    <?php foreach ($result as $row) : ?>
+                                        <?php if ($count % 4 === 0) : ?>
                                 </div>
-                            <?php } ?>
+                                <div class="row mb-3">
+                                <?php endif; ?>
+
+                                <div class="col-sm-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="gridCheck<?= $row['id']; ?>" data-caixa-id="<?= $row['id'] ?>" <?= in_array($row['id'], $caixas_relacionadas) ? 'checked' : '' ?>>
+                                        <label class="form-check-label" for="gridCheck<?= $row['id']; ?>">
+                                            <?= $row['title']; ?>
+                                        </label>
+                                    </div>
+                                </div>
+
+
+                                <?php $count++; ?>
+                            <?php endforeach; ?>
+                                </div>
+
+                                <hr class="sidebar-divider">
+                            </div>
+
 
                             <div class="col-12">
                                 <label for="relatoIncidente" class="form-label">Relato</label>

@@ -226,7 +226,6 @@ LIMIT $limiteBusca
                             </div><!-- End Basic Modal-->
                         </div>
                     </div>
-                    <?= 'Status: ' .$statusEquipamentoPesquisa ?>
 
                     <form method="POST" action="#" class="row g-3">
                         <input type="hidden" id="tabequipamento" name="tabequipamento">

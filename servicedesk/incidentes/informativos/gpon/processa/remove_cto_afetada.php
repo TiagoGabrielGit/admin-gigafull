@@ -1,5 +1,5 @@
 <?php
-require "../../../../conexoes/conexao_pdo.php";
+require "../../../../../conexoes/conexao_pdo.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $incidenteID = $_POST['incidenteID'];

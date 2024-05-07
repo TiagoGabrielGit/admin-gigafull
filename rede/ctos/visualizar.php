@@ -217,7 +217,7 @@ if ($rowCount_permissions > 0) {
                                             <div class="modal-footer">
                                                 <a href="/rede/ctos/anexos.php?id=<?= $chamado_id ?>" class="btn btn-sm btn-info" target="_blank">Anexos</a>
 
-                                                <a href="/servicedesk/consultar_chamados/view.php?id=<?= $chamado_id ?>" class="btn btn-sm btn-warning" target="_blank">Ir para o chamado</a>
+                                                <a href="/servicedesk/chamados/visualizar_chamado.php?id=<?= $chamado_id ?>" class="btn btn-sm btn-warning" target="_blank">Ir para o chamado</a>
 
                                                 <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fechar</button>
                                             </div>
