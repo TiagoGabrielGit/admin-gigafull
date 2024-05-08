@@ -75,7 +75,7 @@ if ($rowCount_permissions_submenu > 0) {
                                     i.active as activeID,
                                     i.protocolo_erp as protocoloERP,
                                     i.active as active,
-                                    i.relatoIncidente as relatoIncidente,
+                                    i.descricaoEvento as relatoIncidente,
                                     ic.classificacao as classificacao,
                                     ic.descricao as descClassificacao,
                                     ic.color as ClassColor,
