@@ -29,6 +29,7 @@ if ($rowCount_permissions_submenu > 0) {
         i.zabbix_event_id as zabbixID,
         i.descricaoIncidente as descricaoIncidente,
         i.protocolo_erp as protocoloERP,
+        i.descricaoEvento as descricao_evento,
         i.previsaoNormalizacao as prevNOR,
         i.active as statusID,
         i.classificacao as idClassificacao,
@@ -42,6 +43,7 @@ if ($rowCount_permissions_submenu > 0) {
         $zabbixID = $resultado['zabbixID'];
         $descIncidente = $resultado['descricaoIncidente'];
         $protocoloERP = $resultado['protocoloERP'];
+        $descricao_evento = $resultado['descricao_evento'];
         $prevNOR = $resultado['prevNOR'];
         $statusID = $resultado['statusID'];
         $idClassificacaoAtual = $resultado['idClassificacao'];
@@ -83,12 +85,19 @@ if ($rowCount_permissions_submenu > 0) {
 
                             <div class="row">
                                 <div class="col-9">
-                                    <label for="descIncidente" class="form-label">Descrição</label>
-                                    <input value="<?= $descIncidente ?>" id="descIncidente" name="descIncidente" class="form-control" required></input>
+                                    <label for="evento" class="form-label">Evento</label>
+                                    <input value="<?= $descIncidente ?>" id="evento" name="evento" class="form-control" required></input>
                                 </div>
                                 <div class="col-3">
                                     <label for="protocoloERP" class="form-label">Protocolo ERP</label>
                                     <input type="number" value="<?= $protocoloERP ?>" id="protocoloERP" name="protocoloERP" class="form-control"></input>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-9">
+                                    <label for="descricao_evento" class="form-label">Descrição Evento</label>
+                                    <textarea style="resize: none;" rows="4" id="descricao_evento" name="descricao_evento" class="form-control"><?= $descricao_evento ?></textarea>
                                 </div>
                             </div>
                             <br>

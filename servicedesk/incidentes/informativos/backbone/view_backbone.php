@@ -24,12 +24,9 @@ if ($rowCount_permissions_submenu > 0) {
     $usuarioID = $_SESSION['id'];
 
     $dados_usuario =
-        "SELECT
-    u.empresa_id as empresaID
-    FROM
-    usuarios as u
-    WHERE
-    u.id =   $usuarioID
+        "SELECT u.empresa_id as empresaID
+    FROM usuarios as u
+    WHERE u.id =   $usuarioID
 ";
 
     $r_dados_usuario = mysqli_query($mysqli, $dados_usuario);
@@ -58,9 +55,9 @@ if ($rowCount_permissions_submenu > 0) {
             i.envio_com_normalizacao as envio_com_normalizacao,
             i.incident_type as tipo,
             i.equipamento_id as host_id,
+            i.descricaoEvento as descricaoEvento,
             i.protocolo_erp as protocoloERP,
             it.type as tipoIncidente,
-            eqpop.hostname as equipamento,
             i.classificacao as idClassificacao,
             ic.classificacao as classificacao,
             i.descricaoIncidente as descricaoIncidente,
@@ -74,28 +71,9 @@ if ($rowCount_permissions_submenu > 0) {
             date_format(i.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
             date_format(i.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
             IF (i.fimIncidente IS NULL, TIMEDIFF(NOW(), i.inicioIncidente), TIMEDIFF(i.fimIncidente, i.inicioIncidente)) as tempoIncidente
-            FROM
-            incidentes as i
-            LEFT JOIN
-            equipamentospop as eqpop
-            ON
-            eqpop.id = i.equipamento_id
-            LEFT JOIN
-            gpon_olts as o
-            ON
-            o.equipamento_id = i.equipamento_id
-            LEFT JOIN
-            redeneutra_parceiro_olt as rnpo
-            ON
-            rnpo.olt_id = o.id
-            LEFT JOIN
-            incidentes_classificacao as ic
-            ON
-            ic.id = i.classificacao
-            LEFT JOIN
-            incidentes_types as it
-            ON
-            it.codigo = i.incident_type
+            FROM incidentes as i
+            LEFT JOIN incidentes_classificacao as ic ON ic.id = i.classificacao
+            LEFT JOIN incidentes_types as it ON it.codigo = i.incident_type
             WHERE
             i.id = $id_incidente
     ";
@@ -128,40 +106,37 @@ if ($rowCount_permissions_submenu > 0) {
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
+                                    <hr class="sidebar-divider">
 
-                                    <div class="col-12">
-                                        <hr class="sidebar-divider">
-                                        <b>
-                                            <h5 style="text-align: center;"><?= $campos['descricaoIncidente'] ?></5>
-                                        </b>
-                                        <hr class="sidebar-divider">
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <b>
+                                                <h5 style="text-align: center;"><?= $campos['descricaoIncidente'] ?></5>
+                                            </b>
+                                        </div>
+                                        <div style="text-align: right;" class="col-2">
+                                            <a href="javascript:history.back()" class="btn btn-sm btn-danger">Voltar</a>
+                                        </div>
                                     </div>
 
+                                    <hr class="sidebar-divider">
+                                    <div class="col-12">
+                                        <span><?= nl2br($campos['descricaoEvento']) ?></span>
+                                        <hr class="sidebar-divider">
+                                    </div>
                                     <div class="row">
                                         <div class="col-lg-5">
                                             <div class="col-12">
                                                 <br>
-                                                <?php if ($campos['tipo'] <> 102) { ?>
-                                                    <b>Equipamento: </b><?= $campos['equipamento'] ?><br>
-                                                <?php } ?>
                                                 <b>Criador Incidente: </b> <?php if ($campos['autor_id'] == null) {
                                                                                 echo "Integração Zabbix";
                                                                             } else {
-
-
-
                                                                                 $autor_id = $campos['autor_id'];
-                                                                                $sql_usuario = "SELECT
-                                                                    p.nome as nome_usuario
-                                                                    FROM
-                                                                    usuarios as u
-                                                                    LEFT JOIN
-                                                                    pessoas as p
-                                                                    ON
-                                                                    u.pessoa_id = p.id
-                                                                    WHERE 
-                                                                    u.id = $autor_id
-                                                                    ";
+                                                                                $sql_usuario =
+                                                                                    "SELECT p.nome as nome_usuario
+                                                                                FROM usuarios as u
+                                                                                LEFT JOIN pessoas as p ON u.pessoa_id = p.id
+                                                                                WHERE u.id = $autor_id";
 
                                                                                 $resultado_usuario = mysqli_query($mysqli, $sql_usuario);
                                                                                 $row_usuario = mysqli_fetch_assoc($resultado_usuario);
@@ -183,9 +158,6 @@ if ($rowCount_permissions_submenu > 0) {
                                                 } else {
                                                     echo $campos['classificacao'];
                                                 } ?> <br>
-
-
-
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
@@ -371,48 +343,8 @@ if ($rowCount_permissions_submenu > 0) {
                                         </thead>
                                         <tbody>
                                             <?php
-                                            if ($tipo == 100) {
-                                                $interessados =
-                                                    "SELECT
-                                    e.fantasia as fantasia,
-                                    CASE
-                                    WHEN en.metodo_id = 1 THEN 'E-mail'
-                                    WHEN en.metodo_id = 2 THEN 'Telegram'
-                                    WHEN en.metodo_id = 3 THEN 'Whatsapp'
-                                    END as comunicacao,
-                                    en.midia as midia
-                                    FROM
-                                    gpon_olts_interessados as goi
-                                    LEFT JOIN
-                                    gpon_olts as gpo
-                                    ON
-                                    gpo.id = goi.gpon_olt_id
-                                    LEFT JOIN
-                                    empresas_notificacao as en
-                                    ON
-                                    en.empresa_id = goi.interessado_empresa_id
-                                    LEFT JOIN
-                                    empresas as e
-                                    ON
-                                    e.id = goi.interessado_empresa_id
-                                    WHERE
-                                    en.active = 1
-                                    and
-                                    goi.active = 1
-                                    and
-                                    gpo.equipamento_id = $host_id";
-
-                                                $r_interessados = mysqli_query($mysqli, $interessados);
-                                                while ($c_interessados = $r_interessados->fetch_array()) { ?>
-                                                    <tr>
-                                                        <td style="text-align: center;"><?= $c_interessados['fantasia']; ?></td>
-                                                        <td style="text-align: center;"><?= $c_interessados['comunicacao']; ?></td>
-                                                        <td style="text-align: center;"><?= $c_interessados['midia']; ?></td>
-                                                    </tr>
-                                                <?php }
-                                            } else if ($tipo == 102) {
-                                                $interessados =
-                                                    "SELECT
+                                            $interessados =
+                                                "SELECT
                                         e.fantasia as fantasia,
                                         CASE
                                         WHEN en.metodo_id = 1 THEN 'E-mail'
@@ -420,35 +352,20 @@ if ($rowCount_permissions_submenu > 0) {
                                         WHEN en.metodo_id = 3 THEN 'Whatsapp'
                                         END as comunicacao,
                                         en.midia as midia
-                                        FROM
-                                        rotas_fibras_interessados as rfi
-                                        LEFT JOIN
-                                        rotas_fibra as rf
-                                        ON
-                                        rf.id = rfi.rf_id
-                                        LEFT JOIN
-                                        empresas_notificacao as en
-                                        ON
-                                        en.empresa_id = rfi.interessado_empresa_id
-                                        LEFT JOIN
-                                        empresas as e
-                                        ON
-                                        e.id = rfi.interessado_empresa_id
-                                        WHERE
-                                        en.active = 1
-                                        AND
-                                        rfi.active = 1
-                                        and
-                                        rf.codigo = $host_id";
-                                                $r_interessados = mysqli_query($mysqli, $interessados);
-                                                while ($c_interessados = $r_interessados->fetch_array()) { ?>
-                                                    <tr>
-                                                        <td style="text-align: center;"><?= $c_interessados['fantasia']; ?></td>
-                                                        <td style="text-align: center;"><?= $c_interessados['comunicacao']; ?></td>
-                                                        <td style="text-align: center;"><?= $c_interessados['midia']; ?></td>
-                                                    </tr>
+                                        FROM rotas_fibras_interessados as rfi
+                                        LEFT JOIN rotas_fibra as rf ON rf.id = rfi.rf_id
+                                        LEFT JOIN empresas_notificacao as en ON en.empresa_id = rfi.interessado_empresa_id
+                                        LEFT JOIN empresas as e ON e.id = rfi.interessado_empresa_id
+                                        WHERE en.active = 1 AND rfi.active = 1 and rf.codigo = $host_id";
+                                            $r_interessados = mysqli_query($mysqli, $interessados);
+                                            while ($c_interessados = $r_interessados->fetch_array()) { ?>
+                                                <tr>
+                                                    <td style="text-align: center;"><?= $c_interessados['fantasia']; ?></td>
+                                                    <td style="text-align: center;"><?= $c_interessados['comunicacao']; ?></td>
+                                                    <td style="text-align: center;"><?= $c_interessados['midia']; ?></td>
+                                                </tr>
                                             <?php }
-                                            } ?>
+                                            ?>
 
                                         </tbody>
                                     </table>

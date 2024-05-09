@@ -30,6 +30,7 @@ if ($rowCount_permissions_submenu > 0) {
         i.descricaoIncidente as descricaoIncidente,
         i.protocolo_erp as protocoloERP,
         i.previsaoNormalizacao as prevNOR,
+        i.descricaoEvento as descricao_evento,
         i.active as statusID,
         i.classificacao as idClassificacao,
         i.incident_type as incident_type
@@ -46,6 +47,9 @@ if ($rowCount_permissions_submenu > 0) {
         $statusID = $resultado['statusID'];
         $idClassificacaoAtual = $resultado['idClassificacao'];
         $idTypeIncidenteAtual = $resultado['incident_type'];
+        $descricao_evento = $resultado['descricao_evento'];
+
+        
 
 ?>
         <main class="main" id="main">
@@ -83,12 +87,19 @@ if ($rowCount_permissions_submenu > 0) {
 
                             <div class="row">
                                 <div class="col-9">
-                                    <label for="descIncidente" class="form-label">Descrição</label>
+                                    <label for="descIncidente" class="form-label">Evento</label>
                                     <input value="<?= $descIncidente ?>" id="descIncidente" name="descIncidente" class="form-control" required></input>
                                 </div>
                                 <div class="col-3">
                                     <label for="protocoloERP" class="form-label">Protocolo ERP</label>
                                     <input type="number" value="<?= $protocoloERP ?>" id="protocoloERP" name="protocoloERP" class="form-control"></input>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-9">
+                                    <label for="descricao_evento" class="form-label">Descrição Evento</label>
+                                    <textarea style="resize: none;" rows="4" id="descricao_evento" name="descricao_evento" class="form-control"><?= $descricao_evento ?></textarea>
                                 </div>
                             </div>
                             <br>

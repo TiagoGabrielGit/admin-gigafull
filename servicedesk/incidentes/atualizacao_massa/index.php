@@ -105,7 +105,10 @@ if ($rowCount_permissions_submenu > 0) {
                                                             <input type="checkbox" name="checkboxes[]" value="<?= $row_gpon['id'] ?>">
                                                         </td>
                                                         <td style="text-align: center;"><?= $row_gpon['descricaoIncidente'] ?></td>
-                                                        <td style="text-align: center;"><?= $row_gpon['descricaoEvento'] ?></td>
+                                                        <td style="text-align: center;">
+                                                            <?= $row_gpon['descricaoEvento'] !== null ? nl2br($row_gpon['descricaoEvento']) : '' ?>
+
+                                                        </td>
                                                         <td style="text-align: center;"><?= $row_gpon['classificacao'] ?></td>
                                                         <td style="text-align: center;"><?= $previsaoNormalizacao ?></td>
 
@@ -217,7 +220,7 @@ if ($rowCount_permissions_submenu > 0) {
                                     <?php
                                     $incidentes_backbone =
                                         "SELECT i.id as id, i.descricaoIncidente, ic.classificacao, date_format(i.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
-                                         rf.ponta_a as ponta_a, rf.ponta_b as ponta_b
+                                         rf.ponta_a as ponta_a, rf.ponta_b as ponta_b, i.descricaoEvento
                                                FROM incidentes as i
                                                LEFT JOIN incidentes_classificacao as ic ON ic.id = i.classificacao 
                                                INNER JOIN rotas_fibra as rf ON i.equipamento_id = rf.codigo
@@ -237,7 +240,7 @@ if ($rowCount_permissions_submenu > 0) {
                                                     </div>
                                                 </th>
                                                 <th style="text-align: center;">Rota</th>
-                                                <th style="text-align: center;">Evento/Descrição Evento</th>
+                                                <th style="text-align: center;">Descrição Evento</th>
                                                 <th style="text-align: center;">Classificação</th>
                                                 <th style="text-align: center;">Previsão de Normalização</th>
                                             </tr>
@@ -257,7 +260,10 @@ if ($rowCount_permissions_submenu > 0) {
                                                             <input type="checkbox" name="checkboxes[]" value="<?= $row_backbone['id'] ?>">
                                                         </td>
                                                         <td style="text-align: center;"><?= "ROTA: " . $row_backbone['ponta_a'] . " <> " . $row_backbone['ponta_b']; ?></td>
-                                                        <td style="text-align: center;"><?= $row_backbone['descricaoIncidente'] ?></td>
+                                                        <td style="text-align: center;">
+                                                            <?= $row_backbone['descricaoEvento'] !== null ? nl2br($row_backbone['descricaoEvento']) : '' ?>
+
+                                                        </td>
                                                         <td style="text-align: center;"><?= $row_backbone['classificacao'] ?></td>
                                                         <td style="text-align: center;"><?= $previsaoNormalizacao ?></td>
 

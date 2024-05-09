@@ -40,9 +40,7 @@ if (isset($_SESSION['id'])) {
 
                     if ($descEvento != null) {
                         $sql .= "descricaoEvento = :descricaoEvento, ";
-                        $sql .= "descricaoIncidente = :descricaoIncidente, ";
                         $params[':descricaoEvento'] = $descEvento;
-                        $params[':descricaoIncidente'] = $descEvento;
 
                     }
 

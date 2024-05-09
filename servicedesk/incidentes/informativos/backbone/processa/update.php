@@ -11,7 +11,8 @@ $relatoIncidente = isset($_POST['relatoIncidente']) ? $_POST['relatoIncidente'] 
 $zabbixEventID = isset($_POST['zabbixEventID']) ? $_POST['zabbixEventID'] : null;
 $protocoloERP = isset($_POST['protocoloERP']) ? $_POST['protocoloERP'] : null;
 $comunicarInteressados = $_POST['comunicarInteressados'];
-$descIncidente = $_POST['descIncidente'];
+$evento = $_POST['evento'];
+$descricao_evento = $_POST['descricao_evento'];
 
 $horaAtual = date('Y-m-d H:i:s');
 
@@ -37,7 +38,12 @@ if ($classIncidente != NULL || $statusIncidente != NULL || $tipoIncidente != NUL
 
     if ($descIncidente != null) {
         $sql .= "descricaoIncidente = :descricaoIncidente, ";
-        $params[':descricaoIncidente'] = $descIncidente;
+        $params[':descricaoIncidente'] = $evento;
+    }
+
+    if ($descricao_evento != null) {
+        $sql .= "descricaoEvento = :descricaoEvento, ";
+        $params[':descricaoEvento'] = $descricao_evento;
     }
 
     if ($statusIncidente != null && $statusIncidente == "0") {
