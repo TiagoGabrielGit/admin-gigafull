@@ -40,6 +40,51 @@ if ($rowCount_permissions_submenu > 0) {
     $stmt->bindParam(':incidente_code', $incidente_code, PDO::PARAM_INT);
     $stmt->execute();
     $incidente_type = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+    $filtro = "";
+
+    // Verifique se o campo de evento está preenchido
+    if (!empty($_GET['evento_informativo'])) {
+        $evento = $_GET['evento_informativo'];
+        // Adicione a condição do filtro para o campo de evento
+        $filtro .= " AND LOWER(i.descricaoIncidente) LIKE LOWER('%$evento%')";
+    }
+
+    // Verifique se o campo de status está selecionado
+    if (isset($_GET['status_informativo'])) {
+        $status = $_GET['status_informativo'];
+        // Adicione a condição do filtro para o campo de status
+        $filtro .= " AND i.active LIKE '$status'";
+    }
+
+    // Verifique se o campo de classificação está selecionado
+    if (!empty($_GET['classificacao_informativo'])) {
+        $classificacao = $_GET['classificacao_informativo'];
+        // Adicione a condição do filtro para o campo de classificação
+        $filtro .= " AND i.classificacao LIKE '$classificacao'";
+    }
+
+    // Verifique se o campo de data de ocorrência está preenchido
+    if (!empty($_GET['data_ocorrencia'])) {
+        $data_ocorrencia = $_GET['data_ocorrencia'];
+        // Adicione a condição do filtro para o campo de data de ocorrência
+        $filtro .= " AND i.inicioIncidente LIKE '$data_ocorrencia%'";
+    }
+
+    // Verifique se o campo de data de normalização está preenchido
+    if (!empty($_GET['data_normalizacao'])) {
+        $data_normalizacao = $_GET['data_normalizacao'];
+        // Adicione a condição do filtro para o campo de data de normalização
+        $filtro .= " AND i.fimIncidente LIKE '$data_normalizacao%'";
+    }
+
+    // Verifique se o campo de data de normalização está preenchido
+    if (!empty($_GET['limite_busca'])) {
+        $limite_busca = $_GET['limite_busca'];
+    } else {
+        $limite_busca = "100";
+    }
 ?>
 
     <style>
@@ -51,7 +96,7 @@ if ($rowCount_permissions_submenu > 0) {
         }
     </style>
 
-    <main id="main" class="main"> 
+    <main id="main" class="main">
         <section class="section">
             <div class="row">
                 <div class="col-lg-12">
@@ -63,10 +108,81 @@ if ($rowCount_permissions_submenu > 0) {
                                     <h5 class="card-title">INFORMATIVOS - <?= $incidente_type['type'] ?>
                                     </h5>
                                 </div>
-                                <div class="text-end">
+                            </div>
+                            <div class="row">
+                                <div class="col-10">
+                                    <form action="#" method="GET">
+                                        <input hidden readonly id="code" name="code" value="<?= $incidente_code ?>">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label for="evento_informativo" class="form-label">Evento</label>
+                                                <input id="evento_informativo" name="evento_informativo" type="text" class="form-control" value="<?php echo isset($_GET['evento_informativo']) ? htmlspecialchars($_GET['evento_informativo']) : ''; ?>">
+                                            </div>
+                                            <div class="col-3">
+                                                <label for="status_informativo" class="form-label">Status do informativo</label>
+                                                <select id="status_informativo" name="status_informativo" class="form-select">
+                                                    <option value="%">Todos</option>
+                                                    <option value="1" <?php echo (isset($_GET['status_informativo']) && $_GET['status_informativo'] == '1') ? 'selected' : ''; ?>>Alarmando</option>
+                                                    <option value="0" <?php echo (isset($_GET['status_informativo']) && $_GET['status_informativo'] == '0') ? 'selected' : ''; ?>>Normalizado</option>
+                                                </select>
+
+                                            </div>
+
+                                            <div class="col-3">
+                                                <label for="classificacao_informativo" class="form-label">Classificação do informativo</label>
+                                                <select id="classificacao_informativo" name="classificacao_informativo" class="form-select">
+                                                    <option value="%">Todos</option>
+                                                    <?php
+                                                    $classificacoes_query = "SELECT * FROM incidentes_classificacao WHERE active = 1 ORDER BY classificacao ASC";
+                                                    $result_classificacoes = $pdo->query($classificacoes_query);
+                                                    if ($result_classificacoes) {
+                                                        while ($classificacao = $result_classificacoes->fetch(PDO::FETCH_ASSOC)) {
+                                                            $classificacao_id = $classificacao['id'];
+                                                            $classificacao_nome = $classificacao['classificacao'];
+                                                            $selected = (isset($_GET['classificacao_informativo']) && $_GET['classificacao_informativo'] == $classificacao_id) ? 'selected' : '';
+                                                    ?>
+                                                            <option value="<?= $classificacao_id; ?>" <?= $selected; ?>><?= $classificacao_nome; ?></option>
+
+                                                    <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <label for="data_ocorrencia" class="form-label">Data ocorrência informativo</label>
+                                                <input id="data_ocorrencia" name="data_ocorrencia" class="form-control" type="date"></input>
+                                            </div>
+                                            <div class="col-4">
+                                                <label for="data_normalizacao" class="form-label">Data normalização informativo</label>
+                                                <input id="data_normalizacao" name="data_normalizacao" class="form-control" type="date"></input>
+                                            </div>
+
+                                            <div class="col-2">
+                                                <label for="limite_busca" class="form-label">Limite de busca</label>
+                                                <select id="limite_busca" name="limite_busca" class="form-select">
+                                                    <option value="10">10</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100" selected>100</option>
+                                                </select>
+                                            </div>
+                                            <div style="text-align: center; margin-top: 35px;" class="col-2">
+                                                <button class="btn btn-sm btn-danger" type="submit">Aplicar Filtros</button>
+                                            </div>
+
+
+                                        </div>
+                                        <br>
+                                    </form>
+                                </div>
+
+                                <div class="col-2">
                                     <button type="button" class="btn btn-sm btn-danger" onclick="window.location.href = '/servicedesk/incidentes/informativos/informativos.php';">Voltar informativos</button>
                                 </div>
                             </div>
+
 
                             <hr class="sidebar-divider">
 
@@ -84,7 +200,7 @@ if ($rowCount_permissions_submenu > 0) {
                                     i.active as activeID,
                                     i.protocolo_erp as protocoloERP,
                                     i.active as active,
-                                    i.descricaoEvento as relatoIncidente,
+                                    i.descricaoEvento as descricaoEvento,
                                     ic.classificacao as classificacao,
                                     ic.descricao as descClassificacao,
                                     ic.color as ClassColor,
@@ -99,9 +215,9 @@ if ($rowCount_permissions_submenu > 0) {
                                     LEFT JOIN incidentes_classificacao as ic ON ic.id = i.classificacao
                                     LEFT JOIN usuarios as u ON i.autor_id = u.id LEFT JOIN pessoas as p ON p.id = u.pessoa_id
                                     LEFT JOIN incidentes_types as it ON it.codigo = i.incident_type
-                                    WHERE it.codigo = $incidente_code
+                                    WHERE it.codigo = $incidente_code $filtro
                                     ORDER BY i.active DESC, i.id DESC
-                                    LIMIT 100";
+                                    LIMIT $limite_busca";
 
 
                                 $r_sql_incidentes = mysqli_query($mysqli, $sql_incidentes);
@@ -129,15 +245,15 @@ if ($rowCount_permissions_submenu > 0) {
                                                         </svg>
                                                         &nbsp; &nbsp;
                                                         <b><?= $campos['descricaoIncidente'] ?></b>
-                                                        <br><br>
-                                                        <?php if ($campos['relatoIncidente'] === NULL) { ?>
+                                                        <br>
+                                                        <?php if ($campos['descricaoEvento'] === NULL) { ?>
                                                         <?php } else { ?>
-                                                            <span><?= nl2br($campos['relatoIncidente']) ?></span><br><br>
+                                                            <span style="font-size: 13px;"><b>Descrição do Evento:</b><br><?= nl2br($campos['descricaoEvento']) ?></span><br><br>
                                                         <?php }
                                                         ?>
                                                     </span>
 
-                                                    <span class="text-end">
+                                                    <span style="font-size: 13px;" class="text-end">
                                                         <?php
                                                         if ($campos['classificacao'] == NULL) { ?>
                                                             <span title="<?= $campos['descClassificacao'] ?>" class="btn btn-extra-small btn-sm rounded-pill mb-1" style="background-color: <?= $campos['ClassColor'] ?>"><b>Não Classificado</b></span>
