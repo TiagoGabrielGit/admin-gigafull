@@ -17,7 +17,7 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading13-8">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse13-8" aria-expanded="false" aria-controls="collapse13-8">
-                    Versão 13.8 - XX/05/2024
+                    Versão 13.8 - 09/05/2024
                   </button>
                 </h2>
                 <div id="collapse13-8" class="accordion-collapse collapse" aria-labelledby="heading13-8" data-bs-parent="#accordionExample">
@@ -25,6 +25,8 @@ require "../includes/menu.php";
 
                     <br><strong>Melhorias</strong><br>
                     # Update em massa informativos;<br>
+                    # Filtros em informativos;<br>
+                    # Melhorias em informativos;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
                     # Editado o id 22 na tabela 'url_submenu';<br>
@@ -40,9 +42,7 @@ require "../includes/menu.php";
                     # Observações Internas Chamado;<br>
                     # Pesquisa MP Concluidas através da data;<br>
                     # Página de aceite MP;<br>
-                    # Causador Incidente;<br>
                     # Enter para login;<br>
-                    # Alternar tabs automanticamente no iframe incidentes;<br>
                     # White-Label iframe incidentes;<br>
                     # TABs permitidas no iframe incidentes;<br>
                     # Remover PON/RF durante criação de MP;<br>

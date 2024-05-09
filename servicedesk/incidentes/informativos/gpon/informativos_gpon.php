@@ -151,14 +151,17 @@ if ($rowCount_permissions_submenu > 0) {
                                                 </div>
                                             </div>
                                             <div class="row">
+
+
                                                 <div class="col-4">
                                                     <label for="data_ocorrencia" class="form-label">Data ocorrência informativo</label>
-                                                    <input id="data_ocorrencia" name="data_ocorrencia" class="form-control" type="date"></input>
+                                                    <input id="data_ocorrencia" name="data_ocorrencia" class="form-control" type="date" value="<?php echo isset($_GET['data_ocorrencia']) ? htmlspecialchars($_GET['data_ocorrencia']) : ''; ?>">
                                                 </div>
                                                 <div class="col-4">
                                                     <label for="data_normalizacao" class="form-label">Data normalização informativo</label>
-                                                    <input id="data_normalizacao" name="data_normalizacao" class="form-control" type="date"></input>
+                                                    <input id="data_normalizacao" name="data_normalizacao" class="form-control" type="date" value="<?php echo isset($_GET['data_normalizacao']) ? htmlspecialchars($_GET['data_normalizacao']) : ''; ?>">
                                                 </div>
+
 
                                                 <div class="col-2">
                                                     <label for="limite_busca" class="form-label">Limite de busca</label>

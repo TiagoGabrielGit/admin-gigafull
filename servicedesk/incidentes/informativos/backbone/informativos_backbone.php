@@ -66,6 +66,11 @@ if ($rowCount_permissions_submenu > 0) {
             $filtro .= " AND i.fimIncidente LIKE '$data_normalizacao%'";
         }
 
+        if (!empty($_GET['rota_informativo'])) {
+            $rota_informativo = $_GET['rota_informativo'];
+            $filtro .= " AND i.equipamento_id LIKE '$rota_informativo'";
+        }
+
         if (!empty($_GET['limite_busca'])) {
             $limite_busca = $_GET['limite_busca'];
         } else {
@@ -98,6 +103,36 @@ if ($rowCount_permissions_submenu > 0) {
                                     <div class="col-10">
                                         <form action="#" method="GET">
                                             <div class="row">
+                                                <div class="col-6">
+                                                    <label for="rota_informativo" class="form-label">Rota</label>
+                                                    <select class="form-select" id="rota_informativo" name="rota_informativo">
+                                                        <option value="%">Todas</option>
+                                                        <?php
+                                                                $selected_value = isset($_GET['rota_informativo']) ? $_GET['rota_informativo'] : '';
+
+                                                        $rotas_query = "SELECT rf.codigo as codigo, CONCAT(rf.ponta_a, ' <> ', rf.ponta_b) as rota
+                                                        FROM rotas_fibra as rf
+                                                        LEFT JOIN rotas_fibras_interessados as rfi ON rfi.rf_id = rf.id
+                                                        WHERE rfi.interessado_empresa_id = $empresaID
+                                                        ORDER BY rf.ponta_a ASC, rf.ponta_b ASC";
+
+                                                        $result_rotas = $pdo->query($rotas_query);
+                                                        if ($result_rotas) {
+                                                            while ($rota = $result_rotas->fetch(PDO::FETCH_ASSOC)) {
+                                                                $rota_codigo = $rota['codigo'];
+                                                                $rota_nome = $rota['rota'];
+                                                                $selected = ($selected_value == $rota_codigo) ? 'selected' : '';
+
+                                                        ?>
+                                                                <option value="<?= $rota_codigo; ?>" <?= $selected; ?>><?= $rota_nome; ?></option>
+                                                        <?php
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+
+
                                                 <div class="col-3">
                                                     <label for="status_informativo" class="form-label">Status do informativo</label>
                                                     <select id="status_informativo" name="status_informativo" class="form-select">
@@ -105,7 +140,6 @@ if ($rowCount_permissions_submenu > 0) {
                                                         <option value="1" <?php echo (isset($_GET['status_informativo']) && $_GET['status_informativo'] == '1') ? 'selected' : ''; ?>>Alarmando</option>
                                                         <option value="0" <?php echo (isset($_GET['status_informativo']) && $_GET['status_informativo'] == '0') ? 'selected' : ''; ?>>Normalizado</option>
                                                     </select>
-
                                                 </div>
 
                                                 <div class="col-3">
@@ -131,14 +165,16 @@ if ($rowCount_permissions_submenu > 0) {
                                                 </div>
                                             </div>
                                             <div class="row">
+
                                                 <div class="col-4">
                                                     <label for="data_ocorrencia" class="form-label">Data ocorrência informativo</label>
-                                                    <input id="data_ocorrencia" name="data_ocorrencia" class="form-control" type="date"></input>
+                                                    <input id="data_ocorrencia" name="data_ocorrencia" class="form-control" type="date" value="<?php echo isset($_GET['data_ocorrencia']) ? htmlspecialchars($_GET['data_ocorrencia']) : ''; ?>">
                                                 </div>
                                                 <div class="col-4">
                                                     <label for="data_normalizacao" class="form-label">Data normalização informativo</label>
-                                                    <input id="data_normalizacao" name="data_normalizacao" class="form-control" type="date"></input>
+                                                    <input id="data_normalizacao" name="data_normalizacao" class="form-control" type="date" value="<?php echo isset($_GET['data_normalizacao']) ? htmlspecialchars($_GET['data_normalizacao']) : ''; ?>">
                                                 </div>
+
 
                                                 <div class="col-2">
                                                     <label for="limite_busca" class="form-label">Limite de busca</label>
@@ -232,10 +268,10 @@ if ($rowCount_permissions_submenu > 0) {
                                                                 ?>
 
                                                             </b> <?php echo " - " .  $campos['descricaoIncidente'] ?> <br>
-                                                            
+
                                                             <?php if ($campos['descricaoEvento'] === NULL) { ?>
                                                             <?php } else { ?>
-                                                                <span  style="font-size: 13px;"><b>Descrição do Evento:</b><br><?= nl2br($campos['descricaoEvento']) ?></span><br><br>
+                                                                <span style="font-size: 13px;"><b>Descrição do Evento:</b><br><?= nl2br($campos['descricaoEvento']) ?></span><br><br>
                                                             <?php }
                                                             ?>
                                                         </span>
