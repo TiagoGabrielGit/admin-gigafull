@@ -42,8 +42,45 @@ if ($rowCount_permissions_submenu > 0) {
 
         $permissaoGerenciar = $_SESSION['permite_gerenciar_incidente'];
         $permissaoProtocoloERP = $_SESSION['permite_visualizar_protocolo_erp'];
+
+
+        $filtro = "";
+
+        if (isset($_GET['status_informativo'])) {
+            $status = $_GET['status_informativo'];
+            $filtro .= " AND i.active LIKE '$status'";
+        }
+
+        if (!empty($_GET['classificacao_informativo'])) {
+            $classificacao = $_GET['classificacao_informativo'];
+            $filtro .= " AND i.classificacao LIKE '$classificacao'";
+        }
+
+        if (!empty($_GET['data_ocorrencia'])) {
+            $data_ocorrencia = $_GET['data_ocorrencia'];
+            $filtro .= " AND i.inicioIncidente LIKE '$data_ocorrencia%'";
+        }
+
+        if (!empty($_GET['data_normalizacao'])) {
+            $data_normalizacao = $_GET['data_normalizacao'];
+            $filtro .= " AND i.fimIncidente LIKE '$data_normalizacao%'";
+        }
+
+        if (!empty($_GET['limite_busca'])) {
+            $limite_busca = $_GET['limite_busca'];
+        } else {
+            $limite_busca = "100";
+        }
 ?>
 
+        <style>
+            .btn-extra-small {
+                padding: 0.2rem 0.4rem;
+                /* Ajuste os valores de padding conforme necessário */
+                font-size: 0.75rem;
+                /* Ajuste o tamanho da fonte conforme necessário */
+            }
+        </style>
         <main id="main" class="main">
             <section class="section">
                 <div class="row">
@@ -55,7 +92,73 @@ if ($rowCount_permissions_submenu > 0) {
                                     <div class="text-left">
                                         <h5 class="card-title">INFORMATIVOS BACKBONE</h5>
                                     </div>
-                                    <div class="text-end">
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-10">
+                                        <form action="#" method="GET">
+                                            <div class="row">
+                                                <div class="col-3">
+                                                    <label for="status_informativo" class="form-label">Status do informativo</label>
+                                                    <select id="status_informativo" name="status_informativo" class="form-select">
+                                                        <option value="%">Todos</option>
+                                                        <option value="1" <?php echo (isset($_GET['status_informativo']) && $_GET['status_informativo'] == '1') ? 'selected' : ''; ?>>Alarmando</option>
+                                                        <option value="0" <?php echo (isset($_GET['status_informativo']) && $_GET['status_informativo'] == '0') ? 'selected' : ''; ?>>Normalizado</option>
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="col-3">
+                                                    <label for="classificacao_informativo" class="form-label">Classificação do informativo</label>
+                                                    <select id="classificacao_informativo" name="classificacao_informativo" class="form-select">
+                                                        <option value="%">Todos</option>
+                                                        <?php
+                                                        $classificacoes_query = "SELECT * FROM incidentes_classificacao WHERE active = 1 ORDER BY classificacao ASC";
+                                                        $result_classificacoes = $pdo->query($classificacoes_query);
+                                                        if ($result_classificacoes) {
+                                                            while ($classificacao = $result_classificacoes->fetch(PDO::FETCH_ASSOC)) {
+                                                                $classificacao_id = $classificacao['id'];
+                                                                $classificacao_nome = $classificacao['classificacao'];
+                                                                $selected = (isset($_GET['classificacao_informativo']) && $_GET['classificacao_informativo'] == $classificacao_id) ? 'selected' : '';
+                                                        ?>
+                                                                <option value="<?= $classificacao_id; ?>" <?= $selected; ?>><?= $classificacao_nome; ?></option>
+
+                                                        <?php
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <label for="data_ocorrencia" class="form-label">Data ocorrência informativo</label>
+                                                    <input id="data_ocorrencia" name="data_ocorrencia" class="form-control" type="date"></input>
+                                                </div>
+                                                <div class="col-4">
+                                                    <label for="data_normalizacao" class="form-label">Data normalização informativo</label>
+                                                    <input id="data_normalizacao" name="data_normalizacao" class="form-control" type="date"></input>
+                                                </div>
+
+                                                <div class="col-2">
+                                                    <label for="limite_busca" class="form-label">Limite de busca</label>
+                                                    <select id="limite_busca" name="limite_busca" class="form-select">
+                                                        <option value="10">10</option>
+                                                        <option value="50">50</option>
+                                                        <option value="100" selected>100</option>
+                                                    </select>
+                                                </div>
+                                                <div style="text-align: center; margin-top: 35px;" class="col-2">
+                                                    <button class="btn btn-sm btn-danger" type="submit">Aplicar Filtros</button>
+                                                </div>
+
+
+                                            </div>
+                                            <br>
+                                        </form>
+                                    </div>
+
+                                    <div class="col-2">
                                         <button type="button" class="btn btn-sm btn-danger" onclick="window.location.href = '/servicedesk/incidentes/informativos/informativos.php';">Voltar informativos</button>
                                     </div>
                                 </div>
@@ -76,6 +179,7 @@ if ($rowCount_permissions_submenu > 0) {
                                     i.active as activeID,
                                     i.active as active,
                                     ic.classificacao as classificacao,
+                                    i.descricaoEvento as descricaoEvento,
                                     ic.color as ClassColor,
                                     rf.ponta_a as ponta_a,
                                     rf.ponta_b as ponta_b,
@@ -92,9 +196,9 @@ if ($rowCount_permissions_submenu > 0) {
                                     LEFT JOIN incidentes_classificacao as ic ON ic.id = i.classificacao
                                     LEFT JOIN usuarios as u ON i.autor_id = u.id LEFT JOIN pessoas as p ON p.id = u.pessoa_id
                                     LEFT JOIN incidentes_types as it ON it.codigo = i.incident_type
-                                    WHERE rfi.interessado_empresa_id =  $empresaID AND rfi.active = 1
-                                    ORDER BY i.active DESC, i.inicioIncidente DESC
-                                    LIMIT 100";
+                                    WHERE rfi.interessado_empresa_id =  $empresaID AND rfi.active = 1 $filtro
+                                    ORDER BY i.active DESC, i.inicioIncidente DESC 
+                                    LIMIT $limite_busca";
 
 
                                     $r_sql_incidentes = mysqli_query($mysqli, $sql_incidentes);
@@ -127,18 +231,21 @@ if ($rowCount_permissions_submenu > 0) {
                                                                 echo $identificacao;
                                                                 ?>
 
-                                                            </b> <br>
-                                                            &nbsp; &nbsp; &nbsp; &nbsp; <?= $campos['descricaoIncidente'] ?>
-                                                            <br><br>
-                                                            <b>&nbsp; &nbsp; &nbsp; &nbsp;Tempo total incidente: </b><?= $campos['tempoIncidente']; ?>
+                                                            </b> <?php echo " - " .  $campos['descricaoIncidente'] ?> <br>
+                                                            
+                                                            <?php if ($campos['descricaoEvento'] === NULL) { ?>
+                                                            <?php } else { ?>
+                                                                <span  style="font-size: 13px;"><b>Descrição do Evento:</b><br><?= nl2br($campos['descricaoEvento']) ?></span><br><br>
+                                                            <?php }
+                                                            ?>
                                                         </span>
-                                                        <span class="text-end">
+                                                        <span style="font-size: 13px;" class="text-end">
 
                                                             <?php
                                                             if ($campos['classificacao'] == NULL) { ?>
-                                                                <span class="btn btn-sm rounded-pill mb-1" style="background-color: <?= $campos['ClassColor'] ?>"><b>Não Classificado</b></span>
+                                                                <span class="btn btn-extra-small btn-sm rounded-pill mb-1" style="background-color: <?= $campos['ClassColor'] ?>"><b>Não Classificado</b></span>
                                                             <?php } else { ?>
-                                                                <span class="btn btn-sm rounded-pill mb-1" style="background-color: <?= $campos['ClassColor'] ?>"><b><?= $campos['classificacao'] ?></b></span>
+                                                                <span class="btn btn-extra-small btn-sm rounded-pill mb-1" style="background-color: <?= $campos['ClassColor'] ?>"><b><?= $campos['classificacao'] ?></b></span>
                                                             <?php } ?>
 
                                                             <?php
@@ -158,11 +265,14 @@ if ($rowCount_permissions_submenu > 0) {
                                                             }
 
                                                             if ($campos['previsaoNormalizacao'] == NULL) { ?>
-                                                                <span class="btn btn-sm btn-<?= $colorPill ?> rounded-pill"><b>Sem Previsão</b></span>
+                                                                <span class="btn btn-extra-small btn-sm btn-<?= $colorPill ?> rounded-pill"><b>Sem Previsão</b></span>
                                                             <?php } else { ?>
-                                                                <span class="btn btn-sm btn-<?= $colorPill ?> rounded-pill"><b><?= $campos['previsaoNormalizacao'] ?></b></span>
+                                                                <span class="btn btn-extra-small btn-sm btn-<?= $colorPill ?> rounded-pill"><b><?= $campos['previsaoNormalizacao'] ?></b></span>
                                                             <?php } ?>
-                                                            <!-- </div>-->
+                                                            <br><br>
+                                                            <b>Tempo total incidente: </b><?= $campos['tempoIncidente']; ?>
+                                                            <br>
+                                                            <?= (!empty($campos['protocoloERP'])) ? '<b> Protocolo ERP: </b> ' . $campos['protocoloERP'] : '' ?>
                                                         </span>
                                                     </div>
                                                 </button>

@@ -58,6 +58,7 @@ if ($rowCount_permissions_submenu > 0) {
             i.envio_com_normalizacao as envio_com_normalizacao,
             i.incident_type as tipo,
             i.equipamento_id as host_id,
+            i.descricaoEvento as descricaoEvento,
             i.protocolo_erp as protocoloERP,
             it.type as tipoIncidente,
             eqpop.hostname as equipamento,
@@ -128,12 +129,22 @@ if ($rowCount_permissions_submenu > 0) {
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
+                                    <hr class="sidebar-divider">
 
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <b>
+                                                <h5 style="text-align: center;"><?= $campos['descricaoIncidente'] ?></5>
+                                            </b>
+                                        </div>
+                                        <div style="text-align: right;" class="col-2">
+                                            <a href="javascript:history.back()" class="btn btn-sm btn-danger">Voltar</a>
+                                        </div>
+                                    </div>
+
+                                    <hr class="sidebar-divider">
                                     <div class="col-12">
-                                        <hr class="sidebar-divider">
-                                        <b>
-                                            <h5 style="text-align: center;"><?= $campos['descricaoIncidente'] ?></5>
-                                        </b>
+                                        <span><?= nl2br($campos['descricaoEvento']) ?></span>
                                         <hr class="sidebar-divider">
                                     </div>
 

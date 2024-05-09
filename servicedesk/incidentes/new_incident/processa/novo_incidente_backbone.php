@@ -6,7 +6,8 @@ if (isset($_SESSION['id'])) {
 
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $descricao = $_POST["descricao"];
+        $evento = $_POST["evento"];
+        $descricao_evento = $_POST["descricao_evento"];
         $inicio = $_POST["inicio"];
         $tipo = $_POST["tipo"];
         $autor_id = $_SESSION['id'];
@@ -15,11 +16,12 @@ if (isset($_SESSION['id'])) {
 
         $hostID = $_POST["rotasFibras"];
 
-        $query = "INSERT INTO incidentes (descricaoIncidente, inicioIncidente, incident_type, autor_id, equipamento_id, classificacao, active) VALUES (:descricao, :inicio, :tipo, :autor_id, :equipamento_id, :classificacao, :active)";
+        $query = "INSERT INTO incidentes (descricaoIncidente, descricaoEvento, inicioIncidente, incident_type, autor_id, equipamento_id, classificacao, active) VALUES (:descricao, :descricaoEvento, :inicio, :tipo, :autor_id, :equipamento_id, :classificacao, :active)";
 
         try {
             $stmt = $pdo->prepare($query);
             $stmt->bindParam(':descricao', $descricao, PDO::PARAM_STR);
+            $stmt->bindParam(':descricaoEvento', $descricao_evento, PDO::PARAM_STR);
             $stmt->bindParam(':inicio', $inicio, PDO::PARAM_STR);
             $stmt->bindParam(':tipo', $tipo, PDO::PARAM_INT);
             $stmt->bindParam(':autor_id', $autor_id, PDO::PARAM_INT);

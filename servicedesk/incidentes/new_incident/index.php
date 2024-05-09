@@ -67,13 +67,20 @@ if ($rowCount_permissions_submenu > 0) {
 
                                     <div class="row">
                                         <div class="col-5">
-                                            <label for="descricao" class="form-label">Descrição</label>
-                                            <input name="descricao" type="text" class="form-control" id="descricao" required>
+                                            <label for="evento" class="form-label">Evento</label>
+                                            <input name="evento" type="text" class="form-control" id="evento" required>
                                         </div>
 
                                         <div class="col-3">
                                             <label for="inicio" class="form-label">Inicio</label>
                                             <input name="inicio" type="datetime-local" class="form-control" id="inicio" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <label for="descricao_evento" class="form-label">Descrição Evento</label>
+                                            <textarea rows="6" style="resize: none;" name="descricao_evento" class="form-control" id="descricao_evento" required></textarea>
                                         </div>
                                     </div>
 
@@ -134,13 +141,20 @@ if ($rowCount_permissions_submenu > 0) {
 
                                     <div class="row">
                                         <div class="col-5">
-                                            <label for="descricao" class="form-label">Descrição</label>
-                                            <input name="descricao" type="text" class="form-control" id="descricao" required>
+                                            <label for="evento" class="form-label">Evento</label>
+                                            <input name="evento" type="text" class="form-control" id="evento" required>
                                         </div>
 
                                         <div class="col-3">
                                             <label for="inicio" class="form-label">Inicio</label>
                                             <input name="inicio" type="datetime-local" class="form-control" id="inicio" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <label for="descricao_evento" class="form-label">Descrição Evento</label>
+                                            <textarea rows="6" style="resize: none;" name="descricao_evento" class="form-control" id="descricao_evento" required></textarea>
                                         </div>
                                     </div>
 
@@ -191,8 +205,8 @@ if ($rowCount_permissions_submenu > 0) {
 
                                     <div class="row">
                                         <div class="col-5">
-                                            <label for="descricao" class="form-label">Descrição</label>
-                                            <input name="descricao" type="text" class="form-control" id="descricao" required>
+                                            <label for="evento" class="form-label">Evento</label>
+                                            <input name="evento" type="text" class="form-control" id="evento" required>
                                         </div>
 
                                         <div class="col-3">
@@ -201,11 +215,15 @@ if ($rowCount_permissions_submenu > 0) {
                                         </div>
                                     </div>
 
-                                    <hr class="sidebar-divider">
-
+                                    <div class="row">
+                                        <div class="col-8">
+                                            <label for="descricao_evento" class="form-label">Descrição Evento</label>
+                                            <textarea rows="6" style="resize: none;" name="descricao_evento" class="form-control" id="descricao_evento" required></textarea>
+                                        </div>
+                                    </div>
 
                                     <div class="text-center">
-                                        <button type="submit" class="btn btn-sm btn-danger">Criar Incidente</button>
+                                        <button type="submit" class="btn btn-sm btn-danger">Criar Informativo</button>
                                     </div>
                                 </form>
                         <?php }

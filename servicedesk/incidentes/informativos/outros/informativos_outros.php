@@ -42,7 +42,16 @@ if ($rowCount_permissions_submenu > 0) {
     $incidente_type = $stmt->fetch(PDO::FETCH_ASSOC);
 ?>
 
-    <main id="main" class="main">
+    <style>
+        .btn-extra-small {
+            padding: 0.2rem 0.4rem;
+            /* Ajuste os valores de padding conforme necessário */
+            font-size: 0.75rem;
+            /* Ajuste o tamanho da fonte conforme necessário */
+        }
+    </style>
+
+    <main id="main" class="main"> 
         <section class="section">
             <div class="row">
                 <div class="col-lg-12">
@@ -91,7 +100,7 @@ if ($rowCount_permissions_submenu > 0) {
                                     LEFT JOIN usuarios as u ON i.autor_id = u.id LEFT JOIN pessoas as p ON p.id = u.pessoa_id
                                     LEFT JOIN incidentes_types as it ON it.codigo = i.incident_type
                                     WHERE it.codigo = $incidente_code
-                                    ORDER BY i.active DESC, i.inicioIncidente DESC
+                                    ORDER BY i.active DESC, i.id DESC
                                     LIMIT 100";
 
 
@@ -120,25 +129,20 @@ if ($rowCount_permissions_submenu > 0) {
                                                         </svg>
                                                         &nbsp; &nbsp;
                                                         <b><?= $campos['descricaoIncidente'] ?></b>
-                                                        <br> 
-
-                                                        <?php if ($campos['relatoIncidente'] === NULL) { ?>
-                                                            <br>
-                                                            <?php } else { ?>
-                                                                <span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<?= $campos['relatoIncidente'] ?></span><br><br>
-                                                            <?php }
-                                                            ?>
-
-                                                        <b>&nbsp; &nbsp; &nbsp; &nbsp;Tempo total incidente: </b><?= $campos['tempoIncidente']; ?> <?= (!empty($campos['protocoloERP'])) ? '- <b> Protocolo ERP: </b> ' . $campos['protocoloERP'] : '' ?>
                                                         <br><br>
+                                                        <?php if ($campos['relatoIncidente'] === NULL) { ?>
+                                                        <?php } else { ?>
+                                                            <span><?= nl2br($campos['relatoIncidente']) ?></span><br><br>
+                                                        <?php }
+                                                        ?>
                                                     </span>
-                                                    <span class="text-end">
 
+                                                    <span class="text-end">
                                                         <?php
                                                         if ($campos['classificacao'] == NULL) { ?>
-                                                            <span title="<?= $campos['descClassificacao'] ?>" class="btn btn-sm rounded-pill mb-1" style="background-color: <?= $campos['ClassColor'] ?>"><b>Não Classificado</b></span>
+                                                            <span title="<?= $campos['descClassificacao'] ?>" class="btn btn-extra-small btn-sm rounded-pill mb-1" style="background-color: <?= $campos['ClassColor'] ?>"><b>Não Classificado</b></span>
                                                         <?php } else { ?>
-                                                            <span title="<?= $campos['descClassificacao'] ?>" class="btn btn-sm rounded-pill mb-1" style="background-color: <?= $campos['ClassColor'] ?>"><b><?= $campos['classificacao'] ?></b></span>
+                                                            <span title="<?= $campos['descClassificacao'] ?>" class="btn btn-extra-small btn-sm rounded-pill mb-1" style="background-color: <?= $campos['ClassColor'] ?>"><b><?= $campos['classificacao'] ?></b></span>
                                                         <?php } ?>
 
                                                         <?php
@@ -156,11 +160,14 @@ if ($rowCount_permissions_submenu > 0) {
                                                         }
 
                                                         if ($campos['previsaoNormalizacao'] == NULL) { ?>
-                                                            <span title="Previsão de Normalização" class="btn btn-sm btn-<?= $colorPill ?> rounded-pill"><b>Sem Previsão</b></span>
+                                                            <span title="Previsão de Normalização" class="btn btn-extra-small btn-sm btn-<?= $colorPill ?> rounded-pill"><b>Sem Previsão</b></span>
                                                         <?php } else { ?>
-                                                            <span title="Previsão de Normalização" class="btn btn-sm btn-<?= $colorPill ?> rounded-pill"><b><?= $campos['previsaoNormalizacao'] ?></b></span>
+                                                            <span title="Previsão de Normalização" class="btn btn-extra-small btn-sm btn-<?= $colorPill ?> rounded-pill"><b><?= $campos['previsaoNormalizacao'] ?></b></span>
                                                         <?php } ?>
-                                                        <!-- </div>-->
+                                                        <br><br>
+                                                        <b>Tempo total incidente: </b><?= $campos['tempoIncidente']; ?>
+                                                        <br>
+                                                        <?= (!empty($campos['protocoloERP'])) ? '<b> Protocolo ERP: </b> ' . $campos['protocoloERP'] : '' ?>
                                                     </span>
                                                 </div>
                                             </button>
@@ -205,7 +212,7 @@ if ($rowCount_permissions_submenu > 0) {
                                                         <?php
                                                         if ($permissaoGerenciar == 1) { ?>
                                                             <div class="col-12">
-                                                                <a href="/servicedesk/incidentes/view.php?id=<?= $id_incidente ?>" title="Visualizar">
+                                                                <a href="/servicedesk/incidentes/informativos/outros/view_outros.php?id=<?= $id_incidente ?>" title="Visualizar">
                                                                     <button type="button" class="btn btn-sm btn-danger">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
                                                                             <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
@@ -220,9 +227,6 @@ if ($rowCount_permissions_submenu > 0) {
                                                         } ?>
                                                         <div class="row">
 
-                                                            <div class="col-2">
-                                                                <button title="Localidades" type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#modalLocalidades<?= $cont ?>"><i class="bi bi-pin-map"></i></button>
-                                                            </div>
                                                             <div class="col-1">
                                                             </div>
                                                             <?php
@@ -235,53 +239,6 @@ if ($rowCount_permissions_submenu > 0) {
                                                                 </div>
 
                                                             <?php } ?>
-                                                        </div>
-                                                        <div class="modal fade" id="modalLocalidades<?= $cont ?>" tabindex="-1">
-                                                            <div class="modal-dialog modal-lg">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title">Localidades</h5>
-                                                                    </div>
-
-                                                                    <div class="modal-body">
-                                                                        <div class="card-body">
-                                                                            <div class="col-12">
-                                                                                <table class="table">
-                                                                                    <thead>
-                                                                                        <tr>
-                                                                                            <th style="text-align: center;">Cidade</th>
-                                                                                            <th style="text-align: center;">Bairro</th>
-                                                                                        </tr>
-                                                                                    </thead>
-                                                                                    <tbody>
-                                                                                        <?php
-                                                                                        // Preparar e executar a consulta SQL usando PDO
-                                                                                        $localidades_query = "SELECT cidade, bairro FROM gpon_localidades WHERE pon_id = :pon_id AND active = 1";
-                                                                                        $stmt_localidades = $pdo->prepare($localidades_query);
-                                                                                        $stmt_localidades->bindParam(':pon_id', $pon_id);
-                                                                                        $stmt_localidades->execute();
-
-                                                                                        // Verificar se há resultados
-                                                                                        if ($stmt_localidades->rowCount() > 0) {
-                                                                                            // Iterar pelos resultados e criar as linhas da tabela
-                                                                                            while ($row = $stmt_localidades->fetch(PDO::FETCH_ASSOC)) {
-                                                                                                echo '<tr>';
-                                                                                                echo '<td style="text-align: center;">' . $row['cidade'] . '</td>';
-                                                                                                echo '<td style="text-align: center;">' . $row['bairro'] . '</td>';
-                                                                                                echo '</tr>';
-                                                                                            }
-                                                                                        } else {
-                                                                                            // Caso não haja resultados
-                                                                                            echo '<tr><td colspan="2" style="text-align: center;">Nenhuma localidade encontrada.</td></tr>';
-                                                                                        }
-                                                                                        ?>
-                                                                                    </tbody>
-                                                                                </table>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

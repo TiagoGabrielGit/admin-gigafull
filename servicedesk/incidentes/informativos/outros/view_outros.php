@@ -24,12 +24,9 @@ if ($rowCount_permissions_submenu > 0) {
     $usuarioID = $_SESSION['id'];
 
     $dados_usuario =
-        "SELECT
-    u.empresa_id as empresaID
-    FROM
-    usuarios as u
-    WHERE
-    u.id =   $usuarioID
+        "SELECT u.empresa_id as empresaID
+    FROM usuarios as u
+    WHERE u.id =   $usuarioID
 ";
 
     $r_dados_usuario = mysqli_query($mysqli, $dados_usuario);
@@ -60,11 +57,11 @@ if ($rowCount_permissions_submenu > 0) {
             i.equipamento_id as host_id,
             i.protocolo_erp as protocoloERP,
             it.type as tipoIncidente,
-            eqpop.hostname as equipamento,
             i.classificacao as idClassificacao,
             ic.classificacao as classificacao,
             i.descricaoIncidente as descricaoIncidente,
             i.previsaoNormalizacao as prevNOR,
+            i.descricaoEvento as descricaoEvento,
             CASE
             WHEN i.active = 1 THEN 'Incidente aberto'
             WHEN i.active = 0 THEN 'Normalizado'
@@ -74,30 +71,10 @@ if ($rowCount_permissions_submenu > 0) {
             date_format(i.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
             date_format(i.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
             IF (i.fimIncidente IS NULL, TIMEDIFF(NOW(), i.inicioIncidente), TIMEDIFF(i.fimIncidente, i.inicioIncidente)) as tempoIncidente
-            FROM
-            incidentes as i
-            LEFT JOIN
-            equipamentospop as eqpop
-            ON
-            eqpop.id = i.equipamento_id
-            LEFT JOIN
-            gpon_olts as o
-            ON
-            o.equipamento_id = i.equipamento_id
-            LEFT JOIN
-            redeneutra_parceiro_olt as rnpo
-            ON
-            rnpo.olt_id = o.id
-            LEFT JOIN
-            incidentes_classificacao as ic
-            ON
-            ic.id = i.classificacao
-            LEFT JOIN
-            incidentes_types as it
-            ON
-            it.codigo = i.incident_type
-            WHERE
-            i.id = $id_incidente
+            FROM incidentes as i            
+            LEFT JOIN incidentes_classificacao as ic ON ic.id = i.classificacao
+            LEFT JOIN incidentes_types as it ON it.codigo = i.incident_type
+            WHERE i.id = $id_incidente
     ";
 
             $r_sql_incidente = mysqli_query($mysqli, $sql_incidente);
@@ -128,12 +105,23 @@ if ($rowCount_permissions_submenu > 0) {
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
+                                    <hr class="sidebar-divider">
+
+                                    <div class="row">
+                                        <div class="col-10">
+                                            <b>
+                                                <h5 style="text-align: center;"><?= $campos['descricaoIncidente'] ?></5>
+                                            </b>
+                                        </div>
+                                        <div style="text-align: right;" class="col-2">
+                                            <a href="javascript:history.back()" class="btn btn-sm btn-danger">Voltar</a>
+                                        </div>
+                                    </div>
+
+                                    <hr class="sidebar-divider">
 
                                     <div class="col-12">
-                                        <hr class="sidebar-divider">
-                                        <b>
-                                            <h5 style="text-align: center;"><?= $campos['descricaoIncidente'] ?></5>
-                                        </b>
+                                        <span><?= nl2br($campos['descricaoEvento']) ?></span>
                                         <hr class="sidebar-divider">
                                     </div>
 
@@ -141,7 +129,7 @@ if ($rowCount_permissions_submenu > 0) {
                                         <div class="col-lg-5">
                                             <div class="col-12">
                                                 <br>
-                                             
+
                                                 <b>Criador Incidente: </b> <?php if ($campos['autor_id'] == null) {
                                                                                 echo "Integração Zabbix";
                                                                             } else {

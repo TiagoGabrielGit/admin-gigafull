@@ -24,7 +24,7 @@ require "../includes/menu.php";
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
-                    # Update em massa GPON;<br>
+                    # Update em massa informativos;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
                     # Editado o id 22 na tabela 'url_submenu';<br>

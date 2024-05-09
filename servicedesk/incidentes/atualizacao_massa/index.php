@@ -30,7 +30,7 @@ if ($rowCount_permissions_submenu > 0) {
                         <form method="post" action="<?= $_SERVER['PHP_SELF']; ?>">
                             <div class="row">
                                 <div class="col-4">
-                                    <label for="tipo" class="form-label">Tipo Incidente</label>
+                                    <label for="tipo" class="form-label">Tipo Informativo</label>
                                     <select class="form-select" id="tipo" name="tipo" required>
                                         <option selected disabled value="">Selecione...</option>
                                         <?php
@@ -125,7 +125,7 @@ if ($rowCount_permissions_submenu > 0) {
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Atualizar Incidentes</h5>
+                                    <h5 class="card-title">Atualizar Informativo</h5>
 
                                     <input hidden readonly id="solicitante" name="solicitante" value="<?= $uid ?>"></input>
 
@@ -364,7 +364,7 @@ if ($rowCount_permissions_submenu > 0) {
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Selecione os incidentes</h5>
+                                    <h5 class="card-title">Selecione os informativos</h5>
                                     <?php
                                     $incidentes_outros =
                                         "SELECT i.id as id, i.descricaoIncidente, ic.classificacao, date_format(i.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao, i.descricaoEvento as descricaoEvento
@@ -406,7 +406,9 @@ if ($rowCount_permissions_submenu > 0) {
                                                             <input type="checkbox" name="checkboxes[]" value="<?= $row_outros['id'] ?>">
                                                         </td>
                                                         <td style="text-align: center;"><?= $row_outros['descricaoIncidente'] ?></td>
-                                                        <td style="text-align: center;"><?= $row_outros['descricaoEvento'] ?></td>
+                                                        <td style="text-align: center;">
+                                                            <?= $row_outros['descricaoEvento'] !== null ? nl2br($row_outros['descricaoEvento']) : '' ?>
+                                                        </td>
                                                         <td style="text-align: center;"><?= $row_outros['classificacao'] ?></td>
                                                         <td style="text-align: center;"><?= $previsaoNormalizacao ?></td>
 
@@ -433,7 +435,7 @@ if ($rowCount_permissions_submenu > 0) {
                                     <div class="row">
                                         <div class="col-9">
                                             <label for="descEvento" class="form-label">Descrição do Evento</label>
-                                            <input id="descEvento" name="descEvento" class="form-control"></input>
+                                            <textarea rows="3" style="resize: none;" id="descEvento" name="descEvento" class="form-control"></textarea>
                                         </div>
                                         <div class="col-3">
                                             <label for="protocoloERP" class="form-label">Protocolo ERP</label>
@@ -498,11 +500,11 @@ if ($rowCount_permissions_submenu > 0) {
 
                                     <hr class="sidebar-divider">
 
-                                    <div class="col-4"></div>
-                                    <div class="col-4" style="text-align: center;">
-                                        <button class="btn btn-sm btn-danger" type="submit">Atualizar</button>
+
+                                    <div class="text-center">
+                                        <button class="btn btn-sm btn-danger" type="submit">Atualizar Informativo</button>
                                     </div>
-                                    <div class="col-4"></div>
+
                                 </div>
                             </div>
                         </div>
