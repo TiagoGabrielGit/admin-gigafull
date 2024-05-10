@@ -6,8 +6,9 @@ require "../../../conexoes/conexao_pdo.php"; // Certifique-se de que esta linha 
 require "../../../conexoes/conexao.php"; // Certifique-se de que esta linha está correta
 
 try {
-    $query_frame = "SELECT ii.id as id_iframe, ii.empresa_id as empresa_id, e.atributoEmpresaPropria as empresaPropria, ii.protocoloERP as protocoloERP
+    $query_frame = "SELECT ii.id as id_iframe, it.codigo, ii.empresa_id as empresa_id, e.atributoEmpresaPropria as empresaPropria, ii.protocoloERP as protocoloERP
                     FROM incidentes_iframe as ii
+                    LEFT JOIN incidentes_types as it ON it.id = ii.tipo_incidente_id
                     LEFT JOIN empresas as e ON e.id = ii.empresa_id
                     WHERE ii.active = 1 and ii.token = :token";
 
@@ -21,9 +22,10 @@ try {
         $empresaPropria = $result[0]['empresaPropria'];
         $id_iframe = $result[0]['id_iframe'];
         $empresaID = $empresa_id;
+        $tipo_incidente_codigo = $result[0]['codigo'];
         $protocoloERP = $result[0]['protocoloERP'];
 
-        
+
         $all_open =
             "SELECT count(*) as qtde
         FROM incidentes_iframe_ip_address as iiip
@@ -45,141 +47,101 @@ try {
         $stmt_ip->execute();
         $result_ip = $stmt_ip->fetchAll(PDO::FETCH_ASSOC);
 
-        if ($result_ip[0]['qtde'] > 0 || $result_all_open[0]['qtde'] > 0) {
+        if ($result_ip[0]['qtde'] > 0 || $result_all_open[0]['qtde'] > 0) { ?>
+
+            <!DOCTYPE html>
+            <html lang="en">
+
+            <head>
+                <meta charset="utf-8">
+                <meta content="width=device-width, initial-scale=1.0" name="viewport">
+                <meta http-equiv="refresh" content="60"> <!-- Atualiza a página a cada 40 segundos -->
+
+                <title>SmartControl</title>
+                <meta content="" name="description">
+                <meta content="" name="keywords">
+
+                <link href="../../../assets/img/favicon.png" rel="icon">
+                <link href="../../../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+                <link href="https://fonts.gstatic.com" rel="preconnect">
+                <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+                <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+                <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+                <link href="../../../assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+                <link href="../../../assets/vendor/quill/quill.snow.css" rel="stylesheet">
+                <link href="../../../assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+                <link href="../../../assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+                <link href="../../../assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+                <link href="../../../assets/css/style.css" rel="stylesheet">
+                <link href="../../../assets/css/stylesheet.css" rel="stylesheet">
+            </head>
+
+            <body>
+
+                <style>
+                    .section {
+                        margin: 20px;
+                        /* Defina a quantidade de espaço desejada (20px no exemplo) */
+                    }
+                </style>
+
+                <section class="section">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-lg-9">
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="text-end">
+                                                <span>Intervalo Atualização: 60s</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="sidebar-divider">
+                        <?php
+                            if ($tipo_incidente_codigo == 100) {
+                            require "view_gpon.php";
+                            } else if ($tipo_incidente_codigo == 102) {
+                                require "view_backbone.php";
+                            } else {
+                                require "view_outros.php";
+                            }
+                        ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
 
 
-            $count_inc_gpon =
-                "SELECT
-                count(i.id) as qtde
-                FROM
-                incidentes as i
-                INNER JOIN gpon_olts o ON i.equipamento_id = o.equipamento_id
-                INNER JOIN gpon_olts_interessados oi ON o.id = oi.gpon_olt_id
-                WHERE
-                i.active = 1
-                and
-                oi.active = 1
-                and
-                oi.interessado_empresa_id = $empresaID
-                and
-                i.incident_type = 100";
+                <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
-            $r_inc_gpon = mysqli_query($mysqli, $count_inc_gpon);
-            $c_inc_gpon = $r_inc_gpon->fetch_array();
+                <!-- Vendor JS Files -->
+                <script src="../../../assets/vendor/apexcharts/apexcharts.min.js"></script>
+                <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                <script src="../../../assets/vendor/chart.js/chart.umd.js"></script>
+                <script src="../../../assets/vendor/echarts/echarts.min.js"></script>
+                <script src="../../../assets/vendor/quill/quill.min.js"></script>
+                <script src="../../../assets/vendor/simple-datatables/simple-datatables.js"></script>
+                <script src="../../../assets/vendor/tinymce/tinymce.min.js"></script>
+                <script src="../../../assets/vendor/php-email-form/validate.js"></script>
 
-            $count_inc_backb =
-                "SELECT
-    count(i.id) as qtde
-    FROM
-    incidentes as i
-    INNER JOIN rotas_fibra as rf ON i.equipamento_id = rf.codigo
-    INNER JOIN rotas_fibras_interessados as rfi ON rf.id = rfi.rf_id
-    WHERE rfi.interessado_empresa_id =  $empresaID AND i.active = 1 AND rfi.active = 1 and i.incident_type = 102";
+                <!-- Template Main JS File -->
+                <script src="../../../assets/js/main.js"></script>
+                <script src="../../../assets/js/multiselect-dropdown.js"></script>
 
-            $r_inc_backb = mysqli_query($mysqli, $count_inc_backb);
-            $c_inc_backb = $r_inc_backb->fetch_array();
+            </body>
 
-            $count_man_prog_af_gpon =
-                "SELECT COUNT(*) as qtde
-                FROM (
-                    SELECT mp.id
-                    FROM manutencao_programada as mp
-                    LEFT JOIN manutencao_gpon as mg ON mg.manutencao_id = mp.id
-                    LEFT JOIN gpon_pon as gp on gp.id = mg.pon_id
-                    LEFT JOIN gpon_olts as go on go.id = gp.olt_id
-                    LEFT JOIN gpon_olts_interessados as goi ON goi.gpon_olt_id = go.id
-                    WHERE mp.active = 1 AND goi.interessado_empresa_id = $empresaID AND goi.active = 1
-                    GROUP BY mp.id
-                ) AS subquery;";
-
-            $r_man_prog_af_gpon = mysqli_query($mysqli, $count_man_prog_af_gpon);
-            $c_man_prog_af_gpon = $r_man_prog_af_gpon->fetch_array();
-
-            $count_man_prog_af_backbone =
-                "SELECT count(*) as qtde
-                    FROM
-                    manutencao_programada as mp
-                    LEFT JOIN manutencao_rotas_fibra as mrf ON mrf.manutencao_id = mp.id
-                    LEFT JOIN rotas_fibras_interessados as rfi ON rfi.rf_id = mrf.rota_id
-                    where
-                    mp.active = 1  and rfi.interessado_empresa_id = $empresaID  and rfi.active = 1 
-                    GROUP BY mp.id";
-
-            $r_man_prog_af_backbone = mysqli_query($mysqli, $count_man_prog_af_backbone);
-            $c_man_prog_af_backbone = $r_man_prog_af_backbone->fetch_array();
+            </html>
 
 
-            $total_mp = (isset($c_man_prog_af_backbone['qtde']) && $c_man_prog_af_backbone['qtde'] > 0 ? $c_man_prog_af_backbone['qtde'] : 0) +
-                (isset($c_man_prog_af_gpon['qtde']) && $c_man_prog_af_gpon['qtde'] > 0 ? $c_man_prog_af_gpon['qtde'] : 0);
-
-
-            $man_prog_menos_24h_gpon =
-                "SELECT count(*) as qtde
-FROM manutencao_programada as mp
-LEFT JOIN manutencao_gpon as mg ON mg.manutencao_id = mp.id
-LEFT JOIN gpon_pon as gp on gp.id = mg.pon_id
-LEFT JOIN gpon_olts as go on go.id = gp.olt_id
-LEFT JOIN gpon_olts_interessados as goi ON goi.gpon_olt_id = go.id
-where mp.active = 1   and goi.interessado_empresa_id = $empresaID and goi.active = 1 and mp.dataAgendamento <= DATE_ADD(NOW(), INTERVAL 24 HOUR) AND mp.dataAgendamento > NOW()
-GROUP BY mp.id";
-
-            $r_man_prog_menos_24h_gpon = mysqli_query($mysqli, $man_prog_menos_24h_gpon);
-            $c_man_prog_menos_24h_gpon = $r_man_prog_menos_24h_gpon->fetch_array();
-
-            $man_prog_menos_24h_backbone =
-                "SELECT count(*) as qtde
-FROM
-manutencao_programada as mp
-LEFT JOIN manutencao_rotas_fibra as mrf ON mrf.manutencao_id = mp.id
-LEFT JOIN rotas_fibras_interessados as rfi ON rfi.rf_id = mrf.rota_id
-where
-mp.active = 1  and rfi.interessado_empresa_id = $empresaID  and rfi.active = 1 and mp.dataAgendamento <= DATE_ADD(NOW(), INTERVAL 24 HOUR) AND mp.dataAgendamento > NOW()
-GROUP BY mp.id";
-
-            $r_man_prog_menos_24h_backbone = mysqli_query($mysqli, $man_prog_menos_24h_backbone);
-            $c_man_prog_menos_24h_backbone = $r_man_prog_menos_24h_backbone->fetch_array();
-
-
-
-            $man_prog_ocorrendo_gpon =
-                "SELECT count(*) as qtde
-            FROM manutencao_programada as mp
-            LEFT JOIN manutencao_gpon as mg ON mg.manutencao_id = mp.id
-            LEFT JOIN gpon_pon as gp on gp.id = mg.pon_id
-            LEFT JOIN gpon_olts as go on go.id = gp.olt_id
-            LEFT JOIN gpon_olts_interessados as goi ON goi.gpon_olt_id = go.id
-            where mp.active = 1   and goi.interessado_empresa_id = $empresaID and goi.active = 1 AND mp.dataAgendamento < NOW()
-            GROUP BY mp.id";
-
-            $r_man_prog_ocorrendo_gpon = mysqli_query($mysqli, $man_prog_ocorrendo_gpon);
-            $c_man_prog_ocorrendo_gpon = $r_man_prog_ocorrendo_gpon->fetch_array();
-
-            $man_prog_ocorrendo_backbone =
-                "SELECT count(*) as qtde
-                FROM
-                manutencao_programada as mp
-                LEFT JOIN manutencao_rotas_fibra as mrf ON mrf.manutencao_id = mp.id
-                LEFT JOIN rotas_fibras_interessados as rfi ON rfi.rf_id = mrf.rota_id
-                where
-                mp.active = 1  and rfi.interessado_empresa_id = $empresaID  and rfi.active = 1 AND mp.dataAgendamento < NOW()
-                GROUP BY mp.id";
-
-            $r_man_prog_ocorrendo_backbone = mysqli_query($mysqli, $man_prog_ocorrendo_backbone);
-            $c_man_prog_ocorrendo_backbone = $r_man_prog_ocorrendo_backbone->fetch_array();
-
-            $count_inc_outros =
-                "SELECT
-    count(i.id) as qtde
-    FROM
-    incidentes as i
-    WHERE i.active = 1 and i.incident_type not in ('102', '100')";
-
-            $r_inc_outros = mysqli_query($mysqli, $count_inc_outros);
-            $c_inc_outros = $r_inc_outros->fetch_array();
-
-
-            require "incidentes.php";
-        } else {
+<?php } else {
             echo "IP: $ip - Não autorizado.";
         }
     } else {

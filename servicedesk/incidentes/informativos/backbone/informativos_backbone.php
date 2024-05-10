@@ -193,7 +193,7 @@ if ($rowCount_permissions_submenu > 0) {
                                             <br>
                                         </form>
                                     </div>
-
+ 
                                     <div class="col-2">
                                         <button type="button" class="btn btn-sm btn-danger" onclick="window.location.href = '/servicedesk/incidentes/informativos/informativos.php';">Voltar informativos</button>
                                     </div>
@@ -232,7 +232,7 @@ if ($rowCount_permissions_submenu > 0) {
                                     LEFT JOIN incidentes_classificacao as ic ON ic.id = i.classificacao
                                     LEFT JOIN usuarios as u ON i.autor_id = u.id LEFT JOIN pessoas as p ON p.id = u.pessoa_id
                                     LEFT JOIN incidentes_types as it ON it.codigo = i.incident_type
-                                    WHERE rfi.interessado_empresa_id =  $empresaID AND rfi.active = 1 $filtro
+                                    WHERE rfi.interessado_empresa_id =  $empresaID AND rfi.active = 1 $filtro 
                                     ORDER BY i.active DESC, i.inicioIncidente DESC 
                                     LIMIT $limite_busca";
 
