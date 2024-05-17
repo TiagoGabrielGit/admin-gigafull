@@ -15,24 +15,16 @@ $usuario_id = $id;
 $perfil = $_SESSION['nome_perfil'];
 $user_ip = $_SESSION['ip_address'];
 $horario = date('d/m/Y H:i');
-?>
 
-<?php
 require_once($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao.php');
 
+//$url_new_chamado = $_SERVER['DOCUMENT_ROOT'] . '/' . 'check_new_calls.php';
+$url_new_chamado = "http://smartcontrol.dominio.com.br/check_new_calls.php";
 $sql_pessoa =
-  "SELECT
-p.id as id_pessoa,
-u.tipo_usuario as usuarioTipo
-FROM
-usuarios as u
-LEFT JOIN
-pessoas as p
-ON
-p.id = u.pessoa_id
-WHERE
-u.id = '$id'
-";
+  "SELECT p.id as id_pessoa, u.tipo_usuario as usuarioTipo
+FROM usuarios as u
+LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+WHERE u.id = '$id'";
 
 $result_pessoa = mysqli_query($mysqli, $sql_pessoa);
 $pessoa = mysqli_fetch_assoc($result_pessoa);
@@ -40,14 +32,9 @@ $pessoa_id = $pessoa['id_pessoa'];
 $userType = $pessoa['usuarioTipo'];
 
 $sql_chamado =
-  "SELECT
-c.in_execution_atd_id as execucao,
-c.id as id_chamado
-FROM
-chamados as c
-WHERE
-c.in_execution_atd_id = '$pessoa_id'
-";
+  "SELECT c.in_execution_atd_id as execucao, c.id as id_chamado
+FROM chamados as c 
+WHERE c.in_execution_atd_id = '$pessoa_id'";
 
 $result_chamado = mysqli_query($mysqli, $sql_chamado);
 $chamado = mysqli_fetch_assoc($result_chamado);
@@ -56,9 +43,7 @@ if (empty($chamado['execucao'])) {
   $chamado_exec = "";
 } else {
   $chamado_exec = $chamado['execucao'];
-}
-
-?>
+} ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -95,6 +80,8 @@ if (empty($chamado['execucao'])) {
 
 </head>
 
+
+
 <body>
 
   <!-- ======= Header ======= -->
@@ -123,9 +110,10 @@ if (empty($chamado['execucao'])) {
             <i class="bi bi-search"></i>
           </a>
         </li><!-- End Search Icon-->
-
-
         <?php
+
+        //require_once($_SERVER['DOCUMENT_ROOT'] . '/alert_new_Call/alert.php');
+
         if ($chamado_exec == $pessoa_id) {
           $id_chamado = $chamado['id_chamado'];
           $seconds_in_execution =
@@ -147,11 +135,7 @@ if (empty($chamado['execucao'])) {
           </a>
         <?php } else {
         }
-        ?>
 
-
-        <?php
-        // Consulta para obter o total de notificações
         $total_notificacoes_query =
           "SELECT COUNT(*) AS total_notificacoes
           FROM smart_notification 

@@ -9,7 +9,7 @@
         Desenvolvido por <a href="https://www.gigafull.com.br/">Gigafull Soluções Tecnológicas</a>
     </div>
     <div class="credits">
-        <a href="/sistema/changelog.php">Versão 13.8 </a> - Página Segura
+        <a href="/sistema/changelog.php">Versão 14.0</a> - Página Segura
     </div>
 </footer><!-- End Footer -->
 

@@ -130,6 +130,11 @@ p.id = $idPerfil
                                             </div>
                                         </div>
 
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+
                                         <hr class="sidebar-divider">
 
                                         <div class="row">
@@ -773,7 +778,7 @@ p.id = $idPerfil
                                                 } ?>
                                             </div>
                                         </div>
-
+<br>
                                         <div class="row">
                                             <div class="col-lg-3">
                                                 <div class="col-12">
@@ -821,6 +826,52 @@ p.id = $idPerfil
                                                             <div class="form-check">
                                                                 <input onclick="permitirSubmenu(<?= $idSubmenu ?>, '<?= $idPerfil ?>')" class="form-check-input" type="checkbox" id="submenu<?= $idSubmenu ?>" data-bs-toggle="modal" data-bs-target="#modalPermitirSubmenu">
                                                                 <label class="form-check-label" for="submenu<?= $idSubmenu ?>"><?= $c_submenu_sistema['submenu'] ?></label>
+                                                            </div>
+                                                        </div>
+                                                <?php }
+                                                } ?>
+                                            </div>
+
+                                            <div class="col-lg-3">
+                                                <div class="col-12">
+                                                    <span><b>Reuniões / Atas</b></span>
+                                                </div>
+                                                <?php
+                                                $submenu_reunioes_atas =
+                                                    "SELECT us.id as idSubmenu, us.url as urlSubmenu, us.submenu as submenu
+                                                FROM url_submenu as us
+                                                WHERE us.menu_id = 27
+                                                ORDER BY us.submenu ASC";
+                                                $r_submenu_reunioes_atas = mysqli_query($mysqli, $submenu_reunioes_atas);
+                                                while ($c_submenu_reunioes_atas = mysqli_fetch_assoc($r_submenu_reunioes_atas)) {
+                                                    $idSubmenu = $c_submenu_reunioes_atas['idSubmenu'];
+
+                                                    $valida_check =
+                                                        "SELECT
+                                                count(*) as validaCheck,
+                                                ppsm.id as idPermissao
+                                                FROM
+                                                perfil_permissoes_submenu as ppsm
+                                                WHERE
+                                                ppsm.url_submenu = $idSubmenu
+                                                and
+                                                ppsm.perfil_id = $idPerfil
+                                                ";
+                                                    $r_valida_check = mysqli_query($mysqli, $valida_check);
+                                                    $c_valida_check = mysqli_fetch_assoc($r_valida_check);
+
+                                                    if ($c_valida_check['validaCheck'] <> "0") { ?>
+                                                        <div class="col-12">
+                                                            <div class="form-check">
+                                                                <input onclick="despermitirSubmenu(<?= $c_valida_check['idPermissao'] ?>)" class="form-check-input" type="checkbox" id="submenu<?= $idSubmenu ?>" checked data-bs-toggle="modal" data-bs-target="#modalDespermitirSubmenu">
+                                                                <label class="form-check-label" for="submenu<?= $idSubmenu ?>"><?= $c_submenu_reunioes_atas['submenu'] ?></label>
+                                                            </div>
+                                                        </div>
+                                                    <?php } else { ?>
+                                                        <div class="col-12">
+                                                            <div class="form-check">
+                                                                <input onclick="permitirSubmenu(<?= $idSubmenu ?>, '<?= $idPerfil ?>')" class="form-check-input" type="checkbox" id="submenu<?= $idSubmenu ?>" data-bs-toggle="modal" data-bs-target="#modalPermitirSubmenu">
+                                                                <label class="form-check-label" for="submenu<?= $idSubmenu ?>"><?= $c_submenu_reunioes_atas['submenu'] ?></label>
                                                             </div>
                                                         </div>
                                                 <?php }

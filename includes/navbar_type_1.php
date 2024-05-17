@@ -227,7 +227,7 @@ require "validaRotina.php";
                 </a>
                 <ul id="informativos-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
-                
+
 
                     <?php if ($c_nav_sub_atualizacao_massa['c'] == 1) { ?>
                         <li>
@@ -304,6 +304,35 @@ require "validaRotina.php";
                         <li>
                             <a href="/servicedesk/manutencao_programada/responsaveis_aceite/index.php">
                                 <i class="bi bi-circle"></i><span>Responsáveis por Aceite</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+                </ul>
+            </li>
+        <?php } ?>
+
+        <?php if ($c_nav_reunioes_atas['c'] == 1) { ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#reunioesAtas-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-layout-text-window-reverse"></i><span>Reuniões / Atas</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="reunioesAtas-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                    <?php if ($c_nav_sub_nova_reuniao['c'] == 1) { ?>
+                        <li>
+                            <a href="/servicedesk/reuniao_ata/nova_reuniao/index.php">
+                                <i class="bi bi-circle"></i><span>Nova Reunião</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
+                </ul>
+                <ul id="reunioesAtas-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                    <?php if ($c_nav_sub_atas['c'] == 1) { ?>
+                        <li>
+                            <a href="/servicedesk/reuniao_ata/reunioes/index.php">
+                                <i class="bi bi-circle"></i><span>Reuniões / Atas</span>
                             </a>
                         </li>
                     <?php } ?>

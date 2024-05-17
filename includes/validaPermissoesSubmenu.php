@@ -922,3 +922,31 @@ ppsm.perfil_id = $perfil_id";
 $r_nav_sub_atualizacao_massa = mysqli_query($mysqli, $nav_sub_atualizacao_massa);
 $c_nav_sub_atualizacao_massa = mysqli_fetch_assoc($r_nav_sub_atualizacao_massa);
 /////////////////////////////////////////
+
+/////////////////////////////////////////
+$nav_sub_nova_reuniao = "SELECT
+count(*) as c
+FROM
+url_submenu as usm
+LEFT JOIN
+perfil_permissoes_submenu as ppsm
+ON
+ppsm.url_submenu = usm.id
+WHERE
+usm.id = '56'
+and
+ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_nova_reuniao = mysqli_query($mysqli, $nav_sub_nova_reuniao);
+$c_nav_sub_nova_reuniao = mysqli_fetch_assoc($r_nav_sub_nova_reuniao);
+/////////////////////////////////////////
+
+/////////////////////////////////////////
+$nav_sub_atas = "SELECT count(*) as c
+FROM url_submenu as usm
+LEFT JOIN perfil_permissoes_submenu as ppsm ON ppsm.url_submenu = usm.id
+WHERE usm.id = '57' and ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_atas = mysqli_query($mysqli, $nav_sub_atas);
+$c_nav_sub_atas = mysqli_fetch_assoc($r_nav_sub_atas);
+/////////////////////////////////////////

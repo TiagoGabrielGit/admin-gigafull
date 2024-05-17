@@ -163,6 +163,23 @@ ppm.perfil_id = $perfil_id";
 $r_nav_tiposChamados = mysqli_query($mysqli, $nav_tiposChamados);
 $c_nav_tiposChamados = mysqli_fetch_assoc($r_nav_tiposChamados);
 /////////////////////////////////////////
+$nav_reunioes_atas = "SELECT
+count(*) as c
+FROM
+url_menu as um
+LEFT JOIN
+perfil_permissoes_menu as ppm
+ON
+ppm.url_menu = um.id
+WHERE
+um.id = '27'
+and
+ppm.perfil_id = $perfil_id";
+
+$r_nav_reunioes_atas = mysqli_query($mysqli, $nav_reunioes_atas);
+$c_nav_reunioes_atas = mysqli_fetch_assoc($r_nav_reunioes_atas);
+/////////////////////////////////////////
+
 
 //MENU >> GUARDPASS
 $nav_guardpass = "SELECT
