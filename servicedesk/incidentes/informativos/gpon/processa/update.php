@@ -112,17 +112,17 @@ if ($stmt2->execute()) {
             exit();
         }
     } else {
+
+        $zabbix_id = $_POST['zabbix_id'];
+
         $integracao_zabbix =
             "SELECT
             iz.id as id,
             iz.tokenAPI as tokenAPI,
             iz.statusIntegracao as statusIntegracao,
             iz.urlZabbix as urlZabbix
-            FROM
-            integracao_zabbix as iz
-            WHERE
-            iz.id = 1
-            ";
+            FROM integracao_zabbix as iz
+            WHERE iz.id = $zabbix_id";
 
         $r_integracao_zabbix = $pdo->query($integracao_zabbix);
         $c_integracao_zabbix = $r_integracao_zabbix->fetch(PDO::FETCH_ASSOC);

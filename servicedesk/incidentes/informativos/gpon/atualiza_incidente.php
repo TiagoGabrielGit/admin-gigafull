@@ -34,6 +34,7 @@ if ($rowCount_permissions_submenu > 0) {
         i.classificacao as idClassificacao,
         i.descricaoEvento as descricao_evento,
         i.incident_type as incident_type,
+        i.zabbix_id as zabbix_id,
         gp.cod_int as paintegration_code
         FROM incidentes as i
         LEFT JOIN gpon_pon as gp ON gp.id = i.pon_id 
@@ -51,7 +52,7 @@ if ($rowCount_permissions_submenu > 0) {
         $idTypeIncidenteAtual = $resultado['incident_type'];
         $paintegration_code = $resultado['paintegration_code'];
         $descricao_evento = $resultado['descricao_evento'];
-
+        $zabbix_id = $resultado['zabbix_id'];
 
 ?>
         <main class="main" id="main">
@@ -86,6 +87,8 @@ if ($rowCount_permissions_submenu > 0) {
                             <input hidden readonly id="incidenteID" name="incidenteID" value="<?= $idIncidente ?>"></input>
                             <input hidden readonly id="solicitante" name="solicitante" value="<?= $uid ?>"></input>
                             <input hidden readonly id="zabbixEventID" name="zabbixEventID" value="<?= $zabbixID ?>"></input>
+                            <input hidden readonly id="zabbix_id" name="zabbix_id" value="<?= $zabbix_id ?>"></input>
+
 
                             <div class="row">
                                 <div class="col-9">

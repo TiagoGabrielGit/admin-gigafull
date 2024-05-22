@@ -47,57 +47,6 @@ require "../../includes/menu.php";
                                     </div>
                                 </div>
                             </div>
-                            <!--
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingChamados-2">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChamados-2" aria-expanded="false" aria-controls="collapseChamados-2">
-                                        Atualização de Incidente - GET
-                                    </button>
-                                </h2>
-                                <div id="collapseChamados-2" class="accordion-collapse collapse" aria-labelledby="headingChamados-2" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <b>Funcionalidade: Update Incidente</b><br>
-                                                <b>Método:</b> GET <br>
-                                                <b>Caminho:</b> /api_externa/update_incidente.php<br>
-                                                <b>Corpo:</b> 'updateMessage' ; 'eventID' <br>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <b> Descrição do corpo</b><br>
-                                                <b>updateMessage:</b> Conteúdo da Mensagem<br>
-                                                <b>eventID:</b> ID do evento no sistema integrador<br>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingChamados-3">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChamados-3" aria-expanded="false" aria-controls="collapseChamados-3">
-                                        Normalização de Incidente - GET
-                                    </button>
-                                </h2>
-                                <div id="collapseChamados-3" class="accordion-collapse collapse" aria-labelledby="headingChamados-3" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body">
-
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                                <b>Funcionalidade: Normalizar Incidente</b><br>
-                                                <b>Método:</b> GET <br>
-                                                <b>Caminho:</b> /api_externa/resolve_incidente.php<br>
-                                                <b>Corpo:</b> 'eventID' <br>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <b> Descrição do corpo</b><br>
-                                                <b>eventID:</b> ID do evento no sistema integrador<br>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
--->
                         </div>
                     </div>
                 </div>
@@ -147,17 +96,19 @@ require "../../includes/menu.php";
 
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <b>API:</b><br> /api_externa/new_incidente_gpon.php?eventID={id_evento}&descricaoIncidente={descricao_aleatorio}&incidentType=100&hostID={id_host}&gponPON={slot_pon}<br><br>
+                                                <b>API:</b><br> /api_externa/new_incidente_gpon.php?eventID={id_evento}&descricaoIncidente={descricao_aleatorio}&incidentType=100&hostID={id_host}&gponPON={slot_pon}&zabbix_id={zabbix_id}<br><br>
 
                                                 <b>id_host:</b>
                                                 ID do cadastro da OLT em "Credenciais".<br>
                                                 <b>descricao_aleatorio:</b>
                                                 Descrição do evento.<br>
                                                 <b>id_evento:</b>
-                                                ID do evento no sistema integrador.<br><br>
+                                                ID do evento no sistema integrador.<br>
+                                                <b>zabbix_id:</b>
+                                                ID do Zabbix cadastrado em <a href="/integracao/zabbix/index.php">Clique aqui</a>.<br><br>
 
                                                 <b>Exemplo:</b><br>
-                                                https://smartcontrol.dominio.com.br/api_externa/new_incidente_gpon.php?eventID='1000'&descricaoIncidente='Rompimento na rede'&incidentType='100'&hostID='25'&gponPON='GPON 0/4/12'
+                                                https://smartcontrol.dominio.com.br/api_externa/new_incidente_gpon.php?eventID='1000'&descricaoIncidente='Rompimento na rede'&incidentType='100'&hostID='25'&gponPON='GPON 0/4/12'&zabbix_id='1'
 
                                             </div>
                                         </div>

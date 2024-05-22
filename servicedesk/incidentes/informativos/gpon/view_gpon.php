@@ -9,7 +9,7 @@ $uid = $_SESSION['id'];
 
 $permissions_submenu =
     "SELECT 
-	u.perfil_id
+	u.perfil_id 
 FROM usuarios u
 JOIN perfil_permissoes_submenu pp ON u.perfil_id = pp.perfil_id
 WHERE u.id = $uid AND pp.url_submenu = $submenu_id";
@@ -24,12 +24,9 @@ if ($rowCount_permissions_submenu > 0) {
     $usuarioID = $_SESSION['id'];
 
     $dados_usuario =
-        "SELECT
-    u.empresa_id as empresaID
-    FROM
-    usuarios as u
-    WHERE
-    u.id =   $usuarioID
+        "SELECT u.empresa_id as empresaID
+    FROM usuarios as u
+    WHERE u.id =   $usuarioID
 ";
 
     $r_dados_usuario = mysqli_query($mysqli, $dados_usuario);
@@ -64,6 +61,7 @@ if ($rowCount_permissions_submenu > 0) {
             eqpop.hostname as equipamento,
             i.classificacao as idClassificacao,
             ic.classificacao as classificacao,
+            o.analisar_gpon as analisar_gpon,
             i.descricaoIncidente as descricaoIncidente,
             i.previsaoNormalizacao as prevNOR,
             CASE
@@ -75,30 +73,13 @@ if ($rowCount_permissions_submenu > 0) {
             date_format(i.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
             date_format(i.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
             IF (i.fimIncidente IS NULL, TIMEDIFF(NOW(), i.inicioIncidente), TIMEDIFF(i.fimIncidente, i.inicioIncidente)) as tempoIncidente
-            FROM
-            incidentes as i
-            LEFT JOIN
-            equipamentospop as eqpop
-            ON
-            eqpop.id = i.equipamento_id
-            LEFT JOIN
-            gpon_olts as o
-            ON
-            o.equipamento_id = i.equipamento_id
-            LEFT JOIN
-            redeneutra_parceiro_olt as rnpo
-            ON
-            rnpo.olt_id = o.id
-            LEFT JOIN
-            incidentes_classificacao as ic
-            ON
-            ic.id = i.classificacao
-            LEFT JOIN
-            incidentes_types as it
-            ON
-            it.codigo = i.incident_type
-            WHERE
-            i.id = $id_incidente
+            FROM incidentes as i
+            LEFT JOIN equipamentospop as eqpop ON eqpop.id = i.equipamento_id
+            LEFT JOIN gpon_olts as o ON o.equipamento_id = i.equipamento_id
+            LEFT JOIN redeneutra_parceiro_olt as rnpo ON rnpo.olt_id = o.id
+            LEFT JOIN incidentes_classificacao as ic ON ic.id = i.classificacao
+            LEFT JOIN incidentes_types as it ON it.codigo = i.incident_type
+            WHERE i.id = $id_incidente
     ";
 
             $r_sql_incidente = mysqli_query($mysqli, $sql_incidente);
@@ -231,9 +212,33 @@ if ($rowCount_permissions_submenu > 0) {
                                                     ?>
 
                                                     <?php
-                                                    if ($campos['statusID'] == "1" && $campos['tipo'] == "100") { ?>
-                                                        <button style="margin-top: 15px" data-bs-toggle="modal" data-bs-target="#modalAnalisarGPON" id="buttonAnalisarGPON" class="btn btn-sm btn-danger" type="button">Analisar GPON</button>
+                                                    if ($campos['statusID'] == "1" && $campos['tipo'] == "100") {
+                                                        if ($campos['analisar_gpon'] == 1) {
+                                                    ?>
+                                                            <button style="margin-top: 15px" data-bs-toggle="modal" data-bs-target="#modalAnalisarGPON" id="buttonAnalisarGPON" class="btn btn-sm btn-danger" type="button">Analisar GPON</button>
+                                                            <div class="modal fade" id="modalAnalisarGPON" tabindex="-1">
+                                                                <div class="modal-dialog modal-sm">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title">Analise GPON</h5>
+                                                                        </div>
+
+                                                                        <div class="modal-body">
+                                                                            <div class="card-body">
+                                                                                <div class="col-12">
+                                                                                    <h3 id="statusMessage" style="text-align: center;">Analisando</h3>
+                                                                                </div>
+                                                                                <div class="col-12 text-center">
+                                                                                    <div class="spinner-border text-success " role="status">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
                                                     <?php
+                                                        }
                                                     }
                                                     ?>
                                                 </div>
@@ -340,27 +345,7 @@ if ($rowCount_permissions_submenu > 0) {
                 </section>
             </main>
 
-            <div class="modal fade" id="modalAnalisarGPON" tabindex="-1">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Analise GPON</h5>
-                        </div>
 
-                        <div class="modal-body">
-                            <div class="card-body">
-                                <div class="col-12">
-                                    <h3 id="statusMessage" style="text-align: center;">Analisando</h3>
-                                </div>
-                                <div class="col-12 text-center">
-                                    <div class="spinner-border text-success " role="status">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <div class="modal fade" id="modalInteressados" tabindex="-1">
                 <div class="modal-dialog modal-lg">
