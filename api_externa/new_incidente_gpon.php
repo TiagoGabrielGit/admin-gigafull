@@ -68,7 +68,7 @@ if ($result_api['active'] == 1) {
                 if ($pon_id_row) {
                     $pon_id = $pon_id_row['id'];
                 } else {
-                    $pon_id = "";
+                    $pon_id = "0";
                 }
             } else if ($captura_vendor_olt_row['vendor'] == 'Raisecon') {
                 $gponPON = isset($_GET["gponPON"]) ? $_GET["gponPON"] : '';
@@ -94,12 +94,12 @@ if ($result_api['active'] == 1) {
                 if ($pon_id_row) {
                     $pon_id = $pon_id_row['id'];
                 } else {
-                    $pon_id = "";
+                    $pon_id = "0";
                 }
             } else {
-                $gpon_slot = "";
-                $gpon_pon = "";
-                $pon_id = "";
+                $gpon_slot = "0";
+                $gpon_pon = "0";
+                $pon_id = "0";
             }
 
             $sql_new_incidente =

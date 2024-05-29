@@ -207,9 +207,12 @@ if ($rowCount_permissions_submenu > 0) {
                                     ic.classificacao as classificacao,
                                     ic.descricao as descClassificacao,
                                     ic.color as ClassColor,
+                                    iz.descricao as descricaoZabbix,
+                                    eqp.empresa_id as empresa_incidente,
                                     i.previsaoNormalizacao as previsaoNormalizacao2,
                                     it.type as tipo,
                                     p.nome as criador,
+                                    e.fantasia as empresa_incidente,
                                     date_format(i.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
                                     date_format(i.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
                                     date_format(i.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
@@ -220,6 +223,9 @@ if ($rowCount_permissions_submenu > 0) {
                                     LEFT JOIN incidentes_classificacao as ic ON ic.id = i.classificacao
                                     LEFT JOIN usuarios as u ON i.autor_id = u.id LEFT JOIN pessoas as p ON p.id = u.pessoa_id
                                     LEFT JOIN incidentes_types as it ON it.codigo = i.incident_type
+                                    LEFT JOIN equipamentospop as eqp ON eqp.id = o.equipamento_id
+                                    LEFT JOIN integracao_zabbix as iz ON iz.id = i.zabbix_id
+                                    LEFT JOIN empresas as e ON e.id = eqp.empresa_id
                                     WHERE oi.interessado_empresa_id = $empresaID AND oi.active = 1 $filtro
                                     ORDER BY i.active DESC, i.inicioIncidente DESC
                                     LIMIT $limite_busca";
@@ -232,6 +238,7 @@ if ($rowCount_permissions_submenu > 0) {
                                     while ($campos = $r_sql_incidentes->fetch_array()) {
                                         $status_incidente = $campos['active'];
                                         $id_incidente = $campos['idIncidente'];
+                                        $empresa_incidente = $campos['empresa_incidente'];
                                         $pon_id = $campos['pon_id'];
                                         $hostID = $campos['equipamento_id'];
                                         $sql_host =
@@ -349,8 +356,9 @@ if ($rowCount_permissions_submenu > 0) {
                                                             <b>Criador: </b> <?php if ($campos['criador'] <> null) {
                                                                                     echo $campos['criador'];
                                                                                 } else {
-                                                                                    echo "Integração Zabbix";
+                                                                                    echo $campos['descricaoZabbix'];
                                                                                 } ?><br>
+                                                            <b>Empresa: </b> <?= $campos['empresa_incidente'] ?><br>
                                                             <b>Tipo Incidente:</b> <?php if ($campos['tipo'] <> null) {
                                                                                         echo $campos['tipo'];
                                                                                     } else {
@@ -363,10 +371,11 @@ if ($rowCount_permissions_submenu > 0) {
                                                             } else {
                                                                 echo $campos['classificacao'];
                                                             } ?> <br>
-                                                            <b>Protocolo ERP: </b> <?= $campos['protocoloERP'] ?> <br>
 
                                                         </div>
                                                         <div class="col-5">
+                                                        <b>Protocolo ERP: </b> <?= $campos['protocoloERP'] ?> <br>
+
                                                             <b>Hora Inicial: </b><?= $campos['horainicial']; ?><br>
                                                             <b>Previsão Normalização: </b>
                                                             <?php
@@ -379,7 +388,7 @@ if ($rowCount_permissions_submenu > 0) {
                                                         </div>
                                                         <div class="col-2">
                                                             <?php
-                                                            if ($permissaoGerenciar == 1) { ?>
+                                                            if ($permissaoGerenciar == 1 || ($permissaoGerenciar == 2 && $empresaID == $empresa_incidente)) { ?>
                                                                 <div class="col-12">
                                                                     <a href="view_gpon.php?id=<?= $id_incidente ?>" title="Visualizar">
                                                                         <button type="button" class="btn btn-sm btn-danger">
@@ -402,9 +411,10 @@ if ($rowCount_permissions_submenu > 0) {
                                                                 <div class="col-1">
                                                                 </div>
                                                                 <?php
-                                                                if (isset($permissaoProtocoloERP) == 1 && !empty($campos['protocoloERP']) || isset($protocoloERP) && $protocoloERP == 1 && !empty($campos['protocoloERP'])) { ?>
+                                                                if (($permissaoProtocoloERP == 1 && !empty($campos['protocoloERP'])) || (($permissaoProtocoloERP == 2 && $empresaID == $empresa_incidente)  && !empty($campos['protocoloERP']))) { ?>
+
                                                                     <div class="col-2">
-                                                                        <form method="POST" action="/servicedesk/incidentes/protocolo_erp.php">
+                                                                        <form method="POST" action="/servicedesk/incidentes/voalle/protocolo_erp.php">
                                                                             <input hidden readonly id="protocoloERP" name="protocoloERP" value="<?= $campos['protocoloERP'] ?>">
                                                                             <button title="Solicitação ERP" type="submit" class="btn btn-sm btn-info"><i class="bi bi-box-arrow-right"></i></button>
                                                                         </form>

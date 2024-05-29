@@ -950,3 +950,13 @@ WHERE usm.id = '57' and ppsm.perfil_id = $perfil_id";
 $r_nav_sub_atas = mysqli_query($mysqli, $nav_sub_atas);
 $c_nav_sub_atas = mysqli_fetch_assoc($r_nav_sub_atas);
 /////////////////////////////////////////
+$nav_sub_ozmap = "SELECT count(*) as c
+FROM url_submenu as usm
+LEFT JOIN perfil_permissoes_submenu as ppsm ON ppsm.url_submenu = usm.id
+WHERE usm.id = '58' and ppsm.perfil_id = $perfil_id";
+
+$r_sub_ozmap = mysqli_query($mysqli, $nav_sub_ozmap);
+$c_sub_ozmap = mysqli_fetch_assoc($r_sub_ozmap);
+/////////////////////////////////////////
+
+

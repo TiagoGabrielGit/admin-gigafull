@@ -6,18 +6,25 @@ $uid = $_SESSION['id'];
 
 $submenu_id = "48";
 
+// Verificação de permissões
 $permissions = "SELECT u.perfil_id
 FROM usuarios u
 JOIN perfil_permissoes_submenu pp
 ON u.perfil_id = pp.perfil_id
-WHERE u.id = $uid AND pp.url_submenu = $submenu_id";
+WHERE u.id = :uid AND pp.url_submenu = :submenu_id";
 
 $exec_permissions = $pdo->prepare($permissions);
+$exec_permissions->bindParam(':uid', $uid, PDO::PARAM_INT);
+$exec_permissions->bindParam(':submenu_id', $submenu_id, PDO::PARAM_INT);
 $exec_permissions->execute();
 
 $rowCount_permissions = $exec_permissions->rowCount();
 
 if ($rowCount_permissions > 0) {
+    // Processar filtros
+    $caixa = isset($_GET['caixa']) ? $_GET['caixa'] : '';
+    $limiteBusca = isset($_GET['limiteBusca']) ? $_GET['limiteBusca'] : '100';
+    $codigoIntegracao = isset($_GET['codigoIntegracao']) ? $_GET['codigoIntegracao'] : '';
 ?>
     <main id="main" class="main">
         <section class="section">
@@ -25,7 +32,47 @@ if ($rowCount_permissions > 0) {
                 <div class="card-body">
                     <div class="row">
                         <div class="text-left">
+                            <h5 class="card-title">FILTRO</h5>
+                            <form method="GET" action="">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <label for="caixa" class="form-label">Caixa</label>
+                                        <input id="caixa" name="caixa" class="form-control" value="<?= htmlspecialchars($caixa) ?>"></input>
+                                    </div>
+                                    <div class="col-4">
+                                        <label for="codigoIntegracao" class="form-label">Código Integração</label>
+                                        <input id="codigoIntegracao" name="codigoIntegracao" class="form-control" value="<?= htmlspecialchars($codigoIntegracao) ?>"></input>
+                                    </div>
+                                    <div class="col-2">
+                                        <label for="limiteBusca" class="form-label">Limite de Busca</label>
+                                        <select id="limiteBusca" name="limiteBusca" class="form-select">
+                                            <option value="10" <?= $limiteBusca == '10' ? 'selected' : '' ?>>10</option>
+                                            <option value="50" <?= $limiteBusca == '50' ? 'selected' : '' ?>>50</option>
+                                            <option value="100" <?= $limiteBusca == '100' ? 'selected' : '' ?>>100</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-2">
+                                        <label>&nbsp;</label>
+                                        <button type="submit" class="btn btn-danger btn-sm form-control">Filtrar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-7">
                             <h5 class="card-title">CTOs</h5>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="col-12">
+                                <button data-bs-toggle="modal" data-bs-target="#cadastrarCTO" style="margin-top: 15px;" class="btn btn-sm btn-danger">Cadastrar CTO</button>
+                                <button style="margin-top: 15px;" type="button" class="btn btn-sm btn-warning" onclick="importarOZMAP()">Importar via OZMap</button>
+                                <a href="atualizacao_massa.php"><button style="margin-top: 15px;" type="button" class="btn btn-sm btn-info">Atualização em Massa</button></a>
+                            </div>
                         </div>
                     </div>
                     <table class="table datatable">
@@ -33,26 +80,50 @@ if ($rowCount_permissions > 0) {
                             <tr>
                                 <th style="text-align: center;">ID</th>
                                 <th style="text-align: center;">Caixa</th>
+                                <th style="text-align: center;">NB Integration</th>
+                                <th style="text-align: center;">Código Integração</th>
                                 <th style="text-align: center;">Quantidade Aferições</th>
                                 <th style="text-align: center;">Mais Informações</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            $query_ctos = "SELECT * FROM gpon_ctos";
-                            $stmt = $pdo->query($query_ctos);
+                            // Montar query com filtros
+                            $query_ctos = "SELECT * FROM gpon_ctos WHERE 1=1";
+                            if (!empty($caixa)) {
+                                $query_ctos .= " AND title LIKE :caixa";
+                            }
+                            if (!empty($codigoIntegracao)) {
+                                $query_ctos .= " AND paintegration_code LIKE :codigoIntegracao";
+                            }
+                            $query_ctos .= " LIMIT :limiteBusca";
+
+                            $stmt = $pdo->prepare($query_ctos);
+                            if (!empty($caixa)) {
+                                $caixa = "%$caixa%";
+                                $stmt->bindParam(':caixa', $caixa, PDO::PARAM_STR);
+                            }
+                            if (!empty($codigoIntegracao)) {
+                                $codigoIntegracao = "$codigoIntegracao%";
+                                $stmt->bindParam(':codigoIntegracao', $codigoIntegracao, PDO::PARAM_STR);
+                            }
+                            $stmt->bindParam(':limiteBusca', $limiteBusca, PDO::PARAM_INT);
+                            $stmt->execute();
+
                             while ($caixas = $stmt->fetch(PDO::FETCH_ASSOC)) :
                                 $id = $caixas['id'];
                             ?>
-
                                 <tr>
                                     <td style="text-align: center;"><?= $id; ?></td>
                                     <td style="text-align: center;"><?= $caixas['title']; ?></td>
+                                    <td style="text-align: center;"><?= $caixas['nbintegration_code']; ?></td>
+
+                                    <td style="text-align: center;"><?= $caixas['paintegration_code']; ?></td>
 
                                     <?php
                                     $quantidade_afericoes_query = "SELECT COALESCE(COUNT(*), 0) AS total_afericoes FROM afericao WHERE cto_id = :cto_id";
                                     $quantidade_afericoes = $pdo->prepare($quantidade_afericoes_query);
-                                    $quantidade_afericoes->bindParam(':cto_id', $id);
+                                    $quantidade_afericoes->bindParam(':cto_id', $id, PDO::PARAM_INT);
                                     $quantidade_afericoes->execute();
                                     $total_afericoes = $quantidade_afericoes->fetchColumn();
                                     ?>
@@ -70,6 +141,118 @@ if ($rowCount_permissions > 0) {
             </div>
         </section>
     </main>
+
+    <div class="modal fade" id="cadastrarCTO" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cadastrar CTO</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="POST" action="processa/cadastrar_cto.php">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="titulo" class="form-label">Titulo</label>
+                                <input required id="titulo" name="titulo" class="form-control"></input>
+                            </div>
+                            <div class="col-3">
+                                <label for="codigoIntegracao" class="form-label">Código Integração</label>
+                                <input required id="codigoIntegracao" name="codigoIntegracao" class="form-control"></input>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="latitude" class="form-label">Latitude</label>
+                                <input required id="latitude" name="latitude" class="form-control"></input>
+                            </div>
+                            <div class="col-6">
+                                <label for="longitude" class="form-label">Longitude</label>
+                                <input required id="longitude" name="longitude" class="form-control"></input>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-sm btn-danger">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- End Large Modal-->
+
+    <div class="modal fade" id="importProgressModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Importação OZMap</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="importProgressMessage">Realizando a importação...</div>
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fechar</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+    <script>
+        function importarOZMAP() {
+            // Abrir a modal de progresso
+            var importProgressModal = new bootstrap.Modal(document.getElementById('importProgressModal'), {
+                keyboard: false,
+                backdrop: 'static'
+            });
+            importProgressModal.show();
+
+            // Atualizar a mensagem de progresso
+            function updateProgress(message) {
+                document.getElementById('importProgressMessage').innerText = message;
+            }
+
+            updateProgress('Realizando importação, aguarde...');
+
+            fetch('processa/importar_ozmap2.php')
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw new Error('Erro ao solicitar a importação.');
+                    }
+                })
+                .then(data => {
+                    console.log('Response data:', data);
+                    if (data.success) {
+                        updateProgress('Importação concluída com sucesso. Atualizando a página...');
+                        setTimeout(() => {
+                            //alert('Retorno: ' + data.message);
+                            location.reload();
+                        }, 2000);
+                    } else {
+                        updateProgress('Erro: ' + data.message);
+                        setTimeout(() => {
+                            alert('Retorno: ' + data.message);
+                        }, 4000);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    updateProgress('Erro ao atualizar CTOs: ' + error.message);
+                    setTimeout(() => {
+                        alert('Erro ao atualizar CTOs');
+                    }, 2000);
+                });
+        }
+    </script>
+
+
+
 
 <?php
 } else {

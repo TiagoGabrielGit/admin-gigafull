@@ -38,61 +38,62 @@ if ($rowCount_permissions_submenu > 0) {
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if ($result['count'] > 0) {
+        $id_incidente = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
 
+        $sql_incidente =
+            "SELECT
+        count(i.id) as contagem,
+        i.id as idIncidente,
+        i.zabbix_event_id as zabbixID,
+        i.active as statusID,
+        i.autor_id as autor_id,
+        i.envio_com_normalizacao as envio_com_normalizacao,
+        i.incident_type as tipo,
+        i.equipamento_id as host_id,
+        i.descricaoEvento as descricaoEvento,
+        i.protocolo_erp as protocoloERP,
+        it.type as tipoIncidente,
+        eqpop.hostname as equipamento,
+        i.classificacao as idClassificacao,
+        ic.classificacao as classificacao,
+        o.analisar_gpon as analisar_gpon,
+        i.descricaoIncidente as descricaoIncidente,
+        i.previsaoNormalizacao as prevNOR,
+        eqp.empresa_id as empresa_incidente,
+        CASE
+        WHEN i.active = 1 THEN 'Incidente aberto'
+        WHEN i.active = 0 THEN 'Normalizado'
+        END active,
+        i.active as activeID,
+        date_format(i.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
+        date_format(i.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
+        date_format(i.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
+        IF (i.fimIncidente IS NULL, TIMEDIFF(NOW(), i.inicioIncidente), TIMEDIFF(i.fimIncidente, i.inicioIncidente)) as tempoIncidente
+        FROM incidentes as i
+        LEFT JOIN equipamentospop as eqpop ON eqpop.id = i.equipamento_id
+        LEFT JOIN gpon_olts as o ON o.equipamento_id = i.equipamento_id
+        LEFT JOIN equipamentospop as eqp ON eqp.id = o.equipamento_id
+        LEFT JOIN redeneutra_parceiro_olt as rnpo ON rnpo.olt_id = o.id
+        LEFT JOIN incidentes_classificacao as ic ON ic.id = i.classificacao
+        LEFT JOIN incidentes_types as it ON it.codigo = i.incident_type
+        WHERE i.id = $id_incidente";
+
+        $r_sql_incidente = mysqli_query($mysqli, $sql_incidente);
+        $campos = mysqli_fetch_assoc($r_sql_incidente);
+        $descIncidente = $campos['descricaoIncidente'];
+        $host_id = $campos['host_id'];
+        $protocoloERP = $campos['protocoloERP'];
+        $tipo = $campos['tipo'];
+        $zabbixID = $campos['zabbixID'];
+        $idClassificacao = $campos['idClassificacao'];
+        $tipoIncidente = $campos['tipo'];
+        $statusID = $campos['statusID'];
+        $prevNOR = $campos['prevNOR'];
+        $empresa_incidente = $campos['empresa_incidente'];
         $gerenciarIncidentes = $_SESSION['permite_gerenciar_incidente'];
 
-        if ($gerenciarIncidentes == 1) {
+        if ($gerenciarIncidentes == 1 || ($gerenciarIncidentes == 2 && $empresaID == $empresa_incidente)) {
 
-            $id_incidente = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
-
-            $sql_incidente =
-                "SELECT
-            count(i.id) as contagem,
-            i.id as idIncidente,
-            i.zabbix_event_id as zabbixID,
-            i.active as statusID,
-            i.autor_id as autor_id,
-            i.envio_com_normalizacao as envio_com_normalizacao,
-            i.incident_type as tipo,
-            i.equipamento_id as host_id,
-            i.descricaoEvento as descricaoEvento,
-            i.protocolo_erp as protocoloERP,
-            it.type as tipoIncidente,
-            eqpop.hostname as equipamento,
-            i.classificacao as idClassificacao,
-            ic.classificacao as classificacao,
-            o.analisar_gpon as analisar_gpon,
-            i.descricaoIncidente as descricaoIncidente,
-            i.previsaoNormalizacao as prevNOR,
-            CASE
-            WHEN i.active = 1 THEN 'Incidente aberto'
-            WHEN i.active = 0 THEN 'Normalizado'
-            END active,
-            i.active as activeID,
-            date_format(i.inicioIncidente,'%H:%i:%s %d/%m/%Y') as horainicial,
-            date_format(i.previsaoNormalizacao,'%H:%i:%s %d/%m/%Y') as previsaoNormalizacao,
-            date_format(i.fimIncidente,'%H:%i:%s %d/%m/%Y') as horafinal,
-            IF (i.fimIncidente IS NULL, TIMEDIFF(NOW(), i.inicioIncidente), TIMEDIFF(i.fimIncidente, i.inicioIncidente)) as tempoIncidente
-            FROM incidentes as i
-            LEFT JOIN equipamentospop as eqpop ON eqpop.id = i.equipamento_id
-            LEFT JOIN gpon_olts as o ON o.equipamento_id = i.equipamento_id
-            LEFT JOIN redeneutra_parceiro_olt as rnpo ON rnpo.olt_id = o.id
-            LEFT JOIN incidentes_classificacao as ic ON ic.id = i.classificacao
-            LEFT JOIN incidentes_types as it ON it.codigo = i.incident_type
-            WHERE i.id = $id_incidente
-    ";
-
-            $r_sql_incidente = mysqli_query($mysqli, $sql_incidente);
-            $campos = mysqli_fetch_assoc($r_sql_incidente);
-            $descIncidente = $campos['descricaoIncidente'];
-            $host_id = $campos['host_id'];
-            $protocoloERP = $campos['protocoloERP'];
-            $tipo = $campos['tipo'];
-            $zabbixID = $campos['zabbixID'];
-            $idClassificacao = $campos['idClassificacao'];
-            $tipoIncidente = $campos['tipo'];
-            $statusID = $campos['statusID'];
-            $prevNOR = $campos['prevNOR'];
 ?>
 
             <style>

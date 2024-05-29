@@ -451,15 +451,6 @@ require "validaRotina.php";
                 </ul>
 
                 <ul id="rede-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                    <?php if ($c_nav_sub_importCTO['c'] == 1) { ?>
-                        <li>
-                            <a href="/rede/importacao_ctos/index.php">
-                                <i class="bi bi-circle"></i><span>Importação CTOs</span>
-                            </a>
-                        </li>
-                    <?php } ?>
-                </ul>
-                <ul id="rede-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <?php if ($c_nav_sub_rotasFibra['c'] == 1) { ?>
                         <li>
                             <a href="/rede/rotas_de_fibra/index.php">
@@ -650,6 +641,13 @@ require "validaRotina.php";
                 </a>
                 <ul id="integracao-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
+                    <?php if ($c_sub_ozmap['c'] == 1) { ?>
+                        <li>
+                            <a href="/integracao/ozmap/index.php">
+                                <i class="bi bi-circle"></i><span>OZ Map</span>
+                            </a>
+                        </li>
+                    <?php } ?>
 
                     <?php if ($c_sub_telegram['c'] == 1) { ?>
                         <li>

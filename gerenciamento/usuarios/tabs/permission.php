@@ -194,11 +194,17 @@
             <div class="col-sm-6">
                 <select name="permite_gerenciar_incidente" id="permite_gerenciar_incidente" class="form-select" required>
                     <?php
-                    if ($campos['permite_gerenciar_incidente'] == 1) { ?>
-                        <option selected value="1">Sim</option>
+                    if ($campos['permite_gerenciar_incidente'] == 2) { ?>
+                        <option selected value="2">Permite gerenciar somente incidentes da empresa do usuário</option>
+                        <option value="1">Permite gerenciar qualquer incidente</option>
+                        <option value="0">Não</option>
+                    <?php } else if ($campos['permite_gerenciar_incidente'] == 1) { ?>
+                        <option value="2">Permite gerenciar somente incidentes da empresa do usuário</option>
+                        <option selected value="1">Permite gerenciar qualquer incidente</option>
                         <option value="0">Não</option>
                     <?php } else if ($campos['permite_gerenciar_incidente'] == 0) { ?>
-                        <option value="1">Sim</option>
+                        <option value="2">Permite gerenciar somente incidentes da empresa do usuário</option>
+                        <option value="1">Permite gerenciar qualquer incidente</option>
                         <option selected value="0">Não</option>
                     <?php } ?>
                 </select>
@@ -209,9 +215,10 @@
             <label for="permite_visualizar_protocolo_erp" class="col-sm-5 col-form-label">Permite Visualizar Protocolo do ERP</label>
             <div class="col-sm-6">
                 <select name="permite_visualizar_protocolo_erp" id="permite_visualizar_protocolo_erp" class="form-select" required>
-                    <option disabled value="" <?php echo ($campos['permite_visualizar_protocolo_erp'] === null) ? 'selected' : ''; ?>>Selecione uma opção</option>
-                    <option value="1" <?php echo ($campos['permite_visualizar_protocolo_erp'] == 1) ? 'selected' : ''; ?>>Sim</option>
-                    <option value="0" <?php echo ($campos['permite_visualizar_protocolo_erp'] == 0) ? 'selected' : ''; ?>>Não</option>
+                    <option disabled value="" <?= ($campos['permite_visualizar_protocolo_erp'] === null) ? 'selected' : ''; ?>>Selecione uma opção</option>
+                    <option value="2" <?= ($campos['permite_visualizar_protocolo_erp'] == 2) ? 'selected' : ''; ?>>Permite visualizar somente os protocolos da empresa do usuário</option>
+                    <option value="1" <?= ($campos['permite_visualizar_protocolo_erp'] == 1) ? 'selected' : ''; ?>>Permite visualizar todos protocolos</option>
+                    <option value="0" <?= ($campos['permite_visualizar_protocolo_erp'] == 0) ? 'selected' : ''; ?>>Não</option>
                 </select>
             </div>
         </div>
