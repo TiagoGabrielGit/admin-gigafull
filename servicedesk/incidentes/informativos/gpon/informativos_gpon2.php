@@ -424,8 +424,83 @@ if ($rowCount_permissions_submenu > 0) {
                                                                 <div class="col-1">
                                                                 </div>
                                                                 <div class="col-2">
-                                                                    
-                                                                    <a href="clientes_afetados.php?id_incidente=<?= $id_incidente ?>" target="_blank"><button title="Clientes Afetados" type="button" class="btn btn-sm btn-warning"><i class="bi bi-people-fill"></i></button></a>
+                                                                    <button title="Clientes Afetados" type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#modalClientesAfetados<?= $cont ?>"><i class="bi bi-people-fill"></i></button>
+                                                                </div>
+                                                                <div class="modal fade" id="modalClientesAfetados<?= $cont ?>" tabindex="-1">
+                                                                    <div class="modal-dialog modal-lg">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title">Clientes Afetados</h5>
+                                                                            </div>
+
+                                                                            <div class="modal-body">
+                                                                                <div class="card-body">
+                                                                                    <?php
+                                                                                    $incidentes_ctos =
+                                                                                        "SELECT gc.title as title, gc.nbintegration_code as nbintegration_code 
+                                                                                FROM incidentes_ctos as ic 
+                                                                                LEFT JOIN gpon_ctos as gc ON ic.cto_id = gc.id
+                                                                                WHERE incidente_id = :incidente_id";
+                                                                                    $stmt = $pdo->prepare($incidentes_ctos);
+                                                                                    $stmt->bindParam(':incidente_id', $id_incidente, PDO::PARAM_INT);
+                                                                                    $stmt->execute();
+
+                                                                                    if ($stmt->rowCount() > 0) {
+                                                                                        while ($rowCTOs = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                                                                            $urlAPI = "https://mundovoa.ozmap.com.br:9994/api/v2";
+                                                                                            $chaveAutenticacao  = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtb2R1bGUiOiJhcGkiLCJ1c2VyIjoiNWMzMTczZWU0ZmUzYTcwMDE2ZDA1YmNkIiwiY3JlYXRpb25EYXRlIjoiMjAyMi0wOC0xNVQxNzowODo0MS40MTVaIiwiaWF0IjoxNjYwNTgzMzIxfQ.sc0bGaomkd7nG8BRDa4ktLnlV4YdAgMRALZt4Gqve_k";
+
+                                                                                            $urlAPI = $urlAPI . '/properties?filter=[{"property":"box","value":"' . $rowCTOs['nbintegration_code'] . '","operator":"eq"}]';
+                                                                                            // Configurações cURL
+                                                                                            $ch = curl_init();
+                                                                                            curl_setopt($ch, CURLOPT_URL, $urlAPI);
+                                                                                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                                                                                            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                                                                                                "Authorization: Bearer $chaveAutenticacao"
+                                                                                            ]);
+                                                                                            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+
+                                                                                            $response = curl_exec($ch);
+                                                                                            // Verifica se a requisição foi bem-sucedida
+                                                                                            if ($response === false) {
+                                                                                                echo "Erro ao acessar a API: " . curl_error($ch);
+                                                                                            } else {
+                                                                                                // Decodificar a resposta JSON
+                                                                                                $data = json_decode($response, true);
+
+                                                                                                // Verificar se a decodificação foi bem-sucedida
+                                                                                                if ($data !== null && isset($data['rows'])) {
+                                                                                                    // Percorrer os objetos no array rows e obter os valores do campo code
+                                                                                                    $codes = [];
+                                                                                                    foreach ($data['rows'] as $row) {
+                                                                                                        if (isset($row['client']['code'])) {
+                                                                                                            $codes[] = $row['client']['code'];
+                                                                                                        }
+                                                                                                    }
+
+                                                                                                    echo "<b>CTO: " . $rowCTOs['title'] . "</b><br>";
+
+                                                                                                    foreach ($codes as $code) {
+                                                                                                        echo $code . "<br>";
+                                                                                                    }
+                                                                                                    echo "<br><br>";
+                                                                                                } else {
+                                                                                                    echo "Erro ao decodificar a resposta JSON ou campos ausentes.";
+                                                                                                }
+                                                                                            }
+
+                                                                                            // Fecha a sessão cURL
+                                                                                            curl_close($ch);
+                                                                                        }
+                                                                                    } else {
+                                                                                        echo "Nenhuma CTO vinculada ao incidente.";
+                                                                                    }
+                                                                                    ?>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="modal fade" id="modalLocalidades<?= $cont ?>" tabindex="-1">

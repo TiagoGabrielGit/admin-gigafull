@@ -83,7 +83,7 @@ if ($rowCount_permissions > 0) {
                                 <th style="text-align: center;">NB Integration</th>
                                 <th style="text-align: center;">Código Integração</th>
                                 <th style="text-align: center;">Quantidade Aferições</th>
-                                <th style="text-align: center;">Mais Informações</th>
+                                <th style="text-align: center;"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -117,7 +117,6 @@ if ($rowCount_permissions > 0) {
                                     <td style="text-align: center;"><?= $id; ?></td>
                                     <td style="text-align: center;"><?= $caixas['title']; ?></td>
                                     <td style="text-align: center;"><?= $caixas['nbintegration_code']; ?></td>
-
                                     <td style="text-align: center;"><?= $caixas['paintegration_code']; ?></td>
 
                                     <?php
@@ -131,7 +130,17 @@ if ($rowCount_permissions > 0) {
                                     <td style="text-align: center;"><?= $total_afericoes; ?></td>
 
                                     <td style="text-align: center;">
-                                        <button type="button" class="btn btn-sm btn-danger" onclick="window.location.href = 'visualizar.php?id=<?= $id ?>';">Visualizar</button>
+                                        <button title="Visualizar CTO" type="button" class="btn btn-sm btn-info" onclick="window.location.href = 'visualizar_cto.php?id=<?= $id ?>';">
+                                            <i class="bi bi-arrow-right-square"></i>
+                                        </button>
+
+                                        <button title="Aferições CTO" type="button" class="btn btn-sm btn-warning" onclick="window.location.href = 'visualizar.php?id=<?= $id ?>';">
+                                            <i class="bi bi-bezier"></i>
+                                        </button>
+
+                                        <button title="Localização da CTO" type="button" class="btn btn-sm btn-success" onclick="openLocation(<?= $caixas['lat'] ?>, <?= $caixas['lng'] ?>)">
+                                            <i class="bi bi-pin-map"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>
@@ -251,7 +260,12 @@ if ($rowCount_permissions > 0) {
         }
     </script>
 
-
+    <script>
+        function openLocation(latitude, longitude) {
+            const googleMapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+            window.open(googleMapsUrl, '_blank');
+        }
+    </script>
 
 
 <?php

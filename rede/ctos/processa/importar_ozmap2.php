@@ -22,7 +22,7 @@ if (isset($_SESSION['id'])) {
 
         // Inicializa cURL
         $ch = curl_init();
-
+ 
         // Configurações cURL
         curl_setopt($ch, CURLOPT_URL, $apiUrl);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
