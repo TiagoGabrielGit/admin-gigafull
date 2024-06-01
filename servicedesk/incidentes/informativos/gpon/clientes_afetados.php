@@ -116,14 +116,17 @@ if ($rowCount_permissions_submenu > 0) {
                                             <div class="card-body">
                                                 <h5 class="card-title">CTO: <?= htmlspecialchars($rowCTOs['title']) ?></h5>
                                                 <?php
+                                                $contador = 0;
+
                                                 foreach ($clients as $client) {
-                                                    $contador = 0;
                                                     if ($empresaPropria == 1) {
                                                         $contador++; ?>
                                                         <span><?= htmlspecialchars($client['code']) . ' - ' . htmlspecialchars($client['name']) ?></span><br>
                                                     <?php
+                                                    } else if (!empty($client['username']) && ($usuario_oz == $client['username'])) {
                                                         $contador++;
-                                                    } else if (!empty($client['username']) && ($usuario_oz == $client['username'])) { ?>
+
+                                                    ?>
                                                         <span><?= htmlspecialchars($client['code']) . ' - ' . htmlspecialchars($client['name']) ?></span><br>
                                                     <?php }
                                                 }

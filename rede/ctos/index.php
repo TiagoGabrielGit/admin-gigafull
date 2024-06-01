@@ -25,6 +25,8 @@ if ($rowCount_permissions > 0) {
     $caixa = isset($_GET['caixa']) ? $_GET['caixa'] : '';
     $limiteBusca = isset($_GET['limiteBusca']) ? $_GET['limiteBusca'] : '100';
     $codigoIntegracao = isset($_GET['codigoIntegracao']) ? $_GET['codigoIntegracao'] : '';
+    $nbintegration = isset($_GET['nbintegration']) ? $_GET['nbintegration'] : '';
+
 ?>
     <main id="main" class="main">
         <section class="section">
@@ -35,11 +37,15 @@ if ($rowCount_permissions > 0) {
                             <h5 class="card-title">FILTRO</h5>
                             <form method="GET" action="">
                                 <div class="row">
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <label for="caixa" class="form-label">Caixa</label>
                                         <input id="caixa" name="caixa" class="form-control" value="<?= htmlspecialchars($caixa) ?>"></input>
                                     </div>
                                     <div class="col-4">
+                                        <label for="nbintegration" class="form-label">NB Integration</label>
+                                        <input id="nbintegration" name="nbintegration" class="form-control" value="<?= htmlspecialchars($nbintegration) ?>"></input>
+                                    </div>
+                                    <div class="col-3">
                                         <label for="codigoIntegracao" class="form-label">Código Integração</label>
                                         <input id="codigoIntegracao" name="codigoIntegracao" class="form-control" value="<?= htmlspecialchars($codigoIntegracao) ?>"></input>
                                     </div>
@@ -93,6 +99,9 @@ if ($rowCount_permissions > 0) {
                             if (!empty($caixa)) {
                                 $query_ctos .= " AND title LIKE :caixa";
                             }
+                            if (!empty($nbintegration)) {
+                                $query_ctos .= " AND nbintegration_code LIKE :nbintegration_code";
+                            }
                             if (!empty($codigoIntegracao)) {
                                 $query_ctos .= " AND paintegration_code LIKE :codigoIntegracao";
                             }
@@ -102,6 +111,9 @@ if ($rowCount_permissions > 0) {
                             if (!empty($caixa)) {
                                 $caixa = "%$caixa%";
                                 $stmt->bindParam(':caixa', $caixa, PDO::PARAM_STR);
+                            }
+                            if (!empty($nbintegration)) {
+                                $stmt->bindParam(':nbintegration_code', $nbintegration, PDO::PARAM_STR);
                             }
                             if (!empty($codigoIntegracao)) {
                                 $codigoIntegracao = "$codigoIntegracao%";
