@@ -1,5 +1,5 @@
 <?php
-require "../../includes/menu.php";
+require($_SERVER['DOCUMENT_ROOT'] . '/includes/menu.php');
 require "sql.php";
 ?>
 

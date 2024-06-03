@@ -126,10 +126,16 @@ if ($rowCount_permissions > 0) {
                                 </div>
                             </div>
                             <hr class="sidebar-divider">
-
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-sm btn-danger">Salvar</button>
-                                <a href="/rede/gpon/index.php" class="btn btn-sm btn-secondary">Voltar</a>
+                            <div class="row">
+                                <div class="col-4"></div>
+                                <div class="col-4">
+                                    <button type="submit" class="btn btn-sm btn-danger">Salvar</button>
+                                    <a href="/rede/gpon/index.php" class="btn btn-sm btn-secondary">Voltar</a>
+                                </div>
+                                <div class="col-4">
+                                    <a href="interessados.php?olt_id=<?= $idOlt ?>" class="btn btn-sm btn-info">Interessados</a>
+                                    <a href="pons.php?olt_id=<?= $idOlt ?>" class="btn btn-sm btn-warning">PONs</a>
+                                </div>
                             </div>
                         </div>
                     </div>

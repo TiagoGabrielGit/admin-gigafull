@@ -8,18 +8,10 @@ $menu_id = "3";
 $uid = $_SESSION['id'];
 
 $permissions_menu =
-    "SELECT 
-	u.perfil_id
-FROM 
-	usuarios u
-JOIN 
-	perfil_permissoes_menu pp
-ON 
-	u.perfil_id = pp.perfil_id
-WHERE
-	u.id = $uid
-AND 
-	pp.url_menu = $menu_id";
+    "SELECT u.perfil_id
+FROM usuarios u
+JOIN perfil_permissoes_menu pp ON u.perfil_id = pp.perfil_id
+WHERE u.id = $uid AND pp.url_menu = $menu_id";
 
 $exec_permissions_menu = $pdo->prepare($permissions_menu);
 $exec_permissions_menu->execute();

@@ -219,6 +219,14 @@ require "validaRotina.php";
             </li>
         <?php } ?>
 
+        <?php if ($c_nav_diagnosticos['c'] == 1) { ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/diagnostico/index.php">
+                    <i class="bi bi-file-text"></i>
+                    <span>Diagnósticos</span>
+                </a>
+            </li>
+        <?php } ?>
 
         <?php if ($c_nav_informativos['c'] == 1) { ?>
             <li class="nav-item">

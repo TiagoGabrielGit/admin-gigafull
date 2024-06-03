@@ -17,15 +17,19 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading14-2">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse14-2" aria-expanded="false" aria-controls="collapse14-2">
-                    Versão 14.2 - XX/05/2024
+                    Versão 14.2 - 03/06/2024
                   </button>
                 </h2>
                 <div id="collapse14-2" class="accordion-collapse collapse" aria-labelledby="heading14-2" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
-
+                    # Desenvolvido integração com OZMap;<br>
+                    # Desenvolvido diagnóstico de elemento;<br>
+                    # Melhoria em cadastros GPON;<br>
+                    
                     <br><strong>Alterações banco de dados</strong><br>
+                    # Criado o menu id '28' na tabela menu;<br>
                     # Criado o submenu id '58' na tabela submenu;<br>
                     # Criado a tabela 'integracao_ozmap';<br>
                     # Criado a tabela 'integracao_ozmap_api';<br>
