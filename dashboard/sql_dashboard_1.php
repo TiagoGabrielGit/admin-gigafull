@@ -81,7 +81,8 @@ if ($permite_interagir_chamados == 1) {
         LEFT JOIN chamados_status as cs ON cs.id = c.status_id
         WHERE e.id = 1
         ORDER BY c.id DESC
-        LIMIT 15";
+        LIMIT 20";
+
 } else if ($permite_interagir_chamados == 2) {
     $sql_ultimos_30_chamados =    "SELECT
         ch.id as idChamado,

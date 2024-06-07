@@ -319,6 +319,15 @@ require "validaRotina.php";
             </li>
         <?php } ?>
 
+        <?php if ($c_nav_quadros_tarefas['c'] == 1) { ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/tarefas/index.php">
+                    <i class="bi bi-file-text"></i>
+                    <span>Quadros e Tarefas</span>
+                </a>
+            </li>
+        <?php } ?>
+
         <?php if ($c_nav_reunioes_atas['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#reunioesAtas-nav" data-bs-toggle="collapse" href="#">
@@ -347,6 +356,8 @@ require "validaRotina.php";
                 </ul>
             </li>
         <?php } ?>
+
+
 
         <?php if ($c_tipos_chamados['c'] == 1) { ?>
             <li class="nav-item">

@@ -293,79 +293,10 @@ require "sql_dashboard_1.php";
     <div class="col-lg-12">
 
         <div class="row">
-            <div class="col-lg-7">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Reincidencia de Incidentes GPON Últimos 60d</h5>
-                        <table class="table table-striped" id="styleTable">
-                            <thead>
-                                <tr>
-                                    <th scope="col">OLT</th>
-                                    <th scope="col">Cidade</th>
-                                    <th scope="col">Bairro</th>
-                                    <th scope="col">SLOT</th>
-                                    <th scope="col">PON</th>
-                                    <th scope="col">Classificação</th>
-                                    <th scope="col">Quantidade</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                while ($c_incidentes_gpon_reincidentes = $r_incidentes_gpon_reincidentes->fetch_array()) { ?>
-                                    <tr>
-                                        <td><?= $c_incidentes_gpon_reincidentes['olt_name'] ?></th>
-                                        <td><?= $c_incidentes_gpon_reincidentes['cidade'] ?></td>
-                                        <td><?= $c_incidentes_gpon_reincidentes['bairro'] ?></td>
-                                        <td><?= $c_incidentes_gpon_reincidentes['slot'] ?></td>
-                                        <td><?= $c_incidentes_gpon_reincidentes['pon'] ?></td>
-                                        <td><?= $c_incidentes_gpon_reincidentes['classificacao'] ?></td>
-                                        <td><?= $c_incidentes_gpon_reincidentes['quantidade_incidentes'] ?></td>
-
-
-                                    </tr>
-                                <?php
-                                } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-5">
-                <?php if ($permite_interagir_chamados != 0) { ?>
-                    <div class="card recent-sales overflow-auto">
-                        <div class="card-body">
-                            <h5 class="card-title">Últimos 15 chamados</h5>
-                            <table class="table table-striped" id="styleTable">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Número</th>
-                                        <th scope="col">Cliente</th>
-                                        <th scope="col">Chamado</th>
-                                        <th scope="col">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    while ($campos_ultimos_30_chamados = $r_ultimos_30_chamados->fetch_array()) { ?>
-                                        <tr onclick="location.href='/servicedesk/chamados/visualizar_chamado.php?id=<?= $campos_ultimos_30_chamados['idChamado'] ?>'">
-                                            <td><?= $campos_ultimos_30_chamados['idChamado'] ?></th>
-                                            <td><?= $campos_ultimos_30_chamados['fantasia'] ?></td>
-                                            <td><?= $campos_ultimos_30_chamados['assuntoChamado'] ?></td>
-                                            <td><span style="background-color: <?= $campos_ultimos_30_chamados['statusColor'] ?>;" class="badge"><?= $campos_ultimos_30_chamados['status_chamado'] ?></span></td>
-                                        </tr>
-                                    <?php
-                                    } ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                <?php } ?>
-
+            <div class="col-lg-4">
                 <div class="card recent-sales overflow-auto">
                     <div class="card-body">
-                        <h5 class="card-title">POPs Atividades </h5>
+                        <h5 class="card-title">POPs Atividades (Limitado a 20 resultados)</h5>
                         <table class="table table-striped" id="styleTable">
                             <thead>
                                 <tr>
@@ -398,7 +329,7 @@ require "sql_dashboard_1.php";
                                 WHERE
                                     pap.status = 1
                                 ORDER BY pap.date ASC
-                                LIMIT 15");
+                                LIMIT 20");
 
                                     // Executa a consulta
                                     $stmt->execute();
@@ -424,6 +355,40 @@ require "sql_dashboard_1.php";
                     </div>
                 </div>
             </div>
+
+            <div class="col-lg-4">
+                <?php if ($permite_interagir_chamados != 0) { ?>
+                    <div class="card recent-sales overflow-auto">
+                        <div class="card-body">
+                            <h5 class="card-title">Últimos chamados (Limitado a 20 resultados)</h5>
+                            <table class="table table-striped" id="styleTable">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Número</th>
+                                        <th scope="col">Cliente</th>
+                                        <th scope="col">Chamado</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    while ($campos_ultimos_30_chamados = $r_ultimos_30_chamados->fetch_array()) { ?>
+                                        <tr onclick="location.href='/servicedesk/chamados/visualizar_chamado.php?id=<?= $campos_ultimos_30_chamados['idChamado'] ?>'">
+                                            <td><?= $campos_ultimos_30_chamados['idChamado'] ?></th>
+                                            <td><?= $campos_ultimos_30_chamados['fantasia'] ?></td>
+                                            <td><?= $campos_ultimos_30_chamados['assuntoChamado'] ?></td>
+                                            <td><span style="background-color: <?= $campos_ultimos_30_chamados['statusColor'] ?>;" class="badge"><?= $campos_ultimos_30_chamados['status_chamado'] ?></span></td>
+                                        </tr>
+                                    <?php
+                                    } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                <?php } ?>
+            </div>
+
+
         </div>
     </div>
 </section>

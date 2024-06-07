@@ -500,3 +500,20 @@ ppm.perfil_id = $perfil_id";
 
 $r_nav_diagnosticos = mysqli_query($mysqli, $nav_diagnosticos);
 $c_nav_diagnosticos = mysqli_fetch_assoc($r_nav_diagnosticos);
+
+////////////////////////////////////////////////////////
+$nav_quadros_tarefas = "SELECT
+count(*) as c
+FROM
+url_menu as um
+LEFT JOIN
+perfil_permissoes_menu as ppm
+ON
+ppm.url_menu = um.id
+WHERE
+um.id = '29'
+and
+ppm.perfil_id = $perfil_id";
+
+$r_nav_quadros_tarefas = mysqli_query($mysqli, $nav_quadros_tarefas);
+$c_nav_quadros_tarefas = mysqli_fetch_assoc($r_nav_quadros_tarefas);
