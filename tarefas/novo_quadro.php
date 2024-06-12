@@ -10,7 +10,7 @@ if (isset($_SESSION['id'])) {
             $titulo = $_POST["novo_quadro"];
 
             // Prepara e executa a consulta SQL para inserir o novo quadro no banco de dados
-            $stmt = $pdo->prepare("INSERT INTO quadros (titulo, status) VALUES (:titulo, 1)");
+            $stmt = $pdo->prepare("INSERT INTO quadros (titulo, status, created) VALUES (:titulo, 1, NOW())");
             $stmt->execute(['titulo' => $titulo]);
 
             // Redireciona de volta para a página principal após adicionar o novo quadro

@@ -5,9 +5,25 @@ if (isset($_SESSION['id'])) {
     require($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao_pdo.php');
 
     // Função para verificar e limpar os dados
-    function limparDados($data)
-    {
+    function limparDados($data) {
         return htmlspecialchars(trim($data));
+    }
+
+    // Função para converter orçamento
+    function converterOrcamento($orcamento) {
+        // Remove espaços em branco
+        $orcamento = trim($orcamento);
+        
+        // Substitui vírgula por ponto, se presente
+        $orcamento = str_replace(',', '.', $orcamento);
+
+        // Se após a substituição ainda for numérico, retorna o valor
+        if (is_numeric($orcamento)) {
+            return $orcamento;
+        } else {
+            // Se não for numérico, retorna null para tratamento posterior
+            return null;
+        }
     }
 
     // Verificar se o formulário foi enviado
@@ -15,9 +31,11 @@ if (isset($_SESSION['id'])) {
         // Obter e limpar os dados do formulário
         $tarefa_id = isset($_POST['tarefa_id']) ? limparDados($_POST['tarefa_id']) : null;
         $descricao = isset($_POST['descricao']) ? limparDados($_POST['descricao']) : null;
-        $orcamento = isset($_POST['orcamento']) ? limparDados($_POST['orcamento']) : null;
         $status = isset($_POST['status']) ? limparDados($_POST['status']) : null;
         $area_planejamento = isset($_POST['area_planejamento']) ? limparDados($_POST['area_planejamento']) : null;
+
+        // Obter e converter o orçamento
+        $orcamento = isset($_POST['orcamento']) ? converterOrcamento($_POST['orcamento']) : null;
 
         // Verificar se o ID da tarefa está presente
         if ($tarefa_id === null) {
@@ -32,8 +50,8 @@ if (isset($_SESSION['id'])) {
         }
 
         // Validação específica para o orçamento
-        if ($orcamento !== '' && !is_numeric($orcamento)) {
-            echo "Por favor, forneça um valor numérico para o orçamento.";
+        if ($orcamento === null && $_POST['orcamento'] !== '') {
+            echo "Por favor, forneça um valor numérico válido para o orçamento.";
             exit;
         }
 
@@ -46,7 +64,7 @@ if (isset($_SESSION['id'])) {
                 status = :status, 
                 area_planejamento = :area_planejamento 
             WHERE id = :tarefa_id
-        ";
+            ";
 
             // Preparar o array de dados para a execução
             $data = [

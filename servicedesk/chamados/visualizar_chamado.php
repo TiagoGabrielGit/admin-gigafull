@@ -1248,7 +1248,7 @@ if ($rowCount_permissions_submenu > 0) {
                                     <input id="uploadChamadoID" name="uploadChamadoID" value="<?= $id_chamado ?>" hidden readonly></input>
                                     <div class="col-lg-12 row">
                                         <div class="col-8">
-                                            <input title="Permitido: jpg, jpeg, png, txt, pdf" required class="form-control" type="file" name="fileInput" id="fileInput" multiple>
+                                            <input title="Permitido: jpg, jpeg, png, txt, pdf, csv, xlsx, docx" required class="form-control" type="file" name="fileInput" id="fileInput" multiple>
                                         </div>
                                         <div class="col-4" style="margin-top: 5px;">
                                             <button class="btn btn-sm btn-danger" type="submit">Enviar</button>
@@ -1256,16 +1256,45 @@ if ($rowCount_permissions_submenu > 0) {
                                     </div>
                                 </form>
                             <?php }
-                            $targetDirectory = '../../uploads/chamados/chamado' . $id_chamado . '/';
+                            function getProtocol()
+                            {
+                                return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+                            }
 
-                            if (file_exists($targetDirectory)) {
-                                $files = scandir($targetDirectory);
+                            function getRootDomain($host)
+                            {
+                                $hostParts = explode('.', $host);
+                                $count = count($hostParts);
+
+                                if ($count > 2) {
+                                    if (strlen($hostParts[$count - 2]) <= 3 && strlen($hostParts[$count - 1]) <= 3) {
+                                        return $hostParts[$count - 3] . '.' . $hostParts[$count - 2] . '.' . $hostParts[$count - 1];
+                                    }
+                                }
+
+                                return $hostParts[$count - 2] . '.' . $hostParts[$count - 1];
+                            }
+
+                            $protocol = getProtocol();
+                            $fullDomain = $_SERVER['HTTP_HOST'];
+                            $rootDomain = getRootDomain($fullDomain);
+
+                            $finalUrl = $protocol . '://smartuploads.' . $rootDomain;
+
+                            // Caminho do diretório local onde os arquivos estão armazenados
+                            $localDirectory = '../../uploads/chamados/chamado' . $id_chamado . '/';
+
+                            // URL base para acessar os arquivos através do novo domínio
+                            $baseURL = $finalUrl . '/chamados/chamado' . $id_chamado . '/';
+
+                            if (file_exists($localDirectory) && is_dir($localDirectory)) {
+                                $files = scandir($localDirectory);
                                 if ($files !== false) {
                                     echo '<br><ul>';
                                     foreach ($files as $file) {
                                         if ($file != '.' && $file != '..') {
-                                            // Exiba os arquivos como links para download
-                                            echo '<li><a href="' . $targetDirectory . $file . '" target="_blank">' . $file . '</a></li>';
+                                            // Exiba os arquivos como links para download com a URL correta
+                                            echo '<li><a href="' . $baseURL . rawurlencode($file) . '" target="_blank">' . htmlspecialchars($file) . '</a></li>';
                                         }
                                     }
                                     echo '</ul>';

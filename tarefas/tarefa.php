@@ -42,8 +42,97 @@ WHERE id = :tarefa_id
                             <h3 class="card-title">Detalhes da Tarefa</h3>
                         </div>
                         <div class="col-3">
-                            <a href="/tarefas/quadros.php?id=<?= $tarefa['quadro_id'] ?>"><button style="margin-top: 15px;" class="btn btn-sm btn-danger">Voltar ao Quadro</button></a>
+                            <!-- Botão "Voltar ao Quadro" -->
+                            <a href="/tarefas/quadros.php?id=<?= $tarefa['quadro_id'] ?>">
+                                <button style="margin-top: 15px; width: 50%;" class="btn btn-sm btn-danger">Voltar ao Quadro</button>
+                            </a>
+                            <br>
+                            <!-- Botão "Anexos" -->
+                            <button type="button" style="margin-top: 15px; width: 50%;" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#modalAnexos">Anexos</button>
                         </div>
+
+
+                        <div class="modal fade" id="modalAnexos" tabindex="-1" style="display: none;" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Anexos</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <form action="upload.php" method="POST" id="uploadForm" enctype="multipart/form-data">
+                                            <input id="uploadTarefaID" name="uploadTarefaID" value="<?= $tarefa_id ?>" hidden readonly></input>
+                                            <div class="col-lg-12 row">
+                                                <div class="col-8">
+                                                    <input title="Permitido: jpg, jpeg, png, txt, pdf, csv, xlsx, docx" required class="form-control" type="file" name="fileInput" id="fileInput" multiple>
+                                                </div>
+                                                <div class="col-4" style="margin-top: 5px;">
+                                                    <button class="btn btn-sm btn-danger" type="submit">Enviar</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <?php
+                                        function getProtocol()
+                                        {
+                                            return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+                                        }
+
+                                        function getRootDomain($host)
+                                        {
+                                            $hostParts = explode('.', $host);
+                                            $count = count($hostParts);
+
+                                            if ($count > 2) {
+                                                if (strlen($hostParts[$count - 2]) <= 3 && strlen($hostParts[$count - 1]) <= 3) {
+                                                    return $hostParts[$count - 3] . '.' . $hostParts[$count - 2] . '.' . $hostParts[$count - 1];
+                                                }
+                                            }
+
+                                            return $hostParts[$count - 2] . '.' . $hostParts[$count - 1];
+                                        }
+
+                                        $protocol = getProtocol();
+                                        $fullDomain = $_SERVER['HTTP_HOST'];
+                                        $rootDomain = getRootDomain($fullDomain);
+
+                                        $finalUrl = $protocol . '://smartuploads.' . $rootDomain;
+
+                                        // Caminho do diretório local onde os arquivos estão armazenados
+                                        $localDirectory = '../../uploads/tarefas/tarefa' . $tarefa_id . '/';
+
+                                        // URL base para acessar os arquivos através do novo domínio
+                                        $baseURL = $finalUrl . '/tarefas/tarefa' . $tarefa_id . '/';
+
+                                        if (file_exists($localDirectory) && is_dir($localDirectory)) {
+                                            $files = scandir($localDirectory);
+                                            if ($files !== false) {
+                                                echo '<br><ul>';
+                                                foreach ($files as $file) {
+                                                    if ($file != '.' && $file != '..') {
+                                                        // Exiba os arquivos como links para download com a URL correta
+                                                        echo '<li><a href="' . $baseURL . rawurlencode($file) . '" target="_blank">' . htmlspecialchars($file) . '</a></li>';
+                                                    }
+                                                }
+                                                echo '</ul>';
+                                            } else {
+                                                echo '<br>Nenhum arquivo encontrado.';
+                                            }
+                                        } else {
+                                            echo '<br>Nenhum arquivo encontrado.';
+                                        }
+                                        ?>
+
+
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     <form action="update_tarefa.php" method="POST">
                         <input hidden readonly name="tarefa_id" value="<?= $tarefa['id'] ?>">
@@ -56,8 +145,9 @@ WHERE id = :tarefa_id
                             <div class="col-2">
                                 <label for="orcamento" class="form-label">Orçamento</label>
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text">$</span>
-                                    <input type="text" class="form-control" id="orcamento" name="orcamento" value="<?= $tarefa['orcamento'] ?>">
+                                    <span class="input-group-text">R$</span>
+
+                                    <input type="text" class="form-control" id="orcamento" name="orcamento" value="<?= $tarefa['orcamento'] !== null ? number_format($tarefa['orcamento'], 2, ',', '.') : "N/A"; ?>">
                                 </div>
                             </div>
                             <div class="col-3">
