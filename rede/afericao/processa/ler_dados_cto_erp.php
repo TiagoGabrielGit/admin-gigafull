@@ -5,8 +5,8 @@ if (isset($_SESSION['id'])) {
     $chamado_id = $_POST['chamado_id_cto'];
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        require "../../../conexoes/conexao_pdo.php";
-        require "../../../conexoes/conexao_voalle.php";
+        require($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao_pdo.php');
+        require($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao_voalle.php');
 
         $cto_id = $_POST['cto_id'];
 

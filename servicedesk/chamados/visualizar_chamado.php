@@ -47,6 +47,7 @@ if ($rowCount_permissions_submenu > 0) {
         tc.tipo as tipo,
         tc.id as tipo_id,
         f.status as afericao_status,
+        f.id as aferacao_id,
         cs.status_chamado as status,
         e.fantasia as empresa,
         e.id as idEmpresa,
@@ -306,173 +307,13 @@ if ($rowCount_permissions_submenu > 0) {
                                                         </a>
                                                     </button>
 
-                                                    <?php if ($chamado['afericao'] == 1) { ?>
-                                                        <button title="Aferição" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalAfericao"><i class="bi bi-diagram-3"></i></button>
-
-                                                        <div class="modal fade" id="modalAfericao" tabindex="-1" style="display: none;" aria-hidden="true">
-                                                            <div class="modal-dialog modal-fullscreen">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"><b>INFORMAÇÕES DA AFERIÇÃO</b></h5>
-
-                                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                    </div>
+                                                    <?php if ($chamado['afericao'] == 1) { 
+                                                        ?>
 
 
-                                                                    <div class="modal-body">
-                                                                        <div class="col-12">
-                                                                            <div class="row">
-                                                                                <?php
-                                                                                $query_afericao = "SELECT * FROM afericao as a LEFT JOIN chamados as c ON c.id = a.chamado_id WHERE chamado_id = :chamado_id";
+                                                        <a href="/rede/afericao/afericao.php?id=<?=$chamado['aferacao_id']?>"><button title="Aferição" type="button" class="btn btn-info"><i class="bi bi-diagram-3"></i></button></a>
 
-                                                                                $stmt = $pdo->prepare($query_afericao);
-                                                                                $stmt->execute(array(':chamado_id' => $id_chamado));
-                                                                                $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                                                                                foreach ($resultados as $row) {
-                                                                                    $cto_id = $row['cto_id'];
-
-                                                                                    $relato_inicial = $row['relato_inicial'];
-                                                                                    $crm_pre_afericao = $row['crm_pre_afericao'];
-                                                                                    $crm_pos_afericao = $row['crm_pos_afericao'];
-                                                                                    $status = $row['status'];
-                                                                                    $relato = $row['relato'];
-                                                                                }
-                                                                                ?>
-
-                                                                                <div class="col-lg-4">
-                                                                                    <div class="card">
-                                                                                        <div class="card-body" style="height: 700px; overflow-y: auto;">
-                                                                                            <br>
-                                                                                            <div>
-                                                                                                <strong>Relato Abertura</strong>
-                                                                                            </div>
-
-                                                                                            <br>
-                                                                                            <div>
-                                                                                                <?php echo nl2br($relato_inicial); ?>
-                                                                                            </div>
-                                                                                            <hr>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-
-                                                                                <div class="col-lg-4">
-                                                                                    <div class="card">
-                                                                                        <div class="card-body" style="height: 700px; overflow-y: auto;">
-                                                                                            <br>
-                                                                                            <div>
-                                                                                                <strong>Informações obtidas através do ERP - Antes Aferição</strong>
-                                                                                            </div>
-
-                                                                                            <br>
-                                                                                            <div>
-                                                                                                <?php echo nl2br($crm_pre_afericao); ?>
-                                                                                            </div>
-                                                                                            <hr>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-
-                                                                                <div class="col-lg-4">
-                                                                                    <div class="card">
-                                                                                        <div class="card-body" style="height: 500px; overflow-y: auto;">
-                                                                                            <br>
-
-                                                                                            <div class="col-12">
-                                                                                                <strong>Informações obtidas através do ERP - Depois Aferição</strong>
-                                                                                            </div>
-
-                                                                                            <div class="row">
-                                                                                                <div class="col-8">
-                                                                                                    <!-- Conteúdo do ERP -->
-                                                                                                    <?php echo nl2br($crm_pos_afericao); ?>
-                                                                                                </div>
-                                                                                                <div class="col-4 text-end">
-                                                                                                    <form method="POST" action="processa/ler_dados_cto_erp.php">
-                                                                                                        <input readonly hidden id="cto_id" name="cto_id" value="<?= $cto_id ?>"></input>
-                                                                                                        <input readonly hidden id="chamado_id_cto" name="chamado_id_cto" value="<?= $id_chamado ?>"></input>
-
-                                                                                                        <button style="margin-top: 3px;" class="btn btn-sm btn-warning">Ler dados no ERP</button>
-                                                                                                    </form>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <hr>
-                                                                                        </div>
-
-                                                                                        <div class="card-body" style="height: 200px; overflow-y: auto;">
-                                                                                            <br>
-                                                                                            <div>
-
-                                                                                                <?php if ($status == 1) {
-
-                                                                                                    if (!empty($crm_pos_afericao)) {
-
-                                                                                                ?>
-                                                                                                        <form method="POST" action="processa/status_afericao.php">
-
-                                                                                                            <input id="chamado_id_update_status" name="chamado_id_update_status" hidden readonly value="<?= $id_chamado ?>">
-                                                                                                            <div class="12">
-                                                                                                                <textarea placeholder="Digite um relato" class="form-control" rows="2" style="resize: none;" id="relato_status" name="relato_status" required></textarea>
-                                                                                                            </div>
-                                                                                                            <br>
-                                                                                                            <div class="row">
-                                                                                                                <div class="col-lg-6">
-                                                                                                                    <div class="col-12">
-                                                                                                                        <select class="form-select" name="status_afericao" id="status_afericao">
-                                                                                                                            <option value="1" <?php if ($status == 1) echo "selected"; ?>>Em análise</option>
-                                                                                                                            <option value="2" <?php if ($status == 2) echo "selected"; ?>>Negada</option>
-                                                                                                                            <option value="3" <?php if ($status == 3) echo "selected"; ?>>Realizada</option>
-                                                                                                                        </select>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                                <div class="col-lg-6">
-                                                                                                                    <div class="col-6">
-                                                                                                                        <button style="margin-top: 3px;" class="btn btn-sm btn-danger">Alterar Status</button>
-                                                                                                                    </div>
-                                                                                                                </div>
-                                                                                                            </div>
-                                                                                                        </form>
-                                                                                                    <?php } else { ?>
-                                                                                                        <div class="col-12 text-center">
-                                                                                                            <span><b><i> Realize primeiro a leitura de dados no ERP antes de alterar o status.</i></b></span>
-                                                                                                        </div>
-                                                                                                    <?php } ?>
-                                                                                                <?php } else { ?>
-
-                                                                                                    <div class="col-12">
-                                                                                                        <span>Status:
-                                                                                                            <?php
-                                                                                                            if ($status == 2) {
-                                                                                                                echo "Negada";
-                                                                                                            } elseif ($status == 3) {
-                                                                                                                echo "Realizada";
-                                                                                                            }
-                                                                                                            ?>
-                                                                                                        </span>
-
-                                                                                                        <div class="col-12">
-
-                                                                                                            <span> <textarea class="form-control" disabled rows="5" style="resize: none;"><?php echo nl2br($relato); ?></textarea>
-                                                                                                            </span>
-                                                                                                        </div>
-
-                                                                                                    </div>
-                                                                                                <?php } ?>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <a href="/rede/ctos/visualizar.php?id=<?= $cto_id ?>" class="btn btn-sm btn-warning" target="_blank">Ir para CTO</a>
-
-                                                                        <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                
                                                     <?php } ?>
                                                 <?php } ?>
 
@@ -1282,7 +1123,7 @@ if ($rowCount_permissions_submenu > 0) {
                             $finalUrl = $protocol . '://smartuploads.' . $rootDomain;
 
                             // Caminho do diretório local onde os arquivos estão armazenados
-                            $localDirectory = '../../uploads/chamados/chamado' . $id_chamado . '/';
+                            $localDirectory = '../../../uploads/chamados/chamado' . $id_chamado . '/';
 
                             // URL base para acessar os arquivos através do novo domínio
                             $baseURL = $finalUrl . '/chamados/chamado' . $id_chamado . '/';

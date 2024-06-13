@@ -3,7 +3,7 @@ if (!empty($_FILES['images'])) {
   $popId = $_POST['popId']; // Obtenha o ID do POP
 
   $uploadDate = date('dmY'); // Obtém a data atual no formato: AnoMêsDiaHoraMinutoSegundo
-  $targetDirectory = '../../../uploads/pop/pop' . $popId . '/' . $uploadDate . '/';
+  $targetDirectory = '../../../../uploads/pop/pop' . $popId . '/' . $uploadDate . '/';
 
 
 

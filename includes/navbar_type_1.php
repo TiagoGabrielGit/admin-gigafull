@@ -450,6 +450,16 @@ require "validaRotina.php";
                     <i class="bi bi-layout-text-window-reverse"></i><span>Rede</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="rede-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <?php if ($c_nav_sub_afericoes['c'] == 1) { ?>
+                        <li>
+                            <a href="/rede/afericao/index.php">
+                                <i class="bi bi-circle"></i><span>Aferições</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+                </ul>
+
+                <ul id="rede-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <?php if ($c_nav_sub_gpon['c'] == 1) { ?>
                         <li>
                             <a href="/rede/gpon/index.php">

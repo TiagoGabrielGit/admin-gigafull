@@ -196,35 +196,7 @@ require "sql_dashboard_1.php";
                         <?php } ?>
 
 
-                        <div class="col-xxl-3 col-md-3">
-                            <div class="card info-card customers-card text-center">
-                                <div class="card-body">
-                                    <h5 class="card-title">Diretório Uploads (Max: 10Gb)</h5>
-                                    <h1>
-                                        <?php
-                                        $folderPath = 'uploads/';
-
-                                        // Calcula o tamanho ocupado pela pasta em bytes
-                                        $totalSize = 0;
-
-                                        $dirIterator = new RecursiveDirectoryIterator($folderPath);
-                                        $iterator = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::SELF_FIRST);
-
-                                        foreach ($iterator as $file) {
-                                            if ($file->isFile()) {
-                                                $totalSize += $file->getSize();
-                                            }
-                                        }
-
-                                        // Converte para megabytes (MB) e arredonda para o valor mais próximo
-                                        $usedSpaceMB = round($totalSize / (1024 * 1024));
-
-                                        echo "{$usedSpaceMB}MB";
-                                        ?>
-                                    </h1>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
 
                     <div class="row">

@@ -35,7 +35,7 @@
     </style>
 
     <?php
-    $dirDates = "../../uploads/pop/pop$idPOP/";
+    $dirDates = "../../../uploads/pop/pop$idPOP/";
 
     if (is_dir($dirDates)) {
         $folders = glob($dirDates . '*', GLOB_ONLYDIR);
@@ -72,20 +72,37 @@
         echo "Nenhuma imagem encontrada para o POP.";
     }
 
-    // Verifica se o formulário foi submetido
+    function getProtocol()
+    {
+        return (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? 'https' : 'http';
+    }
+
+    function getRootDomain($host)
+    {
+        $hostParts = explode('.', $host);
+        $count = count($hostParts);
+
+        if ($count > 2) {
+            if (strlen($hostParts[$count - 2]) <= 3 && strlen($hostParts[$count - 1]) <= 3) {
+                return $hostParts[$count - 3] . '.' . $hostParts[$count - 2] . '.' . $hostParts[$count - 1];
+            }
+        }
+
+        return $hostParts[$count - 2] . '.' . $hostParts[$count - 1];
+    }
+
+    $protocol = getProtocol();
+    $fullDomain = $_SERVER['HTTP_HOST'];
+    $rootDomain = getRootDomain($fullDomain);
+
     if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["pastas"])) {
-        // Obtém o valor selecionado do select
         $selectedDir = $_POST["pastas"];
 
-        $dir = "../../uploads/pop/pop$idPOP/$selectedDir/";
+        $dir = "../../../uploads/pop/pop$idPOP/$selectedDir/";
+        $finalUrl = $protocol . '://smartuploads.' . $rootDomain . '/pop/pop' . $idPOP . '/' . $selectedDir;
 
-        // Adiciona o valor selecionado ao final da variável $dir
         $dir = $dirDates . $selectedDir . "/";
 
-
-
-
-        // Verifica se o diretório existe
         if (is_dir($dir)) {
             // Obtém a lista de arquivos no diretório
             $files = scandir($dir);
@@ -102,11 +119,12 @@
                 // Verifica se o arquivo é uma imagem (extensões comuns: jpg, jpeg, png, gif)
                 $ext = strtolower(pathinfo($file, PATHINFO_EXTENSION));
                 if ($ext == "jpg" || $ext == "jpeg" || $ext == "png" || $ext == "gif") {
+
                     // Exibe o arquivo como uma imagem com tamanho fixo e legenda
                     echo "<div class='image-container'>";
-                    echo "<a href='$dir/$file' target='_blank'>";
+                    echo "<a href='$finalUrl/$file' target='_blank'>";
 
-                    echo "<img src='$dir/$file' alt='$file' width='$width' height='$height' />";
+                    echo "<img src='$finalUrl/$file' alt='$file' width='$width' height='$height' />";
                     echo "</a>";
                     echo "<div class='image-caption'>$file</div>";
 
