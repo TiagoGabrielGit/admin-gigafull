@@ -27,7 +27,7 @@ if (isset($_SESSION['id'])) {
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 
-            header("Location: /tarefas/quadros.php?id=" . $id);
+            header("Location: /quadros_tarefas/quadros/quadros_view.php?id=" . $id);
             exit();
         } catch (PDOException $e) {
             die("Erro ao atualizar o quadro: " . $e->getMessage());
@@ -36,6 +36,6 @@ if (isset($_SESSION['id'])) {
         echo "Método de requisição inválido.";
     }
 } else {
-    header("Location: /tarefas/quadros.php?id="  . $id);
+    header("Location: /quadros_tarefas/quadros/quadros_view.php?id="  . $id);
     exit();
 }

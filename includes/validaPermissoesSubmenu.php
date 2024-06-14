@@ -966,3 +966,19 @@ WHERE usm.id = '59' and ppsm.perfil_id = $perfil_id";
 $r_nav_sub_afericoes = mysqli_query($mysqli, $nav_sub_afericoes);
 $c_nav_sub_afericoes = mysqli_fetch_assoc($r_nav_sub_afericoes);
 /////////////////////////////////////////
+$nav_sub_quadros = "SELECT count(*) as c
+FROM url_submenu as usm
+LEFT JOIN perfil_permissoes_submenu as ppsm ON ppsm.url_submenu = usm.id
+WHERE usm.id = '60' and ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_quadros = mysqli_query($mysqli, $nav_sub_quadros);
+$c_nav_sub_quadros = mysqli_fetch_assoc($r_nav_sub_quadros);
+/////////////////////////////////////////
+$nav_sub_status_tarefas = "SELECT count(*) as c
+FROM url_submenu as usm
+LEFT JOIN perfil_permissoes_submenu as ppsm ON ppsm.url_submenu = usm.id
+WHERE usm.id = '61' and ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_status_tarefas = mysqli_query($mysqli, $nav_sub_status_tarefas);
+$c_nav_sub_status_tarefas = mysqli_fetch_assoc($r_nav_sub_status_tarefas);
+/////////////////////////////////////////

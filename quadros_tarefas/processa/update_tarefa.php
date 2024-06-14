@@ -81,7 +81,7 @@ if (isset($_SESSION['id'])) {
             $stmt->execute($data);
 
             // Redirecionar de volta para a página da tarefa ou exibir uma mensagem de sucesso
-            header("Location: tarefa.php?id=$tarefa_id");
+            header("Location: /quadros_tarefas/tarefas/index.php?id=$tarefa_id");
             exit;
         } catch (PDOException $e) {
             echo "Erro ao atualizar a tarefa: " . $e->getMessage();

@@ -7,6 +7,7 @@ if (isset($_SESSION['id'])) {
             if (isset($_POST['relato_status']) && !empty($_POST['relato_status'])) {
                 $relato = $_POST['relato_status'];
                 $status = $_POST['status_afericao'];
+                $afericao_id = $_POST['afericao_id'];
                 require "../../../conexoes/conexao_pdo.php";
 
                 $query_update_afericao = "UPDATE afericao SET status = :status, relato = :relato WHERE chamado_id = :chamado_id";
@@ -15,18 +16,18 @@ if (isset($_SESSION['id'])) {
                 $stmt_update_afericao->bindParam(':relato', $relato);
                 $stmt_update_afericao->bindParam(':chamado_id', $chamado_id);
                 if ($stmt_update_afericao->execute()) {
-                    header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamado_id");
+                    header("Location: /rede/afericao/afericao.php?id=$afericao_id");
                     exit;
                 } else {
-                    header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamado_id");
+                    header("Location: /rede/afericao/afericao.php?id=$afericao_id");
                     exit;
                 }
             } else {
-                header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamado_id");
+                header("Location: /rede/afericao/afericao.php?id=$afericao_id");
                 exit;
             }
         } else {
-            header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamado_id");
+            header("Location: /rede/afericao/afericao.php?id=$afericao_id");
             exit;
         }
     } else {

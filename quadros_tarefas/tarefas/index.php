@@ -2,20 +2,22 @@
 require($_SERVER['DOCUMENT_ROOT'] . '/includes/menu.php');
 require($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao_pdo.php');
 
-$menu_id = "29";
+
+$submenu_id = "60";
 $uid = $_SESSION['id'];
 
-$permissions_menu =
-    "SELECT u.perfil_id
+$permissions = "SELECT u.perfil_id
 FROM usuarios u
-JOIN perfil_permissoes_menu pp ON u.perfil_id = pp.perfil_id
-WHERE u.id = $uid AND pp.url_menu = $menu_id";
-$exec_permissions_menu = $pdo->prepare($permissions_menu);
-$exec_permissions_menu->execute();
+JOIN perfil_permissoes_submenu pp
+ON u.perfil_id = pp.perfil_id
+WHERE u.id = $uid AND pp.url_submenu = $submenu_id";
 
-$rowCount_permissions_menu = $exec_permissions_menu->rowCount();
+$exec_permissions = $pdo->prepare($permissions);
+$exec_permissions->execute();
 
-if ($rowCount_permissions_menu > 0) {
+$rowCount_permissions = $exec_permissions->rowCount();
+
+if ($rowCount_permissions > 0) {
     $tarefa_id = $_GET['id'];
 
     $consulta_tarefa =
@@ -43,11 +45,10 @@ WHERE id = :tarefa_id
                         </div>
                         <div class="col-3">
                             <!-- Botão "Voltar ao Quadro" -->
-                            <a href="/tarefas/quadros.php?id=<?= $tarefa['quadro_id'] ?>">
+                            <a href="/quadros_tarefas/quadros/quadros_view.php?id=<?= $tarefa['quadro_id'] ?>">
                                 <button style="margin-top: 15px; width: 50%;" class="btn btn-sm btn-danger">Voltar ao Quadro</button>
                             </a>
                             <br>
-                            <!-- Botão "Anexos" -->
                             <button type="button" style="margin-top: 15px; width: 50%;" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#modalAnexos">Anexos</button>
                         </div>
 
@@ -61,7 +62,7 @@ WHERE id = :tarefa_id
                                     </div>
 
                                     <div class="modal-body">
-                                        <form action="upload.php" method="POST" id="uploadForm" enctype="multipart/form-data">
+                                        <form action="../processa/upload.php" method="POST" id="uploadForm" enctype="multipart/form-data">
                                             <input id="uploadTarefaID" name="uploadTarefaID" value="<?= $tarefa_id ?>" hidden readonly></input>
                                             <div class="col-lg-12 row">
                                                 <div class="col-8">
@@ -97,9 +98,8 @@ WHERE id = :tarefa_id
                                         $rootDomain = getRootDomain($fullDomain);
 
                                         $finalUrl = $protocol . '://smartuploads.' . $rootDomain;
-
                                         // Caminho do diretório local onde os arquivos estão armazenados
-                                        $localDirectory = '../../uploads/tarefas/tarefa' . $tarefa_id . '/';
+                                        $localDirectory = '../../../uploads/tarefas/tarefa' . $tarefa_id . '/';
 
                                         // URL base para acessar os arquivos através do novo domínio
                                         $baseURL = $finalUrl . '/tarefas/tarefa' . $tarefa_id . '/';
@@ -134,7 +134,7 @@ WHERE id = :tarefa_id
                         </div>
 
                     </div>
-                    <form action="update_tarefa.php" method="POST">
+                    <form action="../processa/update_tarefa.php" method="POST">
                         <input hidden readonly name="tarefa_id" value="<?= $tarefa['id'] ?>">
 
                         <div class="row">
@@ -151,11 +151,19 @@ WHERE id = :tarefa_id
                                 </div>
                             </div>
                             <div class="col-3">
+                                <?php
+                                $sql = "SELECT id, descricao FROM tarefas_status WHERE active = 1";
+                                $stmt = $pdo->query($sql);
+                                $statusList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                ?>
+
                                 <label for="status" class="form-label">Status</label>
                                 <select class="form-select" id="status" name="status">
-                                    <option value="1" <?= ($tarefa['status'] == 1) ? 'selected' : '' ?>>Andamento</option>
-                                    <option value="2" <?= ($tarefa['status'] == 2) ? 'selected' : '' ?>>Concluído</option>
-                                    <option value="3" <?= ($tarefa['status'] == 3) ? 'selected' : '' ?>>Cancelado</option>
+                                    <?php foreach ($statusList as $status) : ?>
+                                        <option value="<?= htmlspecialchars($status['id']) ?>" <?= ($tarefa['status'] == $status['id']) ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($status['descricao']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>

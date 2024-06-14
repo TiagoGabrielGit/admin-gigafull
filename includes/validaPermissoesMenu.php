@@ -511,7 +511,7 @@ perfil_permissoes_menu as ppm
 ON
 ppm.url_menu = um.id
 WHERE
-um.id = '29'
+um.id = '29' 
 and
 ppm.perfil_id = $perfil_id";
 

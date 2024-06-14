@@ -187,14 +187,7 @@ if ($rowCount_permissions > 0) {
                                 </form>
 
                             </div>
-                            <div class="col-lg-2">
-                                <form method="POST" action="processa/ler_dados_cto_erp.php">
-                                    <input readonly hidden id="cto_id" name="cto_id" value="<?= $cto_id ?>"></input>
-                                    <input readonly hidden id="chamado_id_cto" name="chamado_id_cto" value="<?= $chamado_id ?>"></input>
 
-                                    <button style="margin-top: 3px;" class="btn btn-sm btn-warning">Ler dados no ERP</button>
-                                </form>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -202,11 +195,13 @@ if ($rowCount_permissions > 0) {
                     <div class="card-body">
                         <h5 class="card-title">Atualizar Aferição</h5>
                         <form method="POST" action="processa/status_afericao.php">
+                        <input readonly hidden id="afericao_id" name="afericao_id" value="<?= $afericao_id ?>"></input>
+
                             <input id="chamado_id_update_status" name="chamado_id_update_status" hidden readonly value="<?= $chamado_id ?>">
                             <div class="row">
                                 <div class="col-lg-8">
                                     <div class="col-12">
-                                        <textarea placeholder="Digite um relato" class="form-control" rows="2" style="resize: none;" id="relato_status" name="relato_status" required></textarea>
+                                        <textarea placeholder="Digite um relato" class="form-control" rows="2" style="resize: none;" id="relato_status" name="relato_status" required><?= $relato ?></textarea>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -226,11 +221,52 @@ if ($rowCount_permissions > 0) {
                         </form>
                     </div>
                 </div>
+            <?php } else { ?>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Relato e Classificação</h5>
+                        <input id="chamado_id_update_status" name="chamado_id_update_status" hidden readonly value="<?= $chamado_id ?>">
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <div class="col-12">
+                                    <textarea readonly placeholder="Digite um relato" class="form-control" rows="2" style="resize: none;" id="relato_status" name="relato_status" required><?= $relato ?></textarea>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="col-6">
+                                    <?php
+                                    if ($status == 1) {
+                                        $status_Afericao = "Em análise";
+                                    } else if ($status == 2) {
+                                        $status_Afericao = "Negada";
+                                    } else if ($status == 3) {
+                                        $status_Afericao = "Realizada";
+                                    }
+                                    ?>
+
+                                    <input readonly class="form-control" value="<?= $status_Afericao ?>"></input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <?php } ?>
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Informações Adicionais</h5>
+                    <?php
+                    if ($status == 1) { ?>
 
+                        <div class="col-lg-12 d-flex justify-content-end">
+                            <form method="POST" action="processa/ler_dados_cto_erp.php">
+                                <input readonly hidden id="afericao_id" name="afericao_id" value="<?= $afericao_id ?>"></input>
+
+                                <input readonly hidden id="cto_id" name="cto_id" value="<?= $cto_id ?>"></input>
+                                <input readonly hidden id="chamado_id_cto" name="chamado_id_cto" value="<?= $chamado_id ?>"></input>
+                                <button style="margin-bottom: 15px;" class="btn btn-sm btn-warning">Ler dados no ERP</button>
+                            </form>
+                        </div>
+                    <?php } ?>
                     <div class="col-12">
                         <div class="row">
                             <div class="col-lg-4">
@@ -269,48 +305,17 @@ if ($rowCount_permissions > 0) {
 
                             <div class="col-lg-4">
                                 <div class="card">
-                                    <div class="card-body" style="height: 500px; overflow-y: auto;">
+                                    <div class="card-body" style="height: 700px; overflow-y: auto;">
                                         <br>
-
-                                        <div class="col-12">
+                                        <div>
                                             <strong>Informações obtidas através do ERP - Depois Aferição</strong>
                                         </div>
 
-                                        <div class="row">
-                                            <div class="col-8">
-                                                <!-- Conteúdo do ERP -->
-                                                <?php echo nl2br($crm_pos_afericao); ?>
-                                            </div>
+                                        <br>
+                                        <div>
+                                            <?php echo nl2br($crm_pos_afericao); ?>
                                         </div>
                                         <hr>
-                                    </div>
-
-
-                                    <div class="card-body" style="height: 200px; overflow-y: auto;">
-                                        <div>
-                                            <?php if ($status == 1) {
-                                                echo $crm_pos_afericao;
-                                            } else { ?>
-                                                <div class="col-12">
-                                                    <span>Status:
-                                                        <?php
-                                                        if ($status == 2) {
-                                                            echo "Negada";
-                                                        } elseif ($status == 3) {
-                                                            echo "Realizada";
-                                                        }
-                                                        ?>
-                                                    </span>
-
-                                                    <div class="col-12">
-
-                                                        <span> <textarea class="form-control" disabled rows="5" style="resize: none;"><?php echo nl2br($relato); ?></textarea>
-                                                        </span>
-                                                    </div>
-
-                                                </div>
-                                            <?php } ?>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

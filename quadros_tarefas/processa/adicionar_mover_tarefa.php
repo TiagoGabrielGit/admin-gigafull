@@ -29,7 +29,7 @@ if (isset($_SESSION['id'])) {
             }
         }
 
-        header("Location: quadros.php?id=" . $quadro_id);
+        header("Location: /quadros_tarefas/quadros/quadros_view.php?id=" . $quadro_id);
         exit();
     }
 } else {

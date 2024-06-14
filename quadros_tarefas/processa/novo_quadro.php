@@ -14,7 +14,7 @@ if (isset($_SESSION['id'])) {
             $stmt->execute(['titulo' => $titulo]);
 
             // Redireciona de volta para a página principal após adicionar o novo quadro
-            header("Location: index.php");
+            header("Location: ../quadros/index.php");
             exit();
         } else {
             // Se o campo estiver vazio, exibe uma mensagem de erro
@@ -22,7 +22,7 @@ if (isset($_SESSION['id'])) {
         }
     } else {
         // Se o formulário não foi submetido via POST, redireciona de volta para a página principal
-        header("Location: index.php");
+        header("Location: ../quadros/index.php");
         exit();
     }
 } else {

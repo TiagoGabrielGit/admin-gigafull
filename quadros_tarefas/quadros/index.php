@@ -2,20 +2,21 @@
 require($_SERVER['DOCUMENT_ROOT'] . '/includes/menu.php');
 require($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao_pdo.php');
 
-$menu_id = "29";
+$submenu_id = "60";
 $uid = $_SESSION['id'];
 
-$permissions_menu =
-    "SELECT u.perfil_id
+$permissions = "SELECT u.perfil_id
 FROM usuarios u
-JOIN perfil_permissoes_menu pp ON u.perfil_id = pp.perfil_id
-WHERE u.id = $uid AND pp.url_menu = $menu_id";
-$exec_permissions_menu = $pdo->prepare($permissions_menu);
-$exec_permissions_menu->execute();
+JOIN perfil_permissoes_submenu pp
+ON u.perfil_id = pp.perfil_id
+WHERE u.id = $uid AND pp.url_submenu = $submenu_id";
 
-$rowCount_permissions_menu = $exec_permissions_menu->rowCount();
+$exec_permissions = $pdo->prepare($permissions);
+$exec_permissions->execute();
 
-if ($rowCount_permissions_menu > 0) {
+$rowCount_permissions = $exec_permissions->rowCount();
+
+if ($rowCount_permissions > 0) {
 
     // Receber filtros
     $filtro_quadro = isset($_GET['filtro_quadro']) ? $_GET['filtro_quadro'] : '';
@@ -51,7 +52,7 @@ if ($rowCount_permissions_menu > 0) {
                 <div class="card-body">
                     <h3 class="card-title">Adicionar Quadro</h3>
 
-                    <form method="post" action="novo_quadro.php">
+                    <form method="post" action="../processa/novo_quadro.php">
                         <div class="row">
                             <div class="col-8">
                                 <input class="form-control" type="text" name="novo_quadro" required>
@@ -99,7 +100,7 @@ if ($rowCount_permissions_menu > 0) {
                             ];
                             $status = $statusMap[$quadro['status']];
                         ?>
-                            <a href="quadros.php?id=<?= $quadro['id'] ?>" class="list-group-item list-group-item-action" data-id="<?php echo $quadro['id']; ?>">
+                            <a href="quadros_view.php?id=<?=$quadro['id'] ?>" class="list-group-item list-group-item-action" data-id="<?php echo $quadro['id']; ?>">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1"><?php echo htmlspecialchars($quadro['titulo']); ?></h5>
                                     <small class="text-muted">Criada em: <?php echo $createdDate; ?></small>

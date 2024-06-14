@@ -5,7 +5,7 @@ if (isset($_SESSION['id'])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tarefa_id = $_POST['uploadTarefaID'];
 
-        $targetDirectory = '../../uploads/tarefas/tarefa' . $tarefa_id . '/';
+        $targetDirectory = '../../../uploads/tarefas/tarefa' . $tarefa_id . '/';
 
         if (!file_exists($targetDirectory)) {
             mkdir($targetDirectory, 0755, true); // Crie o diretório se não existir
@@ -21,14 +21,14 @@ if (isset($_SESSION['id'])) {
 
         if (in_array($fileType, $allowedTypes)) {
             if (move_uploaded_file($uploadedFile['tmp_name'], $targetPath)) {
-                header("Location: /tarefas/tarefa.php?id=$tarefa_id");
+                header("Location: /quadros_tarefas/tarefas/index.php?id=$tarefa_id");
                 exit;
             } else {
-                header("Location: /tarefas/tarefa.php?id=$tarefa_id");
+                header("Location: /quadros_tarefas/tarefas/index.php?id=$tarefa_id");
                 exit;
             }
         } else {
-            header("Location: /tarefas/tarefa.php?id=$tarefa_id");
+            header("Location: /quadros_tarefas/tarefas/index.php?id=$tarefa_id");
             exit;
         }
     }

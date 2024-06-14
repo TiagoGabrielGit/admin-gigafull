@@ -17,16 +17,21 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading14-4">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse14-4" aria-expanded="false" aria-controls="collapse14-4">
-                    Versão 14.4 - XX/06/2024
+                    Versão 14.4 - 14/06/2024
                   </button>
                 </h2>
                 <div id="collapse14-4" class="accordion-collapse collapse" aria-labelledby="heading14-4" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
-
+                    # Melhorias na aferição;<br>
+                    # Cadastro de status de tarefas;<br>
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado submenu id 59;<br>
+                    # Criado submenu id 60;<br>
+                    # Criado submenu id 61;<br>
+                    # Editado menu id 29;<br>
+                    # Criado tabela 'tarefas_status';<br>
 
                     <br><strong>Backlog</strong><br>
                     # Replicar relato do chamado principal para os chamados dependentes;<br>
@@ -37,7 +42,6 @@ require "../includes/menu.php";
                     # Observações Internas Chamado;<br>
                     # Pesquisa MP Concluidas através da data;<br>
                     # Página de aceite MP;<br>
-                    # Enter para login;<br>
                     # White-Label iframe incidentes;<br>
                     # TABs permitidas no iframe incidentes;<br>
                     # Remover PON/RF durante criação de MP;<br>

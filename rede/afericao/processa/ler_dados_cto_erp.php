@@ -2,13 +2,14 @@
 session_start();
 
 if (isset($_SESSION['id'])) {
-    $chamado_id = $_POST['chamado_id_cto'];
 
     if ($_SERVER["REQUEST_METHOD"] === "POST") {
         require($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao_pdo.php');
         require($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao_voalle.php');
 
         $cto_id = $_POST['cto_id'];
+        $chamado_id = $_POST['chamado_id_cto'];
+        $afericao_id = $_POST['afericao_id'];
 
         $query_nbintegration = "SELECT nbintegration_code FROM gpon_ctos as gc WHERE gc.id = :id";
         $nbintegration_stmt = $pdo->prepare($query_nbintegration);
@@ -52,14 +53,14 @@ if (isset($_SESSION['id'])) {
         $stmt_update_afericao = $pdo->prepare($query_update_afericao);
         $valores_update_afericao = array(':crm_pos_afericao' => $ocupacao_formatted, ':chamado_id' => $chamado_id);
         if ($stmt_update_afericao->execute($valores_update_afericao)) {
-            header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamado_id");
+            header("Location: /rede/afericao/afericao.php?id=$afericao_id");
             exit;
         } else {
-            header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamado_id");
+            header("Location: /rede/afericao/afericao.php?id=$afericao_id");
             exit;
         }
     } else {
-        header("Location: /servicedesk/chamados/visualizar_chamado.php?id=$chamado_id");
+        header("Location: /rede/afericao/afericao.php?id=$afericao_id");
         exit;
     }
 } else {

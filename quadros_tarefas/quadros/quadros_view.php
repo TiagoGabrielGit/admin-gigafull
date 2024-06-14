@@ -2,20 +2,21 @@
 require($_SERVER['DOCUMENT_ROOT'] . '/includes/menu.php');
 require($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao_pdo.php');
 
-$menu_id = "29";
+$submenu_id = "60";
 $uid = $_SESSION['id'];
 
-$permissions_menu =
-    "SELECT u.perfil_id
+$permissions = "SELECT u.perfil_id
 FROM usuarios u
-JOIN perfil_permissoes_menu pp ON u.perfil_id = pp.perfil_id
-WHERE u.id = $uid AND pp.url_menu = $menu_id";
-$exec_permissions_menu = $pdo->prepare($permissions_menu);
-$exec_permissions_menu->execute();
+JOIN perfil_permissoes_submenu pp
+ON u.perfil_id = pp.perfil_id
+WHERE u.id = $uid AND pp.url_submenu = $submenu_id";
 
-$rowCount_permissions_menu = $exec_permissions_menu->rowCount();
+$exec_permissions = $pdo->prepare($permissions);
+$exec_permissions->execute();
 
-if ($rowCount_permissions_menu > 0) {
+$rowCount_permissions = $exec_permissions->rowCount();
+
+if ($rowCount_permissions > 0) {
 
     $quadro_id = $_GET['id'];
 
@@ -30,13 +31,14 @@ if ($rowCount_permissions_menu > 0) {
     $quadro = $stmt_quadro->fetch(PDO::FETCH_ASSOC);
 
     // Consultar tarefas com base nos filtros
-    $consulta_tarefas = "
-    SELECT id, descricao, ordem, created, orcamento, status 
-    FROM tarefas 
-    WHERE quadro_id = :quadro_id 
-    AND descricao LIKE :filtro_tarefa 
-    AND status LIKE :filtro_status 
-    ORDER BY ordem
+    $consulta_tarefas =
+        "SELECT t.id, t.descricao, t.ordem, t.created, t.orcamento, t.status, ts.descricao as descricao_status
+    FROM tarefas as t
+    LEFT JOIN tarefas_status as ts ON ts.id = t.status
+    WHERE t.quadro_id = :quadro_id 
+    AND t.descricao LIKE :filtro_tarefa 
+    AND t.status LIKE :filtro_status 
+    ORDER BY t.ordem
 ";
 
     $stmt = $pdo->prepare($consulta_tarefas);
@@ -70,10 +72,10 @@ if ($rowCount_permissions_menu > 0) {
                             <h3 class="card-title">Configurações do Quadro</h3>
                         </div>
                         <div class="col-2">
-                            <a href="/tarefas/index.php?"><button style="margin-top: 15px;" class="btn btn-sm btn-danger">Listagem de Quadros</button></a>
+                            <a href="/quadros_tarefas/quadros/index.php"><button style="margin-top: 15px;" class="btn btn-sm btn-danger">Listagem de Quadros</button></a>
                         </div>
                     </div>
-                    <form action="atualizar_quadro.php" method="POST">
+                    <form action="../processa/atualizar_quadro.php" method="POST">
                         <input id="id_quadro" name="id_quadro" value="<?= $quadro['id'] ?>" hidden readonly></input>
                         <div class="row">
                             <div class="col-4">
@@ -103,7 +105,7 @@ if ($rowCount_permissions_menu > 0) {
                                 <h3 class="card-title">Adicionar Tarefa</h3>
                             </div>
                         </div>
-                        <form method="post" action="processa.php">
+                        <form method="post" action="../processa/adicionar_mover_tarefa.php">
                             <input type="hidden" name="quadro_id" value="<?php echo $quadro_id; ?>" required>
                             <div class="row">
                                 <div class="col-8">
@@ -121,60 +123,67 @@ if ($rowCount_permissions_menu > 0) {
             <div class="card">
                 <div class="card-body">
                     <h3 class="card-title">Lista de Tarefas</h3>
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <form method="get" action="quadros_view.php">
+                                <input type="hidden" name="id" value="<?= htmlspecialchars($quadro_id) ?>">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="filtro_tarefa" class="form-label">Descrição da Tarefa</label>
+                                        <input id="filtro_tarefa" name="filtro_tarefa" class="form-control" value="<?= isset($_GET['filtro_tarefa']) ? htmlspecialchars($_GET['filtro_tarefa']) : '' ?>"></input>
+                                    </div>
+                                    <?php
+                                    $sql = "SELECT id, descricao FROM tarefas_status WHERE active = 1";
+                                    $stmt = $pdo->query($sql);
+                                    $statusList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                    ?>
 
-                    <form method="get" action="quadros.php">
-                        <input type="hidden" name="id" value="<?= htmlspecialchars($quadro_id) ?>">
-                        <div class="row">
-                            <div class="col-4">
-                                <label for="filtro_tarefa" class="form-label">Descrição da Tarefa</label>
-                                <input id="filtro_tarefa" name="filtro_tarefa" class="form-control" value="<?= isset($_GET['filtro_tarefa']) ? htmlspecialchars($_GET['filtro_tarefa']) : '' ?>"></input>
-                            </div>
-                            <div class="col-2">
-                                <label for="filtro_status" class="form-label">Status</label>
-                                <select class="form-select" id="filtro_status" name="filtro_status">
-                                    <option value="%" <?= !isset($_GET['filtro_status']) || $_GET['filtro_status'] == '%' ? 'selected' : '' ?>>Todos</option>
-                                    <option value="1" <?= isset($_GET['filtro_status']) && $_GET['filtro_status'] == '1' ? 'selected' : '' ?>>Andamento</option>
-                                    <option value="2" <?= isset($_GET['filtro_status']) && $_GET['filtro_status'] == '2' ? 'selected' : '' ?>>Concluído</option>
-                                    <option value="3" <?= isset($_GET['filtro_status']) && $_GET['filtro_status'] == '3' ? 'selected' : '' ?>>Cancelado</option>
-                                </select>
-                            </div>
-                            <div class="col-3">
-                                <button class="btn btn-sm btn-info" style="margin-top: 32px;" type="submit">Filtrar Tarefas</button>
+                                    <div class="col-3">
+                                        <label for="filtro_status" class="form-label">Status</label>
+                                        <select class="form-select" id="filtro_status" name="filtro_status">
+                                            <!-- Opção para selecionar todos os status -->
+                                            <option value="%" <?= !isset($_GET['filtro_status']) || $_GET['filtro_status'] == '%' ? 'selected' : '' ?>>Todos</option>
+
+                                            <!-- Gerando as opções dinamicamente a partir do banco de dados -->
+                                            <?php foreach ($statusList as $status) : ?>
+                                                <option value="<?= htmlspecialchars($status['id']) ?>" <?= isset($_GET['filtro_status']) && $_GET['filtro_status'] == $status['id'] ? 'selected' : '' ?>>
+                                                    <?= htmlspecialchars($status['descricao']) ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-3">
+                                        <button class="btn btn-sm btn-info" style="margin-top: 32px;" type="submit">Filtrar Tarefas</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <div class="d-flex flex-column">
+                                <button id="toggleOrderBtn" class="btn btn-warning btn-sm mb-2 flex-fill">Destravar</button>
+                                <a href="/tcpdf/export/relatorio_tarefas.php?id=<?= $quadro_id ?>" target="_blank" class="btn btn-info btn-sm flex-fill">
+                                    Gerar PDF
+                                </a>
                             </div>
                         </div>
-                    </form>
+
+                    </div>
+
                     <hr class="sidebar-divider">
-
-                    <div class="d-flex justify-content-end mb-3">
-    <div class="d-flex flex-column align-items-end">
-        <!-- Botão para travar/destravar reordenação -->
-        <button id="toggleOrderBtn" class="btn btn-warning btn-sm mb-2">Destravar</button>
-        <!-- Botão para gerar o PDF -->
-        <a href="/tcpdf/export/relatorio_tarefas.php?id=<?= $quadro_id ?>" target="_blank" class="btn btn-info btn-sm">
-            Gerar PDF
-        </a>
-    </div>
-</div>
-
-
 
                     <div class="list-group mt-3" id="taskList">
                         <?php foreach ($tarefas as $tarefa) :
                             $createdDate = date("d/m/Y", strtotime($tarefa['created']));
-                            $statusMap = [
-                                1 => "Andamento",
-                                2 => "Concluído",
-                                3 => "Cancelado"
-                            ];
-                            $status = $statusMap[$tarefa['status']];
                             $orcamento = $tarefa['orcamento'] !== null ? number_format($tarefa['orcamento'], 2, ',', '.') : "N/A";
                         ?>
-                            <a href="tarefa.php?id=<?= $tarefa['id'] ?>" class="list-group-item list-group-item-action" data-id="<?php echo $tarefa['id']; ?>">
+                            <a href="../tarefas/index.php?id=<?= $tarefa['id'] ?>" class="list-group-item list-group-item-action" data-id="<?php echo $tarefa['id']; ?>">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1"><?php echo htmlspecialchars($tarefa['descricao']); ?></h5>
                                     <small class="text-muted">Criada em: <?php echo $createdDate; ?></small>
                                 </div>
-                                <p class="mb-1">Status: <?php echo $status; ?></p>
+                                <p class="mb-1">Status: <?= $tarefa['descricao_status'] ?></p>
                                 <small class="text-muted">Orçamento: R$ <?php echo $orcamento; ?></small>
                             </a>
                         <?php endforeach; ?>
@@ -200,7 +209,7 @@ if ($rowCount_permissions_menu > 0) {
                                         order.push(item.getAttribute('data-id'));
                                     });
 
-                                    fetch('processa.php', {
+                                    fetch('../processa/adicionar_mover_tarefa.php', {
                                             method: 'POST',
                                             headers: {
                                                 'Content-Type': 'application/x-www-form-urlencoded',
