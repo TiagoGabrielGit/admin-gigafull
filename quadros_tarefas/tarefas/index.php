@@ -29,6 +29,18 @@ WHERE id = :tarefa_id
     $stmt_tarefa = $pdo->prepare($consulta_tarefa);
     $stmt_tarefa->execute(['tarefa_id' => $tarefa_id]);
     $tarefa = $stmt_tarefa->fetch(PDO::FETCH_ASSOC);
+
+    // Consulta para obter o total de despesas
+    $total_despesas_query = "SELECT SUM(valor) as total FROM qt_despesas WHERE active = 1 AND id_tarefa = :tarefa_id";
+    $stmt_despesas = $pdo->prepare($total_despesas_query);
+    $stmt_despesas->execute(['tarefa_id' => $tarefa_id]);
+    $total_despesas = $stmt_despesas->fetch(PDO::FETCH_ASSOC)['total'];
+
+    if (isset($total_despesas) & !empty($total_despesas)) {
+        $total_despesas_formatted = number_format($total_despesas, 2, ',', '.');
+    } else {
+        $total_despesas_formatted = "0,00";
+    }
 ?>
 
     <main id="main" class="main">
@@ -40,16 +52,18 @@ WHERE id = :tarefa_id
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-9">
+                        <div class="col-8">
                             <h3 class="card-title">Detalhes da Tarefa</h3>
                         </div>
-                        <div class="col-3">
-                            <!-- Botão "Voltar ao Quadro" -->
+                        <div class="col-4">
                             <a href="/quadros_tarefas/quadros/quadros_view.php?id=<?= $tarefa['quadro_id'] ?>">
-                                <button style="margin-top: 15px; width: 50%;" class="btn btn-sm btn-danger">Voltar ao Quadro</button>
+                                <button style="margin-top: 15px; width: 80%;" class="btn btn-sm btn-danger">Voltar ao Quadro</button>
                             </a>
-                            <br>
-                            <button type="button" style="margin-top: 15px; width: 50%;" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#modalAnexos">Anexos</button>
+
+                            <button type="button" style="margin-top: 15px; width: 40%;" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#modalAnexos">Anexos</button>
+                            <a href="/quadros_tarefas/despesas/index.php?id=<?= $tarefa_id ?>" target="_blank">
+                                <button style="margin-top: 15px; width: 40%;" class="btn btn-sm btn-warning">Despesas</button>
+                            </a>
                         </div>
 
 
@@ -134,25 +148,19 @@ WHERE id = :tarefa_id
                         </div>
 
                     </div>
+                    <br>
                     <form action="../processa/update_tarefa.php" method="POST">
                         <input hidden readonly name="tarefa_id" value="<?= $tarefa['id'] ?>">
 
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-5">
                                 <label for="descricao" class="form-label">Descrição</label>
                                 <input class="form-control" id="descricao" name="descricao" value="<?= $tarefa['descricao'] ?>"></input>
                             </div>
-                            <div class="col-2">
-                                <label for="orcamento" class="form-label">Orçamento</label>
-                                <div class="input-group mb-3">
-                                    <span class="input-group-text">R$</span>
 
-                                    <input type="text" class="form-control" id="orcamento" name="orcamento" value="<?= $tarefa['orcamento'] !== null ? number_format($tarefa['orcamento'], 2, ',', '.') : "N/A"; ?>">
-                                </div>
-                            </div>
                             <div class="col-3">
                                 <?php
-                                $sql = "SELECT id, descricao FROM tarefas_status WHERE active = 1";
+                                $sql = "SELECT id, descricao, titulo FROM tarefas_status WHERE active = 1 ORDER BY titulo ASC";
                                 $stmt = $pdo->query($sql);
                                 $statusList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 ?>
@@ -161,15 +169,23 @@ WHERE id = :tarefa_id
                                 <select class="form-select" id="status" name="status">
                                     <?php foreach ($statusList as $status) : ?>
                                         <option value="<?= htmlspecialchars($status['id']) ?>" <?= ($tarefa['status'] == $status['id']) ? 'selected' : '' ?>>
-                                            <?= htmlspecialchars($status['descricao']) ?>
+                                            <?= htmlspecialchars($status['titulo']) ?>
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
+                            <div class="col-2">
+                                <label for="despesas_total" class="form-label">Despesas Total</label>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">R$</span>
+
+                                    <input readonly type="text" class="form-control" id="despesas_total" name="despesas_total" value="<?= $total_despesas_formatted; ?>">
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             <label class="form-label" for="area_planejamento"><b>Área de Planejamento</b></label>
-                            <textarea rows="20" id="area_planejamento" name="area_planejamento" class="form-control"><?= htmlspecialchars($tarefa['area_planejamento'] ?? '') ?></textarea>
+                            <textarea rows="10" id="area_planejamento" name="area_planejamento" class="form-control"><?= htmlspecialchars($tarefa['area_planejamento'] ?? '') ?></textarea>
 
                         </div>
                         <br><br>
@@ -179,6 +195,7 @@ WHERE id = :tarefa_id
                     </form>
                 </div>
             </div>
+
         </section>
     </main>
 

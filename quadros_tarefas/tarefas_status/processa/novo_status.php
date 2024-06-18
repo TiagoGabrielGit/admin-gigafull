@@ -16,7 +16,9 @@ function sanitize_input($data)
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Pegar e limpar os dados do formulário
+    $statusColor = $_POST['statusColor'];
+    $descricao = !empty($_POST['descricao']) ? $_POST['descricao'] : '';
+
     $status = isset($_POST['status']) ? sanitize_input($_POST['status']) : '';
     $tipo_fechamento = isset($_POST['tipo_fechamento']) ? sanitize_input($_POST['tipo_fechamento']) : '';
 
@@ -32,12 +34,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     } else {
         // Tentar inserir no banco de dados
         try {
-            $sql = "INSERT INTO tarefas_status (descricao, status_fechamento, active, `default`) VALUES (:status, :status_fechamento, 1, 0)";
+            $sql = "INSERT INTO tarefas_status (color, titulo, descricao, status_fechamento, active, `default`) VALUES (:color, :status, :descricao, :status_fechamento, 1, 0)";
             $stmt = $pdo->prepare($sql);
 
             // Bind dos parâmetros
             $stmt->bindParam(':status', $status);
+            $stmt->bindParam(':descricao', $descricao);
             $stmt->bindParam(':status_fechamento', $tipo_fechamento);
+            $stmt->bindParam(':color', $statusColor);
+
 
             // Executar a inserção
             if ($stmt->execute()) {

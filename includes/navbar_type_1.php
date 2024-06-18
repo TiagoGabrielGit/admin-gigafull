@@ -326,6 +326,14 @@ require "validaRotina.php";
                 </a>
                 <ul id="quadros_tarefas-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
+                    <?php if ($c_nav_sub_categoria_subcategoria['c'] == 1) { ?>
+                        <li>
+                            <a href="/quadros_tarefas/categoria_subcategoria/index.php">
+                                <i class="bi bi-circle"></i><span>Categoria e Subcategoria</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+
                     <?php if ($c_nav_sub_quadros['c'] == 1) { ?>
                         <li>
                             <a href="/quadros_tarefas/quadros/index.php">
@@ -337,12 +345,12 @@ require "validaRotina.php";
                     <?php if ($c_nav_sub_status_tarefas['c'] == 1) { ?>
                         <li>
                             <a href="/quadros_tarefas/tarefas_status/index.php">
-                                <i class="bi bi-circle"></i><span>Status  de Tarefas</span>
+                                <i class="bi bi-circle"></i><span>Status de Tarefas</span>
                             </a>
                         </li>
                     <?php } ?>
 
-                    
+
 
                 </ul>
             </li>

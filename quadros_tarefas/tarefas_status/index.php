@@ -65,6 +65,19 @@ if ($rowCount_permissions > 0) {
                                 </select>
                             </div>
                             <div class="col-3">
+                                <label for="statusColor" class="form-label">Cor Referência</label>
+                                <input required type="color" class="form-control form-control-color" name="statusColor" id="statusColor" value="#4154f1">
+                            </div>
+
+
+                        </div>
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="descricao">Descrição</label>
+                                <textarea maxlength="255" id="descricao" name="descricao" class="form-control" rows="4" style="resize: none;"></textarea>
+                            </div>
+                            <div class="col-4"></div>
+                            <div class="col-2">
                                 <button style="margin-top: 33px;" type="submit" class="btn btn-sm btn-danger">Criar Novo Status</button>
                             </div>
                         </div>
@@ -92,6 +105,7 @@ if ($rowCount_permissions > 0) {
                                 // Preparar a consulta SQL
                                 $sql = "SELECT
                                 ts.id as id_status, 
+                                ts.titulo as titulo,
                                     ts.descricao as descricao,
                                     CASE
                                         WHEN ts.active = 1 THEN 'Ativado'
@@ -118,7 +132,7 @@ if ($rowCount_permissions > 0) {
                                             <tr onclick="window.location.href='view.php?id=<?= htmlspecialchars($row['id_status']) ?>'">
 
 
-                                                <td style="text-align: center;"><?= htmlspecialchars($row['descricao']) ?></td>
+                                                <td style="text-align: center;"><?= htmlspecialchars($row['titulo']) ?></td>
                                                 <td style="text-align: center;"><?= htmlspecialchars($row['active']) ?></td>
                                                 <td style="text-align: center;"><?= htmlspecialchars($row['default_status']) ?></td>
                                                 <td style="text-align: center;"><?= htmlspecialchars($row['status_fechamento']) ?></td>

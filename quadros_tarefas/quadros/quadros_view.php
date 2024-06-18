@@ -32,7 +32,7 @@ if ($rowCount_permissions > 0) {
 
     // Consultar tarefas com base nos filtros
     $consulta_tarefas =
-        "SELECT t.id, t.descricao, t.ordem, t.created, t.orcamento, t.status, ts.descricao as descricao_status
+        "SELECT t.id, t.descricao, t.ordem, t.created, t.status, ts.descricao as descricao_status, ts.titulo, ts.color
     FROM tarefas as t
     LEFT JOIN tarefas_status as ts ON ts.id = t.status
     WHERE t.quadro_id = :quadro_id 
@@ -133,7 +133,7 @@ if ($rowCount_permissions > 0) {
                                         <input id="filtro_tarefa" name="filtro_tarefa" class="form-control" value="<?= isset($_GET['filtro_tarefa']) ? htmlspecialchars($_GET['filtro_tarefa']) : '' ?>"></input>
                                     </div>
                                     <?php
-                                    $sql = "SELECT id, descricao FROM tarefas_status WHERE active = 1";
+                                    $sql = "SELECT id, descricao, titulo FROM tarefas_status WHERE active = 1";
                                     $stmt = $pdo->query($sql);
                                     $statusList = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     ?>
@@ -147,7 +147,7 @@ if ($rowCount_permissions > 0) {
                                             <!-- Gerando as opções dinamicamente a partir do banco de dados -->
                                             <?php foreach ($statusList as $status) : ?>
                                                 <option value="<?= htmlspecialchars($status['id']) ?>" <?= isset($_GET['filtro_status']) && $_GET['filtro_status'] == $status['id'] ? 'selected' : '' ?>>
-                                                    <?= htmlspecialchars($status['descricao']) ?>
+                                                    <?= htmlspecialchars($status['titulo']) ?>
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>
@@ -176,15 +176,33 @@ if ($rowCount_permissions > 0) {
                     <div class="list-group mt-3" id="taskList">
                         <?php foreach ($tarefas as $tarefa) :
                             $createdDate = date("d/m/Y", strtotime($tarefa['created']));
-                            $orcamento = $tarefa['orcamento'] !== null ? number_format($tarefa['orcamento'], 2, ',', '.') : "N/A";
+                            $id_tarefa = $tarefa['id'];
+
+                            // Consulta para obter o total de despesas
+                            $total_despesas_query = "SELECT SUM(valor) as total FROM qt_despesas WHERE active = 1 AND id_tarefa = :tarefa_id";
+                            $stmt_despesas = $pdo->prepare($total_despesas_query);
+                            $stmt_despesas->execute(['tarefa_id' => $id_tarefa]);
+                            $total_despesas = $stmt_despesas->fetch(PDO::FETCH_ASSOC)['total'];
+
+                            if (isset($total_despesas) & !empty($total_despesas)) {
+                                $total_despesas_formatted = number_format($total_despesas, 2, ',', '.');
+                            } else {
+                                $total_despesas_formatted = "0,00";
+                            }
+
+                            $orcamento = "N/A";
                         ?>
                             <a href="../tarefas/index.php?id=<?= $tarefa['id'] ?>" class="list-group-item list-group-item-action" data-id="<?php echo $tarefa['id']; ?>">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1"><?php echo htmlspecialchars($tarefa['descricao']); ?></h5>
-                                    <small class="text-muted">Criada em: <?php echo $createdDate; ?></small>
+                                <div class="d-flex justify-content-between">
+                                    <h5 class="mb-1"><?= htmlspecialchars($tarefa['descricao']); ?></h5>
+                                    <small class="text-muted">
+                                        <span title="<?= $tarefa['descricao_status'] ?>" style="margin-top: 10px; color: #FFFFFF; background-color: <?= $tarefa['color'] ?>; width: 100px; text-align: center; display: inline-block; padding: 5px;" class="badge">Status: <?= $tarefa['titulo'] ?></span>
+                                    </small>
                                 </div>
-                                <p class="mb-1">Status: <?= $tarefa['descricao_status'] ?></p>
-                                <small class="text-muted">Orçamento: R$ <?php echo $orcamento; ?></small>
+
+                                <p class="mb-1">Orçamento: R$ <?= $total_despesas_formatted; ?></p>
+
+                                <small class="text-muted">Criada em: <?= $createdDate; ?></small>
                             </a>
                         <?php endforeach; ?>
                     </div>

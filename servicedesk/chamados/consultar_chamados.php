@@ -768,7 +768,7 @@ if ($rowCount_permissions_submenu > 0) {
                                                             <b>Empresa:</b> <?= $campos['fantasia']; ?><br>
                                                             <b>Solicitante:</b> <?= $solicitante_nome . ' (Equipe: ' . $equipe_solicitante . ')'  ?><br>
                                                             <b>Atendente:</b> <?= $atendente ?><br>
-                                                            <b>Abertura:</b>  <?= $campos['dataAbertura']; ?><br>
+                                                            <b>Abertura:</b> <?= $campos['dataAbertura']; ?><br>
                                                             <b>Tempo total atendimento:</b> <?= gmdate("H:i:s", $res_second['secondsTotal']); ?>
 
                                                             <br>
@@ -796,14 +796,13 @@ if ($rowCount_permissions_submenu > 0) {
                                                             <br>
                                                             <span style="margin-top: 10px; color: #FFFFFF; background-color: <?= $campos['statusColor'] ?>;" class="badge">Status: <?= $campos['statusChamado'] ?></span>
 
-
                                                         </span>
                                                     </div>
                                                 </button>
                                             </h2>
                                             <div id="flush-collapse<?= $cont ?>" class="accordion-collapse collapse" aria-labelledby="flush-heading<?= $cont ?>" data-bs-parent="#accordionFlushExample">
                                                 <div class="accordion-body colorAccordion">
-                                          
+
                                                     <hr class="sidebar-divider">
                                                     <div class="row">
                                                         <div class="col-lg-10">

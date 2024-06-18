@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-if (isset($_SESSION["id"])) {
+if (isset($_SESSION["id"]) && isset($_GET['id'])) {
     require($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao_pdo.php');
     require_once('../tcpdf.php');
 
@@ -29,7 +29,7 @@ if (isset($_SESSION["id"])) {
     $stmt_quadro->execute(['quadro_id' => $id_quadro]);
     $quadro = $stmt_quadro->fetch(PDO::FETCH_ASSOC);
 
-    $consulta_tarefas = "SELECT descricao, ordem, created, orcamento, status FROM tarefas WHERE quadro_id = :quadro_id ORDER BY ordem";
+    $consulta_tarefas = "SELECT id, descricao, ordem, created, status FROM tarefas WHERE quadro_id = :quadro_id ORDER BY ordem";
     $stmt_tarefas = $pdo->prepare($consulta_tarefas);
     $stmt_tarefas->execute(['quadro_id' => $id_quadro]);
     $tarefas = $stmt_tarefas->fetchAll(PDO::FETCH_ASSOC);
@@ -74,9 +74,15 @@ if (isset($_SESSION["id"])) {
     $pdf->Ln(6);
 
     foreach ($tarefas as $tarefa) {
+        $tarefa_id = $tarefa['id'];
+        $consulta_despesas = "SELECT SUM(valor) as total FROM qt_despesas WHERE id_tarefa = :id_tarefa";
+        $stmt_despesas = $pdo->prepare($consulta_despesas);
+        $stmt_despesas->execute(['id_tarefa' => $tarefa_id]);
+        $despesas = $stmt_despesas->fetch(PDO::FETCH_ASSOC);
+
         $createdDate = date("d/m/Y", strtotime($tarefa['created']));
         $status = $tarefa['status'] == 1 ? 'Andamento' : ($tarefa['status'] == 2 ? 'Concluído' : 'Cancelado');
-        $orcamento = $tarefa['orcamento'] !== null ? number_format($tarefa['orcamento'], 2, ',', '.') : "N/A";
+        $orcamento = isset($despesas['total']) ? number_format($despesas['total'], 2, ',', '.') : "N/A";
 
         $pdf->Ln(5);
 
@@ -98,3 +104,4 @@ if (isset($_SESSION["id"])) {
     header("Location: /login.php");
     exit;
 }
+?>

@@ -4,7 +4,7 @@ session_start();
 if (isset($_SESSION['id'])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $chamadoID = $_POST['uploadChamadoID'];
-        $targetDirectory = '../../../uploads/chamados/chamado' . $chamadoID . '/'; // Diretório de destino
+        $targetDirectory = '../../../../uploads/chamados/chamado' . $chamadoID . '/'; // Diretório de destino
         if (!file_exists($targetDirectory)) {
             mkdir($targetDirectory, 0755, true); // Crie o diretório se não existir
         }
