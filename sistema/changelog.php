@@ -15,6 +15,49 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
               <div class="accordion-item">
+                <h2 class="accordion-header" id="heading14-6">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse14-6" aria-expanded="false" aria-controls="collapse14-6">
+                    Versão 14.6 - 19/06/2024
+                  </button>
+                </h2>
+                <div id="collapse14-6" class="accordion-collapse collapse" aria-labelledby="heading14-6" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Criado validação de licença;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criado a tabela licenca;<br>
+                    # Criado o submenu id 63;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Replicar relato do chamado principal para os chamados dependentes;<br>
+                    # Notificações smart de relatos em chamados realizados via smartmobile;<br>
+                    # Notificações smart de abertura de chamados realizados via smartcontrol;<br>
+                    # Notificações smart de abertura de chamados realizados via smartmobile;<br>
+                    # Solicitar aferição via control;<br>
+                    # Observações Internas Chamado;<br>
+                    # Pesquisa MP Concluidas através da data;<br>
+                    # Página de aceite MP;<br>
+                    # White-Label iframe incidentes;<br>
+                    # TABs permitidas no iframe incidentes;<br>
+                    # Remover PON/RF durante criação de MP;<br>
+                    # Vincular uma documentação à um tipo de incidente;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Energia POP;<br>
+                    # Atributos de equipamentos;<br>
+                    # Requisições de expediente atraves do acesso colaborador;<br>
+                    # Integração para abrir chamado no Voalle;<br>
+                    # Permissões em documentações;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
                 <h2 class="accordion-header" id="heading14-5">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse14-5" aria-expanded="false" aria-controls="collapse14-5">
                     Versão 14.5 - 18/06/2024

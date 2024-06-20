@@ -67,7 +67,7 @@ require "conexoes/conexao_pdo.php";
         echo '<b>Existe uma manutenção programada com inicio previsto em menos de 24h.</b>';
         //echo '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
         echo '</div>';
-    } 
+    }
     if (isset($c_man_prog_ocorrendo_backbone['qtde']) || isset($c_man_prog_ocorrendo_gpon['qtde'])) {
         echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">';
         echo '<b>Existe uma manutenção programada ocorrendo.</b>';

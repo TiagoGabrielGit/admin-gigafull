@@ -990,3 +990,11 @@ WHERE usm.id = '62' and ppsm.perfil_id = $perfil_id";
 $r_nav_sub_categoria_subcategoria = mysqli_query($mysqli, $nav_sub_categoria_subcategoria);
 $c_nav_sub_categoria_subcategoria = mysqli_fetch_assoc($r_nav_sub_categoria_subcategoria);
 /////////////////////////////////////////
+$nav_sub_licenca = "SELECT count(*) as c
+FROM url_submenu as usm
+LEFT JOIN perfil_permissoes_submenu as ppsm ON ppsm.url_submenu = usm.id
+WHERE usm.id = '63' and ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_licenca = mysqli_query($mysqli, $nav_sub_licenca);
+$c_nav_sub_licenca = mysqli_fetch_assoc($r_nav_sub_licenca);
+/////////////////////////////////////////

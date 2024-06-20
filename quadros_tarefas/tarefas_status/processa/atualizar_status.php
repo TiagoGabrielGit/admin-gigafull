@@ -14,8 +14,10 @@ if (isset($_SESSION['id'])) {
             $statusColor = $_POST['statusColor'];
             $descricao = isset($_POST['descricao']) ? $_POST['descricao'] : null;
 
-            // Validações adicionais podem ser feitas aqui (como comprimento dos campos, formato etc.)
-
+            if ($tipo_fechamento === null) {
+                // Defina um valor padrão apropriado, como null ou outro valor dependendo do contexto
+                $tipo_fechamento = "0";
+            }
             // Prepara a query de atualização
             $query = "UPDATE tarefas_status SET 
                     titulo = :status,

@@ -679,6 +679,13 @@ require "validaRotina.php";
                         </li>
                     <?php } ?>
 
+                    <?php if ($c_nav_sub_licenca['c'] == 1) { ?>
+                        <li>
+                            <a href="/sistema/licenca/index.php">
+                                <i class="bi bi-circle"></i><span>Licença</span>
+                            </a>
+                        </li>
+                    <?php } ?>
 
                     <?php if ($c_nav_sub_logAdmin['c'] == 1) { ?>
                         <li>
