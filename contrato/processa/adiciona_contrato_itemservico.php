@@ -1,11 +1,9 @@
 <?php
+session_start();
 
-require "../../conexoes/conexao_pdo.php";
-
-if (empty($_POST['selectService']) || empty($_POST['itemService'])) {
-    echo "<p style='color:red;'>Preencha todos os campos.</p>";
-} else {
-
+if (isset($_SESSION['id'])) {
+    require($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao_pdo.php');
+    $itemContratoID = $_POST['itemContratoID'];
     $contract_service_id = $_POST['selectService'];
     $iten_service = $_POST['itemService'];
     $active = "1";
@@ -25,8 +23,13 @@ if (empty($_POST['selectService']) || empty($_POST['itemService'])) {
     }
 
     if ($cont_insert) {
-        echo "<p style='color:green;'>Item de serviço adicionado ao contrato com sucesso!</p>";
+        header("Location: /contrato/view_itemservice.php?id=$itemContratoID");
+        exit();
     } else {
-        echo "<p style='color:red;'>Erro ao adicionar  item de serviço serviço ao contrato.</p>";
+        header("Location: /contrato/view_itemservice.php?id=$itemContratoID");
+        exit();
     }
+} else {
+    header("Location: /index.php");
+    exit();
 }

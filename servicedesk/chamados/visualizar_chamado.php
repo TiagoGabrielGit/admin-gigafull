@@ -158,6 +158,16 @@ if ($rowCount_permissions_submenu > 0) {
                         echo '</div>';
                     }
                 }
+
+
+                if (isset($_SESSION['msg_error'])) { ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <?= $_SESSION['msg_error'] ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php
+                    unset($_SESSION['msg_error']);
+                }
                 ?>
 
                 <section class="section">
@@ -307,13 +317,13 @@ if ($rowCount_permissions_submenu > 0) {
                                                         </a>
                                                     </button>
 
-                                                    <?php if ($chamado['afericao'] == 1) { 
-                                                        ?>
+                                                    <?php if ($chamado['afericao'] == 1) {
+                                                    ?>
 
 
-                                                        <a href="/rede/afericao/afericao.php?id=<?=$chamado['aferacao_id']?>"><button title="Aferição" type="button" class="btn btn-info"><i class="bi bi-diagram-3"></i></button></a>
+                                                        <a href="/rede/afericao/afericao.php?id=<?= $chamado['aferacao_id'] ?>"><button title="Aferição" type="button" class="btn btn-info"><i class="bi bi-diagram-3"></i></button></a>
 
-                                                
+
                                                     <?php } ?>
                                                 <?php } ?>
 

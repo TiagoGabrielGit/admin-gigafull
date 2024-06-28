@@ -103,30 +103,36 @@ require "sql_dashboard_1.php";
                         </div>
                     </div>
                 </div>
-                <div class="col-xxl-3 col-md-3">
-                    <div class="card info-card customers-card text-center">
-                        <div class="card-body">
-                            <h4 class="card-title">Manutenção Programada</h4>
-                            <div class="d-flex align-items-center">
+                <?php
+                $habilita_mp = "SELECT COUNT(*) AS count FROM manutencao_programada_empresas WHERE empresa_id = $empresaID";
+                $stmt = $pdo->query($habilita_mp);
+                $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                if ($result['count'] > 0) { ?>
+                    <div class="col-xxl-3 col-md-3">
+                        <div class="card info-card customers-card text-center">
+                            <div class="card-body">
+                                <h4 class="card-title">Manutenção Programada</h4>
+                                <div class="d-flex align-items-center">
 
-                                <div class="ps-3">
-                                    <h4>
-                                        <a style="color: red;" href="/servicedesk/incidentes/informativos/manutencao_programada/informativos_mp.php">
-                                            <?php
-                                            if ($total_mp == 0) {
-                                                echo "Nenhuma manutenção";
-                                            } else if ($total_mp == 1) {
-                                                echo "1 Manutenção";
-                                            } else {
-                                                echo $total_mp . " Manutenções";
-                                            } ?>
-                                        </a>
-                                    </h4>
+                                    <div class="ps-3">
+                                        <h4>
+                                            <a style="color: red;" href="/servicedesk/incidentes/informativos/manutencao_programada/informativos_mp.php">
+                                                <?php
+                                                if ($total_mp == 0) {
+                                                    echo "Nenhuma manutenção";
+                                                } else if ($total_mp == 1) {
+                                                    echo "1 Manutenção";
+                                                } else {
+                                                    echo $total_mp . " Manutenções";
+                                                } ?>
+                                            </a>
+                                        </h4>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                <?php } ?>
             </div>
 
             <div class="row">
@@ -196,7 +202,7 @@ require "sql_dashboard_1.php";
                         <?php } ?>
 
 
-                        
+
                     </div>
 
                     <div class="row">

@@ -161,32 +161,38 @@ if ($rowCount_permissions_submenu > 0) {
                             </div>
                         <?php }
                         ?>
-
-                        <div class="col-xxl-4 col-md-6">
-                            <div class="card info-card sales-card text-center">
-                                <div class="card-body">
-                                    <h5 class="card-title">Manutenções Programadas</h5>
-                                    <div class="d-flex align-items-center">
-                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                            <i class="bi bi-ticket-perforated"></i>
-                                        </div>
-                                        <div class="ps-3 text-center">
-                                            <h4>
-                                                <a style="color: red;" href="/servicedesk/incidentes/informativos/manutencao_programada/informativos_mp.php">
-                                                    <?php
-                                                    if ($c_inc_backbone['qtde'] > 1) {
-                                                        echo $total_mp . " Manutenções Programadas";
-                                                    } else {
-                                                        echo $total_mp . " Manutenções Programadas";
-                                                    }
-                                                    ?>
-                                                </a>
-                                            </h4>
+                        <?php
+                        $habilita_mp = "SELECT COUNT(*) AS count FROM manutencao_programada_empresas WHERE empresa_id = $empresaID";
+                        $stmt = $pdo->query($habilita_mp);
+                        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+                        if ($result['count'] > 0) { ?>
+                            <div class="col-xxl-4 col-md-6">
+                                <div class="card info-card sales-card text-center">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Manutenções Programadas</h5>
+                                        <div class="d-flex align-items-center">
+                                            <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bi bi-ticket-perforated"></i>
+                                            </div>
+                                            <div class="ps-3 text-center">
+                                                <h4>
+                                                    <a style="color: red;" href="/servicedesk/incidentes/informativos/manutencao_programada/informativos_mp.php">
+                                                        <?php
+                                                        if ($c_inc_backbone['qtde'] > 1) {
+                                                            echo $total_mp . " Manutenções Programadas";
+                                                        } else {
+                                                            echo $total_mp . " Manutenções Programadas";
+                                                        }
+                                                        ?>
+                                                    </a>
+                                                </h4>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        <?php } ?>
+
                     </div>
                     <div class="row">
 

@@ -517,3 +517,43 @@ ppm.perfil_id = $perfil_id";
 
 $r_nav_quadros_tarefas = mysqli_query($mysqli, $nav_quadros_tarefas);
 $c_nav_quadros_tarefas = mysqli_fetch_assoc($r_nav_quadros_tarefas);
+
+////////////////////////////////////////////////////////
+
+$nav_gerar_faturamento = "SELECT count(*) as c
+FROM url_menu as um
+LEFT JOIN perfil_permissoes_menu as ppm ON ppm.url_menu = um.id
+WHERE um.id = '31' and ppm.perfil_id = $perfil_id";
+
+$r_nav_gerar_faturamento = mysqli_query($mysqli, $nav_gerar_faturamento);
+$c_nav_gerar_faturamento = mysqli_fetch_assoc($r_nav_gerar_faturamento);
+
+////////////////////////////////////////////////////////
+
+$nav_faturamentos_gerados = "SELECT count(*) as c
+FROM url_menu as um
+LEFT JOIN perfil_permissoes_menu as ppm ON ppm.url_menu = um.id
+WHERE um.id = '32' and ppm.perfil_id = $perfil_id";
+
+$r_nav_faturamentos_gerados = mysqli_query($mysqli, $nav_faturamentos_gerados);
+$c_nav_faturamentos_gerados = mysqli_fetch_assoc($r_nav_faturamentos_gerados);
+
+////////////////////////////////////////////////////////
+
+$nav_cobrancas = "SELECT count(*) as c
+FROM url_menu as um
+LEFT JOIN perfil_permissoes_menu as ppm ON ppm.url_menu = um.id
+WHERE um.id = '33' and ppm.perfil_id = $perfil_id";
+
+$r_nav_cobrancas = mysqli_query($mysqli, $nav_cobrancas);
+$c_nav_cobrancas = mysqli_fetch_assoc($r_nav_cobrancas);
+
+////////////////////////////////////////////////////////
+
+$nav_meu_plano = "SELECT count(*) as c
+FROM url_menu as um
+LEFT JOIN perfil_permissoes_menu as ppm ON ppm.url_menu = um.id
+WHERE um.id = '34' and ppm.perfil_id = $perfil_id";
+
+$r_nav_meu_plano = mysqli_query($mysqli, $nav_meu_plano);
+$c_nav_meu_plano = mysqli_fetch_assoc($r_nav_meu_plano);

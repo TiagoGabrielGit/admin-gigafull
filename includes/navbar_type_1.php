@@ -24,7 +24,7 @@ require "validaRotina.php";
         <?php if ($c_nav_contrato['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/contrato/index.php">
-                    <i class="bi bi-chevron-contract"></i>
+                    <i class="bi bi-circle"></i>
                     <span>Contratos</span>
                 </a>
             </li>
@@ -33,7 +33,7 @@ require "validaRotina.php";
         <?php if ($c_nav_empresas['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/empresas/empresas.php">
-                    <i class="bi bi-person-fill"></i>
+                    <i class="bi bi-circle"></i>
                     <span>Empresas</span>
                 </a>
             </li>
@@ -42,7 +42,7 @@ require "validaRotina.php";
         <?php if ($c_nav_pessoas['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/pessoas/pessoas.php">
-                    <i class="bi bi-person"></i>
+                    <i class="bi bi-circle"></i>
                     <span>Pessoas</span>
                 </a>
             </li>
@@ -52,7 +52,7 @@ require "validaRotina.php";
         <?php if ($c_ecommerce['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#ecommerce-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-layout-text-window-reverse"></i><span>E-commerce</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-circle"></i><span>E-commerce</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="ecommerce-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
@@ -96,7 +96,7 @@ require "validaRotina.php";
         <?php if ($c_nav_produtosServicos['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#Produtos-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-layout-text-window-reverse"></i><span>Produtos e Serviços</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-circle"></i><span>Produtos e Serviços</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="Produtos-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
@@ -120,7 +120,7 @@ require "validaRotina.php";
 
                     <?php if ($c_nav_sub_servicos['c'] == 1) { ?>
                         <li>
-                            <a href="/cadastros/produtos/servicos/index.php">
+                            <a href="/cadastros/produtos/servicos/servicos.php">
                                 <i class="bi bi-circle"></i><span>Serviços</span>
                             </a>
                         </li>
@@ -145,6 +145,46 @@ require "validaRotina.php";
             </li>
         <?php } ?>
 
+        <?php if ($c_valida_financeiro['c'] > 0) { ?>
+            <li class="nav-heading">Financeiro</li>
+        <?php } ?>
+
+        <?php if ($c_nav_gerar_faturamento['c'] == 1) { ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/financeiro/gerar_faturamento/index.php">
+                    <i class="bi bi-circle"></i>
+                    <span>Gerar Faturamento</span>
+                </a>
+            </li>
+        <?php } ?>
+
+        <?php if ($c_nav_faturamentos_gerados['c'] == 1) { ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/financeiro/faturamentos_gerados/index.php">
+                    <i class="bi bi-circle"></i>
+                    <span>Faturamentos Gerados</span>
+                </a>
+            </li>
+        <?php } ?>
+
+        <?php if ($c_nav_cobrancas['c'] == 1) { ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/financeiro/cobrancas/index.php">
+                    <i class="bi bi-circle"></i>
+                    <span>Cobranças</span>
+                </a>
+            </li>
+        <?php } ?>
+
+        <?php if ($c_nav_meu_plano['c'] == 1) { ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/financeiro/meu_plano/index.php">
+                    <i class="bi bi-circle"></i>
+                    <span>Meu Plano</span>
+                </a>
+            </li>
+        <?php } ?>
+
         <?php if ($c_valida_service_desk['c'] > 0) { ?>
             <li class="nav-heading">Service Desk</li>
         <?php } ?>
@@ -152,7 +192,7 @@ require "validaRotina.php";
         <?php if ($c_nav_chamados['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#chamados-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-layout-text-window-reverse"></i><span>Chamados</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-circle"></i><span>Chamados</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="chamados-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
@@ -178,7 +218,7 @@ require "validaRotina.php";
         <?php if ($c_nav_chamadosProgramados['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/servicedesk/chamados_programados/index.php">
-                    <i class="bi bi-file-text"></i>
+                    <i class="bi bi-circle"></i>
                     <span>Chamados Programados</span>
                 </a>
             </li>
@@ -186,9 +226,10 @@ require "validaRotina.php";
 
 
         <?php if ($c_comunicacao['c'] == 1) { ?>
+            <li>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#comunicacao-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-layout-text-window-reverse"></i><span>Comunicação</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-circle"></i><span>Comunicação</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="comunicacao-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
@@ -222,16 +263,16 @@ require "validaRotina.php";
         <?php if ($c_nav_diagnosticos['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/diagnostico/index.php">
-                    <i class="bi bi-file-text"></i>
+                    <i class="bi bi-circle"></i>
                     <span>Diagnósticos</span>
                 </a>
             </li>
         <?php } ?>
 
         <?php if ($c_nav_informativos['c'] == 1) { ?>
-            <li class="nav-item">
+            <li class=" nav-item">
                 <a class="nav-link collapsed" data-bs-target="#informativos-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-layout-text-window-reverse"></i><span>Informativos</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-circle"></i><span>Informativos</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="informativos-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
@@ -283,7 +324,7 @@ require "validaRotina.php";
         <?php if ($c_nav_man_programada['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#manutencaoProgramada-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-layout-text-window-reverse"></i><span>Manutenção Programada</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-circle"></i><span>Manutenção Programada</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="manutencaoProgramada-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
@@ -316,13 +357,23 @@ require "validaRotina.php";
                         </li>
                     <?php } ?>
                 </ul>
+                <ul id="manutencaoProgramada-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+
+                    <?php if ($c_nav_sub_configuracoes['c'] == 1) { ?>
+                        <li>
+                            <a href="/servicedesk/manutencao_programada/configuracoes/index.php">
+                                <i class="bi bi-circle"></i><span>Configurações</span>
+                            </a>
+                        </li>
+                    <?php } ?>
+                </ul>
             </li>
         <?php } ?>
 
         <?php if ($c_nav_quadros_tarefas['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#quadros_tarefas-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-layout-text-window-reverse"></i><span>Quadros e Tarefas</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-circle"></i><span>Quadros e Tarefas</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="quadros_tarefas-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
@@ -359,7 +410,7 @@ require "validaRotina.php";
         <?php if ($c_nav_reunioes_atas['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#reunioesAtas-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-layout-text-window-reverse"></i><span>Reuniões / Atas</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-circle"></i><span>Reuniões / Atas</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="reunioesAtas-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
 
@@ -390,7 +441,7 @@ require "validaRotina.php";
         <?php if ($c_tipos_chamados['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#tiposChamados-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-layout-text-window-reverse"></i><span>Tipos de Chamados</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-circle"></i><span>Tipos de Chamados</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="tiposChamados-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <?php if ($c_sub_mascaras_chamados['c'] == 1) { ?>
@@ -429,7 +480,7 @@ require "validaRotina.php";
         <?php if ($c_nav_credenciais['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/telecom/credentials/index.php">
-                    <i class="bi bi-key"></i>
+                    <i class="bi bi-circle"></i>
                     <span>Credenciais</span>
                 </a>
             </li>
@@ -438,17 +489,16 @@ require "validaRotina.php";
         <?php if ($c_nav_documentation['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/telecom/documentacao/index.php">
-                    <i class="bi bi-file-text"></i>
+                    <i class="bi bi-circle"></i>
                     <span>Documentação</span>
                 </a>
             </li>
         <?php } ?>
 
-
         <?php if ($c_nav_popSite['c'] == 1) { ?>
-            <li class="nav-item">
+            <li class=" nav-item">
                 <a class="nav-link collapsed" href="/telecom/sitepop/index.php">
-                    <i class="bi bi-globe"></i>
+                    <i class="bi bi-circle"></i>
                     <span>POP/Site</span>
                 </a>
             </li>
@@ -475,7 +525,7 @@ require "validaRotina.php";
         <?php if ($c_nav_rede['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#rede-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-layout-text-window-reverse"></i><span>Rede</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-circle"></i><span>Rede</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="rede-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <?php if ($c_nav_sub_afericoes['c'] == 1) { ?>
@@ -522,7 +572,7 @@ require "validaRotina.php";
         <?php if ($c_nav_redeNeutra['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#redeNeutra-nav" data-bs-toggle="collapse" href="#">
-                    <i class="bi bi-layout-text-window-reverse"></i><span>Rede Neutra</span><i class="bi bi-chevron-down ms-auto"></i>
+                    <i class="bi bi-circle"></i><span>Rede Neutra</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="redeNeutra-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                     <?php if ($c_nav_sub_auditoria['c'] == 1) { ?>
