@@ -43,7 +43,22 @@ if (empty($chamado['execucao'])) {
   $chamado_exec = "";
 } else {
   $chamado_exec = $chamado['execucao'];
-} ?>
+}
+
+$note = "";
+
+$sql_bloco_de_notas = "SELECT note FROM bloco_de_notas WHERE user_id = ?";
+$stmt = $mysqli->prepare($sql_bloco_de_notas);
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+  $resp_note = $result->fetch_assoc();
+  $note = $resp_note['note'];
+}
+
+?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -134,8 +149,13 @@ if (empty($chamado['execucao'])) {
             </button>
           </a>
         <?php } else {
-        }
+        } ?>
 
+        <a class="nav-link nav-icon" href="#" data-bs-toggle="modal" data-bs-target="#modalAnotacoes">
+          <i class="bi bi-stickies"></i>
+        </a>
+
+        <?php
         $total_notificacoes_query =
           "SELECT COUNT(*) AS total_notificacoes
           FROM smart_notification 
@@ -268,9 +288,47 @@ if (empty($chamado['execucao'])) {
         </li>
 
       </ul>
-    </nav><!-- End Icons Navigation -->
+    </nav>
+  </header>
 
-  </header><!-- End Header -->
+
+  <div class="modal fade" id="modalAnotacoes" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Bloco de Notas</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <textarea id="notaTextarea" class="form-control" rows="10" style="resize: none;"><?php echo htmlspecialchars($note); ?></textarea>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+
+  <script>
+    $(document).ready(function() {
+      function saveNote() {
+        var noteContent = $('#notaTextarea').val();
+
+        $.ajax({
+          url: '/includes/processa/salvarnota.php', // URL do seu endpoint no servidor
+          method: 'POST',
+          data: {
+            note: noteContent
+          },
+        });
+      }
+
+      $('#modalAnotacoes').on('hide.bs.modal', function() {
+        saveNote();
+      });
+    });
+  </script>
 
   <?php
   require "navbar_type_1.php";

@@ -1,4 +1,4 @@
-<!-- ======= Footer ======= -->
+
 <footer id="footer" class="footer">
   <div class="copyright">
     &copy; Copyright <strong><span>Gigafull Soluções Tecnológicas</span></strong>. All Rights Reserved
@@ -11,7 +11,7 @@
     Desenvolvido por <a href="https://www.gigafull.com.br/">Gigafull Soluções Tecnológicas</a>
   </div>
   <div class="credits">
-    <a href="/sistema/changelog.php">Versão 14.7</a>
+    <a href="/sistema/changelog.php">Versão 14.8</a>
   </div>
 </footer><!-- End Footer -->
 

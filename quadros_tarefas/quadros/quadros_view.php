@@ -57,6 +57,23 @@ if ($rowCount_permissions > 0) {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['total'];
     }
+
+    $valor_quadro =
+        "SELECT SUM(qd.valor) as total_valor
+        FROM qt_despesas as qd
+        LEFT JOIN tarefas as t ON t.id = qd.id_tarefa
+        WHERE t.quadro_id = :quadro_id";
+    $stmt_valor_quadro = $pdo->prepare($valor_quadro);
+    $stmt_valor_quadro->bindParam(':quadro_id', $quadro_id, PDO::PARAM_INT);
+    $stmt_valor_quadro->execute();
+    $r_valor_quadro = $stmt_valor_quadro->fetch(PDO::FETCH_ASSOC);
+
+
+    if ($r_valor_quadro && isset($r_valor_quadro['total_valor'])) {
+        $total_valor_quadro = number_format((float)$r_valor_quadro['total_valor'], 2, ',', '.');
+    } else {
+        $total_valor_quadro = "0,00";
+    }
 ?>
 
     <main id="main" class="main">
@@ -162,6 +179,7 @@ if ($rowCount_permissions > 0) {
 
                         <div class="col-lg-2">
                             <div class="d-flex flex-column">
+                                <input style="margin-bottom: 10px; text-align: center;" readonly disabled class="form-control flex-fill" value="<?= 'R$ ' . $total_valor_quadro ?>"></input>
                                 <button id="toggleOrderBtn" class="btn btn-warning btn-sm mb-2 flex-fill">Destravar</button>
                                 <a href="/tcpdf/export/relatorio_tarefas.php?id=<?= $quadro_id ?>" target="_blank" class="btn btn-info btn-sm flex-fill">
                                     Gerar PDF

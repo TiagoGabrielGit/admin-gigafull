@@ -99,11 +99,34 @@ if ($rowCount_permissions > 0) {
                                 2 => "Arquivado"
                             ];
                             $status = $statusMap[$quadro['status']];
+
+                            $orcamento_quadro_id = $quadro['id'];
+
+                            $valor_quadro =
+                                "SELECT SUM(qd.valor) as total_valor
+                            FROM qt_despesas as qd
+                            LEFT JOIN tarefas as t ON t.id = qd.id_tarefa
+                            WHERE t.quadro_id = :quadro_id";
+                            $stmt_valor_quadro = $pdo->prepare($valor_quadro);
+                            $stmt_valor_quadro->bindParam(':quadro_id', $orcamento_quadro_id, PDO::PARAM_INT);
+                            $stmt_valor_quadro->execute();
+                            $r_valor_quadro = $stmt_valor_quadro->fetch(PDO::FETCH_ASSOC);
+
+                            if ($r_valor_quadro && isset($r_valor_quadro['total_valor'])) {
+                                $total_valor_quadro = number_format((float)$r_valor_quadro['total_valor'], 2, ',', '.');
+                            } else {
+                                $total_valor_quadro = "0,00";
+                            }
+
                         ?>
-                            <a href="quadros_view.php?id=<?=$quadro['id'] ?>" class="list-group-item list-group-item-action" data-id="<?php echo $quadro['id']; ?>">
+                            <a href="quadros_view.php?id=<?= $quadro['id'] ?>" class="list-group-item list-group-item-action" data-id="<?php echo $quadro['id']; ?>">
                                 <div class="d-flex w-100 justify-content-between">
                                     <h5 class="mb-1"><?php echo htmlspecialchars($quadro['titulo']); ?></h5>
+                                    <small class="text-muted">Valor Total: <?= 'R$ ' . $total_valor_quadro; ?></small>
+
                                     <small class="text-muted">Criada em: <?php echo $createdDate; ?></small>
+
+
                                 </div>
                                 <p class="mb-1">Status: <?php echo $status; ?></p>
                                 <small class="text-muted">Tarefas: <?php echo contarTarefas($pdo, $quadro['id']); ?> </small>

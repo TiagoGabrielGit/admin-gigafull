@@ -14,6 +14,14 @@ if (isset($_SESSION['id'])) {
         $horasInclusas = filter_input(INPUT_POST, 'horas_inclusas', FILTER_VALIDATE_INT);
         $valorHoraExcedente = filter_input(INPUT_POST, 'valor_hora_excedente', FILTER_DEFAULT, FILTER_FLAG_ALLOW_FRACTION);
 
+        // Verificar se os valores estão em branco para definir como null
+        $valorHora = ($valorHora === '') ? null : $valorHora;
+        $valorMensal = ($valorMensal === '') ? null : $valorMensal;
+        $valorFixo = ($valorFixo === '') ? null : $valorFixo;
+        $horasInclusas = ($horasInclusas === '') ? null : $horasInclusas;
+        $valorHoraExcedente = ($valorHoraExcedente === '') ? null : $valorHoraExcedente;
+
+
         if ($idServico) {
             // Preparar a consulta SQL para atualizar os dados do serviço
             if ($tipoCobranca == 4) {

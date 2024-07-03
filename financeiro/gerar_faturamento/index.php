@@ -74,30 +74,31 @@ if ($rowCount_permissions > 0) {
                         try {
                             // Prepara a consulta SQL
                             $consulta = "SELECT
-                        e.id as empresa_id,
-                            e.fantasia AS nome_empresa,
-                            s.service AS descricao_servico,
-                            cs.id as id_servico,
-                            SUM(cr.seconds_worked) as segundos_trabalhados,
-                            CONCAT(
-                                FLOOR(SUM(cr.seconds_worked) / 3600), 'h ',
-                                FLOOR((SUM(cr.seconds_worked) % 3600) / 60), 'min ',
-                                (SUM(cr.seconds_worked) % 60), 'seg'
-                            ) AS tempo_trabalhado_formatado,
-                            CONCAT(
-                                ROUND(SUM(cr.seconds_worked) / 3600)
-                            ) AS tempo_trabalhado_arredondado,
-                            cs.contract_id as contract_id
-                        FROM chamado_relato cr
-                        LEFT JOIN chamados c ON c.id = cr.chamado_id
-                        LEFT JOIN contract_service cs ON cs.id = c.service_id
-                        LEFT JOIN service s ON s.id = cs.service_id
-                        LEFT JOIN empresas e ON e.id = c.empresa_id
-                        WHERE s.description IS NOT NULL
-                            AND MONTH(cr.relato_hora_inicial) = :mes
-                            AND YEAR(cr.relato_hora_inicial) = :ano
-                        GROUP BY cs.id
-                        ORDER BY c.id DESC";
+    e.id AS empresa_id,
+    e.fantasia AS nome_empresa,
+    s.service AS descricao_servico,
+    cs.id AS id_servico,
+    COALESCE(SUM(cr.seconds_worked), 0) AS segundos_trabalhados,
+    CONCAT(
+        FLOOR(COALESCE(SUM(cr.seconds_worked), 0) / 3600), 'h ',
+        FLOOR((COALESCE(SUM(cr.seconds_worked), 0) % 3600) / 60), 'min ',
+        (COALESCE(SUM(cr.seconds_worked), 0) % 60), 'seg'
+    ) AS tempo_trabalhado_formatado,
+    CONCAT(
+        ROUND(COALESCE(SUM(cr.seconds_worked), 0) / 3600)
+    ) AS tempo_trabalhado_arredondado,
+    cs.contract_id AS contract_id
+FROM contract_service cs
+LEFT JOIN contract as con ON con.id = cs.contract_id
+LEFT JOIN service s ON s.id = cs.service_id
+LEFT JOIN empresas e ON e.id = con.empresa_id
+LEFT JOIN chamados c ON c.service_id = cs.id
+LEFT JOIN chamado_relato cr ON cr.chamado_id = c.id 
+    AND MONTH(cr.relato_hora_inicial) = :mes
+    AND YEAR(cr.relato_hora_inicial) = :ano
+WHERE s.description IS NOT NULL  AND cs.active = 1
+GROUP BY cs.id, e.id, e.fantasia, s.service, cs.contract_id
+ORDER BY e.fantasia ASC";
 
                             // Prepara e executa a consulta
                             $stmt = $pdo->prepare($consulta);

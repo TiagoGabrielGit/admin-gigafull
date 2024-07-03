@@ -32,6 +32,7 @@ if ($rowCount_permissions > 0) {
         }
     </style>
 
+
     <main id="main" class="main">
 
         <div class="pagetitle">
