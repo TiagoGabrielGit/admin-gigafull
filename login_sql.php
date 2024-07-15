@@ -28,6 +28,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
     up.permite_selecionar_atendente_abertura_chamado as 'permite_selecionar_atendente_abertura_chamado',
     up.permite_alterar_configuracoes_chamado as 'permite_alterar_configuracoes_chamado',
     up.permite_visualizar_protocolo_erp as 'permite_visualizar_protocolo_erp',
+    up.permite_configurar_privacidade_equipamentos as 'permite_configurar_privacidade_equipamentos',
     up.permite_configurar_privacidade_credenciais as 'permite_configurar_privacidade_credenciais',
     up.permite_gerenciar_incidente as 'permite_gerenciar_incidente',
     u.reset_password as reset_password,
@@ -79,6 +80,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       $_SESSION['permite_selecionar_atendente_abertura_chamado'] = $usuario['permite_selecionar_atendente_abertura_chamado'];
       $_SESSION['permite_alterar_configuracoes_chamado'] = $usuario['permite_alterar_configuracoes_chamado'];
       $_SESSION['permite_visualizar_protocolo_erp'] = $usuario['permite_visualizar_protocolo_erp'];
+      $_SESSION['permite_configurar_privacidade_equipamentos'] = $usuario['permite_configurar_privacidade_equipamentos'];
       $_SESSION['permite_configurar_privacidade_credenciais'] = $usuario['permite_configurar_privacidade_credenciais'];
       $_SESSION['atributoEmpresaPropria'] = $usuario['atributoEmpresaPropria'];
       $_SESSION['id_pessoa'] = $usuario['id_pessoa'];

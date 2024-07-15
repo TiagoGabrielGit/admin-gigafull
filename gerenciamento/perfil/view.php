@@ -923,6 +923,52 @@ p.id = $idPerfil
                                                 <?php }
                                                 } ?>
                                             </div>
+
+                                            <div class="col-lg-3">
+                                                <div class="col-12">
+                                                    <span><b>Vault</b></span>
+                                                </div>
+                                                <?php
+                                                $submenu_vault =
+                                                    "SELECT us.id as idSubmenu, us.url as urlSubmenu, us.submenu as submenu
+                                                FROM url_submenu as us
+                                                WHERE us.menu_id = 36
+                                                ORDER BY us.submenu ASC";
+                                                $r_submenu_vault = mysqli_query($mysqli, $submenu_vault);
+                                                while ($c_submenu_vault = mysqli_fetch_assoc($r_submenu_vault)) {
+                                                    $idSubmenu = $c_submenu_vault['idSubmenu'];
+
+                                                    $valida_check =
+                                                        "SELECT
+                                                count(*) as validaCheck,
+                                                ppsm.id as idPermissao
+                                                FROM
+                                                perfil_permissoes_submenu as ppsm
+                                                WHERE
+                                                ppsm.url_submenu = $idSubmenu
+                                                and
+                                                ppsm.perfil_id = $idPerfil
+                                                ";
+                                                    $r_valida_check = mysqli_query($mysqli, $valida_check);
+                                                    $c_valida_check = mysqli_fetch_assoc($r_valida_check);
+
+                                                    if ($c_valida_check['validaCheck'] <> "0") { ?>
+                                                        <div class="col-12">
+                                                            <div class="form-check">
+                                                                <input onclick="despermitirSubmenu(<?= $c_valida_check['idPermissao'] ?>)" class="form-check-input" type="checkbox" id="submenu<?= $idSubmenu ?>" checked data-bs-toggle="modal" data-bs-target="#modalDespermitirSubmenu">
+                                                                <label class="form-check-label" for="submenu<?= $idSubmenu ?>"><?= $c_submenu_vault['submenu'] ?></label>
+                                                            </div>
+                                                        </div>
+                                                    <?php } else { ?>
+                                                        <div class="col-12">
+                                                            <div class="form-check">
+                                                                <input onclick="permitirSubmenu(<?= $idSubmenu ?>, '<?= $idPerfil ?>')" class="form-check-input" type="checkbox" id="submenu<?= $idSubmenu ?>" data-bs-toggle="modal" data-bs-target="#modalPermitirSubmenu">
+                                                                <label class="form-check-label" for="submenu<?= $idSubmenu ?>"><?= $c_submenu_vault['submenu'] ?></label>
+                                                            </div>
+                                                        </div>
+                                                <?php }
+                                                } ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

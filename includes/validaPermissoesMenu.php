@@ -557,3 +557,34 @@ WHERE um.id = '34' and ppm.perfil_id = $perfil_id";
 
 $r_nav_meu_plano = mysqli_query($mysqli, $nav_meu_plano);
 $c_nav_meu_plano = mysqli_fetch_assoc($r_nav_meu_plano);
+
+////////////////////////////////////////////////////////
+
+$nav_equipamentos = "SELECT count(*) as c
+FROM url_menu as um
+LEFT JOIN perfil_permissoes_menu as ppm ON ppm.url_menu = um.id
+WHERE um.id = '35' and ppm.perfil_id = $perfil_id";
+
+$r_nav_equipamentos = mysqli_query($mysqli, $nav_equipamentos);
+$c_nav_equipamentos = mysqli_fetch_assoc($r_nav_equipamentos);
+
+////////////////////////////////////////////////////////
+
+$nav_vault = "SELECT count(*) as c
+FROM url_menu as um
+LEFT JOIN perfil_permissoes_menu as ppm ON ppm.url_menu = um.id
+WHERE um.id = '36' and ppm.perfil_id = $perfil_id";
+
+$r_nav_vault = mysqli_query($mysqli, $nav_vault);
+$c_nav_vault = mysqli_fetch_assoc($r_nav_vault);
+
+////////////////////////////////////////////////////////
+
+$nav_vmsLocal = "SELECT count(*) as c
+FROM url_menu as um
+LEFT JOIN perfil_permissoes_menu as ppm ON ppm.url_menu = um.id
+WHERE um.id = '37' and ppm.perfil_id = $perfil_id";
+
+$r_nav_vmsLocal = mysqli_query($mysqli, $nav_vmsLocal);
+$c_nav_vmsLocal = mysqli_fetch_assoc($r_nav_vmsLocal);
+

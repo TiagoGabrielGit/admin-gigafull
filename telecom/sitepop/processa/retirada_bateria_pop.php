@@ -20,7 +20,7 @@ if (isset($_SESSION['id']) && $_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->bindParam(':status', $status);
         $stmt->execute();
 
-        header("Location: /telecom/sitepop/view.php?id=$idPOP");
+        header("Location: /telecom/sitepop/view_energia.php?id=$idPOP");
     } catch (PDOException $e) {
         echo "Erro: " . $e->getMessage();
     }

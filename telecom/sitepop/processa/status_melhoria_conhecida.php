@@ -21,14 +21,14 @@ if (isset($_SESSION['id']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute();
 
             // Redireciona para a página de visualização
-            header("Location: /telecom/sitepop/view.php?id=$mc_pop_id&tab=atividades");
+            header("Location: /telecom/sitepop/view_atividades.php?id=$mc_pop_id&tab=atividades");
             exit;
         } catch (PDOException $e) {
-            header("Location: /telecom/sitepop/view.php?id=$mc_pop_id&tab=atividades");
+            header("Location: /telecom/sitepop/view_atividades.php?id=$mc_pop_id&tab=atividades");
         }
     } else {
-        header("Location: /telecom/sitepop/view.php?id=$mc_pop_id&tab=atividades");
+        header("Location: /telecom/sitepop/view_atividades.php?id=$mc_pop_id&tab=atividades");
     }
 } else {
-    header("Location: /telecom/sitepop/view.php?id=$mc_pop_id&tab=atividades");
+    header("Location: /telecom/sitepop/view_atividades.php?id=$mc_pop_id&tab=atividades");
 }

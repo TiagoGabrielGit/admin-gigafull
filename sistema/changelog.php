@@ -12,6 +12,66 @@ require "../includes/menu.php";
 
         <div class="card">
           <div class="card-body">
+            <br><br>
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading14-9">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse14-9" aria-expanded="false" aria-controls="collapse14-9">
+                    Versão 14.9 - 15/07/2024
+                  </button>
+                </h2>
+                <div id="collapse14-9" class="accordion-collapse collapse" aria-labelledby="heading14-9" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Melhorias em equipamentos, vms e credenciais;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Excluido tabela pop_rack;<br>
+                    # Excluido coluna rack_id da tabela equipamentospop;<br>
+                    # Criado menu id 35;<br>
+                    # Criado menu id 36;<br>
+                    # Criado submenu id 65;<br>
+                    # Criado submenu id 66;<br>
+                    # Criado submenu id 67;<br>
+                    # Criado submenu id 68;<br>
+                    # Criado coluna permite_configurar_privacidade_equipamentos na tabela usuarios_permissao;<br>
+                    # Criado menu id 37;<br>
+                    # Criado tabela credenciais_vms_privacidade_equipe;<br>
+                    # Criado tabela credenciais_vms_privacidade_usuario;<br>
+                    # Criado tabela credenciais_portal_privacidade_equipe;<br>
+                    # Criado tabela credenciais_portal_privacidade_usuario;<br>
+                    # Criado tabela credenciais_equipamento_privacidade_equipe;<br>
+                    # Criado tabela credenciais_equipamento_privacidade_usuario;<br>
+                    # Criado tabela credenciais_email_privacidade_equipe;<br>
+                    # Criado tabela credenciais_email_privacidade_usuario;<br>
+                    # Migrado permissoes da tabela credenciais_privacidade_equipe para as tabelas adequadas;<br>
+                    # Migrado permissoes da tabela credenciais_privacidade_usuario para as tabelas adequadas;<br>
+                    # Excluido tabela credenciais_privacidade_equipe;<br>
+                    # Excluido tabela credenciais_privacidade_usuario;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Replicar relato do chamado principal para os chamados dependentes;<br>
+                    # Notificações smart de relatos em chamados realizados via smartmobile;<br>
+                    # Notificações smart de abertura de chamados realizados via smartcontrol;<br>
+                    # Notificações smart de abertura de chamados realizados via smartmobile;<br>
+                    # Solicitar aferição via control;<br>
+                    # Observações Internas Chamado;<br>
+                    # Pesquisa MP Concluidas através da data;<br>
+                    # Página de aceite MP;<br>
+                    # White-Label iframe incidentes;<br>
+                    # TABs permitidas no iframe incidentes;<br>
+                    # Remover PON/RF durante criação de MP;<br>
+                    # Vincular uma documentação à um tipo de incidente;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Atributos de equipamentos;<br>
+                    # Permissões em documentações;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div class="accordion" id="accordionExample">
               <div class="accordion-item">

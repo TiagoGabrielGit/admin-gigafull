@@ -23,9 +23,9 @@ if (isset($_SESSION['id']) && $_SERVER["REQUEST_METHOD"] == "POST") {
         // Executa a instrução SQL
         $stmt->execute();
 
-        header("Location: /telecom/sitepop/view.php?id=" . $pop_id);
+        header("Location: /telecom/sitepop/view_atividades.php?id=" . $pop_id);
     } catch (PDOException $e) {
-        header("Location: /telecom/sitepop/view.php?id=" . $pop_id);
+        header("Location: /telecom/sitepop/view_atividades.php?id=" . $pop_id);
     }
 
     $pdo = null;

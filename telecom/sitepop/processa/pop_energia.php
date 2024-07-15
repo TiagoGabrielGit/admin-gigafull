@@ -33,14 +33,14 @@ if ($_SESSION['id']) {
 
                 // Verificação se o UPDATE ou INSERT foi bem-sucedido
                 if ($stmt->rowCount() > 0) {
-                    header("Location: /telecom/sitepop/view.php?id=$pop_id&tab=energia");
+                    header("Location: /telecom/sitepop/view_energia.php?id=$pop_id&tab=energia");
                     exit;
                 } else {
-                    header("Location: /telecom/sitepop/view.php?id=$pop_id&tab=energia");
+                    header("Location: /telecom/sitepop/view_energia.php?id=$pop_id&tab=energia");
                     exit;
                 }
             } catch (PDOException $e) {
-                header("Location: /telecom/sitepop/view.php?id=$pop_id&tab=energia");
+                header("Location: /telecom/sitepop/view_energia.php?id=$pop_id&tab=energia");
                 exit;
             }
         }

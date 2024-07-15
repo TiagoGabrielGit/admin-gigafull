@@ -116,11 +116,9 @@ require "validaRotina.php";
                         </li>
                     <?php } ?>
 
-
-
                     <?php if ($c_nav_sub_servicos['c'] == 1) { ?>
                         <li>
-                            <a href="/cadastros/produtos/servicos/servicos.php">
+                            <a href="/cadastros/servicos/servicos.php">
                                 <i class="bi bi-circle"></i><span>Serviços</span>
                             </a>
                         </li>
@@ -477,15 +475,6 @@ require "validaRotina.php";
             <li class="nav-heading">Telecom</li>
         <?php } ?>
 
-        <?php if ($c_nav_credenciais['c'] == 1) { ?>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="/telecom/credentials/index.php">
-                    <i class="bi bi-circle"></i>
-                    <span>Credenciais</span>
-                </a>
-            </li>
-        <?php } ?>
-
         <?php if ($c_nav_documentation['c'] == 1) { ?>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="/telecom/documentacao/index.php">
@@ -495,20 +484,20 @@ require "validaRotina.php";
             </li>
         <?php } ?>
 
+        <?php if ($c_nav_equipamentos['c'] == 1) { ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/telecom/sitepop/equipamentos/index.php">
+                    <i class="bi bi-circle"></i>
+                    <span>Equipamentos POP</span>
+                </a>
+            </li>
+        <?php } ?>
+
         <?php if ($c_nav_popSite['c'] == 1) { ?>
             <li class=" nav-item">
                 <a class="nav-link collapsed" href="/telecom/sitepop/index.php">
                     <i class="bi bi-circle"></i>
                     <span>POP/Site</span>
-                </a>
-            </li>
-        <?php } ?>
-
-        <?php if ($c_nav_equipamentos['c'] == 1) { ?>
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="/telecom/equipamentos/index.php">
-                    <i class="bi bi-hdd-rack"></i>
-                    <span>Equipamentos</span>
                 </a>
             </li>
         <?php } ?>
@@ -566,6 +555,42 @@ require "validaRotina.php";
                         </li>
                     <?php } ?>
                 </ul>
+            </li>
+        <?php } ?>
+
+        <?php if ($c_nav_vault['c'] == 1) { ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#vault-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-circle"></i><span>Vault</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="vault-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <?php if ($c_nav_sub_vault_email['c'] == 1) {  ?>
+                        <li>
+                            <a href="/telecom/vault/email/index.php">
+                                <i class="bi bi-circle"></i><span>E-mail</span>
+                            </a>
+                        </li>
+                    <?php  }  ?>
+                </ul>
+
+                <ul id="vault-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <?php if ($c_nav_sub_vault_portal['c'] == 1) {  ?>
+                        <li>
+                            <a href="/telecom/vault/portal/index.php">
+                                <i class="bi bi-circle"></i><span>Portais</span>
+                            </a>
+                        </li>
+                    <?php  }  ?>
+                </ul>
+            </li>
+        <?php } ?>
+
+        <?php if ($c_nav_vmsLocal['c'] == 1) { ?>
+            <li class=" nav-item">
+                <a class="nav-link collapsed" href="/telecom/vmslocal/index.php">
+                    <i class="bi bi-circle"></i>
+                    <span>VMs - Local</span>
+                </a>
             </li>
         <?php } ?>
 
@@ -801,4 +826,3 @@ require "validaRotina.php";
     </ul>
 
 </aside>
-

@@ -17,11 +17,11 @@ if (isset($_SESSION['id']) && $_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Verifica se a operação foi bem sucedida
         if ($stmt->rowCount() > 0) {
-            header("Location: /telecom/sitepop/view.php?id=" . $idPOP);
+            header("Location: /telecom/sitepop/view_atividades.php?id=" . $idPOP);
         } else {
-            header("Location: /telecom/sitepop/view.php?id=" . $idPOP);
+            header("Location: /telecom/sitepop/view_atividades.php?id=" . $idPOP);
         }
     } catch (PDOException $e) {
-        header("Location: /telecom/sitepop/view.php?id=" . $idPOP);
+        header("Location: /telecom/sitepop/view_atividades.php?id=" . $idPOP);
     }
 }

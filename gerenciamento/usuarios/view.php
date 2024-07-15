@@ -56,6 +56,7 @@ if ($rowCount_permissions_submenu > 0) {
         up.permite_selecionar_atendente_abertura_chamado as 'permite_selecionar_atendente_abertura_chamado',
         up.permite_alterar_configuracoes_chamado as 'permite_alterar_configuracoes_chamado',
         up.permite_visualizar_protocolo_erp as 'permite_visualizar_protocolo_erp',
+        up.permite_configurar_privacidade_equipamentos as 'permite_configurar_privacidade_equipamentos',
         up.permite_configurar_privacidade_credenciais as 'permite_configurar_privacidade_credenciais',
         p.perfil as nome_perfil,
         user.chatIdTelegram as chatIdTelegram,

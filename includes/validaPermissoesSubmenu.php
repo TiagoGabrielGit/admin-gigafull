@@ -1006,3 +1006,28 @@ WHERE usm.id = '64' and ppsm.perfil_id = $perfil_id";
 $r_nav_sub_configuracoes = mysqli_query($mysqli, $nav_sub_configuracoes);
 $c_nav_sub_configuracoes = mysqli_fetch_assoc($r_nav_sub_configuracoes);
 /////////////////////////////////////////
+$nav_sub_vault_equipamentos = "SELECT count(*) as c
+FROM url_submenu as usm
+LEFT JOIN perfil_permissoes_submenu as ppsm ON ppsm.url_submenu = usm.id
+WHERE usm.id = '65' and ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_vault_equipamentos = mysqli_query($mysqli, $nav_sub_vault_equipamentos);
+$c_nav_sub_vault_equipamentos = mysqli_fetch_assoc($r_nav_sub_vault_equipamentos);
+/////////////////////////////////////////
+$nav_sub_vault_email = "SELECT count(*) as c
+FROM url_submenu as usm
+LEFT JOIN perfil_permissoes_submenu as ppsm ON ppsm.url_submenu = usm.id
+WHERE usm.id = '66' and ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_vault_email = mysqli_query($mysqli, $nav_sub_vault_email);
+$c_nav_sub_vault_email = mysqli_fetch_assoc($r_nav_sub_vault_email);
+
+/////////////////////////////////////////
+$nav_sub_vault_portal = "SELECT count(*) as c
+FROM url_submenu as usm
+LEFT JOIN perfil_permissoes_submenu as ppsm ON ppsm.url_submenu = usm.id
+WHERE usm.id = '67' and ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_vault_portal = mysqli_query($mysqli, $nav_sub_vault_portal);
+$c_nav_sub_vault_portal = mysqli_fetch_assoc($r_nav_sub_vault_portal);
+

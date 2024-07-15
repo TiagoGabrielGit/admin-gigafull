@@ -230,6 +230,27 @@
     </div>
 
     <div class="row mb-3">
+        <label for="permite_configurar_privacidade_equipamentos" class="col-sm-4 col-form-label">Permite configurar privacidade equipamentos</label>
+        <div class="col-sm-6">
+            <select name="permite_configurar_privacidade_equipamentos" id="permite_configurar_privacidade_equipamentos" class="form-select" required>
+                <?php
+                if ($campos['permite_configurar_privacidade_equipamentos'] == 1) { ?>
+                    <option selected value="1">Sim</option>
+                    <option value="0">Não</option>
+                <?php } else if ($campos['permite_configurar_privacidade_equipamentos'] == 0) { ?>
+                    <option value="1">Sim</option>
+                    <option selected value="0">Não</option>
+                <?php } else { ?>
+                    <option selected disabled value="">Selecione uma opção</option>
+                    <option value="1">Sim</option>
+                    <option value="0">Não</option>
+                <?php }
+                ?>
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-3">
         <label for="permite_configurar_privacidade_credenciais" class="col-sm-4 col-form-label">Permite configurar privacidade credenciais</label>
         <div class="col-sm-6">
             <select name="permite_configurar_privacidade_credenciais" id="permite_configurar_privacidade_credenciais" class="form-select" required>

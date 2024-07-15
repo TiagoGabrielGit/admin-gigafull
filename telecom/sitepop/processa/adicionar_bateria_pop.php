@@ -23,14 +23,14 @@ if (isset($_SESSION['id']) && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Execute the statement
         if ($stmt->execute()) {
-            header("Location: /telecom/sitepop/view.php?id=$add_bateria_pop_id");
+            header("Location: /telecom/sitepop/view_energia.php?id=$add_bateria_pop_id");
             exit();
         } else {
-            header("Location: /telecom/sitepop/view.php?id=$add_bateria_pop_id");
+            header("Location: /telecom/sitepop/view_energia.php?id=$add_bateria_pop_id");
             exit();
         }
     } catch (PDOException $e) {
-        header("Location: /telecom/sitepop/view.php?id=$add_bateria_pop_id");
+        header("Location: /telecom/sitepop/view_energia.php?id=$add_bateria_pop_id");
         exit();
     }
 }

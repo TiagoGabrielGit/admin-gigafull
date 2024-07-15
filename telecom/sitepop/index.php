@@ -1,8 +1,6 @@
 <?php
 require "../../includes/menu.php";
-require "sql.php";
 require "../../conexoes/conexao_pdo.php";
-
 
 $menu_id = "6";
 $uid = $_SESSION['id'];
@@ -19,6 +17,19 @@ $exec_permissions_menu->execute();
 $rowCount_permissions_menu = $exec_permissions_menu->rowCount();
 
 if ($rowCount_permissions_menu > 0) {
+
+    $sql_lista_pops = 
+"SELECT
+pop.id as id,
+pop.pop as pop,
+pop.apelidoPop as apelidoPop,
+emp.fantasia as empresa,
+endereco.city as cidade
+FROM pop as pop
+LEFT JOIN pop_address as endereco ON endereco.pop_id = pop.id
+LEFT JOIN empresas as emp ON emp.id = pop.empresa_id
+WHERE pop.active = 1        
+ORDER BY emp.fantasia asc, pop.pop asc";
 ?>
 
 <main id="main" class="main">
@@ -78,7 +89,7 @@ if ($rowCount_permissions_menu > 0) {
                                         ?>
                                             <tr>
                                                 <td>
-                                                    <a href="view.php?id=<?= $id ?>">
+                                                    <a href="view_informacoes.php?id=<?= $id ?>">
                                                         <span style="color: red;"><?= $campos['pop']; ?></span>
                                                     </a>
                                                 </td>
@@ -206,7 +217,6 @@ if ($rowCount_permissions_menu > 0) {
 
 
 <?php
-require "js.php";
 } else {
     require "../../acesso_negado.php";
 }
