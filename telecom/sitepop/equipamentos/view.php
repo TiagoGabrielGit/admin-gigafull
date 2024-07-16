@@ -47,13 +47,17 @@ eqp.equipamento as nome_equipamento,
 fab.id as id_fabricante,
 fab.fabricante as nome_fabricante,
 tipo.id as id_tipoEquipamento,
-tipo.tipo as nome_tipoEquipamento
-FROM equipamentospop as eqpop
+tipo.tipo as nome_tipoEquipamento,
+p.nome as pessoa
+
+FROM equipamentospop as eqpop 
 LEFT JOIN empresas as emp ON emp.id = eqpop.empresa_id
 LEFT JOIN pop as pop ON pop.id = eqpop.pop_id
 LEFT JOIN equipamentos as eqp ON eqp.id = eqpop.equipamento_id
 LEFT JOIN fabricante as fab ON fab.id = eqp.fabricante
 LEFT JOIN tipoequipamento as tipo ON tipo.id = eqpop.tipoEquipamento_id
+LEFT JOIN usuarios as u ON u.id = eqpop.usuario_criador
+LEFT JOIN pessoas as p ON p.id = u.pessoa_id 
 WHERE eqpop.id = '$id'
 ";
 

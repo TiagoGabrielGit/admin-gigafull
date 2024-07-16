@@ -13,6 +13,49 @@ require "../includes/menu.php";
         <div class="card">
           <div class="card-body">
             <br><br>
+
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading15-0">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse15-0" aria-expanded="false" aria-controls="collapse15-0">
+                    Versão 15.0 - 16/07/2024
+                  </button>
+                </h2>
+                <div id="collapse15-0" class="accordion-collapse collapse" aria-labelledby="heading15-0" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Não listar equipamentos, vms, email e portal no index se usuario nao tiver permitido;<br>
+                    # Correção BUG editar equipamentos;<br>
+                    # Corração BUG privacidade vault equipamentos;<br>
+                    # Corração BUG privacidade vault email;<br>
+                    # Corração BUG privacidade vault portal;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Replicar relato do chamado principal para os chamados dependentes;<br>
+                    # Notificações smart de relatos em chamados realizados via smartmobile;<br>
+                    # Notificações smart de abertura de chamados realizados via smartcontrol;<br>
+                    # Notificações smart de abertura de chamados realizados via smartmobile;<br>
+                    # Solicitar aferição via control;<br>
+                    # Observações Internas Chamado;<br>
+                    # Pesquisa MP Concluidas através da data;<br>
+                    # Página de aceite MP;<br>
+                    # White-Label iframe incidentes;<br>
+                    # TABs permitidas no iframe incidentes;<br>
+                    # Remover PON/RF durante criação de MP;<br>
+                    # Vincular uma documentação à um tipo de incidente;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Atributos de equipamentos;<br>
+                    # Permissões em documentações;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <div class="accordion" id="accordionExample">
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading14-9">

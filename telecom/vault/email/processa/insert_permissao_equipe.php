@@ -7,7 +7,7 @@ if (isset($_SESSION['id'])) {
     $idEquipe = $_POST["idEquipe"];
     $idCredencial = $_POST["credencialId"];
 
-    $insert_permissao_equipe = "INSERT INTO credenciais_equipamento_privacidade_equipe (credencial_id, equipe_id) 
+    $insert_permissao_equipe = "INSERT INTO credenciais_email_privacidade_equipe (credencial_id, equipe_id) 
                             VALUES (:idCredencial, :idEquipe)";
     $stmt1 = $pdo->prepare($insert_permissao_equipe);
     $stmt1->bindParam(':idCredencial', $idCredencial);

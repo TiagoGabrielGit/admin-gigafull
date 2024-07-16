@@ -130,26 +130,33 @@
                                 <textarea id="anotacaoEquipamento" name="anotacaoEquipamento" class="form-control" maxlength="10000" rows="4"><?php echo $row['anotacaoEquipamento'] ?></textarea>
                             </div>
 
-                            <div class="col-4" style="text-align: left;">
-                                <a href="/telecom/vault/equipamentos/view.php?id=<?= $id ?>">
-                                    <button type="button" class="btn btn-info btn-sm">Visualizar Credenciais</button>
-                                </a>
-                            </div>
 
-                            <div class="col-4" style="text-align: center;">
-                                <button name="salvar" type="submit" class="btn btn-danger btn-sm">Salvar</button>
-                                <a href="/telecom/sitepop/equipamentos/index.php"><input type="button" value="Voltar" class="btn btn-sm btn-secondary"></a>
-                            </div>
+                            <div class="col-lg-12">
+                                <div class="row">
 
-                            <div class="col-4" style="text-align: right;">
+                                    <div class="col-lg-4">
+                                        <a href="/telecom/vault/equipamentos/view.php?id=<?= $id ?>">
+                                            <button type="button" class="btn btn-info btn-sm">Visualizar Credenciais</button>
+                                        </a>
+                                    </div>
 
-                                <?php
+                                    <div class="col-lg-4">
+                                        <button type="submit" class="btn btn-danger btn-sm">Salvar</button>
+                                        <a href="/telecom/sitepop/equipamentos/index.php"><input type="button" value="Voltar" class="btn btn-sm btn-secondary"></a>
+                                    </div>
 
-                                if ($_SESSION['permite_configurar_privacidade_equipamentos'] == 1) { ?>
-                                    <a data-bs-toggle="modal" data-bs-target="#modalPrivacidadeEquipe"><input type="button" class="btn btn-dark btn-sm" value="Privacidade Equipe"></input></a>
-                                    <a data-bs-toggle="modal" data-bs-target="#modalPrivacidadeUsuario"><input type="button" class="btn btn-dark btn-sm" value="Privacidade Usuário"></input></a>
-                                <?php }
-                                ?>
+                                    <div class="col-lg-4">
+                                        <?php
+                                        if ($_SESSION['permite_configurar_privacidade_equipamentos'] == 1) { ?>
+                                            <a data-bs-toggle="modal" data-bs-target="#modalPrivacidadeEquipe"><input type="button" class="btn btn-dark btn-sm" value="Privacidade Equipe"></input></a>
+                                            <a data-bs-toggle="modal" data-bs-target="#modalPrivacidadeUsuario"><input type="button" class="btn btn-dark btn-sm" value="Privacidade Usuário"></input></a>
+                                        <?php }
+                                        ?>
+                                        <br>
+                                        <label class="form-label"> Usuário Criador</label>
+                                        <input readonly disabled class="form-control" value="<?= $row['pessoa']  ?>">
+                                    </div>
+                                </div>
                             </div>
                         </form><!-- Vertical Form -->
 

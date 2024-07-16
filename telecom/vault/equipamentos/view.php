@@ -204,7 +204,7 @@ if ($rowCount_permissions_submenu > 0) {
                                 } else if ($campos['idPrivacidade'] == '2') {
                                     $sql_check_permissao_equipe =
                                         "SELECT *
-                                        FROM credenciais_privacidade_equipe as cpe
+                                        FROM credenciais_equipamento_privacidade_equipe as cpe
                                         WHERE
                                         cpe.credencial_id = $id_credencial AND 
                                         cpe.equipe_id IN ((SELECT ei.equipe_id as idEquipe
@@ -216,7 +216,7 @@ if ($rowCount_permissions_submenu > 0) {
 
                                     $sql_check_perm_user =
                                         "SELECT *
-                                        FROM credenciais_privacidade_usuario as cpu
+                                        FROM credenciais_equipamento_privacidade_usuario as cpu
                                         WHERE cpu.credencial_id = $id_credencial AND cpu.usuario_id = $idSessao";
 
                                     $r_check_perm_User = mysqli_query($mysqli, $sql_check_perm_user);

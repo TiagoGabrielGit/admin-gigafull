@@ -187,7 +187,7 @@ if ($rowCount_permissions_menu > 0) {
                                                 </div>
                                             </div>
                                         </div>
-                                                                </div>
+                                    </div>
                                 </div>
                             </div>
                             <form method="POST" action="#" class="row g-3">
@@ -363,10 +363,12 @@ if ($rowCount_permissions_menu > 0) {
                                         vm.hostname as hostname,
                                         vm.ipaddress as ipaddress,
                                         vm.statusvm as statusvm,
+                                        vm.privacidade as privacidade,
                                         emp.fantasia as empresa,
                                         pop.pop as pop,
                                         eqpop.hostname as servidor,
-                                        so.sistemaOperacional as sistemaOperacional
+                                        so.sistemaOperacional as sistemaOperacional,
+                                        vm.usuario_criador as usuario_criador
                                         FROM vms as vm
                                         LEFT JOIN empresas as emp ON emp.id = vm.empresa_id
                                         LEFT JOIN pop as pop ON pop.id = vm.pop_id
@@ -385,25 +387,50 @@ if ($rowCount_permissions_menu > 0) {
 
                                     $resultado = mysqli_query($mysqli, $sql_pesquisa_vms) or die("Erro ao retornar dados");
 
-                                    // Obtendo os dados por meio de um loop while
                                     while ($campos = $resultado->fetch_array()) {
-                                        $id = $campos['idvm']; ?>
-                                        <tr onclick="window.location.href='view.php?id=<?= $id ?>'">
+                                        $id = $campos['idvm'];
+                                        if (($campos['usuario_criador'] == $_SESSION['id']) || ($campos['privacidade'] == 1)) {
+                                    ?>
+                                            <tr onclick="window.location.href='view.php?id=<?= $id ?>'">
 
-                                            <td style="text-align: center;"><?= $campos['hostname']; ?></td>
-                                            <td style="text-align: center;"><?= $campos['empresa']; ?> / <?php echo $campos['pop']; ?></td>
-                                            <td style="text-align: center;"><?= $campos['servidor']; ?></td>
-                                            <td style="text-align: center;"><?= $campos['ipaddress']; ?></td>
-                                            <td style="text-align: center;"><?= $campos['sistemaOperacional']; ?></td>
-                                            <td style="text-align: center;" style="text-align: center;"><?= $campos['statusvm']; ?></td>
-                                        </tr>
-                                    <?php } ?>
+                                                <td style="text-align: center;"><?= $campos['hostname']; ?></td>
+                                                <td style="text-align: center;"><?= $campos['empresa']; ?> / <?php echo $campos['pop']; ?></td>
+                                                <td style="text-align: center;"><?= $campos['servidor']; ?></td>
+                                                <td style="text-align: center;"><?= $campos['ipaddress']; ?></td>
+                                                <td style="text-align: center;"><?= $campos['sistemaOperacional']; ?></td>
+                                                <td style="text-align: center;" style="text-align: center;"><?= $campos['statusvm']; ?></td>
+                                            </tr>
+                                            <?php } else {
+                                            $sql_check_perm_user = "SELECT * FROM vm_privacidade_usuario WHERE vm_id = :id AND usuario_id = :userId";
+                                            $stmt_check_perm_user = $pdo->prepare($sql_check_perm_user);
+                                            $stmt_check_perm_user->bindParam(':id', $id, PDO::PARAM_INT);
+                                            $stmt_check_perm_user->bindParam(':userId', $_SESSION['id'], PDO::PARAM_INT);
+                                            $stmt_check_perm_user->execute();
+
+                                            $sql_check_perm_equipe = "SELECT * FROM vm_privacidade_equipe WHERE vm_id = :id AND equipe_id IN (SELECT equipe_id FROM equipes_integrantes WHERE integrante_id = :userId)";
+                                            $stmt_check_perm_equipe = $pdo->prepare($sql_check_perm_equipe);
+                                            $stmt_check_perm_equipe->bindParam(':id', $id, PDO::PARAM_INT);
+                                            $stmt_check_perm_equipe->bindParam(':userId', $_SESSION['id'], PDO::PARAM_INT);
+                                            $stmt_check_perm_equipe->execute();
+
+                                            if ($stmt_check_perm_user->rowCount() > 0 || $stmt_check_perm_equipe->rowCount() > 0) {
+                                            ?>
+                                                <tr onclick="window.location.href='view.php?id=<?= $id ?>'">
+
+                                                    <td style="text-align: center;"><?= $campos['hostname']; ?></td>
+                                                    <td style="text-align: center;"><?= $campos['empresa']; ?> / <?php echo $campos['pop']; ?></td>
+                                                    <td style="text-align: center;"><?= $campos['servidor']; ?></td>
+                                                    <td style="text-align: center;"><?= $campos['ipaddress']; ?></td>
+                                                    <td style="text-align: center;"><?= $campos['sistemaOperacional']; ?></td>
+                                                    <td style="text-align: center;" style="text-align: center;"><?= $campos['statusvm']; ?></td>
+                                                </tr>
+                                    <?php }
+                                        }
+                                    } ?>
                                 </tbody>
                             </table>
-                            <!-- End Table with stripped rows -->
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>

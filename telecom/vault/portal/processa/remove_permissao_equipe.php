@@ -10,7 +10,7 @@ if (isset($_SESSION['id'])) {
         'idCadastroCredencialEquipe' => $idCadastroCredencialEquipe
     ];
 
-    $sql = "DELETE FROM credenciais_equipamento_privacidade_equipe WHERE id = :idCadastroCredencialEquipe";
+    $sql = "DELETE FROM credenciais_portal_privacidade_equipe WHERE id = :idCadastroCredencialEquipe";
 
     $stmt = $pdo->prepare($sql);
     $stmt->execute($dados);

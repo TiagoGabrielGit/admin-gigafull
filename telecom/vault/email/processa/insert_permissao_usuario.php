@@ -8,7 +8,7 @@ if (isset($_SESSION['id'])) {
 
     $cont_insert = false;
 
-    $insert_permissao_usuario = "INSERT INTO credenciais_equipamento_privacidade_usuario (credencial_id, usuario_id) 
+    $insert_permissao_usuario = "INSERT INTO credenciais_email_privacidade_usuario (credencial_id, usuario_id) 
                             VALUES (:idCredencial, :idUsuario)";
     $stmt1 = $pdo->prepare($insert_permissao_usuario);
     $stmt1->bindParam(':idCredencial', $idCredencial);

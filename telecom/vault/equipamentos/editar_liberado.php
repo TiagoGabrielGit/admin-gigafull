@@ -176,7 +176,7 @@ if ($row['cred_priv'] == 3) {
 
                                                     $valida_permissao_equipe =
                                                         "SELECT id as idPermissao
-                                                        FROM credenciais_privacidade_equipe as cepe
+                                                        FROM credenciais_equipamento_privacidade_equipe as cepe
                                                         WHERE cepe.credencial_id = $idCredencial AND cepe.equipe_id = $idEquipe";
 
                                                     $r_valida_permissao_equipe = mysqli_query($mysqli, $valida_permissao_equipe);
@@ -222,7 +222,7 @@ if ($row['cred_priv'] == 3) {
                             <div class="row">
                                 <div class="col-3">
                                     <label for="id" class="form-label">Equipamento ID</label>
-                                    <input type="Text" name="idEquipamento" class="form-control" id="idEquipamento" readonly>
+                                    <input type="Text" name="idEquipamento" class="form-control" id="idEquipamento" readonly value="<?= $id ?>">
                                 </div>
                             </div>
                         </div>
@@ -254,7 +254,7 @@ if ($row['cred_priv'] == 3) {
 
                                                     $valida_permissao_usuario =
                                                         "SELECT id as idPermissao
-                                                        FROM credenciais_privacidade_usuario as cepu
+                                                        FROM credenciais_equipamento_privacidade_usuario as cepu
                                                         WHERE cepu.credencial_id = $idCredencial AND cepu.usuario_id = $idUsuario";
 
                                                     $r_valida_permissao_usuario = mysqli_query($mysqli, $valida_permissao_usuario);

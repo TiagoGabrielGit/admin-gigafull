@@ -117,10 +117,15 @@ if ($row['cred_priv'] == 3) {
                                     </div>
 
                                     <?php if ($_SESSION['permite_configurar_privacidade_credenciais'] == 1) { ?>
-                                        <div class='col-4' style='text-align: left;'>
-                                            <a onclick='dadosCredencial("<?php echo $row['cred_id']; ?>")' data-bs-toggle='modal' data-bs-target='#modalConfigPermissoes'>
-                                                <input type='button' class='btn btn-outline-dark btn-sm' value='Configurar permissões'>
-                                            </a>
+                                        <div class="col-lg-12">
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <a data-bs-toggle="modal" data-bs-target="#modalPrivacidadeEquipe"><input type="button" class="btn btn-dark btn-sm" value="Privacidade Equipe"></input></a>
+                                                </div>
+                                                <div class="col-6">
+                                                    <a data-bs-toggle="modal" data-bs-target="#modalPrivacidadeUsuario"><input type="button" class="btn btn-dark btn-sm" value="Privacidade Usuário"></input></a>
+                                                </div>
+                                            </div>
                                         </div>
                                     <?php } ?>
                                 </div>
@@ -156,17 +161,13 @@ if ($row['cred_priv'] == 3) {
     </section>
 
 </main><!-- End #main -->
-<script>
-    function dadosCredencial(idCredencial, tipoCredencial) {
-        document.querySelector("#idCredencial").value = idCredencial;
-    }
-</script>
 
-<div class="modal fade" id="modalConfigPermissoes" tabindex="-1">
+
+<div class="modal fade" id="modalPrivacidadeEquipe" tabindex="-1">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Configurar permissões</h5>
+                <h5 class="modal-title">Configurar Privacidade Equipe</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -175,133 +176,56 @@ if ($row['cred_priv'] == 3) {
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-3">
-                                    <label for="id" class="form-label">Credencial ID</label>
-                                    <input type="Text" name="idCredencial" class="form-control" id="idCredencial" disabled>
+                                    <label for="id" class="form-label">E-mail ID</label>
+                                    <input type="Text" name="idemail" class="form-control" id="idemail" readonly value="<?= $id ?>">
                                 </div>
-
                             </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Equipes</h5>
-                                        <div class="row mb-5">
-                                            <div class="col-sm-10">
-                                                <form>
-                                                    <?php
-                                                    $lista_equipes =
-                                                        "SELECT
-                                                            e.id as idEquipe,
-                                                            e.equipe as nomeEquipe
-                                                        FROM
-                                                            equipe as e
-                                                        WHERE
-                                                            e.active = 1
-                                                        ORDER BY
-                                                            e.equipe ASC    
-                                                        ";
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="card-body">
+                                    <h5 class="card-title">Equipes Permitidas</h5>
+                                    <div class="row mb-5">
+                                        <div class="col-sm-10">
+                                            <form>
+                                                <?php
+                                                $lista_equipes =
+                                                    "SELECT e.id as idEquipe, e.equipe as nomeEquipe
+                                                    FROM equipe as e
+                                                    WHERE e.active = 1
+                                                    ORDER BY e.equipe ASC";
 
-                                                    $r_lista_equipes = mysqli_query($mysqli, $lista_equipes) or die("Erro ao retornar dados");
+                                                $r_lista_equipes = mysqli_query($mysqli, $lista_equipes) or die("Erro ao retornar dados");
 
-                                                    while ($equipe = $r_lista_equipes->fetch_array()) {
-                                                        $idEquipe = $equipe['idEquipe'];
-                                                        $nomeEquipe = $equipe['nomeEquipe'];
-                                                        $idCredencial = $row['cred_id'];
+                                                while ($equipe = $r_lista_equipes->fetch_array()) {
+                                                    $idEquipe = $equipe['idEquipe'];
+                                                    $nomeEquipe = $equipe['nomeEquipe'];
+                                                    $idCredencial = $row['cred_id'];
 
-                                                        $valida_permissao_equipe =
-                                                            "SELECT
-                                                        id as idPermissao
-                                                        FROM
-                                                        credenciais_portal_privacidade_equipe as cepe
-                                                        WHERE
-                                                        cepe.credencial_id = $idCredencial
-                                                        AND
-                                                        cepe.equipe_id = $idEquipe
-                                                        ";
+                                                    $valida_permissao_equipe =
+                                                        "SELECT id as idPermissao
+                                                        FROM credenciais_portal_privacidade_equipe as cepe
+                                                        WHERE cepe.credencial_id = $idCredencial AND cepe.equipe_id = $idEquipe";
 
-                                                        $r_valida_permissao_equipe = mysqli_query($mysqli, $valida_permissao_equipe);
+                                                    $r_valida_permissao_equipe = mysqli_query($mysqli, $valida_permissao_equipe);
 
-                                                        $validacao_equipe = $r_valida_permissao_equipe->fetch_array();
+                                                    $validacao_equipe = $r_valida_permissao_equipe->fetch_array();
 
-                                                        if (empty($validacao_equipe['idPermissao'])) { ?>
-                                                            <div class="form-check form-switch">
-                                                                <input onclick="addPermissaoEquipe(<?= $idEquipe ?>, '<?= $idCredencial ?>', '3')" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"><?= $nomeEquipe ?></label>
-                                                            </div>
-                                                        <?php } else { ?>
-                                                            <div class="form-check form-switch">
-                                                                <input onclick="deletaPermissaoEquipe(<?= $validacao_equipe['idPermissao'] ?>)" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
-                                                                <label class="form-check-label" for="flexSwitchCheckChecked"><?= $nomeEquipe ?></label>
-                                                            </div>
-                                                        <?php } ?>
+                                                    if (empty($validacao_equipe['idPermissao'])) { ?>
+                                                        <div class="form-check form-switch">
+                                                            <input onclick="addPermissaoEquipe(<?= $idEquipe ?>, '<?= $idCredencial ?>', '2')" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                            <label class="form-check-label" for="flexSwitchCheckDefault"><?= $nomeEquipe ?></label>
+                                                        </div>
+                                                    <?php } else { ?>
+                                                        <div class="form-check form-switch">
+                                                            <input onclick="deletaPermissaoEquipe(<?= $validacao_equipe['idPermissao'] ?>)" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                                                            <label class="form-check-label" for="flexSwitchCheckChecked"><?= $nomeEquipe ?></label>
+                                                        </div>
                                                     <?php } ?>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-lg-6">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Usuários</h5>
-                                        <div class="row mb-5">
-                                            <div class="col-sm-10">
-                                                <form>
-                                                    <?php
-
-                                                    $lista_usuarios =
-                                                        "SELECT
-                                                    u.id as idUsuario,
-                                                    p.nome as nomeUsuario
-                                                    FROM
-                                                    usuarios as u
-                                                    LEFT JOIN
-                                                    pessoas as p
-                                                    ON
-                                                    p.id = u.pessoa_id
-                                                    WHERE
-                                                    u.active = 1
-                                                    ORDER BY
-                                                    p.nome ASC
-                                                    ";
-
-                                                    $r_lista_usuarios = mysqli_query($mysqli, $lista_usuarios) or die("Erro ao retornar dados");
-
-                                                    while ($usuario = $r_lista_usuarios->fetch_array()) {
-                                                        $idUsuario = $usuario['idUsuario'];
-                                                        $nomeUsuario = $usuario['nomeUsuario'];
-                                                        $idCredencial = $row['cred_id'];
-
-                                                        $valida_permissao_usuario =
-                                                            "SELECT
-                                                        id as idPermissao
-                                                        FROM
-                                                        credenciais_portal_privacidade_usuario as cepu
-                                                        WHERE
-                                                        cepu.credencial_id = $idCredencial
-                                                        AND
-                                                        cepu.usuario_id = $idUsuario
-                                                        ";
-
-                                                        $r_valida_permissao_usuario = mysqli_query($mysqli, $valida_permissao_usuario);
-
-                                                        $validacao_usuario = $r_valida_permissao_usuario->fetch_array();
-
-                                                        if (empty($validacao_usuario['idPermissao'])) { ?>
-                                                            <div class="form-check form-switch">
-                                                                <input onclick="addPermissaoUsuario(<?= $idUsuario ?>, '<?= $idCredencial ?>', '<?= $credencialTipo ?>')" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                                                <label class="form-check-label" for="flexSwitchCheckDefault"><?= $nomeUsuario ?></label>
-                                                            </div>
-                                                        <?php } else { ?>
-                                                            <div class="form-check form-switch">
-                                                                <input onclick="deletaPermissaoUsuario(<?= $validacao_usuario['idPermissao'] ?>)" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
-                                                                <label class="form-check-label" for="flexSwitchCheckChecked"><?= $nomeUsuario ?></label>
-                                                            </div>
-                                                        <?php } ?>
-                                                    <?php
-                                                    } ?>
-                                                </form>
-                                            </div>
+                                                <?php } ?>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -314,55 +238,149 @@ if ($row['cred_priv'] == 3) {
     </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+<div class="modal fade" id="modalPrivacidadeUsuario" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Configurar Privacidade Usuário</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="card">
+                    <div class="col-lg-12">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-3">
+                                    <label for="id" class="form-label">E-mail ID</label>
+                                    <input type="Text" name="idemail" class="form-control" id="idemail" readonly value="<?= $id ?>">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="col-lg-6">
+                                <div class="card-body">
+                                    <h5 class="card-title">Usuários Permitidos</h5>
+                                    <div class="row mb-5">
+                                        <div class="col-sm-10">
+                                            <form>
+                                                <?php
+
+                                                $lista_usuarios =
+                                                    "SELECT u.id as idUsuario, p.nome as nomeUsuario
+                                                    FROM usuarios as u
+                                                    LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                                                    WHERE u.active = 1
+                                                    ORDER BY p.nome ASC";
+
+                                                $r_lista_usuarios = mysqli_query($mysqli, $lista_usuarios) or die("Erro ao retornar dados");
+
+                                                while ($usuario = $r_lista_usuarios->fetch_array()) {
+                                                    $idUsuario = $usuario['idUsuario'];
+                                                    $nomeUsuario = $usuario['nomeUsuario'];
+                                                    $idCredencial = $row['cred_id'];
+
+                                                    $valida_permissao_usuario =
+                                                        "SELECT id as idPermissao
+                                                        FROM credenciais_portal_privacidade_usuario as cepu
+                                                        WHERE cepu.credencial_id = $idCredencial AND cepu.usuario_id = $idUsuario";
+
+                                                    $r_valida_permissao_usuario = mysqli_query($mysqli, $valida_permissao_usuario);
+
+                                                    $validacao_usuario = $r_valida_permissao_usuario->fetch_array();
+
+                                                    if (empty($validacao_usuario['idPermissao'])) { ?>
+                                                        <div class="form-check form-switch">
+                                                            <input onclick="addPermissaoUsuario(<?= $idUsuario ?>, '<?= $idCredencial ?>', '2')" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                                            <label class="form-check-label" for="flexSwitchCheckDefault"><?= $nomeUsuario ?></label>
+                                                        </div>
+                                                    <?php } else { ?>
+                                                        <div class="form-check form-switch">
+                                                            <input onclick="deletaPermissaoUsuario(<?= $validacao_usuario['idPermissao'] ?>)" class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
+                                                            <label class="form-check-label" for="flexSwitchCheckChecked"><?= $nomeUsuario ?></label>
+                                                        </div>
+                                                    <?php } ?>
+                                                <?php
+                                                } ?>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
-    function addPermissaoEquipe(idEquipe, idCredencial, tipoCredencial) {
+    function addPermissaoEquipe(equipeId, credencialId) {
         $.ajax({
-            url: "/api/insert_permissao_credencial_equipe.php",
-            method: "GET",
-            dataType: "HTML",
+            url: 'processa/insert_permissao_equipe.php',
+            type: 'POST',
             data: {
-                idEquipe: idEquipe,
-                idCredencial: idCredencial,
-                tipoCredencial: tipoCredencial
+                credencialId: credencialId,
+                idEquipe: equipeId
+            },
+            success: function(response) {
+                console.log("Permissão adicionada com sucesso.");
+            },
+            error: function(xhr, status, error) {
+                console.error("Erro ao adicionar permissão: ", error);
             }
-        })
+        });
     }
 
-    function deletaPermissaoEquipe(idCadastroCredencialEquipe) {
+    function deletaPermissaoEquipe(idPermissaoEquipe) {
         $.ajax({
-            url: "/api/deleta_permissao_credencial_equipe.php",
-            method: "GET",
-            dataType: "HTML",
+            url: 'processa/remove_permissao_equipe.php',
+            type: 'POST',
             data: {
-                idCadastroCredencialEquipe: idCadastroCredencialEquipe
+                idPermissaoEquipe: idPermissaoEquipe,
+            },
+            success: function(response) {
+                console.log("Permissão removida com sucesso.");
+            },
+            error: function(xhr, status, error) {
+                console.error("Erro ao remover permissão: ", error);
             }
-        })
+        });
     }
 
-    function addPermissaoUsuario(idUsuario, idCredencial, tipoCredencial) {
+    function addPermissaoUsuario(usuarioId, credencialId) {
         $.ajax({
-            url: "/api/insert_permissao_credencial_usuario.php",
-            method: "GET",
-            dataType: "HTML",
+            url: 'processa/insert_permissao_usuario.php',
+            type: 'POST',
             data: {
-                idUsuario: idUsuario,
-                idCredencial: idCredencial,
-                tipoCredencial: tipoCredencial
+                credencialId: credencialId,
+                idUsuario: usuarioId
+            },
+            success: function(response) {
+                console.log("Permissão adicionada com sucesso.");
+            },
+            error: function(xhr, status, error) {
+                console.error("Erro ao adicionar permissão: ", error);
             }
-        })
+        });
     }
 
-    function deletaPermissaoUsuario(idCadastroCredencialUsuario) {
+    function deletaPermissaoUsuario(idPermissaoUsuario) {
         $.ajax({
-            url: "/api/deleta_permissao_credencial_usuario.php",
-            method: "GET",
-            dataType: "HTML",
+            url: 'processa/remove_permissao_usuario.php',
+            type: 'POST',
             data: {
-                idCadastroCredencialUsuario: idCadastroCredencialUsuario
+                idPermissaoUsuario: idPermissaoUsuario,
+            },
+            success: function(response) {
+                console.log("Permissão removida com sucesso.");
+            },
+            error: function(xhr, status, error) {
+                console.error("Erro ao remover permissão: ", error);
             }
-        })
+        });
     }
 </script>

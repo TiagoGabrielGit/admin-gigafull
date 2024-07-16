@@ -52,7 +52,7 @@ if (isset($_SESSION['id'])) {
     $usuario_id = $_SESSION['id'];
 
 
-    $result_update_eqpop = "UPDATE equipamentospop SET privacidade='$privacidade', serialEquipamento='$serialEquipamento', portaTelnet='$portaTelnet', portaSSH='$portaSSH', portaWeb='$portaWeb', portaWinbox='$portaWinbox', anotacaoEquipamento='$anotacaoEquipamento', empresa_id='$inputEmpresa', pop_id='$inputPop', ipaddress='$inputIpAddress', hostname='$inputHostname', tipoEquipamento_id='$inputTipoEquipamento', equipamento_id='$inputEquipamento', statusEquipamento='$inputStatus', rack_id='$rack_id', modificado=NOW() WHERE id='$id'";
+    $result_update_eqpop = "UPDATE equipamentospop SET privacidade='$privacidade', serialEquipamento='$serialEquipamento', portaTelnet='$portaTelnet', portaSSH='$portaSSH', portaWeb='$portaWeb', portaWinbox='$portaWinbox', anotacaoEquipamento='$anotacaoEquipamento', empresa_id='$inputEmpresa', pop_id='$inputPop', ipaddress='$inputIpAddress', hostname='$inputHostname', tipoEquipamento_id='$inputTipoEquipamento', equipamento_id='$inputEquipamento', statusEquipamento='$inputStatus', modificado=NOW() WHERE id='$id'";
     $resultado_eqpop = mysqli_query($mysqli, $result_update_eqpop);
 
 

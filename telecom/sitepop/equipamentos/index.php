@@ -300,6 +300,8 @@ if ($rowCount_permissions_menu > 0) {
                             equipop.tipoEquipamento_id as tipoid,
                             equipop.ipaddress as ipaddress,
                             equipop.deleted as deleted,
+                            equipop.usuario_criador as usuario_criador,
+                            equipop.privacidade as privacidade,
                             equipop.criado as criado,
                             equipop.modificado as modificado,
                             equipop.statusEquipamento as statuseqp,
@@ -327,14 +329,41 @@ if ($rowCount_permissions_menu > 0) {
                             $resultado = mysqli_query($mysqli, $sql_pesquisa_EquipamentosPop) or die("Erro ao retornar dados");
 
                             while ($campos = $resultado->fetch_array()) {
-?>
-                                <tr onclick="window.location.href='view.php?id=<?= $campos['id_equipop'] ?>'">
-                                    <td style="text-align: center;"><?= $campos['hostname']; ?></td>
-                                    <td style="text-align: center;"><?= $campos['empresa']; ?> / <?= $campos['pop']; ?></td>
-                                    <td style="text-align: center;"><?= $campos['ipaddress']; ?></td>
-                                    <td style="text-align: center;"><?= $campos['equipamento']; ?></td>
-                                    <td style="text-align: center;"><?= $campos['statuseqp']; ?></td>
-                                <?php } ?>
+                                $id = $campos['id_equipop'];
+
+                                if (($campos['usuario_criador'] == $_SESSION['id']) || ($campos['privacidade'] == 1)) {
+                            ?>
+                                    <tr onclick="window.location.href='view.php?id=<?= $id ?>'">
+                                        <td style="text-align: center;"><?= $campos['hostname']; ?></td>
+                                        <td style="text-align: center;"><?= $campos['empresa']; ?> / <?= $campos['pop']; ?></td>
+                                        <td style="text-align: center;"><?= $campos['ipaddress']; ?></td>
+                                        <td style="text-align: center;"><?= $campos['equipamento']; ?></td>
+                                        <td style="text-align: center;"><?= $campos['statuseqp']; ?></td>
+                                    </tr>
+                                    <?php } else {
+                                    $sql_check_perm_user = "SELECT * FROM equipamentos_pop_privacidade_usuario WHERE equipamento_id = :id AND usuario_id = :userId";
+                                    $stmt_check_perm_user = $pdo->prepare($sql_check_perm_user);
+                                    $stmt_check_perm_user->bindParam(':id', $id, PDO::PARAM_INT);
+                                    $stmt_check_perm_user->bindParam(':userId', $_SESSION['id'], PDO::PARAM_INT);
+                                    $stmt_check_perm_user->execute();
+
+                                    $sql_check_perm_equipe = "SELECT * FROM equipamentos_pop_privacidade_equipe WHERE equipamento_id = :id AND equipe_id IN (SELECT equipe_id FROM equipes_integrantes WHERE integrante_id = :userId)";
+                                    $stmt_check_perm_equipe = $pdo->prepare($sql_check_perm_equipe);
+                                    $stmt_check_perm_equipe->bindParam(':id', $id, PDO::PARAM_INT);
+                                    $stmt_check_perm_equipe->bindParam(':userId', $_SESSION['id'], PDO::PARAM_INT);
+                                    $stmt_check_perm_equipe->execute();
+
+                                    if ($stmt_check_perm_user->rowCount() > 0 || $stmt_check_perm_equipe->rowCount() > 0) { ?>
+                                        <tr onclick="window.location.href='view.php?id=<?= $id ?>'">
+                                            <td style="text-align: center;"><?= $campos['hostname']; ?></td>
+                                            <td style="text-align: center;"><?= $campos['empresa']; ?> / <?= $campos['pop']; ?></td>
+                                            <td style="text-align: center;"><?= $campos['ipaddress']; ?></td>
+                                            <td style="text-align: center;"><?= $campos['equipamento']; ?></td>
+                                            <td style="text-align: center;"><?= $campos['statuseqp']; ?></td>
+                                        </tr>
+                            <?php }
+                                }
+                            } ?>
                         </tbody>
                     </table>
                 </div>
