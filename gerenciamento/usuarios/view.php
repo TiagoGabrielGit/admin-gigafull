@@ -55,6 +55,7 @@ if ($rowCount_permissions_submenu > 0) {
         up.permissao_vms as 'permissao_vms',
         up.permissao_email as 'permissao_email',
         up.permissao_portal as 'permissao_portal',
+        up.permissao_pop_site as 'permissao_pop_site',
 
         p.perfil as nome_perfil,
         user.chatIdTelegram as chatIdTelegram,

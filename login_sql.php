@@ -35,6 +35,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
     up.permissao_vms as 'permissao_vms',
     up.permissao_email as 'permissao_email',
     up.permissao_portal as 'permissao_portal',
+    up.permissao_pop_site as 'permissao_pop_site',
     u.reset_password as reset_password,
     u.tipo_usuario as tipo_usuario,
     u.dashboard as dashboard,
@@ -93,6 +94,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       $_SESSION['permissao_vms'] = $usuario['permissao_vms'];
       $_SESSION['permissao_email'] = $usuario['permissao_email'];
       $_SESSION['permissao_portal'] = $usuario['permissao_portal'];
+      $_SESSION['permissao_pop_site'] = $usuario['permissao_pop_site'];
 
 
 

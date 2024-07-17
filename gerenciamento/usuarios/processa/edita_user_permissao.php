@@ -25,7 +25,9 @@ if (isset($_SESSION['id'])) {
             permissao_equipamentos_pop = :permissao_equipamentos_pop,
             permissao_vms = :permissao_vms,
             permissao_email = :permissao_email,
-            permissao_portal = :permissao_portal
+            permissao_portal = :permissao_portal,
+            permissao_pop_site = :permissao_pop_site
+
             WHERE usuario_id = :permissionIdUser";
 
             // Preparar a declaração SQL 
@@ -49,6 +51,9 @@ if (isset($_SESSION['id'])) {
             $stmt->bindParam(':permissao_vms', $_POST['permissao_vms']);
             $stmt->bindParam(':permissao_email', $_POST['permissao_email']);
             $stmt->bindParam(':permissao_portal', $_POST['permissao_portal']);
+            $stmt->bindParam(':permissao_pop_site', $_POST['permissao_pop_site']);
+
+
 
             $stmt->bindParam(':permissionIdUser', $_POST['permissionIdUser']);
 

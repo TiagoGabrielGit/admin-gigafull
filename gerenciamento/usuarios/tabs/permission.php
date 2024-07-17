@@ -342,6 +342,34 @@
     </div>
 
     <div class="row mb-3">
+        <label for="permissao_pop_site" class="col-sm-4 col-form-label">Permissão POP / Site</label>
+        <div class="col-sm-6">
+            <select name="permissao_pop_site" id="permissao_pop_site" class="form-select" required>
+                <?php
+                if ($campos['permissao_pop_site'] == 1) { ?>
+                    <option selected value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option value="2">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option value="0">Nenhum</option>
+                <?php } else if ($campos['permissao_pop_site'] == 2) { ?>
+                    <option value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option selected value="2">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option value="0">Nenhum</option>
+                <?php } else if ($campos['permissao_pop_site'] == 0) { ?>
+                    <option value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option value="2">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option selected value="0">Nenhum</option>
+                <?php } else { ?>
+                    <option selected disabled value="">Selecione uma opção</option>
+                    <option value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option value="0">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option value="0">Nenhum</option>
+                <?php }
+                ?>
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-3">
         <label for="permite_configurar_privacidade_equipamentos" class="col-sm-4 col-form-label">Permite configurar privacidade equipamentos e vms</label>
         <div class="col-sm-6">
             <select name="permite_configurar_privacidade_equipamentos" id="permite_configurar_privacidade_equipamentos" class="form-select" required>
