@@ -27,7 +27,7 @@ if ($rowCount_permissions > 0) {
             a.chamado_id,
             a.solicitante_id,
             a.empresa_id,
-            a.cto_id,
+            a.cto_id, 
             a.olt_id,
             a.crm_pre_afericao,
             a.crm_pos_afericao,
@@ -229,7 +229,7 @@ if ($rowCount_permissions > 0) {
                         <div class="row">
                             <div class="col-lg-8">
                                 <div class="col-12">
-                                    <textarea readonly placeholder="Digite um relato" class="form-control" rows="2" style="resize: none;" id="relato_status" name="relato_status" required><?= $relato ?></textarea>
+                                    <textarea readonly placeholder="Digite um relato" class="form-control" rows="15" style="resize: none;" id="relato_status" name="relato_status" required><?= $relato ?></textarea>
                                 </div>
                             </div>
                             <div class="col-lg-4">

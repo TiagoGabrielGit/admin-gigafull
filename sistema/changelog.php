@@ -18,6 +18,61 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading15-0">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse15-0" aria-expanded="false" aria-controls="collapse15-0">
+                    Versão 15.1 - 17/07/2024
+                  </button>
+                </h2>
+                <div id="collapse15-0" class="accordion-collapse collapse" aria-labelledby="heading15-0" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # BUG Selecão POP em equipamentos POP;<br>
+                    # Criado permissao de Equipamentos POP;<br>
+                    # Criado permissao de VMs;<br>
+                    # Criar permissao de email;<br>
+                    # Criar permissao de portal;<br>
+                    # Aumento campo tela aferição;<br>
+                    # Cadastro de Equipamentos;<br>
+                    # Cadastro Equipamentos e VMs criar com privacidade default 'Privado';<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criado coluna permissao_equipamentos_pop na tabela usuarios_permissoes;<br>
+                    # Criado coluna permissao_vms na tabela usuarios_permissoes;<br>
+                    # Criado coluna permissao_email na tabela usuarios_permissoes;<br>
+                    # Criado coluna permissao_portal na tabela usuarios_permissoes;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Cadastro credenciais nascer como privado;<br>
+                    # Redicionar para configuração de privacidade após cadastros;<br>
+                    # Interessados em incidentes;<br>
+                    # Solicitar aferição via control;<br>
+
+
+                    # Replicar relato do chamado principal para os chamados dependentes;<br>
+                    # Notificações smart de relatos em chamados realizados via smartmobile;<br>
+                    # Notificações smart de abertura de chamados realizados via smartcontrol;<br>
+                    # Notificações smart de abertura de chamados realizados via smartmobile;<br>
+                    # Observações Internas Chamado;<br>
+                    # Pesquisa MP Concluidas através da data;<br>
+                    # Página de aceite MP;<br>
+                    # White-Label iframe incidentes;<br>
+                    # TABs permitidas no iframe incidentes;<br>
+                    # Remover PON/RF durante criação de MP;<br>
+                    # Vincular uma documentação à um tipo de incidente;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Atributos de equipamentos;<br>
+                    # Permissões em documentações;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading15-0">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse15-0" aria-expanded="false" aria-controls="collapse15-0">
                     Versão 15.0 - 16/07/2024
                   </button>
                 </h2>
@@ -27,13 +82,17 @@ require "../includes/menu.php";
                     <br><strong>Melhorias</strong><br>
                     # Não listar equipamentos, vms, email e portal no index se usuario nao tiver permitido;<br>
                     # Correção BUG editar equipamentos;<br>
-                    # Corração BUG privacidade vault equipamentos;<br>
-                    # Corração BUG privacidade vault email;<br>
-                    # Corração BUG privacidade vault portal;<br>
+                    # Correção BUG privacidade vault equipamentos;<br>
+                    # Correção BUG privacidade vault email;<br>
+                    # Correção BUG privacidade vault portal;<br>
 
                     <br><strong>Alterações banco de dados</strong><br>
 
                     <br><strong>Backlog</strong><br>
+                    # Interessados em incidentes;<br>
+                    # Permissoes em Telecom;<br>
+                    # BUG Adicionar serviço ao contrato;<br>
+                    # Cadastro de equipamentos e credenciais nascer como privado;<br>
                     # Replicar relato do chamado principal para os chamados dependentes;<br>
                     # Notificações smart de relatos em chamados realizados via smartmobile;<br>
                     # Notificações smart de abertura de chamados realizados via smartcontrol;<br>

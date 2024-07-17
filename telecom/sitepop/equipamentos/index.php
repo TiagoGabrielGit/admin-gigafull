@@ -4,7 +4,7 @@ require($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao_pdo.php');
 
 $menu_id = "35";
 $uid = $_SESSION['id'];
-
+$empresa_usuario = $_SESSION['empresa_id'];
 $permissions_menu =
     "SELECT  u.perfil_id
 FROM usuarios u
@@ -15,10 +15,17 @@ $exec_permissions_menu = $pdo->prepare($permissions_menu);
 $exec_permissions_menu->execute();
 
 $rowCount_permissions_menu = $exec_permissions_menu->rowCount();
+$permissao_equipamentos_pop = $_SESSION['permissao_equipamentos_pop'];
 
-if ($rowCount_permissions_menu > 0) {
+
+if (($rowCount_permissions_menu > 0) & ($permissao_equipamentos_pop != 0)) {
+
     if (empty($_POST['EquipamentoEmpresaPesquisa'])) {
-        $_POST['EquipamentoEmpresaPesquisa'] = "%";
+        if ($permissao_equipamentos_pop == 1) {
+            $_POST['EquipamentoEmpresaPesquisa'] = $empresa_usuario;
+        } else if ($permissao_equipamentos_pop == 2) {
+            $_POST['EquipamentoEmpresaPesquisa'] = "%";
+        }
     }
 
     if (empty($_POST['popPesquisa'])) {
@@ -78,7 +85,140 @@ if ($rowCount_permissions_menu > 0) {
         <section class="section">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Equipamentos POP</h5>
+
+                    <div class="row">
+                        <div class="col-10">
+                            <h5 class="card-title">Equipamentos POP</h5>
+                        </div>
+
+                        <div class="col-2">
+                            <div class="card">
+                                <button style="margin-top: 15px" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalNovoEquipamento">
+                                    Cadastrar novo
+                                </button>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="modalNovoEquipamento" tabindex="-1">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Novo cadastro</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="card-body">
+                                            <!-- Vertical Form -->
+                                            <form method="POST" action="processa/adiciona_equipamento.php" class="row g-3">
+
+                                                <div class="col-4">
+                                                    <label for="EquipamentocadastroEmpresa" class="form-label">Empresa*</label>
+                                                    <select id="EquipamentocadastroEmpresa" name="EquipamentocadastroEmpresa" class="form-select" required>
+                                                        <option selected disabled value="">Selecione a empresa</option>
+                                                        <?php
+                                                        if ($permissao_equipamentos_pop == 1) {
+                                                            $sql_lista_empresas =
+                                                                "SELECT emp.id as id, emp.fantasia as empresa
+                                                                    FROM empresas as emp
+                                                                    WHERE emp.deleted = 1 AND id = $empresa_usuario
+                                                                    ORDER BY emp.fantasia ASC";
+                                                        } else if ($permissao_equipamentos_pop == 2) {
+                                                            $sql_lista_empresas =
+                                                                "SELECT emp.id as id, emp.fantasia as empresa
+                                                                        FROM empresas as emp
+                                                                        WHERE emp.deleted = 1
+                                                                        ORDER BY emp.fantasia ASC";
+                                                        }
+                                                        $resultado = mysqli_query($mysqli, $sql_lista_empresas);
+                                                        while ($empresa = mysqli_fetch_object($resultado)) :
+                                                            echo "<option value='$empresa->id'> $empresa->empresa</option>";
+                                                        endwhile;
+                                                        ?>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-4">
+                                                    <label for="EquipamentoCadastroPop" class="form-label">POP*</label>
+                                                    <select id="EquipamentoCadastroPop" name="EquipamentoCadastroPop" class="form-select" required>
+                                                        <option selected disabled value="">Selecione o pop</option>
+                                                    </select>
+                                                </div>
+
+                                                <hr class="sidebar-divider">
+
+                                                <div class="col-4">
+                                                    <label for="EquipamentoCadastroFabricante" class="form-label">Fabricante*</label>
+                                                    <select id="EquipamentoCadastroFabricante" name="EquipamentoCadastroFabricante" class="form-select" required>
+                                                        <option selected disabled value="">Selecione o fabricante</option>
+                                                        <?php
+                                                        $sql_lista_fabricantes =
+                                                            "SELECT fab.id as id, fab.fabricante as fabricante
+                                                        FROM fabricante as fab
+                                                        WHERE fab.deleted = 1
+                                                        ORDER BY fab.fabricante ASC";
+                                                        $resultado = mysqli_query($mysqli, $sql_lista_fabricantes);
+                                                        while ($fabricante = mysqli_fetch_object($resultado)) :
+                                                            echo "<option value='$fabricante->id'> $fabricante->fabricante</option>";
+                                                        endwhile;
+                                                        ?>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-4">
+                                                    <label for="EquipamentocadastroEquipamento" class="form-label">Equipamento*</label>
+                                                    <select id="EquipamentocadastroEquipamento" name="EquipamentocadastroEquipamento" class="form-select" required>
+                                                        <option selected disabled>Selecione o equipamento</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-4">
+                                                    <label for="EquipamentoCadastroTipoEquipamento" class="form-label select-label">Tipo de equipamento*</label>
+                                                    <select id="EquipamentoCadastroTipoEquipamento" name="EquipamentoCadastroTipoEquipamento" class="form-select" required>
+                                                        <option selected disabled>Selecione o tipo</option>
+                                                    </select>
+                                                </div>
+
+                                                <hr class="sidebar-divider">
+
+                                                <div class="col-4">
+                                                    <label for="EquipamentoCadastrohostname" class="form-label">Hostname*</label>
+                                                    <input name="EquipamentoCadastrohostname" type="text" class="form-control" id="EquipamentoCadastrohostname" placeholder="Ex: sw01.POPABC" required>
+                                                </div>
+
+                                                <div class="col-4">
+                                                    <label for="EquipamentoCadastroIPAddress" class="form-label">Endereço IP*</label>
+                                                    <input id="EquipamentoCadastroIPAddress" name="EquipamentoCadastroIPAddress" type="text" class="form-control" placeholder="Ex: 192.168.1.1" maxlength="15" required>
+                                                </div>
+
+                                                <div class="col-4"></div>
+
+
+                                                <div class="col-4">
+                                                    <label for="EquipamentoCadastroSerial" class="form-label">Serial</label>
+                                                    <input id="EquipamentoCadastroSerial" name="EquipamentoCadastroSerial" type="text" class="form-control" placeholder="Ex: AXT123ZXC">
+                                                </div>
+
+                                                <div class="col-4">
+                                                    <label for="EquipamentoCadastroStatus" class="form-label">Status*</label>
+                                                    <select id="EquipamentoCadastroStatus" name="EquipamentoCadastroStatus" class="form-select" required>
+                                                        <option selected disabled value="">Selecione o status</option>>
+                                                        <option value="Ativado">Ativado</option>
+                                                        <option value="Em Implementação">Em Implementação</option>
+                                                        <option value="Inativado">Inativado</option>
+                                                    </select>
+                                                </div>
+                                                <hr class="sidebar-divider">
+
+                                                <div class="text-center">
+                                                    <button type="submit" class="btn btn-sm btn-danger">Salvar</button>
+                                                    <a href="/telecom/sitepop/equipamentos/index.php"> <input type="button" value="Voltar" class="btn btn-sm btn-secondary"></input></a>
+                                                </div>
+                                            </form><!-- Vertical Form -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- End Basic Modal-->
+                    </div>
 
                     <form method="POST" action="#" class="row g-3">
                         <input type="hidden" id="tabequipamento" name="tabequipamento">
@@ -87,12 +227,6 @@ if ($rowCount_permissions_menu > 0) {
                             <select id="EquipamentoEmpresaPesquisa" name="EquipamentoEmpresaPesquisa" class="form-select">
                                 <option selected disabled>Selecione a empresa</option>
                                 <?php
-                                $sql_lista_empresas =
-                                    "SELECT emp.id as id, emp.fantasia as empresa
-                                    FROM empresas as emp
-                                    WHERE emp.deleted = 1
-                                    ORDER BY emp.fantasia ASC";
-
                                 $resultado = mysqli_query($mysqli, $sql_lista_empresas);
                                 while ($empresa = mysqli_fetch_object($resultado)) :
                                     echo "<option value='$empresa->id'> $empresa->empresa</option>";
@@ -291,7 +425,6 @@ if ($rowCount_permissions_menu > 0) {
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Preenchendo a tabela com os dados do banco: -->
                             <?php
                             $sql_pesquisa_EquipamentosPop =
                                 "SELECT
@@ -370,9 +503,111 @@ if ($rowCount_permissions_menu > 0) {
             </div>
         </section>
     </main>
+
+    <script>
+        $(document).ready(function() {
+            $("#EquipamentoEmpresaPesquisa").change(function() {
+                var empresaSelecionada = $(this).val();
+
+                if (empresaSelecionada) {
+                    $.ajax({
+                        url: "/api/pesquisa_pop.php",
+                        method: "GET",
+                        dataType: "html",
+                        data: {
+                            id: empresaSelecionada
+                        }
+                    }).done(function(resposta) {
+                        $("#popPesquisa").html(resposta);
+                    }).fail(function(resposta) {
+                        alert(resposta);
+                    });
+                }
+            });
+        });
+    </script>
+
+    <script>
+        //Pesquisa os equipamentos atraves do fabricante
+        $("#EquipamentoFabricantePesquisa").change(function() {
+            var fabricanteSelecionado = $(this).children("option:selected").val();
+
+            $.ajax({
+                url: "/api/pesquisa_equipamentos.php",
+                method: "GET",
+                dataType: "HTML",
+                data: {
+                    id: fabricanteSelecionado
+                }
+            }).done(function(resposta) {
+                $("#equipamentoPesquisa").html(resposta);
+            }).fail(function(resposta) {
+                alert(resposta)
+            });
+        });
+    </script>
+
+    <script>
+        $("#EquipamentocadastroEmpresa").change(function() {
+            var empresaSelecionada = $(this).children("option:selected").val();
+
+            $.ajax({
+                url: "/api/pesquisa_pop.php",
+                method: "GET",
+                dataType: "HTML",
+                data: {
+                    id: empresaSelecionada
+                }
+            }).done(function(resposta) {
+                $("#EquipamentoCadastroPop").html(resposta);
+            }).fail(function(resposta) {
+                alert(resposta)
+            });
+        });
+    </script>
+
+    <script>
+        //Pesquisa os equipamentos atraves do fabricante
+        $("#EquipamentoCadastroFabricante").change(function() {
+            var fabricanteSelecionado = $(this).children("option:selected").val();
+
+            $.ajax({
+                url: "/api/pesquisa_equipamentos.php",
+                method: "GET",
+                dataType: "HTML",
+                data: {
+                    id: fabricanteSelecionado
+                }
+            }).done(function(resposta) {
+                $("#EquipamentocadastroEquipamento").html(resposta);
+            }).fail(function(resposta) {
+                alert(resposta)
+            });
+        });
+    </script>
+
+    <script>
+        //Procura os tipos de equipamentos atraves do equipamento selecionado
+        $("#EquipamentocadastroEquipamento").change(function() {
+            var equipamentoSelecionado = $(this).children("option:selected").val();
+
+            $.ajax({
+                url: "/api/pesquisa_tipos.php",
+                method: "GET",
+                dataType: "HTML",
+                data: {
+                    id: equipamentoSelecionado
+                }
+            }).done(function(resposta) {
+                $("#EquipamentoCadastroTipoEquipamento").html(resposta);
+            }).fail(function(resposta) {
+                alert(resposta)
+            });
+        });
+    </script>
 <?php
 } else {
-    require "../../../acesso_negado.php";
+    require($_SERVER['DOCUMENT_ROOT'] . '/acesso_negado.php');
 }
-require "../../../includes/securityfooter.php";
+require($_SERVER['DOCUMENT_ROOT'] . '/includes/securityfooter.php');
 ?>

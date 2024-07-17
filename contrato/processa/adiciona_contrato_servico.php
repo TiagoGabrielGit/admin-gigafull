@@ -10,7 +10,7 @@ if (isset($_SESSION['id'])) {
 
     $cont_insert = false;
 
-    $sql = "INSERT INTO contract_service (contract_id, service_id, created, active) VALUES (:contract_id, :service_id, NOW(), :active)";
+    $sql = "INSERT INTO contract_service (contract_id, service_id, created, tipo_cobranca, active) VALUES (:contract_id, :service_id, NOW(), 1, :active)";
     $stmt1 = $pdo->prepare($sql);
     $stmt1->bindParam(':service_id', $serviceContract);
     $stmt1->bindParam(':contract_id', $serviceContratoID);

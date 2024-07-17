@@ -16,7 +16,7 @@ if (isset($_SESSION['id'])) {
     $cadastroVCPU = $_POST['VMcadastroVCPU'];
     $cadastroDisco1 = $_POST['VMcadastroDisco1'];
     $cadastroDisco2 = $_POST['VMcadastroDisco2'];
-    $privacidade = "1";
+    $privacidade = "2";
     $idUsuario = $_SESSION['id'];
 
     // Preparar e executar a declaração SQL usando PDO
@@ -48,7 +48,7 @@ if (isset($_SESSION['id'])) {
     // Executar a consulta
     if ($stmt->execute()) {
         $id_vm = $pdo->lastInsertId();
-        header("Location: /telecom/vmslocal/index.php");
+        header("Location: /telecom/vmslocal/view.php?id=$id_vm");
         exit();
     } else {
         header("Location: /telecom/vmslocal/index.php");

@@ -4,6 +4,7 @@ require($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao_pdo.php');
 
 $menu_id = "37";
 $uid = $_SESSION['id'];
+$empresa_usuario = $_SESSION['empresa_id'];
 
 $permissions_menu =
     "SELECT u.perfil_id
@@ -15,19 +16,27 @@ $exec_permissions_menu = $pdo->prepare($permissions_menu);
 $exec_permissions_menu->execute();
 
 $rowCount_permissions_menu = $exec_permissions_menu->rowCount();
+$permissao_vms = $_SESSION['permissao_vms'];
 
-if ($rowCount_permissions_menu > 0) {
+if (($rowCount_permissions_menu > 0) & ($permissao_vms != 0)) {
     $ipaddressPesquisa = (!empty($_POST['ipaddressPesquisa']) ? $_POST['ipaddressPesquisa'] : "%");
     $hostnamePesquisa = (!empty($_POST['hostnamePesquisa']) ? $_POST['hostnamePesquisa'] : "%");
     $VMpopPesquisa = (!empty($_POST['VMpopPesquisa']) ? $_POST['VMpopPesquisa'] : "%");
     $VMservidorPesquisa = (!empty($_POST['VMservidorPesquisa']) ? $_POST['VMservidorPesquisa'] : "%");
 
 
-    $VMempresaPesquisa = $_POST['VMempresaPesquisa'] ?? "%";
+    if (empty($_POST['VMempresaPesquisa'])) {
+        if ($permissao_vms == 1) {
+            $_POST['VMempresaPesquisa'] = $empresa_usuario;
+        } else if ($permissao_vms == 2) {
+            $_POST['VMempresaPesquisa'] = "%";
+        }
+    }
+
     $limiteBusca = $_POST['limiteBusca'] ?? "100";
     $SOPesquisa = $_POST['SOPesquisa'] ?? "%";
     $statusVMPesquisa = $_POST['statusVMPesquisa'] ?? "Ativado";
-    $empresa_id = $VMempresaPesquisa;
+    $empresa_id = $_POST['VMempresaPesquisa'];
     $pop_id = $VMpopPesquisa;
     $ipaddress = $ipaddressPesquisa;
     $hostname = $hostnamePesquisa;
@@ -48,142 +57,151 @@ if ($rowCount_permissions_menu > 0) {
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-10">
-                                    </div>
 
-                                    <div class="col-2">
-                                        <div class="card">
-                                            <button style="margin-top: 15px" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalNovaVM">
-                                                Cadastrar novo
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="modal fade" id="modalNovaVM" tabindex="-1">
-                                        <div class="modal-dialog modal-xl">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Novo cadastro</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <div class="card-body">
-                                                        <form method="POST" action="processa/add.php" class="row g-3">
+                            <div class="row">
+                                <div class="col-10">
+                                    <h5 class="card-title">VMs Local</h5>
+ 
+                                </div>
 
-                                                            <div class="col-6">
-                                                                <label for="VMcadastroEmpresa" class="form-label">Empresa*</label>
-                                                                <select id="VMcadastroEmpresa" name="VMcadastroEmpresa" class="form-select" required>
-                                                                    <option selected disabled>Selecione a empresa</option>
-                                                                    <?php
+                                <div class="col-2">
+                                    <div class="card">
+                                        <button style="margin-top: 15px" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalNovaVM">
+                                            Cadastrar novo
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="modalNovaVM" tabindex="-1">
+                                    <div class="modal-dialog modal-xl">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Novo cadastro</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="card-body">
+                                                    <form method="POST" action="processa/add.php" class="row g-3">
+
+                                                        <div class="col-6">
+                                                            <label for="VMcadastroEmpresa" class="form-label">Empresa*</label>
+                                                            <select id="VMcadastroEmpresa" name="VMcadastroEmpresa" class="form-select" required>
+                                                                <option selected disabled value="">Selecione a empresa</option>
+                                                                <?php
+                                                                if ($permissao_vms == 1) {
                                                                     $sql_lista_empresas =
                                                                         "SELECT emp.id as id, emp.fantasia as empresa
-                                                                            FROM empresas as emp
-                                                                            WHERE emp.deleted = 1
-                                                                            ORDER BY emp.fantasia ASC";
-                                                                    $resultado = mysqli_query($mysqli, $sql_lista_empresas);
-                                                                    while ($empresa = mysqli_fetch_object($resultado)) :
-                                                                        echo "<option value='$empresa->id'> $empresa->empresa</option>";
-                                                                    endwhile;
-                                                                    ?>
-                                                                </select>
-                                                            </div>
+                                                                                FROM empresas as emp
+                                                                                WHERE emp.deleted = 1 AND id = $empresa_usuario
+                                                                                ORDER BY emp.fantasia ASC";
+                                                                } else if ($permissao_vms == 2) {
+                                                                    $sql_lista_empresas =
+                                                                        "SELECT emp.id as id, emp.fantasia as empresa
+                                                                                    FROM empresas as emp
+                                                                                    WHERE emp.deleted = 1
+                                                                                    ORDER BY emp.fantasia ASC";
+                                                                }
+                                                                $resultado = mysqli_query($mysqli, $sql_lista_empresas);
+                                                                while ($empresa = mysqli_fetch_object($resultado)) :
+                                                                    echo "<option value='$empresa->id'> $empresa->empresa</option>";
+                                                                endwhile;
+                                                                ?>
+                                                            </select>
+                                                        </div>
 
-                                                            <div class="col-4">
-                                                                <label for="VMcadastroPop" class="form-label">POP*</label>
-                                                                <select id="VMcadastroPop" name="VMcadastroPop" class="form-select" required>
-                                                                    <option selected disabled>Selecione o pop</option>
-                                                                </select>
-                                                            </div>
+                                                        <div class="col-4">
+                                                            <label for="VMcadastroPop" class="form-label">POP*</label>
+                                                            <select id="VMcadastroPop" name="VMcadastroPop" class="form-select" required>
+                                                                <option selected disabled value="">Selecione o pop</option>
+                                                            </select>
+                                                        </div>
 
-                                                            <div class="col-4">
-                                                                <label for="VMcadastroServidor" class="form-label">Servidor virtualizador*</label>
-                                                                <select id="VMcadastroServidor" name="VMcadastroServidor" class="form-select" required>
-                                                                    <option selected disabled>Selecione o servidor</option>
-                                                                </select>
-                                                            </div>
+                                                        <div class="col-4">
+                                                            <label for="VMcadastroServidor" class="form-label">Servidor virtualizador*</label>
+                                                            <select id="VMcadastroServidor" name="VMcadastroServidor" class="form-select" required>
+                                                                <option selected disabled value="">Selecione o servidor</option>
+                                                            </select>
+                                                        </div>
 
-                                                            <div class="col-8"></div>
+                                                        <div class="col-8"></div>
 
-                                                            <hr class="sidebar-divider">
+                                                        <hr class="sidebar-divider">
 
-                                                            <div class="col-4">
-                                                                <label for="VMcadastroHostname" class="form-label">Hostname*</label>
-                                                                <input name="VMcadastroHostname" type="text" class="form-control" id="VMcadastroHostname" placeholder="Ex: vm01.ABCD" required>
-                                                            </div>
+                                                        <div class="col-4">
+                                                            <label for="VMcadastroHostname" class="form-label">Hostname*</label>
+                                                            <input name="VMcadastroHostname" type="text" class="form-control" id="VMcadastroHostname" placeholder="Ex: vm01.ABCD" required>
+                                                        </div>
 
-                                                            <div class="col-4">
-                                                                <label for="VMcadastroSO" class="form-label">Sistema operacional*</label>
-                                                                <select id="VMcadastroSO" name="VMcadastroSO" class="form-select" required>
-                                                                    <option selected disabled>Selecione</option>>
-                                                                    <?php
-                                                                    $sql_lista_so =
-                                                                        "SELECT so.id as id, so.sistemaOperacional as so
+                                                        <div class="col-4">
+                                                            <label for="VMcadastroSO" class="form-label">Sistema operacional*</label>
+                                                            <select id="VMcadastroSO" name="VMcadastroSO" class="form-select" required>
+                                                                <option selected disabled value="">Selecione</option>>
+                                                                <?php
+                                                                $sql_lista_so =
+                                                                    "SELECT so.id as id, so.sistemaOperacional as so
                                                                     From sistemaoperacional as so
                                                                     Where so.deleted = 1
                                                                     ORDER BY so.sistemaOperacional ASC";
-                                                                    $resultado = mysqli_query($mysqli, $sql_lista_so);
-                                                                    while ($so = mysqli_fetch_object($resultado)) :
-                                                                        echo "<option value='$so->id'> $so->so</option>";
-                                                                    endwhile;
-                                                                    ?>
-                                                                </select>
-                                                            </div>
+                                                                $resultado = mysqli_query($mysqli, $sql_lista_so);
+                                                                while ($so = mysqli_fetch_object($resultado)) :
+                                                                    echo "<option value='$so->id'> $so->so</option>";
+                                                                endwhile;
+                                                                ?>
+                                                            </select>
+                                                        </div>
 
-                                                            <div class="col-4"></div>
+                                                        <div class="col-4"></div>
 
-                                                            <div class="col-3">
-                                                                <label for="VMcadastroIPAddress" class="form-label">Endereço IP*</label>
-                                                                <input id="VMcadastroIPAddress" name="VMcadastroIPAddress" type="text" class="form-control" placeholder="Ex: 192.168.1.1" maxlength="15" required>
-                                                            </div>
+                                                        <div class="col-3">
+                                                            <label for="VMcadastroIPAddress" class="form-label">Endereço IP*</label>
+                                                            <input id="VMcadastroIPAddress" name="VMcadastroIPAddress" type="text" class="form-control" placeholder="Ex: 192.168.1.1" maxlength="15" required>
+                                                        </div>
 
-                                                            <div class="col-4">
-                                                                <label for="VMcadastroDomino" class="form-label">Dominio</label>
-                                                                <input id="VMcadastroDomino" name="VMcadastroDomino" type="text" class="form-control" placeholder="Ex: server.dominio.com.br">
-                                                            </div>
+                                                        <div class="col-4">
+                                                            <label for="VMcadastroDomino" class="form-label">Dominio</label>
+                                                            <input id="VMcadastroDomino" name="VMcadastroDomino" type="text" class="form-control" placeholder="Ex: server.dominio.com.br">
+                                                        </div>
 
-                                                            <div class="col-2">
-                                                                <label for="VMcadastroVLAN" class="form-label">VLAN</label>
-                                                                <input id="VMcadastroVLAN" name="VMcadastroVLAN" type="number" class="form-control" maxlength="4" placeholder="Ex: 3577">
-                                                            </div>
+                                                        <div class="col-2">
+                                                            <label for="VMcadastroVLAN" class="form-label">VLAN</label>
+                                                            <input id="VMcadastroVLAN" name="VMcadastroVLAN" type="number" class="form-control" maxlength="4" placeholder="Ex: 3577">
+                                                        </div>
 
 
-                                                            <div class="col-3">
-                                                                <label for="VMcadastroStatus" class="form-label">Status*</label>
-                                                                <select id="VMcadastroStatus" name="VMcadastroStatus" class="form-select" required>
-                                                                    <option disabled>Selecione</option>>
-                                                                    <option value="Ativado">Ativado</option>
-                                                                    <option value="Em Implementação">Em Implementação</option>
-                                                                    <option value="Inativado">Inativado</option>
-                                                                </select>
-                                                            </div>
+                                                        <div class="col-3">
+                                                            <label for="VMcadastroStatus" class="form-label">Status*</label>
+                                                            <select id="VMcadastroStatus" name="VMcadastroStatus" class="form-select" required>
+                                                                <option disabled value="">Selecione</option>>
+                                                                <option value="Ativado">Ativado</option>
+                                                                <option value="Em Implementação">Em Implementação</option>
+                                                                <option value="Inativado">Inativado</option>
+                                                            </select>
+                                                        </div>
 
-                                                            <div class="col-3">
-                                                                <label for="VMcadastroMemoria" class="form-label">Memória (Mb)*</label>
-                                                                <input name="VMcadastroMemoria" type="number" class="form-control" id="VMcadastroMemoria" placeholder="4096" required>
-                                                            </div>
+                                                        <div class="col-3">
+                                                            <label for="VMcadastroMemoria" class="form-label">Memória (Mb)*</label>
+                                                            <input name="VMcadastroMemoria" type="number" class="form-control" id="VMcadastroMemoria" placeholder="4096" required>
+                                                        </div>
 
-                                                            <div class="col-2">
-                                                                <label for="VMcadastroVCPU" class="form-label">vCPU*</label>
-                                                                <input name="VMcadastroVCPU" type="number" class="form-control" id="VMcadastroVCPU" placeholder="4" required>
-                                                            </div>
+                                                        <div class="col-2">
+                                                            <label for="VMcadastroVCPU" class="form-label">vCPU*</label>
+                                                            <input name="VMcadastroVCPU" type="number" class="form-control" id="VMcadastroVCPU" placeholder="4" required>
+                                                        </div>
 
-                                                            <div class="col-3">
-                                                                <label for="VMcadastroDisco1" class="form-label">Disco partição 1 (Gb)*</label>
-                                                                <input name="VMcadastroDisco1" type="number" class="form-control" id="VMcadastroDisco1" placeholder="120" required>
-                                                            </div>
+                                                        <div class="col-3">
+                                                            <label for="VMcadastroDisco1" class="form-label">Disco partição 1 (Gb)*</label>
+                                                            <input name="VMcadastroDisco1" type="number" class="form-control" id="VMcadastroDisco1" placeholder="120" required>
+                                                        </div>
 
-                                                            <div class="col-3">
-                                                                <label for="VMcadastroDisco2" class="form-label">Disco partição 2 (Gb)</label>
-                                                                <input name="VMcadastroDisco2" type="number" class="form-control" id="VMcadastroDisco2" placeholder="80">
-                                                            </div>
+                                                        <div class="col-3">
+                                                            <label for="VMcadastroDisco2" class="form-label">Disco partição 2 (Gb)</label>
+                                                            <input name="VMcadastroDisco2" type="number" class="form-control" id="VMcadastroDisco2" placeholder="80">
+                                                        </div>
 
-                                                            <div class="text-center">
-                                                                <button type="submit" class="btn btn-sm btn-danger">Salvar</button>
-                                                                <button type="reset" class="btn btn-sm btn-secondary">Limpar</button>
-                                                            </div>
-                                                        </form><!-- Vertical Form -->
-                                                    </div>
+                                                        <div class="text-center">
+                                                            <button type="submit" class="btn btn-sm btn-danger">Salvar</button>
+                                                            <button type="reset" class="btn btn-sm btn-secondary">Limpar</button>
+                                                        </div>
+                                                    </form><!-- Vertical Form -->
                                                 </div>
                                             </div>
                                         </div>
@@ -354,7 +372,6 @@ if ($rowCount_permissions_menu > 0) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Preenchendo a tabela com os dados do banco: -->
                                     <?php
 
                                     $sql_pesquisa_vms =

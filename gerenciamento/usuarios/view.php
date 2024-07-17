@@ -6,18 +6,11 @@ $submenu_id = "18";
 $uid = $_SESSION['id'];
 
 $permissions_submenu =
-    "SELECT 
-	u.perfil_id
-FROM 
-	usuarios u
-JOIN 
-	perfil_permissoes_submenu pp
-ON 
-	u.perfil_id = pp.perfil_id
-WHERE
-	u.id = $uid
-AND 
-	pp.url_submenu = $submenu_id";
+    "SELECT u.perfil_id
+    FROM usuarios u
+    JOIN perfil_permissoes_submenu pp ON u.perfil_id = pp.perfil_id
+    WHERE u.id = $uid AND 
+    pp.url_submenu = $submenu_id";
 
 $exec_permissions_submenu = $pdo->prepare($permissions_submenu);
 $exec_permissions_submenu->execute();
@@ -58,6 +51,11 @@ if ($rowCount_permissions_submenu > 0) {
         up.permite_visualizar_protocolo_erp as 'permite_visualizar_protocolo_erp',
         up.permite_configurar_privacidade_equipamentos as 'permite_configurar_privacidade_equipamentos',
         up.permite_configurar_privacidade_credenciais as 'permite_configurar_privacidade_credenciais',
+        up.permissao_equipamentos_pop as 'permissao_equipamentos_pop',
+        up.permissao_vms as 'permissao_vms',
+        up.permissao_email as 'permissao_email',
+        up.permissao_portal as 'permissao_portal',
+
         p.perfil as nome_perfil,
         user.chatIdTelegram as chatIdTelegram,
         CASE
@@ -277,11 +275,190 @@ WHERE p.active = 1";
             </div>
         </section>
     </main>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+
+    <script>
+        $("#nomeUsuario").change(function() {
+            var pessoaSelecionada = $(this).children("option:selected").val();
+
+            $.ajax({
+                url: "/api/pesquisa_email.php",
+                method: "GET",
+                dataType: "HTML",
+                data: {
+                    id: pessoaSelecionada
+                }
+            }).done(function(resposta) {
+                document.getElementById("inputEmail").value = '';
+                document.getElementById("inputEmail").value = resposta;
+            }).fail(function(resposta) {
+                alert(resposta)
+            });
+        });
+    </script>
+
+    <script>
+        function mostrarOcultarSelect() {
+            var tipoAcessoSmart = document.getElementById("inviteAcessoSmart");
+            var divConfiguracoesUsuario = document.getElementById("inviteConfiguracoesUsuario");
+
+            if (tipoAcessoSmart.checked) {
+                divConfiguracoesUsuario.style.display = "block";
+            } else {
+                divConfiguracoesUsuario.style.display = "none";
+            }
+        }
+    </script>
+
+    <script>
+        function incluirCompetencia(idCompetencia, idUsuario, nomeUsuario, competencia) {
+            document.querySelector("#idIncluirCompetencia").value = idCompetencia;
+            document.querySelector("#idUsuarioCompetencia").value = idUsuario;
+
+            let mensagemConfirmCompetencia = ` 
+                     
+        Deseja atribuir a competência <b> ${competencia} </b> ao usuário  <b> ${nomeUsuario} </b>?`
+            document.querySelector("#msgConfirmCompetencia").innerHTML = mensagemConfirmCompetencia
+        }
+    </script>
+
+    <script>
+        function retirarCompetencia(idUC, nomeUsuario2, competencia2) {
+            document.querySelector("#idUC").value = idUC;
+
+            let mensagemRetirarCompetencia = ` 
+                     
+        Deseja retirar a competência <b> ${competencia2} </b> do usuário  <b> ${nomeUsuario2} </b>?`
+            document.querySelector("#msgRetirarCompetencia").innerHTML = mensagemRetirarCompetencia
+        }
+    </script>
+
+    <script>
+        $("#btnConfirmCompetencia").click(function() {
+            var dadosIncluiCompetencia = $("#formIncluiCompetencia").serialize();
+
+            $.post("processa/incluiCompetencia.php", dadosIncluiCompetencia, function(retornaIncluiCompetencia) {
+                location.reload();
+
+            });
+        });
+    </script>
+
+    <script>
+        $("#btnRetirarCompetencia").click(function() {
+            var dadosRetirarCompetencia = $("#formRetirarCompetencia").serialize();
+
+            $.post("processa/retiraCompetencia.php", dadosRetirarCompetencia, function(retornaRetirarCompetencia) {
+                location.reload();
+
+            });
+        });
+    </script>
+
+    <script>
+        $("#btnReset").click(function() {
+            var senhaProvisoria = gerarSenhaProvisoria();
+            var dadosFormulario = $("#resetarSenha").serialize();
+
+            // Enviar dados via AJAX
+            $.ajax({
+                url: "processa/alterarSenha.php", // Substitua pelo caminho correto para o arquivo que salvará no banco de dados
+                type: "POST",
+                data: dadosFormulario + "&senha=" + senhaProvisoria,
+                success: function(response) {
+                    document.querySelector("#msgConfirmacao").hidden = true;
+                    document.querySelector("#btnReset").hidden = true;
+                    $("#msgSenhaGerada").slideDown('slow').html(response);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    $("#msgSenhaGerada").slideDown('slow').html(response);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        function gerarSenhaProvisoria() {
+            var caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+            var senha = "";
+            var comprimentoSenha = 15; // Define o comprimento da senha (pode ser ajustado conforme necessário)
+
+            for (var i = 0; i < comprimentoSenha; i++) {
+                var indiceAleatorio = Math.floor(Math.random() * caracteres.length);
+                senha += caracteres.charAt(indiceAleatorio);
+            }
+
+            return senha;
+        };
+    </script>
+
+    <script>
+        $("#btnHorarioTrabalho").click(function() {
+            var dadosHorarioTrabalho = $("#formHorarioTrabalho").serialize();
+
+            // Enviar dados via AJAX
+            $.ajax({
+                url: "processa_colaborador/horario_trabalho.php",
+                type: "POST",
+                data: dadosHorarioTrabalho,
+                success: function(responseHorarioTrabalho) {
+                    $("#msgHorarioTrabalho").slideDown('slow').html(responseHorarioTrabalho);
+
+                    // Aguardar 1 segundo e depois ocultar a mensagem
+                    setTimeout(function() {
+                        $("#msgHorarioTrabalho").slideUp('slow');
+                        location.reload();
+                    }, 1000);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    $("#msgHorarioTrabalho").slideDown('slow').html(responseHorarioTrabalho);
+
+                    // Aguardar 1 segundo e depois ocultar a mensagem
+                    setTimeout(function() {
+                        $("#msgHorarioTrabalho").slideUp('slow');
+                        location.reload();
+                    }, 1000);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $("#btnGerencia").click(function() {
+            var dadosGerencia = $("#formGerencia").serialize();
+
+            // Enviar dados via AJAX
+            $.ajax({
+                url: "processa_colaborador/gerencia.php",
+                type: "POST",
+                data: dadosGerencia,
+                success: function(responseGerencia) {
+                    $("#msgGerencia").slideDown('slow').html(responseGerencia);
+
+                    // Aguardar 1 segundo e depois ocultar a mensagem
+                    setTimeout(function() {
+                        $("#msgGerencia").slideUp('slow');
+                        location.reload();
+                    }, 1000);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    $("#msgGerencia").slideDown('slow').html(responseGerencia);
+
+                    // Aguardar 1 segundo e depois ocultar a mensagem
+                    setTimeout(function() {
+                        $("#msgGerencia").slideUp('slow');
+                        location.reload();
+                    }, 1000);
+                }
+            });
+        });
+    </script>
+
 
 <?php
-    require "js.php";
 } else {
-    require "../../acesso_negado.php";
+    require($_SERVER['DOCUMENT_ROOT'] . '/acesso_negado.php');
 }
-require "../../includes/securityfooter.php";
+require($_SERVER['DOCUMENT_ROOT'] . '/includes/securityfooter.php');
 ?>

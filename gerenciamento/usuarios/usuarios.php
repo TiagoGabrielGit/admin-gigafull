@@ -1,26 +1,17 @@
 <?php
-require "../../includes/menu.php";
-require "../../conexoes/conexao.php";
-require "../../conexoes/conexao_pdo.php";
-require "../../conexoes/sql.php";
-require "../../includes/remove_setas_number.php";
+require($_SERVER['DOCUMENT_ROOT'] . '/includes/menu.php');
+require($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao_pdo.php');
+require($_SERVER['DOCUMENT_ROOT'] . '/includes/remove_setas_number.php');
 require "sql.php";
 
 $submenu_id = "18";
 $uid = $_SESSION['id'];
 
 $permissions_submenu =
-    "SELECT 
-	u.perfil_id
-FROM 
-	usuarios u
-JOIN 
-	perfil_permissoes_submenu pp
-ON 
-	u.perfil_id = pp.perfil_id
-WHERE
-	u.id = $uid
-AND 
+    "SELECT u.perfil_id
+    FROM usuarios u
+    JOIN perfil_permissoes_submenu pp ON u.perfil_id = pp.perfil_id
+    WHERE u.id = $uid AND 
 	pp.url_submenu = $submenu_id";
 
 $exec_permissions_submenu = $pdo->prepare($permissions_submenu);
@@ -31,10 +22,11 @@ $rowCount_permissions_submenu = $exec_permissions_submenu->rowCount();
 if ($rowCount_permissions_submenu > 0) {
 
 ?>
+
     <style>
-        #tabelaLista:hover {
+        .table-hover tbody tr:hover {
+            background-color: #f5f5f5;
             cursor: pointer;
-            background-color: #E0FFFF;
         }
     </style>
     <main id="main" class="main">
@@ -56,8 +48,6 @@ if ($rowCount_permissions_submenu > 0) {
 
                                     <div class="col-lg-4" style="margin-top: 15px;">
                                         <button title="Novo usuário" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalNovoUser"><i class="bi bi-person-plus"></i></button>
-                                        <!--<button title="Gerar invite" type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalInvite"><i class="bi bi-send-plus"></i></button>
-                                        <a href="/gerenciamento/usuarios/invite_gerencia.php"> <button title="Gerenciar Invites" type="button" class="btn btn-success"><i class="bi bi-send-check"></i></button></a>-->
                                     </div>
 
                                 </div>
@@ -67,7 +57,7 @@ if ($rowCount_permissions_submenu > 0) {
                             <p>Listagem usuários</p>
 
                             <!-- Table with stripped rows -->
-                            <table class="table datatable" id="styleTable">
+                            <table class="table table-striped  table-hover">
                                 <thead>
                                     <tr>
                                         <th scope="col">Nome</th>
@@ -82,7 +72,6 @@ if ($rowCount_permissions_submenu > 0) {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Preenchendo a tabela com os dados do banco: -->
                                     <?php
 
                                     $sql =
@@ -110,13 +99,9 @@ if ($rowCount_permissions_submenu > 0) {
                                         $id = $campos['id'];
                                         $usuario = $campos['nome'];
                                     ?>
-                                        <tr>
-
-                                            <td style="text-align: center;">
-                                                <a style="color: red;" href="view.php?id=<?= $campos['id'] ?>"><?= $campos['nome']; ?></a>
-                                            </td>
+                                        <tr onclick="window.location.href='view.php?id=<?= $id ?>'">
+                                            <td style="text-align: center;"><?= $campos['nome']; ?></td>
                                             <td><?= $campos['empresa']; ?></td>
-
                                             <td>Tipo <?= $campos['dashboard']; ?></td>
                                             <td><?= $campos['nome_perfil']; ?></td>
                                             <td><?= $campos['email']; ?></td>
@@ -306,111 +291,191 @@ if ($rowCount_permissions_submenu > 0) {
         </div>
     </div>
 
-    <div class="modal fade" id="modalInvite" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Invite</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="card-body">
-                        <form method="POST" id="formInvite" class="row g-3">
-                            <div class="col-lg-4">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <label for="inviteTipoAcesso" class="form-label">Tipo de Acesso</label>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="inviteTipoAcesso" id="inviteAcessoSmart" value="1" onchange="mostrarOcultarSelect()">
-                                            <label class="form-check-label" for="inviteAcessoSmart">
-                                                Smart
-                                            </label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="inviteTipoAcesso" id="inviteAcessoCliente" value="2" onchange="mostrarOcultarSelect()">
-                                            <label class="form-check-label" for="inviteAcessoCliente">
-                                                Cliente
-                                            </label>
-                                        </div>
-                                        <div class="form-check disabled">
-                                            <input class="form-check-input" type="radio" name="inviteTipoAcesso" id="inviteAcessoTenant" value="3" onchange="mostrarOcultarSelect()">
-                                            <label class="form-check-label" for="inviteAcessoTenant">
-                                                Tenant
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <label for="validadeInvite" class="form-label">Validade Invite</label>
-                                        <select name="validadeInvite" id="validadeInvite" class="form-select">
-                                            <option selected disabled>Selecione o tempo</option>
-                                            <option value="60">1 Hora</option>
-                                            <option value="360">6 Horas</option>
-                                            <option value="720">12 Horas</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 
-                            <div class="col-lg-8">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <label for="inviteEmpresa" class="form-label">Empresa</label>
-                                        <select name="inviteEmpresa" id="inviteEmpresa" class="form-select">
-                                            <option selected disabled>Selecione a empresa</option>
-                                            <?php
-                                            $resultado = mysqli_query($mysqli, $sql_empresas) or die("Erro ao retornar dados");
-                                            while ($p = $resultado->fetch_assoc()) : ?>
-                                                <option value="<?= $p['empresaID']; ?>"><?= $p['fantasia']; ?></option>
-                                            <?php endwhile; ?>
-                                        </select>
-                                    </div>
-                                    <div id="inviteConfiguracoesUsuario" style="display: none;">
-                                        <div class="col-12">
-                                            <label for="invitePerfil" class="form-label">Perfil</label>
-                                            <select name="invitePerfil" id="invitePerfil" class="form-select">
-                                                <option selected disabled>Selecione o perfil</option>
-                                                <?php
-                                                $resultado = mysqli_query($mysqli, $sql_perfil) or die("Erro ao retornar dados");
-                                                while ($p = $resultado->fetch_assoc()) : ?>
-                                                    <option value="<?= $p['idPerfil']; ?>"><?= $p['perfil']; ?></option>
-                                                <?php endwhile; ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
+    <script>
+        $("#nomeUsuario").change(function() {
+            var pessoaSelecionada = $(this).children("option:selected").val();
 
-                                <br>
+            $.ajax({
+                url: "/api/pesquisa_email.php",
+                method: "GET",
+                dataType: "HTML",
+                data: {
+                    id: pessoaSelecionada
+                }
+            }).done(function(resposta) {
+                document.getElementById("inputEmail").value = '';
+                document.getElementById("inputEmail").value = resposta;
+            }).fail(function(resposta) {
+                alert(resposta)
+            });
+        });
+    </script>
 
-                                <div class="col-12">
-                                    <label for="permissaoChamados" class="form-label">Permissão para abertura de chamados</label>
-                                    <select name="permissaoChamados" id="permissaoChamados" class="form-select">
-                                        <option selected disabled>Selecione a permissão de abertura</option>
-                                        <option value="1">Permite abrir apenas chamados liberados para a empresa</option>
-                                        <option value="2">Permite abrir apenas chamados liberados para a equipe</option>
-                                        <option value="3">Permite abrir chamados liberados para empresa e para a equipe</option>
-                                    </select>
-                                </div>
+    <script>
+        function mostrarOcultarSelect() {
+            var tipoAcessoSmart = document.getElementById("inviteAcessoSmart");
+            var divConfiguracoesUsuario = document.getElementById("inviteConfiguracoesUsuario");
 
-                            </div>
+            if (tipoAcessoSmart.checked) {
+                divConfiguracoesUsuario.style.display = "block";
+            } else {
+                divConfiguracoesUsuario.style.display = "none";
+            }
+        }
+    </script>
 
-                            <div class="col-12" style="text-align: center;">
-                                <span id="msgInvite"></span>
-                                <input id="btnGerarInvite" name="btnGerarInvite" type="button" value="Gerar Invite" class="btn btn-danger"></input>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <script>
+        function incluirCompetencia(idCompetencia, idUsuario, nomeUsuario, competencia) {
+            document.querySelector("#idIncluirCompetencia").value = idCompetencia;
+            document.querySelector("#idUsuarioCompetencia").value = idUsuario;
+
+            let mensagemConfirmCompetencia = ` 
+                     
+        Deseja atribuir a competência <b> ${competencia} </b> ao usuário  <b> ${nomeUsuario} </b>?`
+            document.querySelector("#msgConfirmCompetencia").innerHTML = mensagemConfirmCompetencia
+        }
+    </script>
+
+    <script>
+        function retirarCompetencia(idUC, nomeUsuario2, competencia2) {
+            document.querySelector("#idUC").value = idUC;
+
+            let mensagemRetirarCompetencia = ` 
+                     
+        Deseja retirar a competência <b> ${competencia2} </b> do usuário  <b> ${nomeUsuario2} </b>?`
+            document.querySelector("#msgRetirarCompetencia").innerHTML = mensagemRetirarCompetencia
+        }
+    </script>
+
+    <script>
+        $("#btnConfirmCompetencia").click(function() {
+            var dadosIncluiCompetencia = $("#formIncluiCompetencia").serialize();
+
+            $.post("processa/incluiCompetencia.php", dadosIncluiCompetencia, function(retornaIncluiCompetencia) {
+                location.reload();
+
+            });
+        });
+    </script>
+
+    <script>
+        $("#btnRetirarCompetencia").click(function() {
+            var dadosRetirarCompetencia = $("#formRetirarCompetencia").serialize();
+
+            $.post("processa/retiraCompetencia.php", dadosRetirarCompetencia, function(retornaRetirarCompetencia) {
+                location.reload();
+
+            });
+        });
+    </script>
+
+    <script>
+        $("#btnReset").click(function() {
+            var senhaProvisoria = gerarSenhaProvisoria();
+            var dadosFormulario = $("#resetarSenha").serialize();
+
+            // Enviar dados via AJAX
+            $.ajax({
+                url: "processa/alterarSenha.php", // Substitua pelo caminho correto para o arquivo que salvará no banco de dados
+                type: "POST",
+                data: dadosFormulario + "&senha=" + senhaProvisoria,
+                success: function(response) {
+                    document.querySelector("#msgConfirmacao").hidden = true;
+                    document.querySelector("#btnReset").hidden = true;
+                    $("#msgSenhaGerada").slideDown('slow').html(response);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    $("#msgSenhaGerada").slideDown('slow').html(response);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        function gerarSenhaProvisoria() {
+            var caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+            var senha = "";
+            var comprimentoSenha = 15; // Define o comprimento da senha (pode ser ajustado conforme necessário)
+
+            for (var i = 0; i < comprimentoSenha; i++) {
+                var indiceAleatorio = Math.floor(Math.random() * caracteres.length);
+                senha += caracteres.charAt(indiceAleatorio);
+            }
+
+            return senha;
+        };
+    </script>
+
+    <script>
+        $("#btnHorarioTrabalho").click(function() {
+            var dadosHorarioTrabalho = $("#formHorarioTrabalho").serialize();
+
+            // Enviar dados via AJAX
+            $.ajax({
+                url: "processa_colaborador/horario_trabalho.php",
+                type: "POST",
+                data: dadosHorarioTrabalho,
+                success: function(responseHorarioTrabalho) {
+                    $("#msgHorarioTrabalho").slideDown('slow').html(responseHorarioTrabalho);
+
+                    // Aguardar 1 segundo e depois ocultar a mensagem
+                    setTimeout(function() {
+                        $("#msgHorarioTrabalho").slideUp('slow');
+                        location.reload();
+                    }, 1000);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    $("#msgHorarioTrabalho").slideDown('slow').html(responseHorarioTrabalho);
+
+                    // Aguardar 1 segundo e depois ocultar a mensagem
+                    setTimeout(function() {
+                        $("#msgHorarioTrabalho").slideUp('slow');
+                        location.reload();
+                    }, 1000);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $("#btnGerencia").click(function() {
+            var dadosGerencia = $("#formGerencia").serialize();
+
+            // Enviar dados via AJAX
+            $.ajax({
+                url: "processa_colaborador/gerencia.php",
+                type: "POST",
+                data: dadosGerencia,
+                success: function(responseGerencia) {
+                    $("#msgGerencia").slideDown('slow').html(responseGerencia);
+
+                    // Aguardar 1 segundo e depois ocultar a mensagem
+                    setTimeout(function() {
+                        $("#msgGerencia").slideUp('slow');
+                        location.reload();
+                    }, 1000);
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    $("#msgGerencia").slideDown('slow').html(responseGerencia);
+
+                    // Aguardar 1 segundo e depois ocultar a mensagem
+                    setTimeout(function() {
+                        $("#msgGerencia").slideUp('slow');
+                        location.reload();
+                    }, 1000);
+                }
+            });
+        });
+    </script>
+
 
 <?php
-    require "js.php";
 } else {
-    require "../../acesso_negado.php";
+    require($_SERVER['DOCUMENT_ROOT'] . '/acesso_negado.php');
 }
-require "../../includes/securityfooter.php";
+require($_SERVER['DOCUMENT_ROOT'] . '/includes/securityfooter.php');
+
 ?>

@@ -5,6 +5,7 @@ require($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao_pdo.php');
 
 $submenu_id = "67";
 $uid = $_SESSION['id'];
+$empresa_usuario = $_SESSION['empresa_id'];
 
 $permissions_submenu =
     "SELECT u.perfil_id 
@@ -14,18 +15,24 @@ $permissions_submenu =
 
 $exec_permissions_submenu = $pdo->prepare($permissions_submenu);
 $exec_permissions_submenu->execute();
+$permissao_portal = $_SESSION['permissao_portal'];
 
 $rowCount_permissions_submenu = $exec_permissions_submenu->rowCount();
 
-if ($rowCount_permissions_submenu > 0) {
+if (($rowCount_permissions_submenu > 0) & ($permissao_portal != 0)) {
 
     if (empty($_POST['pesquisaTipo'])) {
         $_POST['pesquisaTipo'] = "%";
     }
 
     if (empty($_POST['empresaPesquisa'])) {
-        $_POST['empresaPesquisa'] = "%";
+        if ($permissao_portal == 1) {
+            $_POST['empresaPesquisa'] = $empresa_usuario;
+        } else if ($permissao_portal == 2) {
+            $_POST['empresaPesquisa'] = "%";
+        }
     }
+
 
     if (empty($_POST['pesquisaDescricao'])) {
         $_POST['pesquisaDescricao'] = "%";
@@ -86,11 +93,19 @@ if ($rowCount_permissions_submenu > 0) {
                                                         <select id="cadastroEmpresa" name="cadastroEmpresa" class="form-select" required>
                                                             <option value="" selected disabled>Selecione a empresa</option>
                                                             <?php
-                                                            $sql_lista_empresas =
-                                                                "SELECT emp.id as id, emp.fantasia as empresa
-                                                      FROM empresas as emp
-                                                      WHERE emp.deleted = 1
-                                                      ORDER BY emp.fantasia ASC";
+                                                            if ($permissao_portal == 1) {
+                                                                $sql_lista_empresas =
+                                                                    "SELECT emp.id as id, emp.fantasia as empresa
+    FROM empresas as emp
+    WHERE emp.deleted = 1 AND id = $empresa_usuario
+    ORDER BY emp.fantasia ASC";
+                                                            } else if ($permissao_equipamentos_pop == 2) {
+                                                                $permissao_portal =
+                                                                    "SELECT emp.id as id, emp.fantasia as empresa
+        FROM empresas as emp
+        WHERE emp.deleted = 1
+        ORDER BY emp.fantasia ASC";
+                                                            }
                                                             $resultado = mysqli_query($mysqli, $sql_lista_empresas);
                                                             while ($empresa = mysqli_fetch_object($resultado)) :
                                                                 echo "<option value='$empresa->id'> $empresa->empresa</option>";

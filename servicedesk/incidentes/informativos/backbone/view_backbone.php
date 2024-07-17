@@ -383,7 +383,7 @@ if ($rowCount_permissions_submenu > 0) {
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Comunicados Enviados</h5>
-                            <form method="POST" action="/servicedesk/incidentes/processa/comunicaInteressados.php" class="d-inline-block">
+                            <form method="POST" action="/servicedesk/incidentes/informativos/backbone/processa/comunicaInteressados.php" class="d-inline-block">
                                 <input value="<?= $id_incidente ?>" id="icdID" name="icdID" hidden readonly>
                                 <button type="submit" class="btn btn-sm btn-success">Enviar Comunicado</button>
                             </form>

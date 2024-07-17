@@ -230,7 +230,119 @@
     </div>
 
     <div class="row mb-3">
-        <label for="permite_configurar_privacidade_equipamentos" class="col-sm-4 col-form-label">Permite configurar privacidade equipamentos</label>
+        <label for="permissao_equipamentos_pop" class="col-sm-4 col-form-label">Permissão Equipamentos POP</label>
+        <div class="col-sm-6">
+            <select name="permissao_equipamentos_pop" id="permissao_equipamentos_pop" class="form-select" required>
+                <?php
+                if ($campos['permissao_equipamentos_pop'] == 1) { ?>
+                    <option selected value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option value="2">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option value="0">Nenhum</option>
+                <?php } else if ($campos['permissao_equipamentos_pop'] == 2) { ?>
+                    <option value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option selected value="2">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option value="0">Nenhum</option>
+                <?php } else if ($campos['permissao_equipamentos_pop'] == 0) { ?>
+                    <option value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option value="2">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option selected value="0">Nenhum</option>
+                <?php } else { ?>
+                    <option selected disabled value="">Selecione uma opção</option>
+                    <option value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option value="0">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option value="0">Nenhum</option>
+                <?php }
+                ?>
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="permissao_vms" class="col-sm-4 col-form-label">Permissão VMs</label>
+        <div class="col-sm-6">
+            <select name="permissao_vms" id="permissao_vms" class="form-select" required>
+                <?php
+                if ($campos['permissao_vms'] == 1) { ?>
+                    <option selected value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option value="2">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option value="0">Nenhum</option>
+                <?php } else if ($campos['permissao_vms'] == 2) { ?>
+                    <option value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option selected value="2">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option value="0">Nenhum</option>
+                <?php } else if ($campos['permissao_vms'] == 0) { ?>
+                    <option value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option value="2">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option selected value="0">Nenhum</option>
+                <?php } else { ?>
+                    <option selected disabled value="">Selecione uma opção</option>
+                    <option value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option value="0">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option value="0">Nenhum</option>
+                <?php }
+                ?>
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="permissao_email" class="col-sm-4 col-form-label">Permissão E-mail</label>
+        <div class="col-sm-6">
+            <select name="permissao_email" id="permissao_email" class="form-select" required>
+                <?php
+                if ($campos['permissao_email'] == 1) { ?>
+                    <option selected value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option value="2">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option value="0">Nenhum</option>
+                <?php } else if ($campos['permissao_email'] == 2) { ?>
+                    <option value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option selected value="2">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option value="0">Nenhum</option>
+                <?php } else if ($campos['permissao_email'] == 0) { ?>
+                    <option value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option value="2">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option selected value="0">Nenhum</option>
+                <?php } else { ?>
+                    <option selected disabled value="">Selecione uma opção</option>
+                    <option value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option value="0">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option value="0">Nenhum</option>
+                <?php }
+                ?>
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="permissao_portal" class="col-sm-4 col-form-label">Permissão Portal</label>
+        <div class="col-sm-6">
+            <select name="permissao_portal" id="permissao_portal" class="form-select" required>
+                <?php
+                if ($campos['permissao_portal'] == 1) { ?>
+                    <option selected value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option value="2">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option value="0">Nenhum</option>
+                <?php } else if ($campos['permissao_portal'] == 2) { ?>
+                    <option value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option selected value="2">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option value="0">Nenhum</option>
+                <?php } else if ($campos['permissao_portal'] == 0) { ?>
+                    <option value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option value="2">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option selected value="0">Nenhum</option>
+                <?php } else { ?>
+                    <option selected disabled value="">Selecione uma opção</option>
+                    <option value="1">Cria/Edita/Visualiza - Somente da empresa do usuário</option>
+                    <option value="0">Cria/Edita/Visualiza - Qualquer empresa</option>
+                    <option value="0">Nenhum</option>
+                <?php }
+                ?>
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="permite_configurar_privacidade_equipamentos" class="col-sm-4 col-form-label">Permite configurar privacidade equipamentos e vms</label>
         <div class="col-sm-6">
             <select name="permite_configurar_privacidade_equipamentos" id="permite_configurar_privacidade_equipamentos" class="form-select" required>
                 <?php

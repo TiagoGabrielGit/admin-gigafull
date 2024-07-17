@@ -21,7 +21,11 @@ if (isset($_SESSION['id'])) {
             permite_gerenciar_incidente = :permite_gerenciar_incidente,
             permite_visualizar_protocolo_erp = :permite_visualizar_protocolo_erp,
             permite_configurar_privacidade_equipamentos = :permite_configurar_privacidade_equipamentos,
-            permite_configurar_privacidade_credenciais = :permite_configurar_privacidade_credenciais
+            permite_configurar_privacidade_credenciais = :permite_configurar_privacidade_credenciais,
+            permissao_equipamentos_pop = :permissao_equipamentos_pop,
+            permissao_vms = :permissao_vms,
+            permissao_email = :permissao_email,
+            permissao_portal = :permissao_portal
             WHERE usuario_id = :permissionIdUser";
 
             // Preparar a declaração SQL 
@@ -41,13 +45,16 @@ if (isset($_SESSION['id'])) {
             $stmt->bindParam(':permite_visualizar_protocolo_erp', $_POST['permite_visualizar_protocolo_erp']);
             $stmt->bindParam(':permite_configurar_privacidade_equipamentos', $_POST['permite_configurar_privacidade_equipamentos']);
             $stmt->bindParam(':permite_configurar_privacidade_credenciais', $_POST['permite_configurar_privacidade_credenciais']);
+            $stmt->bindParam(':permissao_equipamentos_pop', $_POST['permissao_equipamentos_pop']);
+            $stmt->bindParam(':permissao_vms', $_POST['permissao_vms']);
+            $stmt->bindParam(':permissao_email', $_POST['permissao_email']);
+            $stmt->bindParam(':permissao_portal', $_POST['permissao_portal']);
 
             $stmt->bindParam(':permissionIdUser', $_POST['permissionIdUser']);
 
 
 
             $stmt->execute();
-
             header("Location: /gerenciamento/usuarios/view.php?id=$idUser");
             exit;
         } catch (PDOException $e) {

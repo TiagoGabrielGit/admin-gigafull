@@ -31,11 +31,15 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
     up.permite_configurar_privacidade_equipamentos as 'permite_configurar_privacidade_equipamentos',
     up.permite_configurar_privacidade_credenciais as 'permite_configurar_privacidade_credenciais',
     up.permite_gerenciar_incidente as 'permite_gerenciar_incidente',
+    up.permissao_equipamentos_pop as 'permissao_equipamentos_pop',
+    up.permissao_vms as 'permissao_vms',
+    up.permissao_email as 'permissao_email',
+    up.permissao_portal as 'permissao_portal',
     u.reset_password as reset_password,
     u.tipo_usuario as tipo_usuario,
     u.dashboard as dashboard,
     u.perfil_id as perfil,
-    u.active as active,
+    u.active as active, 
     ei.equipe_id as equipe_id,
     pe.perfil as nome_perfil,
     e.atributoEmpresaPropria as atributoEmpresaPropria
@@ -85,6 +89,10 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       $_SESSION['atributoEmpresaPropria'] = $usuario['atributoEmpresaPropria'];
       $_SESSION['id_pessoa'] = $usuario['id_pessoa'];
       $_SESSION['permite_gerenciar_incidente'] = $usuario['permite_gerenciar_incidente'];
+      $_SESSION['permissao_equipamentos_pop'] = $usuario['permissao_equipamentos_pop'];
+      $_SESSION['permissao_vms'] = $usuario['permissao_vms'];
+      $_SESSION['permissao_email'] = $usuario['permissao_email'];
+      $_SESSION['permissao_portal'] = $usuario['permissao_portal'];
 
 
 
