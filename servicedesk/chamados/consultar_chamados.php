@@ -113,6 +113,13 @@ if ($rowCount_permissions_submenu > 0) {
             } else {
                 $tipoChamadoPesquisa = "%";
             }
+
+            if (isset($_POST['emExecucao'])) {
+                $emExecucao = $_POST['emExecucao'] !== '' ? $_POST['emExecucao'] : "%";
+            } else {
+                $emExecucao = "%";
+            }
+            
         } else {
             $whereAtendente = "AND ch.atendente_id LIKE '%'";
             $filtro_empresa = "%";
@@ -122,6 +129,7 @@ if ($rowCount_permissions_submenu > 0) {
             $solicitante_id = "%";
             $relatoInicialPesquisa = "%";
             $tipoChamadoPesquisa = "%";
+            $emExecucao = "%";
         }
 
         if ($permite_interagir_chamados == 1) {
@@ -173,6 +181,7 @@ if ($rowCount_permissions_submenu > 0) {
                 AND ch.solicitante_id LIKE '$solicitante_id'
                 AND cai.equipe_id = '$equipe_id'
                 AND ch.tipochamado_id LIKE '$tipoChamadoPesquisa'
+                AND ch.in_execution LIKE '$emExecucao'
                 ORDER BY ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
 
             $sql_lista_solicitantes =
@@ -272,6 +281,7 @@ if ($rowCount_permissions_submenu > 0) {
             AND ch.solicitante_id LIKE '$solicitante_id'
             AND cai.equipe_id = '$equipe_id'
             AND ch.tipochamado_id LIKE '$tipoChamadoPesquisa'
+            AND ch.in_execution LIKE '$emExecucao'
             ORDER BY ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
 
             $sql_lista_solicitantes =
@@ -354,6 +364,7 @@ if ($rowCount_permissions_submenu > 0) {
             AND ch.solicitante_id LIKE '$solicitante_id'
             AND cai.equipe_id = '$equipe_id'
             AND ch.tipochamado_id LIKE '$tipoChamadoPesquisa'
+            AND ch.in_execution LIKE '$emExecucao'
             ORDER BY ch.status_id = 3, IFNULL(ch.prioridade, 9999) ASC, ch.data_abertura DESC";
 
             $sql_lista_solicitantes =
@@ -643,6 +654,15 @@ if ($rowCount_permissions_submenu > 0) {
                                                     echo "<option value='$tipos_chamados->id_tipoChamado' $selected> $tipos_chamados->tipoChamado</option>";
                                                 }
                                                 ?>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-3">
+                                            <label for="emExecucao" class="form-label">Em Execução</label>
+                                            <select id="emExecucao" name="emExecucao" class="form-select">
+                                                <option value="%">Todos</option>
+                                                <option value="1">Sim</option>
+                                                <option value="0">Não</option>
                                             </select>
                                         </div>
 

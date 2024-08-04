@@ -99,8 +99,8 @@ if (($rowCount_permissions_submenu > 0) & ($permissao_portal != 0)) {
     FROM empresas as emp
     WHERE emp.deleted = 1 AND id = $empresa_usuario
     ORDER BY emp.fantasia ASC";
-                                                            } else if ($permissao_equipamentos_pop == 2) {
-                                                                $permissao_portal =
+                                                            } else if ($permissao_portal == 2) {
+                                                                $sql_lista_empresas =
                                                                     "SELECT emp.id as id, emp.fantasia as empresa
         FROM empresas as emp
         WHERE emp.deleted = 1

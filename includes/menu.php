@@ -291,22 +291,22 @@ if ($result->num_rows > 0) {
     </nav>
   </header>
 
-
   <div class="modal fade" id="modalAnotacoes" tabindex="-1">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Bloco de Notas</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <textarea id="notaTextarea" class="form-control" rows="10" style="resize: none;"><?php echo htmlspecialchars($note); ?></textarea>
+          <textarea id="notaTextarea" class="form-control" rows="25" style="resize: none;"><?php echo htmlspecialchars($note); ?></textarea>
         </div>
         <div class="modal-footer">
         </div>
       </div>
     </div>
   </div>
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 

@@ -587,4 +587,14 @@ WHERE um.id = '37' and ppm.perfil_id = $perfil_id";
 
 $r_nav_vmsLocal = mysqli_query($mysqli, $nav_vmsLocal);
 $c_nav_vmsLocal = mysqli_fetch_assoc($r_nav_vmsLocal);
+////////////////////////////////////////////////////////
+
+$nav_orcamento = "SELECT count(*) as c
+FROM url_menu as um
+LEFT JOIN perfil_permissoes_menu as ppm ON ppm.url_menu = um.id
+WHERE um.id = '38' and ppm.perfil_id = $perfil_id";
+
+$r_nav_orcamento = mysqli_query($mysqli, $nav_orcamento);
+$c_nav_orcamento = mysqli_fetch_assoc($r_nav_orcamento);
+
 

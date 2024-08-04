@@ -183,6 +183,58 @@ require "validaRotina.php";
             </li>
         <?php } ?>
 
+        <?php if ($c_nav_orcamento['c'] == 1) { ?>
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#orcamento-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-circle"></i><span>Orçamento</span><i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="orcamento-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <?php if ($c_nav_sub_agrupamento['c'] == 1) {  ?>
+                        <li>
+                            <a href="/financeiro/orcamento/agrupamento/index.php">
+                                <i class="bi bi-circle"></i><span>Agrupamento</span>
+                            </a>
+                        </li>
+                    <?php  }  ?>
+                </ul>
+
+                <ul id="orcamento-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <?php if ($c_nav_sub_categoria['c'] == 1) {  ?>
+                        <li>
+                            <a href="/financeiro/orcamento/categoria/index.php">
+                                <i class="bi bi-circle"></i><span>Categoria</span>
+                            </a>
+                        </li>
+                    <?php  }  ?>
+                </ul>
+
+                <ul id="orcamento-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <?php if ($c_nav_sub_centro_de_custo['c'] == 1) {  ?>
+                        <li>
+                            <a href="/financeiro/orcamento/cento_de_custo/index.php">
+                                <i class="bi bi-circle"></i><span>Centro de Custo</span>
+                            </a>
+                        </li>
+                    <?php  }  ?>
+                </ul>
+
+                <ul id="orcamento-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                    <?php if ($c_nav_sub_orcamentos['c'] == 1) {  ?>
+                        <li>
+                            <a href="/financeiro/orcamento/orcamentos/index.php">
+                                <i class="bi bi-circle"></i><span>Orçamentos</span>
+                            </a>
+                        </li>
+                    <?php  }  ?>
+                </ul>
+
+
+
+
+            </li>
+        <?php } ?>
+
+
         <?php if ($c_valida_service_desk['c'] > 0) { ?>
             <li class="nav-heading">Service Desk</li>
         <?php } ?>

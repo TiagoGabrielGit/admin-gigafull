@@ -18,6 +18,60 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading15-0">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse15-0" aria-expanded="false" aria-controls="collapse15-0">
+                    Versão 15.2 - 03/08/2024
+                  </button>
+                </h2>
+                <div id="collapse15-0" class="accordion-collapse collapse" aria-labelledby="heading15-0" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+                    # Orçamentos, centro de custo;<br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Criado menu id 38;<br>
+                    # Criado submenu id 69;<br>
+                    # Criado submenu id 70;<br>
+                    # Criado submenu id 71;<br>
+                    # Criado submenu id 72;<br>
+
+                    # Criado tabela cc_agrupamentos;<br>
+                    # Criado tabela cc_centro_de_custo;<br>
+                    # Criado tabela cc_categoria;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Validar permissoes no view POP;<br>
+                    # Correção na empresa do insert pop;<br>
+                    # Cadastro credenciais nascer como privado;<br>
+                    # Redicionar para configuração de privacidade após cadastros;<br>
+                    # Interessados em incidentes;<br>
+                    # Solicitar aferição via control;<br>
+
+
+                    # Replicar relato do chamado principal para os chamados dependentes;<br>
+                    # Notificações smart de relatos em chamados realizados via smartmobile;<br>
+                    # Notificações smart de abertura de chamados realizados via smartcontrol;<br>
+                    # Notificações smart de abertura de chamados realizados via smartmobile;<br>
+                    # Observações Internas Chamado;<br>
+                    # Pesquisa MP Concluidas através da data;<br>
+                    # Página de aceite MP;<br>
+                    # White-Label iframe incidentes;<br>
+                    # TABs permitidas no iframe incidentes;<br>
+                    # Remover PON/RF durante criação de MP;<br>
+                    # Vincular uma documentação à um tipo de incidente;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Atributos de equipamentos;<br>
+                    # Permissões em documentações;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading15-0">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse15-0" aria-expanded="false" aria-controls="collapse15-0">
                     Versão 15.1 - 17/07/2024
                   </button>
                 </h2>
@@ -41,6 +95,8 @@ require "../includes/menu.php";
                     # Criado coluna permissao_portal na tabela usuarios_permissoes;<br>
 
                     <br><strong>Backlog</strong><br>
+                    # Validar permissoes no view POP;<br>
+                    # Correção na empresa do insert pop;<br>
                     # Cadastro credenciais nascer como privado;<br>
                     # Redicionar para configuração de privacidade após cadastros;<br>
                     # Interessados em incidentes;<br>

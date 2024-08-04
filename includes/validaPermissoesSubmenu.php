@@ -1031,3 +1031,35 @@ WHERE usm.id = '67' and ppsm.perfil_id = $perfil_id";
 $r_nav_sub_vault_portal = mysqli_query($mysqli, $nav_sub_vault_portal);
 $c_nav_sub_vault_portal = mysqli_fetch_assoc($r_nav_sub_vault_portal);
 
+$nav_sub_orcamento = "SELECT count(*) as c
+FROM url_submenu as usm
+LEFT JOIN perfil_permissoes_submenu as ppsm ON ppsm.url_submenu = usm.id
+WHERE usm.id = '69' and ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_orcamento = mysqli_query($mysqli, $nav_sub_orcamento);
+$c_nav_sub_orcamentos = mysqli_fetch_assoc($r_nav_sub_orcamento);
+
+$nav_sub_centro_de_custo = "SELECT count(*) as c
+FROM url_submenu as usm
+LEFT JOIN perfil_permissoes_submenu as ppsm ON ppsm.url_submenu = usm.id
+WHERE usm.id = '70' and ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_centro_de_custo = mysqli_query($mysqli, $nav_sub_centro_de_custo);
+$c_nav_sub_centro_de_custo = mysqli_fetch_assoc($r_nav_sub_centro_de_custo);
+
+$nav_sub_agrupamento = "SELECT count(*) as c
+FROM url_submenu as usm
+LEFT JOIN perfil_permissoes_submenu as ppsm ON ppsm.url_submenu = usm.id
+WHERE usm.id = '71' and ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_agrupamento = mysqli_query($mysqli, $nav_sub_agrupamento);
+$c_nav_sub_agrupamento = mysqli_fetch_assoc($r_nav_sub_agrupamento);
+
+$nav_sub_categoria = "SELECT count(*) as c
+FROM url_submenu as usm
+LEFT JOIN perfil_permissoes_submenu as ppsm ON ppsm.url_submenu = usm.id
+WHERE usm.id = '72' and ppsm.perfil_id = $perfil_id";
+
+$r_nav_sub_categoria = mysqli_query($mysqli, $nav_sub_categoria);
+$c_nav_sub_categoria = mysqli_fetch_assoc($r_nav_sub_categoria);
+
