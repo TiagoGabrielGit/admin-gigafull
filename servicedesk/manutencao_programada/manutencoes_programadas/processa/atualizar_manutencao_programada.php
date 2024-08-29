@@ -10,7 +10,7 @@ if (isset($_SESSION['id'])) {
         $duracao = $_POST["duracaoMP"];
         $status = $_POST["statusMP"];
         $descricao = $_POST["descricaoMP"];
-        $mensagem = $_POST["mensagemMP"];
+        $mensagem = isset($_POST["mensagemMP"]) ? $_POST["mensagemMP"] : "";
         $id = $_POST["idMP"];
 
         try {

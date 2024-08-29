@@ -780,6 +780,14 @@ require "validaRotina.php";
                             </a>
                         </li>
                     <?php } ?>
+
+                    <?php if ($c_nav_sub_metabase['c'] == 1) { ?>
+                        <li>
+                            <a href="/relatorios/metabase/index.php">
+                                <i class="bi bi-circle"></i><span>Metabase</span>
+                            </a>
+                        </li>
+                    <?php } ?>
                 </ul>
             </li>
         <?php } ?>

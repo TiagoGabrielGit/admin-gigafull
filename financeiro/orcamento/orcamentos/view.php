@@ -181,9 +181,20 @@ if ($rowCount_permissions_submenu > 0 & $exec_consulta_orcamento->rowCount() > 0
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-lg-10">
+                        <div class="col-lg-8">
                             <h5 class="card-title">Orçados</h5>
 
+                        </div>
+                        <div class="col-lg-2">
+                            <form action="processa/gerar_pdf.php" method="post" target="_blank">
+                                <input type="hidden" name="orcamento" value="<?php echo htmlspecialchars($orcamento); ?>">
+                                <input type="hidden" name="agrupamento_filter" value="<?php echo htmlspecialchars($agrupamento_filter); ?>">
+                                <input type="hidden" name="centro_de_custo_filter" value="<?php echo htmlspecialchars($centro_de_custo_filter); ?>">
+                                <input type="hidden" name="categoria_filter" value="<?php echo htmlspecialchars($categoria_filter); ?>">
+                                <input type="hidden" name="mes_competencia_filter" value="<?php echo htmlspecialchars($mes_competencia_filter); ?>">
+                                <input type="hidden" name="ano_competencia_filter" value="<?php echo htmlspecialchars($ano_competencia_filter); ?>">
+                                <button style="margin-top: 15px;" type="submit" class="btn btn-sm btn-primary">Gerar PDF</button>
+                            </form>
                         </div>
                         <div class="col-lg-2">
                             <button style="margin-top: 15px;" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modal_inserir_orcamento">Inserir Novo</button>
