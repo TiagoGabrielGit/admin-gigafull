@@ -33,40 +33,47 @@ if ($rowCount_permissions_submenu > 0) {
                     </div>
                     <br>
                     <table class="table table-striped ">
-    <thead>
-        <tr style="text-align: center;">
-            <th scope="col">Dashboard</th>
-            <th scope="col">URL</th>
-            <th scope="col">Visualizar</th>
-            <th scope="col">Editar</th>
+                        <thead>
+                            <tr style="text-align: center;">
+                                <th scope="col">Dashboard</th>
+                                <th scope="col">URL</th>
+                                <th scope="col">Visualizar</th>
+                                <th scope="col">Abrir Link</th>
+                                <th scope="col">Editar</th>
 
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-        $sql = "SELECT id, dashboard, url, token FROM metabase WHERE active = 1 ORDER BY dashboard ASC";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $sql = "SELECT id, dashboard, url, token FROM metabase WHERE active = 1 ORDER BY dashboard ASC";
+                            $stmt = $pdo->prepare($sql);
+                            $stmt->execute();
 
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
-            <tr style='vertical-align: middle; text-align: center;'>
-                <td><?= htmlspecialchars($row['dashboard']) ?></td>
-                <td><?= htmlspecialchars($row['url']) ?></td>
-                <td>
-                    <a href="dashboard.php?id=<?= htmlspecialchars($row['token']) ?>" title="Ver Dashboard">
-                        <i class="bi bi-columns-gap" style="margin-left: -5px;"></i>
-                    </a>
-                </td>
-                <td>
-                    <a href="editar.php?id=<?= htmlspecialchars($row['id']) ?>" title="Editar">
-                        <i class="bi bi-tools" style="margin-left: -5px;"></i>
-                    </a>
-                </td>
-            </tr>
-        <?php }
-        ?>
-    </tbody>
-</table>
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) { ?>
+                                <tr style='vertical-align: middle; text-align: center;'>
+                                    <td><?= htmlspecialchars($row['dashboard']) ?></td>
+                                    <td><?= htmlspecialchars($row['url']) ?></td>
+                                    <td>
+                                        <a href="dashboard.php?id=<?= htmlspecialchars($row['token']) ?>" title="Ver Dashboard">
+                                            <i class="bi bi-columns-gap" style="margin-left: -5px;"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="<?= $row['url'] ?>" target="_blank">
+                                            <i class="bi bi-link" style="margin-left: -5px;"></i>
+                                        </a>
+                                    </td>
+
+                                    <td>
+                                        <a href="editar.php?id=<?= htmlspecialchars($row['id']) ?>" title="Editar">
+                                            <i class="bi bi-tools" style="margin-left: -5px;"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php }
+                            ?>
+                        </tbody>
+                    </table>
 
 
                 </div>

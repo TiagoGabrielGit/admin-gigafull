@@ -6,6 +6,7 @@ $usuarioID = $_GET['id'];
 
 $sql_usuario =
     "SELECT u.id as idUsuario,
+    u.url_dashboard as url_dashboard,
 CASE
     WHEN u.notify_email = 1 THEN 'Ativado'
     WHEN u.notify_email = 0 THEN 'Inativado'

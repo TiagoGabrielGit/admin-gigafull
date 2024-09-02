@@ -90,13 +90,19 @@ require "conexoes/conexao_pdo.php";
 
 
     <?php
-    if ($_SESSION['dashboard'] == "1") {
-        require "dashboard/tipo1.php";
-    } else if ($_SESSION['dashboard'] == "2") {
-        require "dashboard/tipo2.php";
-    } else if ($_SESSION['dashboard'] == "3") {
-        require "dashboard/tipo3.php";
+    if (!empty($_SESSION['url_dashboard'])) {
+        require "dashboard/personalizado.php";
+    } else {
+        if ($_SESSION['dashboard'] == "1") {
+            require "dashboard/tipo1.php";
+        } else if ($_SESSION['dashboard'] == "2") {
+            require "dashboard/tipo2.php";
+        } else if ($_SESSION['dashboard'] == "3") {
+            require "dashboard/tipo3.php";
+        }
     }
+
+
 
     ?>
 

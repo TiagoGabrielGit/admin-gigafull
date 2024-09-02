@@ -78,6 +78,20 @@
                     </div>
                 </form>
             <?php } ?>
+            <form action="processa/atualiza_dashboard.php" method="POST">
+                <input id="idUsuario" name="idUsuario" readonly value="<?= $usuarioID ?>" hidden></input>
+
+                <div class="row">
+                    <div class="col-10">
+                        <label for="urlDashboard" class="form-label">URL Dashboard</label>
+                        <input type="text" class="form-control" id="urlDashboard" name="urlDashboard" value="<?= $campos['url_dashboard'] ?>"></input>
+                    </div>
+                    <div class="col-2">
+                        <button style="margin-top: 30px;" class="btn btn-sm btn-danger" type="submit">Salvar</button>
+                    </div>
+                </div>
+            </form>
+
         </div>
     </div>
 </div>

@@ -16,6 +16,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
     p.id as id_pessoa,
     u.senha as senha,
     u.control as control,
+    u.url_dashboard as url_dashboard,
     u.empresa_id as empresa_id,
     up.permite_interagir_chamados as 'permite_interagir_chamados',
     up.permite_abrir_chamados_outras_empresas as 'permite_abrir_chamados_outras_empresas',
@@ -72,7 +73,7 @@ if (empty($_POST['email']) || empty($_POST['senha'])) {
       $_SESSION['dashboard'] = $usuario['dashboard'];
       $_SESSION['ip_address'] = $_SERVER['REMOTE_ADDR'];
       $_SESSION['tipo_usuario'] = $usuario['tipo_usuario'];
-
+      $_SESSION['url_dashboard'] = $usuario['url_dashboard'];
 
       $_SESSION['permite_interagir_chamados'] = $usuario['permite_interagir_chamados'];
       $_SESSION['permite_abrir_chamados_outras_empresas'] = $usuario['permite_abrir_chamados_outras_empresas'];
