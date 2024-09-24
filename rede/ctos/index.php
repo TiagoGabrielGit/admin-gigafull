@@ -23,10 +23,16 @@ $rowCount_permissions = $exec_permissions->rowCount();
 if ($rowCount_permissions > 0) {
     // Processar filtros
     $caixa = isset($_GET['caixa']) ? $_GET['caixa'] : '';
+    $empresa_id = isset($_GET['empresa_id']) ? $_GET['empresa_id'] : '';
     $limiteBusca = isset($_GET['limiteBusca']) ? $_GET['limiteBusca'] : '100';
     $codigoIntegracao = isset($_GET['codigoIntegracao']) ? $_GET['codigoIntegracao'] : '';
     $nbintegration = isset($_GET['nbintegration']) ? $_GET['nbintegration'] : '';
 
+    // Buscar empresas
+    $query_empresas = "SELECT id, fantasia FROM empresas WHERE deleted = 1 ORDER BY fantasia ASC";
+    $stmt_empresas = $pdo->prepare($query_empresas);
+    $stmt_empresas->execute();
+    $empresas = $stmt_empresas->fetchAll(PDO::FETCH_ASSOC);
 ?>
     <main id="main" class="main">
         <section class="section">
@@ -37,29 +43,49 @@ if ($rowCount_permissions > 0) {
                             <h5 class="card-title">FILTRO</h5>
                             <form method="GET" action="">
                                 <div class="row">
-                                    <div class="col-3">
-                                        <label for="caixa" class="form-label">Caixa</label>
-                                        <input id="caixa" name="caixa" class="form-control" value="<?= htmlspecialchars($caixa) ?>"></input>
+                                    <div class="row">
+
+                                        <div class="col-3">
+                                            <label for="empresa" class="form-label">Empresa</label>
+                                            <select id="empresa" name="empresa_id" class="form-select">
+                                                <option value="">Todas as Empresas</option>
+                                                <?php foreach ($empresas as $empresaItem): ?>
+                                                    <option value="<?= $empresaItem['id']; ?>" <?= $empresa_id == $empresaItem['id'] ? 'selected' : '' ?>>
+    <?= $empresaItem['fantasia']; ?>
+</option>
+
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="col-4">
-                                        <label for="nbintegration" class="form-label">NB Integration</label>
-                                        <input id="nbintegration" name="nbintegration" class="form-control" value="<?= htmlspecialchars($nbintegration) ?>"></input>
+                                    <div class="row">
+
+                                        <div class="col-3">
+                                            <label for="caixa" class="form-label">Caixa</label>
+                                            <input id="caixa" name="caixa" class="form-control" value="<?= htmlspecialchars($caixa) ?>"></input>
+                                        </div>
+                                        <div class="col-4">
+                                            <label for="nbintegration" class="form-label">NB Integration</label>
+                                            <input id="nbintegration" name="nbintegration" class="form-control" value="<?= htmlspecialchars($nbintegration) ?>"></input>
+                                        </div>
+                                        <div class="col-3">
+                                            <label for="codigoIntegracao" class="form-label">Código Integração</label>
+                                            <input id="codigoIntegracao" name="codigoIntegracao" class="form-control" value="<?= htmlspecialchars($codigoIntegracao) ?>"></input>
+                                        </div>
+                                        <div class="col-2">
+                                            <label for="limiteBusca" class="form-label">Limite de Busca</label>
+                                            <select id="limiteBusca" name="limiteBusca" class="form-select">
+                                                <option value="10" <?= $limiteBusca == '10' ? 'selected' : '' ?>>10</option>
+                                                <option value="50" <?= $limiteBusca == '50' ? 'selected' : '' ?>>50</option>
+                                                <option value="100" <?= $limiteBusca == '100' ? 'selected' : '' ?>>100</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="col-3">
-                                        <label for="codigoIntegracao" class="form-label">Código Integração</label>
-                                        <input id="codigoIntegracao" name="codigoIntegracao" class="form-control" value="<?= htmlspecialchars($codigoIntegracao) ?>"></input>
-                                    </div>
-                                    <div class="col-2">
-                                        <label for="limiteBusca" class="form-label">Limite de Busca</label>
-                                        <select id="limiteBusca" name="limiteBusca" class="form-select">
-                                            <option value="10" <?= $limiteBusca == '10' ? 'selected' : '' ?>>10</option>
-                                            <option value="50" <?= $limiteBusca == '50' ? 'selected' : '' ?>>50</option>
-                                            <option value="100" <?= $limiteBusca == '100' ? 'selected' : '' ?>>100</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-2">
-                                        <label>&nbsp;</label>
-                                        <button type="submit" class="btn btn-danger btn-sm form-control">Filtrar</button>
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <label>&nbsp;</label>
+                                            <button type="submit" class="btn btn-danger btn-sm form-control">Filtrar</button>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
@@ -81,11 +107,13 @@ if ($rowCount_permissions > 0) {
                             </div>
                         </div>
                     </div>
-                    <table class="table datatable">
+                    <table class="table">
                         <thead>
                             <tr>
                                 <th style="text-align: center;">ID</th>
+                                <th style="text-align: center;">Empresa</th>
                                 <th style="text-align: center;">Caixa</th>
+                                <th style="text-align: center;">OLT - SLOT/PON</th>
                                 <th style="text-align: center;">NB Integration</th>
                                 <th style="text-align: center;">Código Integração</th>
                                 <th style="text-align: center;">Quantidade Aferições</th>
@@ -95,19 +123,32 @@ if ($rowCount_permissions > 0) {
                         <tbody>
                             <?php
                             // Montar query com filtros
-                            $query_ctos = "SELECT * FROM gpon_ctos WHERE 1=1";
+                            $query_ctos = 
+                            "SELECT e.fantasia, gc.id, gc.title, gc.nbintegration_code, gc.paintegration_code, gc.lat, gc.lng, gp.slot, gp.pon, go.olt_name as olt
+                            FROM gpon_ctos as gc
+                            LEFT JOIN empresas as e ON e.id = gc.empresa_id
+                            LEFT JOIN gpon_pon as gp ON gp.cod_int = gc.paintegration_code
+                            LEFT JOIN gpon_olts as go ON go.id = gp.olt_id
+                            WHERE 1=1";
+                            if (!empty($empresa_id)) {
+                                $query_ctos .= " AND gc.empresa_id LIKE :empresa_id";
+                            }
                             if (!empty($caixa)) {
-                                $query_ctos .= " AND title LIKE :caixa";
+                                $query_ctos .= " AND gc.title LIKE :caixa";
                             }
                             if (!empty($nbintegration)) {
-                                $query_ctos .= " AND nbintegration_code LIKE :nbintegration_code";
+                                $query_ctos .= " AND gc.nbintegration_code LIKE :nbintegration_code";
                             }
                             if (!empty($codigoIntegracao)) {
-                                $query_ctos .= " AND paintegration_code LIKE :codigoIntegracao";
+                                $query_ctos .= " AND gc.paintegration_code LIKE :codigoIntegracao";
                             }
                             $query_ctos .= " LIMIT :limiteBusca";
 
                             $stmt = $pdo->prepare($query_ctos);
+                            if (!empty($empresa_id)) {
+                                $stmt->bindParam(':empresa_id', $empresa_id, PDO::PARAM_INT);
+                            }
+                            
                             if (!empty($caixa)) {
                                 $caixa = "%$caixa%";
                                 $stmt->bindParam(':caixa', $caixa, PDO::PARAM_STR);
@@ -127,7 +168,11 @@ if ($rowCount_permissions > 0) {
                             ?>
                                 <tr>
                                     <td style="text-align: center;"><?= $id; ?></td>
+                                    <td style="text-align: center;"><?= $caixas['fantasia']; ?></td>
+
                                     <td style="text-align: center;"><?= $caixas['title']; ?></td>
+                                    <td style="text-align: center;"><?= $caixas['olt'] . ' - ' . $caixas['slot'] . '/' . $caixas['pon'] ?></td>
+
                                     <td style="text-align: center;"><?= $caixas['nbintegration_code']; ?></td>
                                     <td style="text-align: center;"><?= $caixas['paintegration_code']; ?></td>
 

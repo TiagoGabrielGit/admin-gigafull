@@ -46,12 +46,14 @@ if ($rowCount_permissions > 0) {
                             <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalAdicionarOLTs">Adicionar</button>
                         </div>
                     </div>
-                    <table class="table table-striped" id="styleTable">
+                    <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">OLT</th>
-                                <th scope="col">Cidade</th>
-                                <th scope="col">Status</th>
+                                <th style="text-align: center;" scope="col">OLT</th>
+                                <th style="text-align: center;" scope="col">Cidade</th>
+                                <th style="text-align: center;" scope="col">Status</th>
+                                <th style="text-align: center;" scope="col"></th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -66,18 +68,28 @@ if ($rowCount_permissions > 0) {
                             WHEN gpo.active = 0 THEN 'Inativo'
                         END as active
                     FROM gpon_olts as gpo
-                    ORDER BY gpo.olt_name ASC;
-                    
-                        ";
+                    ORDER BY gpo.olt_name ASC;";
 
                             $r_lista_olts = mysqli_query($mysqli, $sql_lista_olts);
 
                             while ($c_lista_olts = $r_lista_olts->fetch_array()) {
                             ?>
                                 <tr>
-                                    <td><a href="olt_view.php?id=<?= $c_lista_olts['id']; ?>"><span style="color: red;"><?= $c_lista_olts['olt']; ?></span></a></td>
-                                    <td><?= $c_lista_olts['city']; ?></td>
-                                    <td><?= $c_lista_olts['active']; ?></td>
+                                    <td style="text-align: center;"><?= $c_lista_olts['olt']; ?></td>
+                                    <td style="text-align: center;"><?= $c_lista_olts['city']; ?></td>
+                                    <td style="text-align: center;"><?= $c_lista_olts['active']; ?></td>
+
+
+                                    <td style="text-align: center;">
+                                        <button title="Visualizar OLT" type="button" class="btn btn-sm btn-info" onclick="window.location.href = 'olt_view.php?id=<?= $c_lista_olts['id']; ?>';">
+                                            <i class="bi bi-arrow-right-square"></i>
+                                        </button>
+
+                                        <button title=" Visualizar PONs" type="button" class="btn btn-sm btn-warning" onclick="window.location.href = '/rede/gpon/pons.php?olt_id=<?= $c_lista_olts['id']; ?>';">
+                                            <i class="bi bi-bezier"></i>
+                                        </button>
+                                    </td>
+
                                 </tr>
 
                             <?php } ?>

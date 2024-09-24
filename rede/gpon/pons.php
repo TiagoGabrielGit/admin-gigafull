@@ -29,12 +29,44 @@ if ($rowCount_permissions > 0) {
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-10">
+                            <h5 class="card-title">Filtro</h5>
+                        </div>
+                        <div class="col-lg-2">
+                            <a href="/rede/gpon/olt_view.php?id=<?= $olt_id ?>"><button style="margin-top: 15px;" class="btn btn-sm btn-danger">Voltar</button></a>
+                        </div>
+                    </div>
+                    <form method="GET" action="">
+                        <div class="row">
+                            <input type="hidden" name="olt_id" value="<?= $olt_id ?>">
+                            <div class="col-md-2">
+                                <label for="slot" class="form-label">SLOT</label>
+                                <input type="text" class="form-control" name="slot" id="slot" value="<?= isset($_GET['slot']) ? $_GET['slot'] : '' ?>">
+                            </div>
+                            <div class="col-md-2">
+                                <label for="pon" class="form-label">PON</label>
+                                <input type="text" class="form-control" name="pon" id="pon" value="<?= isset($_GET['pon']) ? $_GET['pon'] : '' ?>">
+                            </div>
+                            <div class="col-md-2">
+                                <label for="codigo" class="form-label">Código Integração</label>
+                                <input type="text" class="form-control" name="codigo" id="codigo" value="<?= isset($_GET['codigo']) ? $_GET['codigo'] : '' ?>">
+                            </div>
+                            <div class="col-md-3" style="margin-top: 32px;">
+                                <button type="submit" class="btn btn-sm btn-danger">Filtrar</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <hr class="sidebar-divider">
+
+                    <div class="row">
+                        <div class="col-lg-10">
                             <h5 class="card-title">Cadastro de PONs</h5>
                         </div>
                         <div class="col-lg-2" style="margin-top: 10px;">
                             <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#modalAdicionarPON">Adicionar</button>
                         </div>
                     </div>
+
                     <?php
                     if (isset($_GET['error'])) {
                         $errorMessage = $_GET['error'];
@@ -48,48 +80,80 @@ if ($rowCount_permissions > 0) {
                     }
                     ?>
 
-                    <hr class="sidebar-divider">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="row">
-                                <table class="table table-striped" id="styleTable">
+                                <table class="table">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Código Integração</th>
-                                            <th scope="col">SLOT</th>
-                                            <th scope="col">PON</th>
-                                            <th scope="col">Status</th>
+                                            <th style="text-align: center;" scope="col">OLT</th>
+                                            <th style="text-align: center;" scope="col">SLOT</th>
+                                            <th style="text-align: center;" scope="col">PON</th>
+                                            <th style="text-align: center;" scope="col">Código Integração</th>
+                                            <th style="text-align: center;" scope="col">Status</th>
+                                            <th style="text-align: center;" scope="col">Ações</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
+                                        // Adicionando as condições de filtro no SQL
                                         $sql_lista_pons =
                                             "SELECT
-                        gpp.id as id,
-                        gpo.olt_name as olt,
-                        gpp.slot as slot,
-                        gpp.pon as pon,
-                        gpp.cod_int as codigo,
-                        CASE
-                            WHEN gpp.active = 1 THEN 'Ativo'
-                            WHEN gpp.active = 0 THEN 'Inativo'
-                        END as active
-                    FROM gpon_pon as gpp
-                    LEFT JOIN gpon_olts as gpo on gpo.id = gpp.olt_id
-                    WHERE olt_id = $olt_id
-                    ORDER BY gpo.olt_name ASC, gpp.slot ASC, gpp.pon ASC";
+                                            gpp.id as id,
+                                            gpo.olt_name as olt,
+                                            gpp.slot as slot,
+                                            gpp.pon as pon,
+                                            gpp.cod_int as codigo,
+                                            CASE
+                                                WHEN gpp.active = 1 THEN 'Ativo'
+                                                WHEN gpp.active = 0 THEN 'Inativo'
+                                            END as active
+                                        FROM gpon_pon as gpp
+                                        LEFT JOIN gpon_olts as gpo on gpo.id = gpp.olt_id
+                                        WHERE olt_id = :olt_id";
 
-                                        $r_lista_pons = mysqli_query($mysqli, $sql_lista_pons);
+                                        if (!empty($_GET['slot'])) {
+                                            $sql_lista_pons .= " AND gpp.slot LIKE :slot";
+                                        }
+                                        if (!empty($_GET['pon'])) {
+                                            $sql_lista_pons .= " AND gpp.pon LIKE :pon";
+                                        }
+                                        if (!empty($_GET['codigo'])) {
+                                            $sql_lista_pons .= " AND gpp.cod_int LIKE :codigo";
+                                        }
 
-                                        while ($c_lista_pon = $r_lista_pons->fetch_array()) {
+                                        $sql_lista_pons .= " ORDER BY gpo.olt_name ASC, gpp.slot ASC, gpp.pon ASC";
+
+                                        $stmt = $pdo->prepare($sql_lista_pons);
+                                        $stmt->bindParam(':olt_id', $olt_id);
+                                        if (!empty($_GET['slot'])) {
+                                            $slot_filter = "%" . $_GET['slot'] . "%";
+                                            $stmt->bindParam(':slot', $slot_filter);
+                                        }
+                                        if (!empty($_GET['pon'])) {
+                                            $pon_filter = "%" . $_GET['pon'] . "%";
+                                            $stmt->bindParam(':pon', $pon_filter);
+                                        }
+                                        if (!empty($_GET['codigo'])) {
+                                            $codigo_filter = "%" . $_GET['codigo'] . "%";
+                                            $stmt->bindParam(':codigo', $codigo_filter);
+                                        }
+                                        $stmt->execute();
+
+                                        while ($c_lista_pon = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                         ?>
                                             <tr>
-                                                <td><a href="pon_view.php?id=<?= $c_lista_pon['id']; ?>"><span style="color: red;"><?= $c_lista_pon['codigo']; ?></span></a></td>
-                                                <td><?= $c_lista_pon['slot']; ?></td>
-                                                <td><?= $c_lista_pon['pon']; ?></td>
-                                                <td><?= $c_lista_pon['active']; ?></td>
+                                                <td style="text-align: center;"><?= $c_lista_pon['olt']; ?></td>
+                                                <td style="text-align: center;"><?= $c_lista_pon['slot']; ?></td>
+                                                <td style="text-align: center;"><?= $c_lista_pon['pon']; ?></td>
+                                                <td style="text-align: center;"><?= $c_lista_pon['codigo']; ?></td>
+                                                <td style="text-align: center;"><?= $c_lista_pon['active']; ?></td>
+                                                <td style="text-align: center;">
+                                                    <button title="Visualizar PON" type="button" class="btn btn-sm btn-info" onclick="window.location.href = 'pon_view.php?id=<?= $c_lista_pon['id']; ?>';">
+                                                        <i class="bi bi-arrow-right-square"></i>
+                                                    </button>
+                                                </td>
                                             </tr>
-
                                         <?php } ?>
                                     </tbody>
                                 </table>
@@ -145,8 +209,6 @@ if ($rowCount_permissions > 0) {
             </div>
         </div>
     </div>
-
-
     <script>
         // Função para adicionar campos de entrada dinamicamente
         document.getElementById('adicionar-campo').addEventListener('click', function() {

@@ -35,7 +35,8 @@ if ($rowCount_permissions > 0) {
     gpp.pon as pon,
     gpo.olt_name as olt,
     gpp.active as active,
-    gpp.cod_int as codigo
+    gpp.cod_int as codigo,
+    gpo.id as id_olt
     FROM
     gpon_pon as gpp
     LEFT JOIN
@@ -119,7 +120,7 @@ if ($rowCount_permissions > 0) {
 
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-danger">Salvar</button>
-                                    <a href="/rede/gpon/index.php" class="btn btn-secondary">Voltar</a>
+                                    <a href="/rede/gpon/pons.php?olt_id=<?= $pon['id_olt'] ?>" class="btn btn-secondary">Voltar</a>
                                 </div>
 
                             </form>

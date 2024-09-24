@@ -18,6 +18,51 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading15-4">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse15-4" aria-expanded="false" aria-controls="collapse15-4">
+                    Versão 15.5 - 24/09/2024
+                  </button>
+                </h2>
+                <div id="collapse15-4" class="accordion-collapse collapse" aria-labelledby="heading15-4" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+
+                    <br><strong>Melhorias</strong><br>
+
+                    <br><strong>Alterações banco de dados</strong><br>
+                    # Adicionado coluna 'empresa_id' na tabela gpon_ctos;<br>
+
+                    <br><strong>Backlog</strong><br>
+                    # Validar permissoes no view POP;<br>
+                    # Correção na empresa do insert pop;<br>
+                    # Cadastro credenciais nascer como privado;<br>
+                    # Redicionar para configuração de privacidade após cadastros;<br>
+                    # Interessados em incidentes;<br>
+                    # Solicitar aferição via control;<br>
+
+
+                    # Replicar relato do chamado principal para os chamados dependentes;<br>
+                    # Notificações smart de relatos em chamados realizados via smartmobile;<br>
+                    # Notificações smart de abertura de chamados realizados via smartcontrol;<br>
+                    # Notificações smart de abertura de chamados realizados via smartmobile;<br>
+                    # Observações Internas Chamado;<br>
+                    # Pesquisa MP Concluidas através da data;<br>
+                    # Página de aceite MP;<br>
+                    # White-Label iframe incidentes;<br>
+                    # TABs permitidas no iframe incidentes;<br>
+                    # Remover PON/RF durante criação de MP;<br>
+                    # Vincular uma documentação à um tipo de incidente;<br>
+                    # Editar unidades de produtos e ver histórico de uso;<br>
+                    # Atributos de equipamentos;<br>
+                    # Permissões em documentações;<br>
+                    # Possibilidade de cadastrar uma VM a uma hospedagem; <br>
+                    # Alerta de contato com plantão na abertura de chamado quando chamado aberto fora de horário;<br>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="heading15-4">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse15-4" aria-expanded="false" aria-controls="collapse15-4">
                     Versão 15.4 - XX/09/2024
                   </button>
                 </h2>
@@ -26,7 +71,7 @@ require "../includes/menu.php";
 
                     <br><strong>Melhorias</strong><br>
                     # Dashboard personalizada;<br>
-                    
+
                     <br><strong>Alterações banco de dados</strong><br>
                     # Adicionado coluna url_dashboard na tabela usuarios;<br>
 
@@ -72,7 +117,7 @@ require "../includes/menu.php";
 
                     <br><strong>Melhorias</strong><br>
                     # Criado relatorios Metabase;<br>
-                    
+
                     <br><strong>Alterações banco de dados</strong><br>
                     # Criado submenu id '73';<br>
                     # Criado tabela 'metabase';<br>
