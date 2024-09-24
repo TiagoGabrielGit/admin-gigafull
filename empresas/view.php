@@ -1,46 +1,21 @@
 <?php
-require "../includes/menu.php";
-require "../conexoes/conexao_pdo.php";
+require($_SERVER['DOCUMENT_ROOT'] . '/includes/menu.php');
+require($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao_pdo.php');
+$menu_id = "2";
 $uid = $_SESSION['id'];
-$page_type = "menu";
-$menu_submenu_id = "2";
 
+$permissions_menu = 
+    "SELECT u.perfil_id
+    FROM usuarios u
+    JOIN perfil_permissoes_menu pp ON u.perfil_id = pp.perfil_id 
+    WHERE u.id = $uid AND pp.url_menu = $menu_id";
 
-if ($page_type == "submenu") {
-    $permissions =
-        "SELECT 
-	u.perfil_id
-FROM 
-	usuarios u
-JOIN 
-	perfil_permissoes_submenu pp
-ON 
-	u.perfil_id = pp.perfil_id
-WHERE
-	u.id = $uid
-AND 
-	pp.url_submenu = $menu_submenu_id";
-} else if ($page_type == "menu") {
-    $permissions =
-        "SELECT 
-	u.perfil_id
-FROM 
-	usuarios u
-JOIN 
-	perfil_permissoes_menu pp
-ON 
-	u.perfil_id = pp.perfil_id
-WHERE
-	u.id = $uid
-AND 
-	pp.url_menu = $menu_submenu_id";
-}
-$exec_permissions = $pdo->prepare($permissions);
-$exec_permissions->execute();
+$exec_permissions_menu = $pdo->prepare($permissions_menu);
+$exec_permissions_menu->execute();
 
-$rowCount_permissions = $exec_permissions->rowCount();
+$rowCount_permissions_menu = $exec_permissions_menu->rowCount();
 
-if ($rowCount_permissions > 0) {
+if ($rowCount_permissions_menu > 0) {
 
 
     $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
@@ -60,6 +35,7 @@ empresa.atributoEmpresaPropria as atributoEmpresaPropria,
 empresa.atributoFornecedor as atributoFornecedor,
 empresa.atributoTransportadora as atributoTransportadora,
 empresa.atributoPrestadorServico as atributoPrestadorServico,
+empresa.token as token,
 endereco.cep as cep,
 endereco.street as logradouro,
 endereco.neighborhood as bairro,
@@ -133,6 +109,9 @@ empresa.id = $id
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="notificacao-tab" data-bs-toggle="tab" data-bs-target="#notificacao" type="button" role="tab" aria-controls="notificacao" aria-selected="false" tabindex="-1">Notificação</button>
                                 </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="token-tab" data-bs-toggle="tab" data-bs-target="#token" type="button" role="tab" aria-controls="token" aria-selected="false" tabindex="-1">Token</button>
+                                </li>
                             </ul>
                             <div class="tab-content pt-2" id="myTabContent">
                                 <div class="tab-pane fade show active" id="dados" role="tabpanel" aria-labelledby="dados-tab">
@@ -140,6 +119,9 @@ empresa.id = $id
                                 </div>
                                 <div class="tab-pane fade" id="notificacao" role="tabpanel" aria-labelledby="notificacao-tab">
                                     <?php require "tabs/notificacao.php" ?>
+                                </div>
+                                <div class="tab-pane fade" id="token" role="tabpanel" aria-labelledby="token-tab">
+                                    <?php require "tabs/token.php" ?>
                                 </div>
                             </div><!-- End Default Tabs -->
 

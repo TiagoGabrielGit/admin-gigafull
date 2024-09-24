@@ -18,14 +18,15 @@ require "../includes/menu.php";
               <div class="accordion-item">
                 <h2 class="accordion-header" id="heading15-5">
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse15-5" aria-expanded="false" aria-controls="collapse15-5">
-                    Versão 15.5 - XX/09/2024
+                    Versão 15.5 - 24/09/2024
                   </button>
                 </h2>
                 <div id="collapse15-5" class="accordion-collapse collapse" aria-labelledby="heading15-5" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
-
+                    # Desenvolvida API que retorna os incidentes GPON com base em token fornecido que valida os incidentes interessados por empresa;<br>
+                    
                     <br><strong>Alterações banco de dados</strong><br>
                     # Adicionado coluna 'empresa_id' na tabela gpon_ctos;<br>
                     # Criado tabela 'logs_apis_externas';<br>

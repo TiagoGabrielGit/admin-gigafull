@@ -50,7 +50,7 @@ if ($result_api['active'] == 1) {
 
                     try {
 
-                        $sql = "SELECT i.*
+                        $sql = "SELECT i.id, i.descricaoIncidente, i.descricaoEvento, i.inicioIncidente, i.previsaoNormalizacao, gp.slot, gp.pon
                     FROM incidentes as i 
                     LEFT JOIN gpon_pon as gp ON gp.id = i.pon_id
                     LEFT JOIN gpon_olts as go ON go.id = gp.olt_id
@@ -64,8 +64,8 @@ if ($result_api['active'] == 1) {
 
                             $sql_localidades =
                                 "SELECT *
-            FROM gpon_localidades as gl
-            WHERE gl.pon_id = ?";
+                            FROM gpon_localidades as gl
+                            WHERE gl.pon_id = ?";
                             $stmt_relatos = $pdo->prepare($sql_localidades);
                             $stmt_relatos->execute([$pon_id]);
                             $incidente['localidades'] = $stmt_relatos->fetchAll(PDO::FETCH_ASSOC);
@@ -77,10 +77,10 @@ if ($result_api['active'] == 1) {
                             $incidente_id = $incidente['id'];
 
                             $sql_ctos =
-                                "SELECT gc.id, gc.title, gc.lat, gc.lng, gc.patitle, gc.nbintegration_code, gc.paintegration_code
-            FROM incidentes_ctos as ic
-            LEFT JOIN gpon_ctos as gc ON ic.cto_id = gc.id
-            WHERE ic.incidente_id = ?";
+                                "SELECT gc.title, gc.lat, gc.lng
+                            FROM incidentes_ctos as ic
+                            LEFT JOIN gpon_ctos as gc ON ic.cto_id = gc.id
+                            WHERE ic.incidente_id = ?";
                             $stmt_ctos = $pdo->prepare($sql_ctos);
                             $stmt_ctos->execute([$incidente_id]);
                             $incidente['ctos_afetadas'] = $stmt_ctos->fetchAll(PDO::FETCH_ASSOC);

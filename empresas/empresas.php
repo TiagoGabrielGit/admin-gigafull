@@ -1,50 +1,24 @@
 <?php
-require '../includes/menu.php';
-require '../conexoes/conexao.php';
-require "../conexoes/conexao_pdo.php";
+require($_SERVER['DOCUMENT_ROOT'] . '/includes/menu.php');
+require($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao_pdo.php');
 require '../conexoes/sql.php';
 require '../includes/remove_setas_number.php';
 
+$menu_id = "2";
 $uid = $_SESSION['id'];
-$page_type = "menu";
-$menu_submenu_id = "2";
 
+$permissions_menu = 
+    "SELECT u.perfil_id
+    FROM usuarios u
+    JOIN perfil_permissoes_menu pp ON u.perfil_id = pp.perfil_id 
+    WHERE u.id = $uid AND pp.url_menu = $menu_id";
 
-if ($page_type == "submenu") {
-    $permissions =
-        "SELECT 
-	u.perfil_id
-FROM 
-	usuarios u
-JOIN 
-	perfil_permissoes_submenu pp
-ON 
-	u.perfil_id = pp.perfil_id
-WHERE
-	u.id = $uid
-AND 
-	pp.url_submenu = $menu_submenu_id";
-} else if ($page_type == "menu") {
-    $permissions =
-        "SELECT 
-	u.perfil_id
-FROM 
-	usuarios u
-JOIN 
-	perfil_permissoes_menu pp
-ON 
-	u.perfil_id = pp.perfil_id
-WHERE
-	u.id = $uid
-AND 
-	pp.url_menu = $menu_submenu_id";
-}
-$exec_permissions = $pdo->prepare($permissions);
-$exec_permissions->execute();
+$exec_permissions_menu = $pdo->prepare($permissions_menu);
+$exec_permissions_menu->execute();
 
-$rowCount_permissions = $exec_permissions->rowCount();
+$rowCount_permissions_menu = $exec_permissions_menu->rowCount();
 
-if ($rowCount_permissions > 0) {
+if ($rowCount_permissions_menu > 0) {
 
 ?>
 
@@ -67,7 +41,7 @@ if ($rowCount_permissions > 0) {
                                     <div class="col-2">
                                         <div class="card">
                                             <!-- Basic Modal -->
-                                            <button style="margin-top: 15px" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
+                                            <button style="margin-top: 15px" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#basicModal">
                                                 Nova empresa
                                             </button>
                                         </div>
@@ -202,12 +176,12 @@ if ($rowCount_permissions > 0) {
                             <p>Listagem de empresas</p>
 
                             <!-- Table with stripped rows -->
-                            <table class="table table-striped" id="styleTable">
+                            <table class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Razão Social</th>
-                                        <th scope="col">Fantasia</th>
-                                        <th scope="col">CNPJ</th>
+                                        <th style="text-align: center;" scope="col">Razão Social</th>
+                                        <th style="text-align: center;" scope="col">Fantasia</th>
+                                        <th style="text-align: center;" scope="col">CNPJ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -224,8 +198,8 @@ if ($rowCount_permissions > 0) {
                                                 <a style="color: red;" href="view.php?id=<?= $campos['id'] ?>"><?= $campos['razaoSocial']; ?></a>
                                             </td>
 
-                                            <td><?= $campos['fantasia']; ?></td>
-                                            <td><?= $campos['cnpj']; ?></td>
+                                            <td style="text-align: center;" ><?= $campos['fantasia']; ?></td>
+                                            <td style="text-align: center;" ><?= $campos['cnpj']; ?></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
