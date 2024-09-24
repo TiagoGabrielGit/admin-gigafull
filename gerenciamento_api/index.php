@@ -1,7 +1,6 @@
 <?php
-require "../includes/menu.php";
-
-require "../conexoes/conexao_pdo.php";
+require($_SERVER['DOCUMENT_ROOT'] . '/includes/menu.php');
+require($_SERVER['DOCUMENT_ROOT'] . '/conexoes/conexao_pdo.php');
 
 $menu_id = "24";
 $uid = $_SESSION['id'];
@@ -20,12 +19,6 @@ $rowCount_permissions_menu = $exec_permissions_menu->rowCount();
 if ($rowCount_permissions_menu > 0) {
 
 ?>
-    <style>
-        #tabelaLista:hover {
-            cursor: pointer;
-            background-color: #E0FFFF;
-        }
-    </style>
     <main class="main" id="main">
         <div class="pagetitle">
             <h1>Gerenciamento de API</h1>
@@ -34,12 +27,14 @@ if ($rowCount_permissions_menu > 0) {
             <div class="card">
                 <div class="card-body">
                     <hr class="sidebar-divider">
-                    <table class="table datatable" id="styleTable">
+                    <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">API</th>
-                                <th scope="col">Status</th>
+                                <th style="text-align: center;" scope="col">ID</th>
+                                <th style="text-align: center;" scope="col">API</th>
+                                <th style="text-align: center;" scope="col">Status</th>
+                                <th style="text-align: center;" scope="col"></th>
+
                             </tr>
                         </thead>
                         <tbody>
@@ -57,11 +52,24 @@ if ($rowCount_permissions_menu > 0) {
                             while ($c_apis = $r_apis->fetch_array()) {
                             ?>
 
-                                <tr id="tabelaLista" onclick="location.href='view.php?id=<?= $c_apis['id'] ?>'">
+                                <tr>
 
-                                    <td><?= $c_apis['id']; ?></td>
-                                    <td><?= $c_apis['api_name']; ?></td>
-                                    <td><?= $c_apis['status']; ?></td>
+                                    <td style="text-align: center;"><?= $c_apis['id']; ?></td>
+                                    <td style="text-align: center;"><?= $c_apis['api_name']; ?></td>
+                                    <td style="text-align: center;"><?= $c_apis['status']; ?></td>
+
+                                    <td style="text-align: center;">
+                                        <button title="Visualizar API" type="button" class="btn btn-sm btn-info" onclick="window.location.href = 'view.php?id=<?= $c_apis['id'] ?>';">
+                                            <i class="bi bi-arrow-right-square"></i>
+                                        </button>
+
+
+                                        <button title="Visualizar API" type="button" class="btn btn-sm btn-warning" onclick="window.location.href = 'logs.php?id=<?= $c_apis['id'] ?>';">
+                                            <i class="bi bi-terminal"></i>
+                                        </button>
+                                    </td>
+
+
                                 </tr>
                             <?php } ?>
                         </tbody>
@@ -73,7 +81,8 @@ if ($rowCount_permissions_menu > 0) {
 
 <?php
 } else {
-    require "../acesso_negado.php";
+    require($_SERVER['DOCUMENT_ROOT'] . '/acesso_negado.php');
 }
-require "../includes/securityfooter.php";
+require($_SERVER['DOCUMENT_ROOT'] . '/includes/securityfooter.php');
+
 ?>

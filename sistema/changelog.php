@@ -16,19 +16,22 @@ require "../includes/menu.php";
 
             <div class="accordion" id="accordionExample">
               <div class="accordion-item">
-                <h2 class="accordion-header" id="heading15-4">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse15-4" aria-expanded="false" aria-controls="collapse15-4">
-                    Versão 15.5 - 24/09/2024
+                <h2 class="accordion-header" id="heading15-5">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse15-5" aria-expanded="false" aria-controls="collapse15-5">
+                    Versão 15.5 - XX/09/2024
                   </button>
                 </h2>
-                <div id="collapse15-4" class="accordion-collapse collapse" aria-labelledby="heading15-4" data-bs-parent="#accordionExample">
+                <div id="collapse15-5" class="accordion-collapse collapse" aria-labelledby="heading15-5" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
 
                     <br><strong>Melhorias</strong><br>
 
                     <br><strong>Alterações banco de dados</strong><br>
                     # Adicionado coluna 'empresa_id' na tabela gpon_ctos;<br>
-
+                    # Criado tabela 'logs_apis_externas';<br>
+                    # Criado a API id 9;<br>
+                    # Criado coluna 'token' na tabela empresas;<br>
+                    
                     <br><strong>Backlog</strong><br>
                     # Validar permissoes no view POP;<br>
                     # Correção na empresa do insert pop;<br>

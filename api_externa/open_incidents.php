@@ -37,18 +37,27 @@ WHERE api_id = 6 and ip = :ip";
             // Obtém os resultados como um array associativo
             $incidentes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            // Codifica os resultados em JSON e imprime
+            $log = 'Execução bem sucedida';
             echo json_encode($incidentes);
         } catch (PDOException $e) {
             // Em caso de erro na conexão ou consulta
             echo json_encode(array("error" => $e->getMessage()));
         }
-
-        // Fecha a conexão com o banco de dados
-        $pdo = null;
     } else {
+        $log = "IP de origem não autorizado";
+
         echo "IP $ip não autorizado";
     }
+    $sql_log = "INSERT INTO logs_apis_externas (api_id, log, ip_origem, data) 
+    VALUES (:api_id, :log, :ip_origem, NOW())";
+    $stmt_log = $pdo->prepare($sql_log);
+    $stmt_log->bindParam(':api_id', $api_id, PDO::PARAM_INT);
+    $stmt_log->bindParam(':log', $log, PDO::PARAM_STR);
+    $stmt_log->bindParam(':ip_origem', $ip, PDO::PARAM_STR);
+    $api_id = 6;
+    $stmt_log->execute();
+
+    $pdo = null;
 } else {
     echo "API não habilitada";
 }

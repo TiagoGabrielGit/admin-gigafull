@@ -16,8 +16,8 @@ if ($result_api['active'] == 1) {
     $ip = $_SERVER['REMOTE_ADDR'];
 
     $query_ip = "SELECT count(*) as qtde
-FROM api_externa_ip
-WHERE api_id = 2 and ip = :ip";
+    FROM api_externa_ip
+    WHERE api_id = 2 and ip = :ip";
 
     $stmt_ip = $pdo->prepare($query_ip);
     $stmt_ip->bindParam(':ip', $ip, PDO::PARAM_STR);
@@ -32,11 +32,11 @@ WHERE api_id = 2 and ip = :ip";
 
 
             $sql = "SELECT i.* , gp.cod_int
-    FROM incidentes as i 
-    LEFT JOIN gpon_pon as gp ON gp.id = i.pon_id
-    WHERE i.incident_type = 100
-    ORDER BY i.id desc
-    LIMIT 100";
+            FROM incidentes as i 
+            LEFT JOIN gpon_pon as gp ON gp.id = i.pon_id
+            WHERE i.incident_type = 100
+            ORDER BY i.id desc
+            LIMIT 100";
             $stmt = $pdo->query($sql);
             $incidentes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -44,12 +44,12 @@ WHERE api_id = 2 and ip = :ip";
                 $id_incidente = $incidente['id'];
                 $sql_relatos =
                     "SELECT ir.id, p.nome as usuario, LEFT(ir.relato, 100) as relato_limit_100_caracteres, ic.classificacao, ir.horarioRelato, ir.previsaoNormalizacao
-        FROM incidentes_relatos as ir
-        LEFT JOIN incidentes_classificacao as ic ON ic.id = ir.classificacao
-        LEFT JOIN usuarios as u ON u.id = ir.relato_autor
-        LEFT JOIN pessoas as p ON p.id = u.pessoa_id
-        WHERE incidente_id = ?
-        ORDER BY ir.id desc";
+                    FROM incidentes_relatos as ir
+                    LEFT JOIN incidentes_classificacao as ic ON ic.id = ir.classificacao
+                    LEFT JOIN usuarios as u ON u.id = ir.relato_autor
+                    LEFT JOIN pessoas as p ON p.id = u.pessoa_id
+                    WHERE incidente_id = ?
+                    ORDER BY ir.id desc";
                 $stmt_relatos = $pdo->prepare($sql_relatos);
                 $stmt_relatos->execute([$id_incidente]);
                 $incidente['historico'] = $stmt_relatos->fetchAll(PDO::FETCH_ASSOC);
@@ -87,15 +87,29 @@ WHERE api_id = 2 and ip = :ip";
             }, $incidentes);
 
             echo json_encode($incidentes);
+
+            $log = 'Execução bem sucedida';
+
         } catch (PDOException $e) {
             echo json_encode(array("error" => $e->getMessage()));
+
+            $log = 'Error não identifcado';
         } finally {
-            // Feche a conexão PDO
-            $pdo = null;
         }
     } else {
+        $log = "IP de origem não autorizado";
         echo "IP $ip não autorizado";
     }
+    $sql_log = "INSERT INTO logs_apis_externas (api_id, log, ip_origem, data) 
+    VALUES (:api_id, :log, :ip_origem, NOW())";
+    $stmt_log = $pdo->prepare($sql_log);
+    $stmt_log->bindParam(':api_id', $api_id, PDO::PARAM_INT);
+    $stmt_log->bindParam(':log', $log, PDO::PARAM_STR);
+    $stmt_log->bindParam(':ip_origem', $ip, PDO::PARAM_STR);
+    $api_id = 2;
+    $stmt_log->execute();
+
+    $pdo = null;
 } else {
     echo "API não habilitada";
 }
